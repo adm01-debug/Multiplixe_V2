@@ -7,11 +7,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 type PeriodFilter = 7 | 30 | 90;
+
+interface QuizOption {
+  id: string;
+  title: string;
+  courseTitle: string;
+}
 
 interface CourseQuizStat {
   courseId: string;
@@ -53,6 +60,8 @@ export const QuizStats = () => {
   const [rankings, setRankings] = useState<QuizRanking[]>([]);
   const [loading, setLoading] = useState(true);
   const [periodFilter, setPeriodFilter] = useState<PeriodFilter>(30);
+  const [selectedQuizId, setSelectedQuizId] = useState<string>('all');
+  const [quizOptions, setQuizOptions] = useState<QuizOption[]>([]);
   const [overallStats, setOverallStats] = useState({
     totalAttempts: 0,
     totalPassed: 0,
@@ -83,6 +92,16 @@ export const QuizStats = () => {
           return;
         }
 
+        // Build quiz options for filter
+        const options: QuizOption[] = quizzes
+          .filter(q => q.courses)
+          .map(q => ({
+            id: q.id,
+            title: q.title,
+            courseTitle: (q.courses as any)?.title || 'Curso desconhecido'
+          }));
+        setQuizOptions(options);
+
         // Fetch all quiz attempts with date
         const { data: attempts } = await supabase
           .from('user_quiz_attempts')
@@ -93,6 +112,11 @@ export const QuizStats = () => {
           setLoading(false);
           return;
         }
+
+        // Filter attempts based on selected quiz
+        const filteredAttempts = selectedQuizId === 'all' 
+          ? attempts 
+          : attempts.filter(a => a.quiz_id === selectedQuizId);
 
         // Calculate daily stats for the chart based on period filter
         const periodDays = periodFilter;
@@ -109,8 +133,8 @@ export const QuizStats = () => {
           dailyMap.set(dateStr, { attempts: 0, passed: 0, totalScore: 0 });
         }
         
-        // Aggregate attempts by day
-        attempts.forEach(attempt => {
+        // Aggregate attempts by day (using filtered attempts)
+        filteredAttempts.forEach(attempt => {
           const dateStr = attempt.completed_at.split('T')[0];
           if (dailyMap.has(dateStr)) {
             const current = dailyMap.get(dateStr)!;
@@ -144,9 +168,13 @@ export const QuizStats = () => {
           (profiles || []).map(p => [p.user_id, { name: p.full_name, avatar: p.avatar_url }])
         );
 
+        // Filter quizzes based on selection
+        const filteredQuizzes = selectedQuizId === 'all' 
+          ? quizzes.filter(q => q.courses)
+          : quizzes.filter(q => q.id === selectedQuizId && q.courses);
+
         // Calculate stats per course quiz
-        const courseStats: CourseQuizStat[] = quizzes
-          .filter(q => q.courses)
+        const courseStats: CourseQuizStat[] = filteredQuizzes
           .map(quiz => {
             const quizAttempts = attempts.filter(a => a.quiz_id === quiz.id);
             const passedAttempts = quizAttempts.filter(a => a.passed).length;
@@ -173,8 +201,7 @@ export const QuizStats = () => {
           .sort((a, b) => b.totalAttempts - a.totalAttempts);
 
         // Calculate rankings per quiz
-        const quizRankings: QuizRanking[] = quizzes
-          .filter(q => q.courses)
+        const quizRankings: QuizRanking[] = filteredQuizzes
           .map(quiz => {
             const quizAttempts = attempts.filter(a => a.quiz_id === quiz.id);
             
@@ -222,11 +249,11 @@ export const QuizStats = () => {
         setStats(courseStats);
         setRankings(quizRankings);
 
-        // Calculate overall stats
-        const totalAttempts = attempts.length;
-        const totalPassed = attempts.filter(a => a.passed).length;
+        // Calculate overall stats (based on filtered attempts)
+        const totalAttempts = filteredAttempts.length;
+        const totalPassed = filteredAttempts.filter(a => a.passed).length;
         const averageScore = totalAttempts > 0
-          ? Math.round(attempts.reduce((sum, a) => sum + a.score, 0) / totalAttempts)
+          ? Math.round(filteredAttempts.reduce((sum, a) => sum + a.score, 0) / totalAttempts)
           : 0;
         const overallPassingRate = totalAttempts > 0
           ? Math.round((totalPassed / totalAttempts) * 100)
@@ -246,7 +273,7 @@ export const QuizStats = () => {
     };
 
     fetchQuizStats();
-  }, [periodFilter]);
+  }, [periodFilter, selectedQuizId]);
 
   if (loading) {
     return (
@@ -392,8 +419,24 @@ export const QuizStats = () => {
 
   return (
     <div className="space-y-6">
-      {/* Export Buttons */}
-      <div className="flex justify-end">
+      {/* Filters and Export */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Filtrar por Quiz:</span>
+          <Select value={selectedQuizId} onValueChange={setSelectedQuizId}>
+            <SelectTrigger className="w-[280px]">
+              <SelectValue placeholder="Todos os quizzes" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os quizzes</SelectItem>
+              {quizOptions.map((quiz) => (
+                <SelectItem key={quiz.id} value={quiz.id}>
+                  {quiz.title} - {quiz.courseTitle}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="gap-2">

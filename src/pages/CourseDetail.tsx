@@ -18,6 +18,11 @@ import {
   CheckCircle,
   Loader2,
   Award,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Star,
+  Zap,
 } from "lucide-react";
 
 interface Course {
@@ -60,10 +65,10 @@ interface LessonProgress {
   is_completed: boolean;
 }
 
-const levelLabels: Record<string, string> = {
-  iniciante: "Iniciante",
-  intermediario: "Intermediário",
-  avancado: "Avançado",
+const levelConfig: Record<string, { label: string; emoji: string; gradient: string }> = {
+  iniciante: { label: "Iniciante", emoji: "🌱", gradient: "from-emerald-500 to-teal-500" },
+  intermediario: { label: "Intermediário", emoji: "🚀", gradient: "from-amber-500 to-orange-500" },
+  avancado: { label: "Avançado", emoji: "⚡", gradient: "from-rose-500 to-pink-500" },
 };
 
 const CourseDetail = () => {
@@ -165,7 +170,6 @@ const CourseDetail = () => {
       return;
     }
 
-    // Navigate to first lesson
     navigate(`/curso/${slug}/aula/${lessons[0].id}`);
     setStarting(false);
   };
@@ -173,7 +177,6 @@ const CourseDetail = () => {
   const handleContinueCourse = () => {
     if (!course || lessons.length === 0) return;
 
-    // Find the first incomplete lesson
     const incompleteLesson = lessons.find(
       (lesson) => !lessonsProgress.find((p) => p.lesson_id === lesson.id && p.is_completed)
     );
@@ -181,7 +184,6 @@ const CourseDetail = () => {
     if (incompleteLesson) {
       navigate(`/curso/${slug}/aula/${incompleteLesson.id}`);
     } else {
-      // All lessons completed, go to first lesson
       navigate(`/curso/${slug}/aula/${lessons[0].id}`);
     }
   };
@@ -193,8 +195,15 @@ const CourseDetail = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary animate-spin-slow" />
+            <div className="absolute inset-2 bg-background rounded-full" />
+            <Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin text-primary" />
+          </div>
+          <p className="text-muted-foreground font-medium animate-pulse">Carregando curso...</p>
+        </div>
       </div>
     );
   }
@@ -209,31 +218,45 @@ const CourseDetail = () => {
   const durationText = hours > 0
     ? `${hours}h ${minutes > 0 ? `${minutes}min` : ""}`
     : `${minutes}min`;
+  const levelStyle = levelConfig[course.level] || levelConfig.iniciante;
+  const completedLessons = lessonsProgress.filter(p => p.is_completed).length;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <GraduationCap className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h1 className="font-bold text-foreground">MULTIPLIXE</h1>
-              <p className="text-xs text-muted-foreground">by Promo Brindes</p>
-            </div>
-          </Link>
+      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link to="/dashboard" className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
+                <div className="relative p-2.5 bg-gradient-to-r from-primary to-secondary rounded-xl">
+                  <GraduationCap className="h-6 w-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h1 className="font-display font-bold text-xl text-foreground">MULTIPLIXE</h1>
+                <p className="text-xs text-muted-foreground">by Promo Brindes</p>
+              </div>
+            </Link>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-sm">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <span className="text-foreground">{userName}</span>
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-xl">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <User className="h-4 w-4 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground">{userName}</span>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleSignOut}
+                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline ml-2">Sair</span>
+              </Button>
             </div>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Sair
-            </Button>
           </div>
         </div>
       </header>
@@ -241,7 +264,12 @@ const CourseDetail = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Back Button */}
-        <Button variant="ghost" size="sm" asChild className="mb-6">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          asChild 
+          className="mb-6 rounded-xl hover:bg-muted/50"
+        >
           <Link to="/catalogo">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar ao catálogo
@@ -250,136 +278,234 @@ const CourseDetail = () => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Course Header */}
-            <div>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                {course.categories && (
-                  <Badge
-                    style={{
-                      backgroundColor: course.categories.color
-                        ? `${course.categories.color}20`
-                        : undefined,
-                      color: course.categories.color || undefined,
-                    }}
-                  >
-                    {course.categories.name}
-                  </Badge>
-                )}
-                <Badge variant="secondary">{levelLabels[course.level]}</Badge>
-                {course.is_featured && (
-                  <Badge className="bg-accent text-accent-foreground">Destaque</Badge>
-                )}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Course Hero */}
+            <div className="relative rounded-3xl overflow-hidden p-8 md:p-10">
+              {/* Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/5" />
+              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-primary/25 to-secondary/25 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+              <div className="absolute bottom-0 left-0 w-60 h-60 bg-gradient-to-br from-accent/25 to-primary/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+              
+              {/* Floating decorations */}
+              <div className="absolute top-6 right-6 w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg animate-bounce-subtle">
+                <Star className="h-5 w-5 text-white" />
               </div>
 
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                {course.title}
-              </h1>
+              <div className="relative z-10">
+                {/* Badges */}
+                <div className="flex flex-wrap items-center gap-2 mb-5">
+                  {course.categories && (
+                    <Badge
+                      className="rounded-full px-3 py-1 font-medium border-0"
+                      style={{
+                        backgroundColor: course.categories.color
+                          ? `${course.categories.color}25`
+                          : "hsl(var(--muted))",
+                        color: course.categories.color || "hsl(var(--muted-foreground))",
+                      }}
+                    >
+                      {course.categories.name}
+                    </Badge>
+                  )}
+                  <Badge className={`rounded-full px-3 py-1 font-medium border-0 bg-gradient-to-r ${levelStyle.gradient} text-white`}>
+                    {levelStyle.emoji} {levelStyle.label}
+                  </Badge>
+                  {course.is_featured && (
+                    <Badge className="rounded-full px-3 py-1 font-medium border-0 bg-gradient-to-r from-amber-500 to-orange-500 text-white gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      Destaque
+                    </Badge>
+                  )}
+                </div>
 
-              <p className="text-lg text-muted-foreground">{course.description}</p>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+                  {course.title}
+                </h1>
+
+                <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                  {course.description}
+                </p>
+
+                {/* Quick stats */}
+                <div className="flex flex-wrap items-center gap-4 mt-6">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground bg-background/50 backdrop-blur-sm px-3 py-2 rounded-xl">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span className="font-medium">{durationText}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground bg-background/50 backdrop-blur-sm px-3 py-2 rounded-xl">
+                    <BookOpen className="h-4 w-4 text-primary" />
+                    <span className="font-medium">{lessons.length} aulas</span>
+                  </div>
+                  {course.instructor_name && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground bg-background/50 backdrop-blur-sm px-3 py-2 rounded-xl">
+                      <User className="h-4 w-4 text-primary" />
+                      <span className="font-medium">{course.instructor_name}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/* Course Preview */}
+            {/* Course Preview Video */}
             <div 
-              className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center relative overflow-hidden cursor-pointer"
+              className="group relative aspect-video rounded-3xl overflow-hidden cursor-pointer"
               onClick={progress ? handleContinueCourse : handleStartCourse}
             >
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
-              <button className="w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                <Play className="w-8 h-8 ml-1" fill="currentColor" />
-              </button>
+              {/* Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10" />
+              
+              {/* Decorative grid */}
+              <div className="absolute inset-0 opacity-30">
+                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <defs>
+                    <pattern id="course-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <circle cx="1" cy="1" r="0.5" fill="currentColor" className="text-primary/30" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#course-grid)" />
+                </svg>
+              </div>
+
+              {/* Floating elements */}
+              <div className="absolute top-8 left-8 w-16 h-16 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700" />
+              <div className="absolute bottom-8 right-8 w-20 h-20 bg-gradient-to-br from-accent/40 to-primary/30 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700" />
+
+              {/* Play button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Overlay text */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="text-white/80 text-sm font-medium">
+                  {progress ? "Continuar de onde parou" : "Clique para iniciar o curso"}
+                </p>
+              </div>
             </div>
 
             {/* What you'll learn */}
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  O que você vai aprender
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="grid md:grid-cols-2 gap-3">
+            <div className="rounded-3xl bg-card border border-border/50 overflow-hidden">
+              <div className="p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-secondary/5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10">
+                    <Target className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-bold text-foreground">O que você vai aprender</h3>
+                    <p className="text-sm text-muted-foreground">Habilidades que você vai desenvolver</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <ul className="grid md:grid-cols-2 gap-4">
                   {[
                     "Fundamentos e conceitos essenciais",
                     "Técnicas práticas aplicáveis no dia a dia",
                     "Melhores práticas do mercado",
                     "Casos de uso e exemplos reais",
                   ].map((item, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                    <li key={index} className="flex items-start gap-3 group">
+                      <div className="mt-0.5 p-1 rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 group-hover:from-emerald-500/20 group-hover:to-teal-500/20 transition-colors">
+                        <CheckCircle className="h-4 w-4 text-emerald-500" />
+                      </div>
                       <span className="text-muted-foreground">{item}</span>
                     </li>
                   ))}
                 </ul>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Lessons List */}
             {lessons.length > 0 && (
-              <Card className="border-border/50">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-primary" />
-                    Conteúdo do Curso ({lessons.length} aulas)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+              <div className="rounded-3xl bg-card border border-border/50 overflow-hidden">
+                <div className="p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-secondary/5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10">
+                        <BookOpen className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-display font-bold text-foreground">Conteúdo do Curso</h3>
+                        <p className="text-sm text-muted-foreground">{lessons.length} aulas • {durationText} de conteúdo</p>
+                      </div>
+                    </div>
+                    {progress && (
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
+                        <TrendingUp className="h-4 w-4 text-primary" />
+                        <span className="text-sm font-semibold text-primary">{completedLessons}/{lessons.length}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="p-6">
                   <LessonList
                     lessons={lessons}
                     progress={lessonsProgress}
                     courseSlug={slug!}
                   />
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Course Info Card */}
-            <Card className="border-border/50 sticky top-24">
-              <CardContent className="p-6 space-y-6">
+            <div className="sticky top-24 rounded-3xl bg-card border border-border/50 overflow-hidden">
+              {/* Header gradient */}
+              <div className="h-2 bg-gradient-to-r from-primary via-secondary to-accent" />
+              
+              <div className="p-6 space-y-6">
                 {/* Progress */}
                 {progress && (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Seu progresso</span>
-                      <span className="font-medium text-primary">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-muted-foreground">Seu progresso</span>
+                      <span className="text-lg font-bold text-primary">
                         {progress.progress_percentage}%
                       </span>
                     </div>
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                    <div className="h-3 rounded-full bg-muted overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-primary transition-all"
+                        className="h-full rounded-full bg-gradient-to-r from-primary to-secondary progress-animated transition-all duration-500"
                         style={{ width: `${progress.progress_percentage}%` }}
                       />
                     </div>
+                    <p className="text-xs text-muted-foreground">
+                      {completedLessons} de {lessons.length} aulas concluídas
+                    </p>
                   </div>
                 )}
 
                 {/* CTA Button */}
                 {progress ? (
-                  <Button className="w-full" size="lg" onClick={handleContinueCourse}>
-                    <Play className="h-4 w-4 mr-2" />
+                  <Button 
+                    className="w-full h-12 btn-gradient rounded-2xl text-base font-semibold gap-2" 
+                    onClick={handleContinueCourse}
+                  >
+                    <Play className="h-5 w-5" />
                     Continuar Curso
                   </Button>
                 ) : (
                   <Button
-                    className="w-full"
-                    size="lg"
+                    className="w-full h-12 btn-gradient rounded-2xl text-base font-semibold gap-2"
                     onClick={handleStartCourse}
                     disabled={starting || lessons.length === 0}
                   >
                     {starting ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Loader2 className="h-5 w-5 animate-spin" />
                         Iniciando...
                       </>
                     ) : (
                       <>
-                        <Play className="h-4 w-4 mr-2" />
-                        Iniciar Curso
+                        <Zap className="h-5 w-5" />
+                        Começar Agora
                       </>
                     )}
                   </Button>
@@ -387,50 +513,40 @@ const CourseDetail = () => {
 
                 {/* Course Stats */}
                 <div className="space-y-4 pt-4 border-t border-border/50">
-                  <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{durationText}</p>
-                      <p className="text-xs text-muted-foreground">Duração total</p>
+                  {[
+                    { icon: Clock, label: durationText, sublabel: "Duração total", gradient: "from-blue-500 to-cyan-500" },
+                    { icon: BookOpen, label: `${lessons.length} aulas`, sublabel: "Conteúdo do curso", gradient: "from-primary to-secondary" },
+                    { icon: Award, label: "Certificado", sublabel: "Ao concluir o curso", gradient: "from-amber-500 to-orange-500" },
+                  ].map((stat, index) => (
+                    <div key={index} className="flex items-center gap-3 group">
+                      <div className={`p-2.5 rounded-xl bg-gradient-to-br ${stat.gradient}/10 group-hover:${stat.gradient}/20 transition-colors`}>
+                        <stat.icon className="h-5 w-5 text-foreground" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{stat.label}</p>
+                        <p className="text-xs text-muted-foreground">{stat.sublabel}</p>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <BookOpen className="h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        {lessons.length} aulas
-                      </p>
-                      <p className="text-xs text-muted-foreground">Conteúdo do curso</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Award className="h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">Certificado</p>
-                      <p className="text-xs text-muted-foreground">Ao concluir o curso</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 {/* Instructor */}
                 {course.instructor_name && (
                   <div className="pt-4 border-t border-border/50">
-                    <p className="text-xs text-muted-foreground mb-2">Instrutor(a)</p>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <User className="h-5 w-5 text-primary" />
+                    <p className="text-xs text-muted-foreground mb-3">Instrutor(a)</p>
+                    <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                        <User className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <p className="font-medium text-foreground">{course.instructor_name}</p>
+                        <p className="font-semibold text-foreground">{course.instructor_name}</p>
                         <p className="text-xs text-muted-foreground">Instrutor MULTIPLIXE</p>
                       </div>
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </main>

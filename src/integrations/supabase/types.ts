@@ -491,6 +491,24 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      get_leaderboard: {
+        Args: { p_limit?: number }
+        Returns: {
+          avatar_url: string
+          current_level: number
+          display_name: string
+          rank: number
+          total_xp: number
+          user_id: string
+        }[]
+      }
+      get_user_rank: {
+        Args: { p_user_id: string }
+        Returns: {
+          rank: number
+          total_users: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

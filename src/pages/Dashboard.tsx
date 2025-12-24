@@ -329,6 +329,13 @@ const Dashboard = () => {
               >
                 Catálogo
               </Link>
+              <Link 
+                to="/ranking" 
+                className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
+              >
+                <Trophy className="h-4 w-4" />
+                Ranking
+              </Link>
             </nav>
 
             <div className="flex items-center gap-3">

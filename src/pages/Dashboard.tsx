@@ -335,12 +335,15 @@ const Dashboard = () => {
                 <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{totalXP} XP</span>
               </div>
 
-              <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl neon-border">
+              <Link 
+                to="/perfil" 
+                className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl neon-border hover:bg-muted transition-colors"
+              >
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm neon-button">
                   {userName.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-sm font-medium text-foreground">{userName}</span>
-              </div>
+              </Link>
               <Button 
                 variant="outline" 
                 size="icon"

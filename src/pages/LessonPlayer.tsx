@@ -5,6 +5,7 @@ import { useConfetti } from "@/hooks/useConfetti";
 import { useUserXP } from "@/hooks/useUserXP";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useStreaks } from "@/hooks/useStreaks";
+import { useCertificates } from "@/hooks/useCertificates";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
@@ -60,6 +61,7 @@ const LessonPlayer = () => {
   const { addXP, refetch: refetchXP } = useUserXP();
   const { checkAchievements, newAchievements, dismissAchievement } = useAchievements();
   const { updateStreak, hasStudiedToday } = useStreaks();
+  const { generateCertificate } = useCertificates();
   const celebratedLessons = useRef<Set<string>>(new Set());
   const streakUpdatedToday = useRef(false);
 
@@ -213,6 +215,14 @@ const LessonPlayer = () => {
               // Award XP for completing the course (100 XP)
               await addXP(100, 'course');
               toast.success("🏆 Parabéns! Você concluiu o curso! +100 XP", { duration: 5000 });
+              
+              // Generate certificate
+              const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "Colaborador";
+              generateCertificate(course.id, userName, course.title).then((cert) => {
+                if (cert) {
+                  toast.success("📜 Certificado gerado! Veja em seu perfil.", { duration: 5000 });
+                }
+              });
             } else {
               fireLessonComplete();
               // Award XP for completing a lesson (25 XP)

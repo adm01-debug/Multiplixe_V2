@@ -86,6 +86,44 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          course_id: string
+          course_title: string
+          id: string
+          issued_at: string
+          user_id: string
+          user_name: string
+          verification_code: string
+        }
+        Insert: {
+          course_id: string
+          course_title: string
+          id?: string
+          issued_at?: string
+          user_id: string
+          user_name: string
+          verification_code: string
+        }
+        Update: {
+          course_id?: string
+          course_title?: string
+          id?: string
+          issued_at?: string
+          user_id?: string
+          user_name?: string
+          verification_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           category_id: string | null
@@ -594,6 +632,29 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      issue_certificate: {
+        Args: {
+          p_course_id: string
+          p_course_title: string
+          p_user_id: string
+          p_user_name: string
+        }
+        Returns: {
+          course_id: string
+          course_title: string
+          id: string
+          issued_at: string
+          user_id: string
+          user_name: string
+          verification_code: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       update_user_streak: {
         Args: { p_user_id: string }

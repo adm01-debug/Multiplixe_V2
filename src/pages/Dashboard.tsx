@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import CourseCard from '@/components/catalog/CourseCard';
+import AchievementCelebration from '@/components/AchievementCelebration';
 import { 
   GraduationCap, 
   BookOpen, 
@@ -46,12 +47,75 @@ interface UserProgress {
   courses: Course;
 }
 
+interface Achievement {
+  id: string;
+  type: 'xp' | 'badge' | 'streak' | 'course';
+  title: string;
+  description: string;
+  value?: number;
+}
+
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading, signOut } = useAuth();
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
+  const [currentAchievement, setCurrentAchievement] = useState<Achievement | null>(null);
+
+  // Check for achievement celebrations from URL params
+  useEffect(() => {
+    const celebrationType = searchParams.get('celebrate');
+    const xpAmount = searchParams.get('xp');
+    const badgeName = searchParams.get('badge');
+    
+    if (celebrationType) {
+      let achievement: Achievement | null = null;
+      
+      switch (celebrationType) {
+        case 'xp':
+          achievement = {
+            id: 'xp-gain',
+            type: 'xp',
+            title: 'XP Conquistado!',
+            description: 'Continue aprendendo para ganhar mais pontos de experiência!',
+            value: xpAmount ? parseInt(xpAmount) : 50,
+          };
+          break;
+        case 'badge':
+          achievement = {
+            id: 'badge-earned',
+            type: 'badge',
+            title: badgeName || 'Nova Conquista!',
+            description: 'Você desbloqueou uma nova conquista! Confira seu perfil.',
+          };
+          break;
+        case 'course':
+          achievement = {
+            id: 'course-complete',
+            type: 'course',
+            title: 'Curso Concluído!',
+            description: 'Parabéns! Você completou mais um curso e ganhou um certificado!',
+          };
+          break;
+        case 'streak':
+          achievement = {
+            id: 'streak',
+            type: 'streak',
+            title: 'Sequência Mantida!',
+            description: 'Você está em uma sequência de estudos. Continue assim!',
+          };
+          break;
+      }
+      
+      if (achievement) {
+        setCurrentAchievement(achievement);
+        // Clear the search params after showing
+        setSearchParams({});
+      }
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -157,8 +221,45 @@ const Dashboard = () => {
     }
   ];
 
+  // Demo function to trigger achievements (can be called from buttons or events)
+  const triggerAchievement = (type: 'xp' | 'badge' | 'streak' | 'course', value?: number) => {
+    const achievements: Record<string, Achievement> = {
+      xp: {
+        id: 'xp-gain',
+        type: 'xp',
+        title: 'XP Conquistado!',
+        description: 'Continue aprendendo para ganhar mais pontos de experiência!',
+        value: value || 50,
+      },
+      badge: {
+        id: 'badge-earned',
+        type: 'badge',
+        title: 'Primeira Aula!',
+        description: 'Você completou sua primeira aula. Continue assim!',
+      },
+      course: {
+        id: 'course-complete',
+        type: 'course',
+        title: 'Curso Concluído!',
+        description: 'Parabéns! Você completou mais um curso!',
+      },
+      streak: {
+        id: 'streak',
+        type: 'streak',
+        title: 'Sequência de 7 dias!',
+        description: 'Você estudou por 7 dias seguidos. Incrível!',
+      },
+    };
+    setCurrentAchievement(achievements[type]);
+  };
+
   return (
     <div className="min-h-screen">
+      {/* Achievement Celebration Modal */}
+      <AchievementCelebration 
+        achievement={currentAchievement} 
+        onClose={() => setCurrentAchievement(null)} 
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
         <div className="container mx-auto px-4 py-4">
@@ -247,7 +348,7 @@ const Dashboard = () => {
             </p>
 
             {/* Quick action */}
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Button 
                 asChild 
                 className="btn-gradient rounded-2xl h-12 px-6 text-base font-semibold gap-2"
@@ -257,6 +358,24 @@ const Dashboard = () => {
                   Explorar Cursos
                   <ArrowRight className="h-5 w-5" />
                 </Link>
+              </Button>
+              
+              {/* Demo buttons for testing confetti */}
+              <Button 
+                variant="outline"
+                onClick={() => triggerAchievement('xp', 150)}
+                className="rounded-2xl h-12 px-4 gap-2 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10 hover:border-emerald-500/50"
+              >
+                <Zap className="h-5 w-5" />
+                Testar XP
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => triggerAchievement('badge')}
+                className="rounded-2xl h-12 px-4 gap-2 border-amber-500/30 text-amber-600 hover:bg-amber-500/10 hover:border-amber-500/50"
+              >
+                <Star className="h-5 w-5" />
+                Testar Badge
               </Button>
             </div>
           </div>

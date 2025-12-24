@@ -689,4 +689,38 @@
     backdrop-filter: blur(20px) saturate(180%);
     background: hsl(250 25% 6% / 0.8);
   }
+
+  /* Rank badge animations */
+  @keyframes shimmer {
+    0% { transform: skewX(-20deg) translateX(-200%); }
+    100% { transform: skewX(-20deg) translateX(200%); }
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Gold badge glow */
+  .gold-glow {
+    box-shadow: 0 0 20px hsl(45 100% 50% / 0.5), 0 0 40px hsl(45 100% 50% / 0.3), 0 0 60px hsl(45 100% 50% / 0.2);
+  }
+
+  /* Silver badge glow */
+  .silver-glow {
+    box-shadow: 0 0 15px hsl(220 10% 70% / 0.4), 0 0 30px hsl(220 10% 70% / 0.2);
+  }
+
+  /* Bronze badge glow */
+  .bronze-glow {
+    box-shadow: 0 0 15px hsl(30 80% 50% / 0.4), 0 0 30px hsl(30 80% 50% / 0.2);
+  }
 }

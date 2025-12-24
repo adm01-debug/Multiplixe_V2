@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
+import { useLevelUp } from '@/hooks/useLevelUp';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import CourseCard from '@/components/catalog/CourseCard';
 import AchievementCelebration from '@/components/AchievementCelebration';
+import LevelUpCelebration from '@/components/LevelUpCelebration';
 import LevelProgress from '@/components/LevelProgress';
-import { 
+import {
   GraduationCap, 
   BookOpen, 
   Trophy, 
@@ -64,6 +66,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading, signOut } = useAuth();
   const { totalXP, loading: loadingXP } = useUserXP();
+  const { levelUpData, clearLevelUp } = useLevelUp(totalXP);
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
@@ -245,6 +248,12 @@ const Dashboard = () => {
       <AchievementCelebration 
         achievement={currentAchievement} 
         onClose={() => setCurrentAchievement(null)} 
+      />
+
+      {/* Level Up Celebration Modal */}
+      <LevelUpCelebration 
+        levelUpData={levelUpData} 
+        onClose={clearLevelUp} 
       />
 
       {/* Header */}

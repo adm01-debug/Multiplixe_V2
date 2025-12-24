@@ -7,6 +7,7 @@ import {
   Volume2,
   VolumeX,
   Maximize,
+  Minimize,
   SkipBack,
   SkipForward,
   Settings,
@@ -109,7 +110,6 @@ const VideoPlayer = ({
     };
   }, [initialPosition, autoPlay, onComplete]);
 
-  // Progress callback every 5 seconds
   useEffect(() => {
     if (isPlaying && onProgress) {
       progressInterval.current = setInterval(() => {
@@ -126,7 +126,6 @@ const VideoPlayer = ({
     };
   }, [isPlaying, onProgress]);
 
-  // Fullscreen change listener
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -239,7 +238,7 @@ const VideoPlayer = ({
   return (
     <div
       ref={containerRef}
-      className="relative bg-black rounded-xl overflow-hidden group"
+      className="relative bg-black rounded-2xl overflow-hidden group"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && setShowControls(false)}
     >
@@ -254,23 +253,45 @@ const VideoPlayer = ({
       {/* Play button overlay */}
       {!isPlaying && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
+          className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] cursor-pointer"
           onClick={togglePlay}
         >
-          <div className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center hover:bg-primary transition-colors">
-            <Play className="w-8 h-8 text-primary-foreground ml-1" fill="currentColor" />
+          <div className="relative group/play">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur-xl opacity-50 group-hover/play:opacity-75 transition-opacity scale-110" />
+            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center hover:scale-110 transition-transform shadow-2xl">
+              <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" />
+            </div>
           </div>
         </div>
       )}
 
+      {/* Title overlay */}
+      <div
+        className={`absolute top-0 left-0 right-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent p-4 md:p-6 transition-opacity duration-300 ${
+          showControls || !isPlaying ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <h3 className="text-white font-display font-semibold text-lg md:text-xl truncate drop-shadow-lg">
+          {title}
+        </h3>
+      </div>
+
+      {/* Progress bar at top */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
+        <div
+          className="h-full bg-gradient-to-r from-primary to-secondary transition-all"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
       {/* Controls */}
       <div
-        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300 ${
+        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 md:p-6 transition-opacity duration-300 ${
           showControls || !isPlaying ? "opacity-100" : "opacity-0"
         }`}
       >
         {/* Progress bar */}
-        <div className="mb-4">
+        <div className="mb-4 group/progress">
           <Slider
             value={[currentTime]}
             max={duration || 100}
@@ -281,14 +302,14 @@ const VideoPlayer = ({
         </div>
 
         {/* Controls row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             {/* Play/Pause */}
             <Button
               variant="ghost"
               size="icon"
               onClick={togglePlay}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 h-10 w-10"
             >
               {isPlaying ? (
                 <Pause className="h-5 w-5" fill="currentColor" />
@@ -302,7 +323,7 @@ const VideoPlayer = ({
               variant="ghost"
               size="icon"
               onClick={() => handleSkip(-10)}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 h-10 w-10 hidden sm:flex"
             >
               <SkipBack className="h-4 w-4" />
             </Button>
@@ -310,18 +331,18 @@ const VideoPlayer = ({
               variant="ghost"
               size="icon"
               onClick={() => handleSkip(10)}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 h-10 w-10 hidden sm:flex"
             >
               <SkipForward className="h-4 w-4" />
             </Button>
 
             {/* Volume */}
-            <div className="flex items-center gap-2 group/volume">
+            <div className="flex items-center gap-1 group/volume">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleMute}
-                className="text-white hover:bg-white/20"
+                className="text-white hover:bg-white/20 h-10 w-10"
               >
                 {isMuted || volume === 0 ? (
                   <VolumeX className="h-5 w-5" />
@@ -329,7 +350,7 @@ const VideoPlayer = ({
                   <Volume2 className="h-5 w-5" />
                 )}
               </Button>
-              <div className="w-0 group-hover/volume:w-20 overflow-hidden transition-all">
+              <div className="w-0 group-hover/volume:w-20 overflow-hidden transition-all duration-300">
                 <Slider
                   value={[isMuted ? 0 : volume]}
                   max={1}
@@ -340,32 +361,32 @@ const VideoPlayer = ({
             </div>
 
             {/* Time */}
-            <span className="text-white text-sm ml-2">
+            <span className="text-white text-sm font-medium ml-2 hidden sm:block">
               {formatTime(currentTime)} / {formatTime(duration)}
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             {/* Playback speed */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/20 text-xs"
+                  className="text-white hover:bg-white/20 text-xs font-semibold h-10 px-3 rounded-lg"
                 >
                   <Settings className="h-4 w-4 mr-1" />
                   {playbackRate}x
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent className="bg-card/95 backdrop-blur-xl border-border/50 rounded-xl">
                 {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
                   <DropdownMenuItem
                     key={rate}
                     onClick={() => handlePlaybackRateChange(rate)}
-                    className={playbackRate === rate ? "bg-primary/20" : ""}
+                    className={`rounded-lg ${playbackRate === rate ? "bg-primary/20 text-primary" : ""}`}
                   >
-                    {rate}x
+                    {rate}x {rate === 1 && "(Normal)"}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -376,29 +397,16 @@ const VideoPlayer = ({
               variant="ghost"
               size="icon"
               onClick={toggleFullscreen}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 h-10 w-10"
             >
-              <Maximize className="h-5 w-5" />
+              {isFullscreen ? (
+                <Minimize className="h-5 w-5" />
+              ) : (
+                <Maximize className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* Title overlay */}
-      <div
-        className={`absolute top-0 left-0 right-0 bg-gradient-to-b from-black/60 to-transparent p-4 transition-opacity duration-300 ${
-          showControls || !isPlaying ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <h3 className="text-white font-medium truncate">{title}</h3>
-      </div>
-
-      {/* Progress indicator */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
-        <div
-          className="h-full bg-primary transition-all"
-          style={{ width: `${progress}%` }}
-        />
       </div>
     </div>
   );

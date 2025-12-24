@@ -3,39 +3,33 @@ import { Star, Quote } from "lucide-react";
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Maria Santos",
-      role: "Diretora de RH",
-      company: "TechCorp Brasil",
-      avatar: "MS",
+      name: "Ana Paula",
+      role: "Vendas",
+      department: "Comercial",
+      avatar: "AP",
       rating: 5,
-      text: "A CorpLearn transformou completamente nosso programa de treinamento. O engajamento dos colaboradores aumentou 300% e conseguimos reduzir custos com treinamentos presenciais.",
+      text: "A plataforma me ajudou muito a entender melhor nossos produtos. Os cursos são práticos e consigo aplicar o que aprendo no mesmo dia!",
     },
     {
-      name: "Carlos Oliveira",
-      role: "CEO",
-      company: "StartUp Innovation",
-      avatar: "CO",
+      name: "Carlos Eduardo",
+      role: "Atendimento",
+      department: "SAC",
+      avatar: "CE",
       rating: 5,
-      text: "Plataforma intuitiva e completa. A gamificação fez toda a diferença para manter nossa equipe motivada. Os relatórios de analytics são muito úteis para tomada de decisões.",
+      text: "Adoro o sistema de gamificação! Me motiva a completar os cursos e competir com os colegas. Já conquistei 5 badges!",
     },
     {
-      name: "Ana Paula Ferreira",
-      role: "Gerente de T&D",
-      company: "Grupo Empresarial ABC",
-      avatar: "AF",
+      name: "Juliana Mendes",
+      role: "Coordenadora",
+      department: "Logística",
+      avatar: "JM",
       rating: 5,
-      text: "O suporte é excepcional e a plataforma está sempre evoluindo. As trilhas personalizadas nos ajudaram a desenvolver competências específicas para cada área.",
+      text: "Os certificados são um diferencial para o meu currículo. A empresa investir no nosso desenvolvimento mostra que valoriza a gente.",
     },
-  ];
-
-  const stats = [
-    { value: "4.9/5", label: "Avaliação média" },
-    { value: "+500", label: "Empresas parceiras" },
-    { value: "98%", label: "Taxa de renovação" },
   ];
 
   return (
-    <section id="depoimentos" className="py-24 bg-background relative overflow-hidden">
+    <section id="como-funciona" className="py-24 bg-background relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent -z-10" />
       
@@ -46,11 +40,11 @@ const TestimonialsSection = () => {
             Depoimentos
           </span>
           <h2 className="text-foreground">
-            O que nossos clientes{" "}
-            <span className="text-gradient">dizem sobre nós</span>
+            O que nossos colegas{" "}
+            <span className="text-gradient">estão dizendo</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Mais de 500 empresas confiam na MULTIPLIXE para capacitar suas equipes.
+            Veja como a MULTIPLIXE está transformando o desenvolvimento dos colaboradores.
           </p>
         </div>
 
@@ -87,7 +81,7 @@ const TestimonialsSection = () => {
                     {testimonial.name}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {testimonial.role} • {testimonial.company}
+                    {testimonial.role} • {testimonial.department}
                   </p>
                 </div>
               </div>
@@ -95,16 +89,42 @@ const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-4xl font-display font-bold text-primary mb-2">
-                {stat.value}
-              </p>
-              <p className="text-muted-foreground">{stat.label}</p>
-            </div>
-          ))}
+        {/* How it works */}
+        <div className="bg-card rounded-2xl border border-border p-8 md:p-12">
+          <h3 className="text-2xl font-display font-bold text-card-foreground text-center mb-12">
+            Como começar a aprender
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "1",
+                title: "Faça Login",
+                description: "Use seu email corporativo @promobrindes para acessar a plataforma.",
+              },
+              {
+                step: "2",
+                title: "Escolha sua Trilha",
+                description: "Selecione os cursos da sua área ou explore conteúdos de seu interesse.",
+              },
+              {
+                step: "3",
+                title: "Aprenda e Evolua",
+                description: "Complete os cursos, ganhe XP, conquiste certificados e cresça na carreira!",
+              },
+            ].map((item, index) => (
+              <div key={item.step} className="text-center">
+                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground font-display font-bold text-2xl flex items-center justify-center mx-auto mb-4">
+                  {item.step}
+                </div>
+                <h4 className="text-xl font-semibold text-card-foreground mb-2">
+                  {item.title}
+                </h4>
+                <p className="text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

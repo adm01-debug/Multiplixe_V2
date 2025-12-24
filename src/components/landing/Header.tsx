@@ -7,9 +7,8 @@ const Header = () => {
 
   const navLinks = [
     { label: "Recursos", href: "#recursos" },
-    { label: "Depoimentos", href: "#depoimentos" },
-    { label: "Preços", href: "#precos" },
-    { label: "Contato", href: "#contato" },
+    { label: "Trilhas", href: "#trilhas" },
+    { label: "Como Funciona", href: "#como-funciona" },
   ];
 
   return (
@@ -46,11 +45,8 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="font-medium">
-              Entrar
-            </Button>
             <Button className="btn-gradient">
-              Começar Grátis
+              Acessar Plataforma
             </Button>
           </div>
 
@@ -78,12 +74,9 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
-              <div className="flex flex-col gap-3 pt-4 border-t border-border">
-                <Button variant="outline" className="w-full">
-                  Entrar
-                </Button>
+              <div className="pt-4 border-t border-border">
                 <Button className="btn-gradient w-full">
-                  Começar Grátis
+                  Acessar Plataforma
                 </Button>
               </div>
             </nav>

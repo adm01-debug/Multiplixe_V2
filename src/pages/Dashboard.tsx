@@ -9,9 +9,7 @@ import {
   GraduationCap, 
   BookOpen, 
   Trophy, 
-  Clock, 
   LogOut, 
-  User, 
   ArrowRight, 
   Loader2,
   Sparkles,
@@ -20,7 +18,6 @@ import {
   Zap,
   TrendingUp,
   Star,
-  Award,
   Play,
   ChevronRight,
   Rocket,
@@ -239,36 +236,6 @@ const Dashboard = () => {
     { icon: Rocket, name: "Veloz", unlocked: completedCount >= 5, gradient: "from-orange-500 to-red-500" },
   ];
 
-  const triggerAchievement = (type: 'xp' | 'badge' | 'streak' | 'course', value?: number) => {
-    const achievementData: Record<string, Achievement> = {
-      xp: {
-        id: 'xp-gain',
-        type: 'xp',
-        title: 'XP Conquistado!',
-        description: 'Continue aprendendo para ganhar mais pontos de experiência!',
-        value: value || 50,
-      },
-      badge: {
-        id: 'badge-earned',
-        type: 'badge',
-        title: 'Primeira Aula!',
-        description: 'Você completou sua primeira aula. Continue assim!',
-      },
-      course: {
-        id: 'course-complete',
-        type: 'course',
-        title: 'Curso Concluído!',
-        description: 'Parabéns! Você completou mais um curso!',
-      },
-      streak: {
-        id: 'streak',
-        type: 'streak',
-        title: 'Sequência de 7 dias!',
-        description: 'Você estudou por 7 dias seguidos. Incrível!',
-      },
-    };
-    setCurrentAchievement(achievementData[type]);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -390,39 +357,17 @@ const Dashboard = () => {
               </p>
 
               {/* Quick actions */}
-              <div className="flex flex-wrap gap-4">
-                <Button 
-                  asChild 
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-2xl h-14 px-8 text-base font-semibold shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 group"
-                >
-                  <Link to="/catalogo">
-                    <Rocket className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
-                    Explorar Cursos
-                    <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-                
-                {/* Test buttons */}
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  onClick={() => triggerAchievement('xp', 150)}
-                  className="rounded-2xl h-14 px-6 gap-2 border-2 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10 hover:border-emerald-500/50 font-semibold"
-                >
-                  <Zap className="h-5 w-5" />
-                  +150 XP
-                </Button>
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  onClick={() => triggerAchievement('badge')}
-                  className="rounded-2xl h-14 px-6 gap-2 border-2 border-amber-500/30 text-amber-600 hover:bg-amber-500/10 hover:border-amber-500/50 font-semibold"
-                >
-                  <Award className="h-5 w-5" />
-                  Badge
-                </Button>
-              </div>
+              <Button 
+                asChild 
+                size="lg"
+                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-2xl h-14 px-8 text-base font-semibold shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 group"
+              >
+                <Link to="/catalogo">
+                  <Rocket className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
+                  Explorar Cursos
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -480,10 +425,9 @@ const Dashboard = () => {
                   key={achievement.name}
                   className={`group relative p-6 rounded-2xl border transition-all duration-300 ${
                     achievement.unlocked 
-                      ? 'bg-card/80 border-border/50 hover:-translate-y-1 hover:shadow-xl cursor-pointer' 
+                      ? 'bg-card/80 border-border/50 hover:-translate-y-1 hover:shadow-xl' 
                       : 'bg-muted/30 border-border/30 opacity-50'
                   }`}
-                  onClick={() => achievement.unlocked && triggerAchievement('badge')}
                 >
                   <div className="flex flex-col items-center text-center">
                     <div className={`relative w-16 h-16 rounded-2xl flex items-center justify-center mb-4 ${

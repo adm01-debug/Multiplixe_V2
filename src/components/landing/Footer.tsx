@@ -44,17 +44,22 @@ const Footer = () => {
               <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <GraduationCap className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="font-display font-bold text-xl text-background">
-                Corp<span className="text-primary">Learn</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-xl text-background leading-tight">
+                  MULTIPLI<span className="text-primary">XE</span>
+                </span>
+                <span className="text-2xs text-background/60 font-medium">
+                  by Promo Brindes
+                </span>
+              </div>
             </a>
             <p className="text-background/60 leading-relaxed">
               Transformando o desenvolvimento profissional com tecnologia e inovação.
             </p>
             <div className="space-y-3">
-              <a href="mailto:contato@corplearn.com" className="flex items-center gap-2 text-background/60 hover:text-background transition-colors">
+              <a href="mailto:contato@promobrindes.com.br" className="flex items-center gap-2 text-background/60 hover:text-background transition-colors">
                 <Mail className="w-4 h-4" />
-                contato@corplearn.com
+                contato@promobrindes.com.br
               </a>
               <a href="tel:+5511999999999" className="flex items-center gap-2 text-background/60 hover:text-background transition-colors">
                 <Phone className="w-4 h-4" />
@@ -124,7 +129,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-background/60 text-sm">
-            © 2024 CorpLearn. Todos os direitos reservados.
+            © 2024 MULTIPLIXE by Promo Brindes. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (

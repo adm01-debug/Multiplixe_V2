@@ -50,7 +50,7 @@ const TestimonialsSection = () => {
             <span className="text-gradient">dizem sobre nós</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Mais de 500 empresas confiam na CorpLearn para capacitar suas equipes.
+            Mais de 500 empresas confiam na MULTIPLIXE para capacitar suas equipes.
           </p>
         </div>
 

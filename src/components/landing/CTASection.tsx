@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Rocket, Heart, TrendingUp } from "lucide-react";
 
@@ -49,13 +50,15 @@ const CTASection = () => {
 
           {/* CTA Button */}
           <div className="pt-4">
-            <Button 
-              size="lg" 
-              className="bg-white text-primary hover:bg-white/90 text-lg px-10 h-16 font-semibold"
-            >
-              Acessar Plataforma
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <Link to="/auth">
+              <Button 
+                size="lg" 
+                className="bg-white text-primary hover:bg-white/90 text-lg px-10 h-16 font-semibold"
+              >
+                Acessar Plataforma
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
           </div>
 
           {/* Note */}

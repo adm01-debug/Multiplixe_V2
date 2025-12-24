@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Play, ArrowRight, Users, BookOpen, Award, TrendingUp } from "lucide-react";
 
@@ -44,10 +45,12 @@ const HeroSection = () => {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="btn-gradient text-lg px-8 h-14">
-                Acessar Minha Conta
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
+              <Link to="/auth">
+                <Button size="lg" className="btn-gradient text-lg px-8 h-14">
+                  Acessar Minha Conta
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
               <Button 
                 size="lg" 
                 variant="outline" 

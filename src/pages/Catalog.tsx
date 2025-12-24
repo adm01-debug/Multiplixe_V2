@@ -148,54 +148,61 @@ const Catalog = () => {
   const hasActiveFilters = selectedCategory || selectedLevel;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
+      <header className="sticky top-0 z-50 glass neon-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/dashboard" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div className="relative p-2.5 bg-gradient-to-r from-primary to-secondary rounded-xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity dark:opacity-70 dark:group-hover:opacity-100" />
+                <div className="relative p-2.5 bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg neon-button">
                   <GraduationCap className="h-6 w-6 text-white" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent flex items-center justify-center pulse-glow">
+                  <Sparkles className="w-2.5 h-2.5 text-accent-foreground" />
                 </div>
               </div>
               <div>
-                <h1 className="font-display font-bold text-xl text-foreground">MULTIPLIXE</h1>
-                <p className="text-xs text-muted-foreground">by Promo Brindes</p>
+                <h1 className="font-display font-bold text-xl text-foreground tracking-tight">
+                  MULTIPLI<span className="text-gradient neon-text">XE</span>
+                </h1>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">by Promo Brindes</p>
               </div>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
               <Link 
                 to="/dashboard" 
-                className="px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-all"
+                className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors"
               >
                 Dashboard
               </Link>
               <Link 
                 to="/catalogo" 
-                className="px-4 py-2 text-foreground font-medium bg-primary/10 text-primary rounded-xl"
+                className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white rounded-xl shadow-lg neon-button"
               >
                 Catálogo
               </Link>
             </nav>
 
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-xl">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <User className="h-4 w-4 text-primary" />
+              <Link 
+                to="/perfil" 
+                className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl neon-border hover:bg-muted transition-colors"
+              >
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm neon-button">
+                  {userName.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-sm font-medium text-foreground">{userName}</span>
-              </div>
+              </Link>
               <Button 
                 variant="outline" 
-                size="sm" 
+                size="icon"
                 onClick={handleSignOut}
-                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50"
+                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"
               >
                 <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline ml-2">Sair</span>
               </Button>
             </div>
           </div>
@@ -205,24 +212,24 @@ const Catalog = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <div className="relative mb-10 p-8 md:p-12 rounded-3xl overflow-hidden">
+        <div className="relative mb-10 p-8 md:p-12 rounded-[2rem] overflow-hidden neon-card">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/5" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-accent/20 to-primary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-background dark:from-primary/30 dark:via-accent/20" />
+          <div className="absolute inset-0 opacity-30 dark:opacity-50" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.2) 1px, transparent 0)`,
+            backgroundSize: '32px 32px'
+          }} />
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-primary/30 to-accent/20 dark:from-primary/50 dark:to-accent/40 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-accent/20 to-primary/10 dark:from-accent/40 dark:to-primary/20 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
           
           <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="px-3 py-1.5 bg-primary/10 rounded-full">
-                <div className="flex items-center gap-2 text-primary">
-                  <Sparkles className="h-4 w-4" />
-                  <span className="text-sm font-semibold">Catálogo de Cursos</span>
-                </div>
-              </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6 dark:bg-primary/10 dark:border-primary/30 dark:shadow-[0_0_20px_hsl(270_100%_70%/0.2)]">
+              <Sparkles className="h-4 w-4 text-primary neon-icon" />
+              <span className="text-sm font-semibold text-foreground">Catálogo de Cursos</span>
             </div>
             
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
-              Explore e <span className="text-gradient">Evolua</span>
+              Explore e <span className="text-gradient neon-text">Evolua</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl">
               Descubra cursos incríveis para impulsionar sua carreira e alcançar novos patamares de conhecimento 🚀
@@ -230,18 +237,18 @@ const Catalog = () => {
 
             {/* Stats */}
             <div className="flex flex-wrap gap-6 mt-8">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-primary/10">
-                  <LayoutGrid className="h-5 w-5 text-primary" />
+              <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 neon-card">
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg dark:shadow-[0_0_20px_hsl(270_100%_70%/0.4)]">
+                  <LayoutGrid className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-foreground">{courses.length}</p>
                   <p className="text-sm text-muted-foreground">Cursos disponíveis</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-secondary/10">
-                  <Rocket className="h-5 w-5 text-secondary" />
+              <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 neon-card">
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg dark:shadow-[0_0_20px_hsl(25_100%_55%/0.4)]">
+                  <Rocket className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-foreground">{categories.length}</p>
@@ -261,18 +268,18 @@ const Catalog = () => {
               <SearchInput 
                 value={searchQuery} 
                 onChange={setSearchQuery}
-                className="pl-12 h-14 text-base rounded-2xl border-border/50 bg-card/50 backdrop-blur-sm focus:bg-card"
+                className="pl-12 h-14 text-base rounded-2xl border-border/50 bg-card/50 backdrop-blur-sm focus:bg-card neon-border"
               />
             </div>
             <Button
               variant="outline"
               onClick={() => setShowFilters(!showFilters)}
-              className={`h-14 px-6 rounded-2xl border-border/50 gap-2 ${hasActiveFilters ? 'bg-primary/10 border-primary/50 text-primary' : ''}`}
+              className={`h-14 px-6 rounded-2xl border-border/50 gap-2 neon-border ${hasActiveFilters ? 'bg-primary/10 border-primary/50 text-primary dark:shadow-[0_0_20px_hsl(270_100%_70%/0.3)]' : ''}`}
             >
               <Filter className="h-5 w-5" />
               <span>Filtros</span>
               {hasActiveFilters && (
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse dark:shadow-[0_0_10px_hsl(270_100%_70%/0.8)]" />
               )}
               <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
             </Button>
@@ -280,7 +287,7 @@ const Catalog = () => {
 
           {/* Filter Panel */}
           <div className={`overflow-hidden transition-all duration-300 ${showFilters ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-            <div className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 space-y-5">
+            <div className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 space-y-5 neon-card">
               <div>
                 <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
                   <span>📂</span> Categorias
@@ -374,8 +381,8 @@ const Catalog = () => {
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="relative mb-6">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full blur-2xl" />
-              <div className="relative p-6 bg-card rounded-full border border-border/50">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-2xl dark:opacity-70" />
+              <div className="relative p-6 bg-card rounded-full border border-border/50 neon-card">
                 <BookOpen className="h-12 w-12 text-muted-foreground" />
               </div>
             </div>
@@ -392,7 +399,7 @@ const Catalog = () => {
                 setSelectedCategory(null);
                 setSelectedLevel(null);
               }}
-              className="rounded-xl"
+              className="rounded-xl neon-border"
             >
               Limpar busca
             </Button>

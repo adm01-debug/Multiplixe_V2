@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useLevelUp } from '@/hooks/useLevelUp';
 import { useAchievements } from '@/hooks/useAchievements';
+import { useStreaks } from '@/hooks/useStreaks';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import CourseCard from '@/components/catalog/CourseCard';
@@ -12,6 +13,7 @@ import LevelUpCelebration from '@/components/LevelUpCelebration';
 import AchievementUnlocked from '@/components/AchievementUnlocked';
 import LevelProgress from '@/components/LevelProgress';
 import AchievementsGrid from '@/components/AchievementsGrid';
+import StreakDisplay from '@/components/StreakDisplay';
 import {
   GraduationCap, 
   BookOpen, 
@@ -79,6 +81,7 @@ const Dashboard = () => {
     unlockedCount,
     totalCount 
   } = useAchievements();
+  const { currentStreak, longestStreak, isStreakAtRisk, hasStudiedToday } = useStreaks();
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
@@ -261,8 +264,8 @@ const Dashboard = () => {
     },
     {
       label: "Sequência",
-      value: `${Math.min(completedCount + inProgressCount, 7)} dias`,
-      subtitle: "Mantenha o ritmo!",
+      value: `${currentStreak} ${currentStreak === 1 ? 'dia' : 'dias'}`,
+      subtitle: isStreakAtRisk ? "⚠️ Em risco!" : "Mantenha o ritmo!",
       icon: Flame,
       gradient: "from-rose-500 to-pink-500",
       glowColor: "shadow-rose-500/25"
@@ -455,6 +458,16 @@ const Dashboard = () => {
         {/* Level Progress Section */}
         <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <LevelProgress totalXP={totalXP} />
+        </section>
+
+        {/* Streak Section */}
+        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+          <StreakDisplay 
+            currentStreak={currentStreak} 
+            longestStreak={longestStreak} 
+            isAtRisk={isStreakAtRisk}
+            hasStudiedToday={hasStudiedToday}
+          />
         </section>
 
         {/* Achievements Section */}

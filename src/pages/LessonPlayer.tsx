@@ -4,11 +4,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { useConfetti } from "@/hooks/useConfetti";
 import { useUserXP } from "@/hooks/useUserXP";
 import { useAchievements } from "@/hooks/useAchievements";
+import { useStreaks } from "@/hooks/useStreaks";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import LessonList from "@/components/player/LessonList";
 import AchievementUnlocked from "@/components/AchievementUnlocked";
+import StreakCelebration from "@/components/StreakCelebration";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -57,7 +59,9 @@ const LessonPlayer = () => {
   const { fireLessonComplete, fireCourseComplete } = useConfetti();
   const { addXP, refetch: refetchXP } = useUserXP();
   const { checkAchievements, newAchievements, dismissAchievement } = useAchievements();
+  const { updateStreak, hasStudiedToday } = useStreaks();
   const celebratedLessons = useRef<Set<string>>(new Set());
+  const streakUpdatedToday = useRef(false);
 
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -66,6 +70,11 @@ const LessonPlayer = () => {
   const [loading, setLoading] = useState(true);
   const [showSidebar, setShowSidebar] = useState(true);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
+  const [streakCelebration, setStreakCelebration] = useState<{
+    newStreak: number;
+    xpAwarded: number;
+    isNewRecord: boolean;
+  } | null>(null);
 
   // Show new achievements one by one
   useEffect(() => {
@@ -213,6 +222,19 @@ const LessonPlayer = () => {
 
             // Check for new achievements after XP is awarded
             await checkAchievements();
+
+            // Update streak (only once per day)
+            if (!streakUpdatedToday.current && !hasStudiedToday) {
+              streakUpdatedToday.current = true;
+              const streakResult = await updateStreak();
+              if (streakResult && streakResult.streak_updated) {
+                setStreakCelebration({
+                  newStreak: streakResult.new_streak,
+                  xpAwarded: streakResult.xp_awarded,
+                  isNewRecord: streakResult.is_new_record,
+                });
+              }
+            }
           }
 
           await updateCourseProgress();
@@ -307,6 +329,19 @@ const LessonPlayer = () => {
         achievement={currentNewAchievement} 
         onClose={handleDismissNewAchievement} 
       />
+
+      {/* Streak Celebration Modal */}
+      {streakCelebration && (
+        <StreakCelebration 
+          newStreak={streakCelebration.newStreak}
+          xpAwarded={streakCelebration.xpAwarded}
+          isNewRecord={streakCelebration.isNewRecord}
+          onClose={() => {
+            setStreakCelebration(null);
+            refetchXP();
+          }}
+        />
+      )}
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">

@@ -12,7 +12,7 @@ interface CourseQuizModalProps {
   onClose: () => void;
   courseId: string;
   courseTitle: string;
-  onQuizPassed?: () => void;
+  onQuizPassed?: (score: number) => void;
 }
 
 export const CourseQuizModal = ({ 
@@ -69,7 +69,8 @@ export const CourseQuizModal = ({
     
     if (result?.passed) {
       setHasPassedQuiz(true);
-      onQuizPassed();
+      setBestScore(result.score);
+      onQuizPassed?.(result.score);
     }
     
     return result;

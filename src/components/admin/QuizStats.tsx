@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -626,6 +626,184 @@ export const QuizStats = () => {
           </div>
         )}
       </div>
+
+      {/* Quiz Comparison Chart */}
+      {stats.length > 1 && selectedQuizId === 'all' && (
+        <div className="p-6 rounded-2xl bg-card/80 border border-border/50">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-primary" />
+            Comparativo entre Quizzes
+          </h3>
+          
+          <div className="space-y-6">
+            {/* Passing Rate Comparison */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-3">Taxa de Aprovação por Quiz (%)</p>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart 
+                    data={stats.slice(0, 10)} 
+                    layout="vertical"
+                    margin={{ left: 20, right: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={true} vertical={false} />
+                    <XAxis 
+                      type="number" 
+                      domain={[0, 100]} 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      tickFormatter={(value) => `${value}%`}
+                    />
+                    <YAxis 
+                      type="category" 
+                      dataKey="quizTitle" 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      width={120}
+                      tickFormatter={(value) => value.length > 18 ? value.substring(0, 18) + '...' : value}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                      labelStyle={{ color: 'hsl(var(--foreground))' }}
+                      formatter={(value: number, name: string) => {
+                        const labels: Record<string, string> = {
+                          passingRate: 'Taxa de Aprovação',
+                          averageScore: 'Média'
+                        };
+                        return [`${value}%`, labels[name] || name];
+                      }}
+                    />
+                    <Bar 
+                      dataKey="passingRate" 
+                      radius={[0, 4, 4, 0]}
+                    >
+                      {stats.slice(0, 10).map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={entry.passingRate >= 70 ? 'hsl(142 76% 36%)' : entry.passingRate >= 50 ? 'hsl(45 93% 47%)' : 'hsl(0 84% 60%)'} 
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex items-center justify-center gap-6 mt-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(142 76% 36%)' }} />
+                  <span className="text-muted-foreground">≥70% (Bom)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(45 93% 47%)' }} />
+                  <span className="text-muted-foreground">50-69% (Regular)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(0 84% 60%)' }} />
+                  <span className="text-muted-foreground">&lt;50% (Baixo)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Attempts Comparison */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-3">Tentativas e Aprovações por Quiz</p>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart 
+                    data={stats.slice(0, 10)} 
+                    layout="vertical"
+                    margin={{ left: 20, right: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={true} vertical={false} />
+                    <XAxis 
+                      type="number" 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                    />
+                    <YAxis 
+                      type="category" 
+                      dataKey="quizTitle" 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      width={120}
+                      tickFormatter={(value) => value.length > 18 ? value.substring(0, 18) + '...' : value}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                      labelStyle={{ color: 'hsl(var(--foreground))' }}
+                    />
+                    <Legend />
+                    <Bar 
+                      dataKey="totalAttempts" 
+                      name="Tentativas"
+                      fill="hsl(217 91% 60%)" 
+                      radius={[0, 4, 4, 0]}
+                    />
+                    <Bar 
+                      dataKey="passedAttempts" 
+                      name="Aprovações"
+                      fill="hsl(142 76% 36%)" 
+                      radius={[0, 4, 4, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Average Score Comparison */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-3">Média de Pontuação por Quiz (%)</p>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart 
+                    data={stats.slice(0, 10)} 
+                    layout="vertical"
+                    margin={{ left: 20, right: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={true} vertical={false} />
+                    <XAxis 
+                      type="number" 
+                      domain={[0, 100]} 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      tickFormatter={(value) => `${value}%`}
+                    />
+                    <YAxis 
+                      type="category" 
+                      dataKey="quizTitle" 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      width={120}
+                      tickFormatter={(value) => value.length > 18 ? value.substring(0, 18) + '...' : value}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                      labelStyle={{ color: 'hsl(var(--foreground))' }}
+                      formatter={(value: number) => [`${value}%`, 'Média']}
+                    />
+                    <Bar 
+                      dataKey="averageScore" 
+                      fill="hsl(var(--primary))" 
+                      radius={[0, 4, 4, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Per Course Stats */}
       <div className="p-6 rounded-2xl bg-card/80 border border-border/50">

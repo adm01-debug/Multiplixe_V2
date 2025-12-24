@@ -370,6 +370,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_streaks: {
+        Row: {
+          created_at: string
+          current_streak: number
+          id: string
+          last_activity_date: string | null
+          longest_streak: number
+          streak_started_at: string | null
+          total_streak_days: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number
+          streak_started_at?: string | null
+          total_streak_days?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number
+          streak_started_at?: string | null
+          total_streak_days?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_xp: {
         Row: {
           created_at: string
@@ -461,6 +497,15 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      update_user_streak: {
+        Args: { p_user_id: string }
+        Returns: {
+          is_new_record: boolean
+          new_streak: number
+          streak_updated: boolean
+          xp_awarded: number
+        }[]
       }
     }
     Enums: {

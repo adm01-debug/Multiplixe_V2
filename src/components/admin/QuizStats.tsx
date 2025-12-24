@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface CourseQuizStat {
   courseId: string;
   courseTitle: string;
   quizTitle: string;
+  quizId: string;
   totalAttempts: number;
   passedAttempts: number;
   uniqueUsers: number;
@@ -24,9 +26,23 @@ interface DailyStats {
   averageScore: number;
 }
 
+interface QuizRanking {
+  quizId: string;
+  quizTitle: string;
+  courseTitle: string;
+  topUsers: {
+    userId: string;
+    userName: string;
+    avatarUrl: string | null;
+    bestScore: number;
+    attemptCount: number;
+  }[];
+}
+
 export const QuizStats = () => {
   const [stats, setStats] = useState<CourseQuizStat[]>([]);
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
+  const [rankings, setRankings] = useState<QuizRanking[]>([]);
   const [loading, setLoading] = useState(true);
   const [overallStats, setOverallStats] = useState({
     totalAttempts: 0,
@@ -109,6 +125,15 @@ export const QuizStats = () => {
         
         setDailyStats(dailyStatsArray);
 
+        // Fetch user profiles for rankings
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('user_id, full_name, avatar_url');
+
+        const profileMap = new Map(
+          (profiles || []).map(p => [p.user_id, { name: p.full_name, avatar: p.avatar_url }])
+        );
+
         // Calculate stats per course quiz
         const courseStats: CourseQuizStat[] = quizzes
           .filter(q => q.courses)
@@ -127,6 +152,7 @@ export const QuizStats = () => {
               courseId: quiz.course_id!,
               courseTitle: (quiz.courses as any)?.title || 'Curso desconhecido',
               quizTitle: quiz.title,
+              quizId: quiz.id,
               totalAttempts: quizAttempts.length,
               passedAttempts,
               uniqueUsers,
@@ -136,7 +162,55 @@ export const QuizStats = () => {
           })
           .sort((a, b) => b.totalAttempts - a.totalAttempts);
 
+        // Calculate rankings per quiz
+        const quizRankings: QuizRanking[] = quizzes
+          .filter(q => q.courses)
+          .map(quiz => {
+            const quizAttempts = attempts.filter(a => a.quiz_id === quiz.id);
+            
+            // Group by user and get best score
+            const userBestScores = new Map<string, { bestScore: number; attemptCount: number }>();
+            quizAttempts.forEach(attempt => {
+              const existing = userBestScores.get(attempt.user_id);
+              if (!existing || attempt.score > existing.bestScore) {
+                userBestScores.set(attempt.user_id, {
+                  bestScore: attempt.score,
+                  attemptCount: (existing?.attemptCount || 0) + 1
+                });
+              } else {
+                userBestScores.set(attempt.user_id, {
+                  ...existing,
+                  attemptCount: existing.attemptCount + 1
+                });
+              }
+            });
+
+            // Convert to array and sort by best score
+            const topUsers = Array.from(userBestScores.entries())
+              .map(([userId, data]) => {
+                const profile = profileMap.get(userId);
+                return {
+                  userId,
+                  userName: profile?.name || 'Usuário Anônimo',
+                  avatarUrl: profile?.avatar || null,
+                  bestScore: data.bestScore,
+                  attemptCount: data.attemptCount
+                };
+              })
+              .sort((a, b) => b.bestScore - a.bestScore)
+              .slice(0, 5); // Top 5
+
+            return {
+              quizId: quiz.id,
+              quizTitle: quiz.title,
+              courseTitle: (quiz.courses as any)?.title || 'Curso desconhecido',
+              topUsers
+            };
+          })
+          .filter(r => r.topUsers.length > 0);
+
         setStats(courseStats);
+        setRankings(quizRankings);
 
         // Calculate overall stats
         const totalAttempts = attempts.length;
@@ -387,6 +461,81 @@ export const QuizStats = () => {
                     <p className="font-semibold">{stat.averageScore}%</p>
                     <p className="text-xs text-muted-foreground">Média</p>
                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Rankings per Quiz */}
+      <div className="p-6 rounded-2xl bg-card/80 border border-border/50">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Trophy className="h-5 w-5 text-amber-500" />
+          Ranking por Quiz
+        </h3>
+
+        {rankings.length === 0 ? (
+          <p className="text-muted-foreground text-center py-8">
+            Nenhuma tentativa de quiz registrada ainda.
+          </p>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {rankings.map((ranking) => (
+              <div
+                key={ranking.quizId}
+                className="p-4 rounded-xl bg-muted/30"
+              >
+                <div className="mb-3">
+                  <h4 className="font-medium">{ranking.courseTitle}</h4>
+                  <p className="text-sm text-muted-foreground">{ranking.quizTitle}</p>
+                </div>
+
+                <div className="space-y-2">
+                  {ranking.topUsers.map((user, index) => (
+                    <div
+                      key={user.userId}
+                      className={`flex items-center gap-3 p-2 rounded-lg ${
+                        index === 0 ? 'bg-amber-500/10 border border-amber-500/20' :
+                        index === 1 ? 'bg-slate-400/10 border border-slate-400/20' :
+                        index === 2 ? 'bg-orange-600/10 border border-orange-600/20' :
+                        'bg-background/50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold">
+                        {index === 0 ? (
+                          <Medal className="h-5 w-5 text-amber-500" />
+                        ) : index === 1 ? (
+                          <Medal className="h-5 w-5 text-slate-400" />
+                        ) : index === 2 ? (
+                          <Medal className="h-5 w-5 text-orange-600" />
+                        ) : (
+                          <span className="text-muted-foreground">{index + 1}</span>
+                        )}
+                      </div>
+
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.avatarUrl || undefined} />
+                        <AvatarFallback className="text-xs">
+                          {user.userName.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{user.userName}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {user.attemptCount} tentativa{user.attemptCount !== 1 ? 's' : ''}
+                        </p>
+                      </div>
+
+                      <div className={`text-lg font-bold ${
+                        user.bestScore >= 90 ? 'text-green-500' :
+                        user.bestScore >= 70 ? 'text-amber-500' : 'text-red-500'
+                      }`}>
+                        {user.bestScore}%
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

@@ -296,11 +296,75 @@ export type Database = {
         }
         Relationships: []
       }
+      user_xp: {
+        Row: {
+          created_at: string
+          current_level: number
+          id: string
+          last_xp_earned_at: string | null
+          total_xp: number
+          updated_at: string
+          user_id: string
+          xp_from_achievements: number
+          xp_from_courses: number
+          xp_from_lessons: number
+          xp_from_streaks: number
+        }
+        Insert: {
+          created_at?: string
+          current_level?: number
+          id?: string
+          last_xp_earned_at?: string | null
+          total_xp?: number
+          updated_at?: string
+          user_id: string
+          xp_from_achievements?: number
+          xp_from_courses?: number
+          xp_from_lessons?: number
+          xp_from_streaks?: number
+        }
+        Update: {
+          created_at?: string
+          current_level?: number
+          id?: string
+          last_xp_earned_at?: string | null
+          total_xp?: number
+          updated_at?: string
+          user_id?: string
+          xp_from_achievements?: number
+          xp_from_courses?: number
+          xp_from_lessons?: number
+          xp_from_streaks?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      add_user_xp: {
+        Args: { p_amount: number; p_source?: string; p_user_id: string }
+        Returns: {
+          created_at: string
+          current_level: number
+          id: string
+          last_xp_earned_at: string | null
+          total_xp: number
+          updated_at: string
+          user_id: string
+          xp_from_achievements: number
+          xp_from_courses: number
+          xp_from_lessons: number
+          xp_from_streaks: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "user_xp"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

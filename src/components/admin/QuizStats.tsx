@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock, Activity, Award, Zap } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock, Activity, Award, Zap, PieChart as PieChartIcon } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell, PieChart, Pie } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -720,6 +720,140 @@ export const QuizStats = () => {
           </div>
         </div>
       </div>
+
+      {/* Performance Distribution Pie Chart */}
+      {stats.filter(s => s.totalAttempts >= 5).length > 0 && (
+        <div className="p-6 rounded-2xl bg-card/80 border border-border/50">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <PieChartIcon className="h-5 w-5 text-primary" />
+            Distribuição de Desempenho dos Quizzes
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Pie Chart */}
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={[
+                      { 
+                        name: 'Excelente (≥80%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 80).length,
+                        color: 'hsl(142 76% 36%)'
+                      },
+                      { 
+                        name: 'Bom (70-79%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 70 && s.passingRate < 80).length,
+                        color: 'hsl(142 76% 50%)'
+                      },
+                      { 
+                        name: 'Regular (50-69%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 50 && s.passingRate < 70).length,
+                        color: 'hsl(45 93% 47%)'
+                      },
+                      { 
+                        name: 'Baixo (<50%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length,
+                        color: 'hsl(0 84% 60%)'
+                      }
+                    ].filter(d => d.value > 0)}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={90}
+                    paddingAngle={2}
+                    dataKey="value"
+                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
+                  >
+                    {[
+                      { 
+                        name: 'Excelente (≥80%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 80).length,
+                        color: 'hsl(142 76% 36%)'
+                      },
+                      { 
+                        name: 'Bom (70-79%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 70 && s.passingRate < 80).length,
+                        color: 'hsl(142 76% 50%)'
+                      },
+                      { 
+                        name: 'Regular (50-69%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 50 && s.passingRate < 70).length,
+                        color: 'hsl(45 93% 47%)'
+                      },
+                      { 
+                        name: 'Baixo (<50%)', 
+                        value: stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length,
+                        color: 'hsl(0 84% 60%)'
+                      }
+                    ].filter(d => d.value > 0).map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--card))', 
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px'
+                    }}
+                    formatter={(value: number, name: string) => [value, name]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Legend and Details */}
+            <div className="flex flex-col justify-center space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(142 76% 36%)' }} />
+                    <span className="font-medium">Excelente (≥80%)</span>
+                  </div>
+                  <span className="font-bold text-green-600">
+                    {stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 80).length} quizzes
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(142 76% 50%)' }} />
+                    <span className="font-medium">Bom (70-79%)</span>
+                  </div>
+                  <span className="font-bold text-emerald-600">
+                    {stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 70 && s.passingRate < 80).length} quizzes
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(45 93% 47%)' }} />
+                    <span className="font-medium">Regular (50-69%)</span>
+                  </div>
+                  <span className="font-bold text-amber-600">
+                    {stats.filter(s => s.totalAttempts >= 5 && s.passingRate >= 50 && s.passingRate < 70).length} quizzes
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-lg bg-destructive/10 border border-destructive/30">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(0 84% 60%)' }} />
+                    <span className="font-medium">Baixo (&lt;50%)</span>
+                  </div>
+                  <span className="font-bold text-destructive">
+                    {stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length} quizzes
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs text-muted-foreground mt-2">
+                * Apenas quizzes com 5 ou mais tentativas são considerados
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Low Performance Alerts */}
       {stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length > 0 && (

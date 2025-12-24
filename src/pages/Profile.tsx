@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useAchievements } from '@/hooks/useAchievements';
+import { useCertificates } from '@/hooks/useCertificates';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import LevelProgress from '@/components/LevelProgress';
 import AchievementsGrid from '@/components/AchievementsGrid';
 import XPEvolutionChart from '@/components/XPEvolutionChart';
+import { CertificateCard } from '@/components/CertificateCard';
 import { calculateUserLevel } from '@/lib/levelSystem';
 import {
   GraduationCap,
@@ -29,6 +31,7 @@ import {
   Clock,
   BarChart3,
   User,
+  FileText,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -40,12 +43,24 @@ interface UserStats {
   memberSince: string;
 }
 
+interface Certificate {
+  id: string;
+  user_id: string;
+  course_id: string;
+  verification_code: string;
+  issued_at: string;
+  user_name: string;
+  course_title: string;
+}
+
 const Profile = () => {
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
   const { userXP, totalXP, loading: loadingXP } = useUserXP();
   const { achievements, isUnlocked, unlockedCount, totalCount } = useAchievements();
+  const { getUserCertificates } = useCertificates();
   const [stats, setStats] = useState<UserStats | null>(null);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
@@ -61,7 +76,7 @@ const Profile = () => {
       setLoadingStats(true);
 
       try {
-        const [lessonsRes, coursesRes, profileRes] = await Promise.all([
+        const [lessonsRes, coursesRes, profileRes, userCertificates] = await Promise.all([
           supabase
             .from('user_lesson_progress')
             .select('is_completed, watched_seconds')
@@ -75,6 +90,7 @@ const Profile = () => {
             .select('created_at')
             .eq('user_id', user.id)
             .maybeSingle(),
+          getUserCertificates(user.id),
         ]);
 
         const lessonsCompleted = lessonsRes.data?.filter(l => l.is_completed).length || 0;
@@ -89,6 +105,8 @@ const Profile = () => {
           totalWatchedMinutes: Math.round(totalWatchedSeconds / 60),
           memberSince: profileRes.data?.created_at || user.created_at,
         });
+        
+        setCertificates(userCertificates);
       } catch (error) {
         console.error('Error fetching stats:', error);
       } finally {
@@ -97,7 +115,7 @@ const Profile = () => {
     };
 
     fetchStats();
-  }, [user]);
+  }, [user, getUserCertificates]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -369,6 +387,27 @@ const Profile = () => {
             })}
           </div>
         </section>
+
+        {/* Certificates */}
+        {certificates.length > 0 && (
+          <section className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20">
+                <FileText className="h-6 w-6 text-amber-500" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-display font-bold text-foreground">Certificados</h3>
+                <p className="text-sm text-muted-foreground">{certificates.length} certificado{certificates.length !== 1 ? 's' : ''} emitido{certificates.length !== 1 ? 's' : ''}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {certificates.map((cert) => (
+                <CertificateCard key={cert.id} certificate={cert} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Achievements */}
         <section className="mb-12">

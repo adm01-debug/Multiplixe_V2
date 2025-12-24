@@ -14,6 +14,7 @@ import LessonPlayer from "./pages/LessonPlayer";
 import Profile from "./pages/Profile";
 import Leaderboard from "./pages/Leaderboard";
 import Admin from "./pages/Admin";
+import VerifyCertificate from "./pages/VerifyCertificate";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/perfil" element={<Profile />} />
             <Route path="/ranking" element={<Leaderboard />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/verificar-certificado" element={<VerifyCertificate />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

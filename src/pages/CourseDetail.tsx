@@ -87,8 +87,9 @@ const CourseDetail = () => {
   const [starting, setStarting] = useState(false);
   const [showQuizModal, setShowQuizModal] = useState(false);
   
-  const { fetchQuizForCourse } = useQuizzes();
+  const { fetchQuizForCourse, fetchUserAttempts } = useQuizzes();
   const [hasQuiz, setHasQuiz] = useState(false);
+  const [quizPassed, setQuizPassed] = useState<{ passed: boolean; score: number } | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -154,15 +155,27 @@ const CourseDetail = () => {
         setLessonsProgress(lessonsProgressData);
       }
 
-      // Check if course has a final quiz
+      // Check if course has a final quiz and user's best attempt
       const quiz = await fetchQuizForCourse(courseData.id);
       setHasQuiz(!!quiz);
+      
+      if (quiz) {
+        const attempts = await fetchUserAttempts(quiz.id);
+        const passedAttempt = attempts.find(a => a.passed);
+        if (passedAttempt) {
+          setQuizPassed({ passed: true, score: passedAttempt.score });
+        } else if (attempts.length > 0) {
+          // Show best score even if not passed
+          const bestScore = Math.max(...attempts.map(a => a.score));
+          setQuizPassed({ passed: false, score: bestScore });
+        }
+      }
 
       setLoading(false);
     };
 
     fetchCourse();
-  }, [user, slug, navigate, fetchQuizForCourse]);
+  }, [user, slug, navigate, fetchQuizForCourse, fetchUserAttempts]);
 
   const handleStartCourse = async () => {
     if (!user || !course || lessons.length === 0) return;
@@ -506,13 +519,53 @@ const CourseDetail = () => {
 
                 {/* Quiz Final Button - Show when progress is 100% and has quiz */}
                 {progress && progress.progress_percentage >= 100 && hasQuiz && (
-                  <Button 
-                    className="w-full h-12 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl text-base font-semibold gap-2 shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 transition-all" 
-                    onClick={() => setShowQuizModal(true)}
-                  >
-                    <FileQuestion className="h-5 w-5" />
-                    Fazer Quiz Final
-                  </Button>
+                  <div className="space-y-3">
+                    {/* Quiz Status Indicator */}
+                    {quizPassed && (
+                      <div className={`flex items-center gap-3 p-3 rounded-2xl ${
+                        quizPassed.passed 
+                          ? 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20' 
+                          : 'bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20'
+                      }`}>
+                        <div className={`p-2 rounded-xl ${
+                          quizPassed.passed 
+                            ? 'bg-gradient-to-br from-emerald-500 to-teal-500' 
+                            : 'bg-gradient-to-br from-amber-500 to-orange-500'
+                        }`}>
+                          {quizPassed.passed ? (
+                            <CheckCircle className="h-5 w-5 text-white" />
+                          ) : (
+                            <Target className="h-5 w-5 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`text-sm font-semibold ${
+                            quizPassed.passed ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+                          }`}>
+                            {quizPassed.passed ? 'Quiz Aprovado!' : 'Tente novamente'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {quizPassed.passed ? 'Sua pontuação' : 'Melhor pontuação'}: <span className="font-bold">{quizPassed.score}%</span>
+                          </p>
+                        </div>
+                        {quizPassed.passed && (
+                          <Award className="h-6 w-6 text-emerald-500" />
+                        )}
+                      </div>
+                    )}
+                    
+                    <Button 
+                      className={`w-full h-12 rounded-2xl text-base font-semibold gap-2 shadow-lg transition-all ${
+                        quizPassed?.passed 
+                          ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30'
+                          : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30'
+                      }`}
+                      onClick={() => setShowQuizModal(true)}
+                    >
+                      <FileQuestion className="h-5 w-5" />
+                      {quizPassed?.passed ? 'Refazer Quiz' : 'Fazer Quiz Final'}
+                    </Button>
+                  </div>
                 )}
 
                 {/* CTA Button */}
@@ -591,6 +644,7 @@ const CourseDetail = () => {
           courseTitle={course.title}
           isOpen={showQuizModal}
           onClose={() => setShowQuizModal(false)}
+          onQuizPassed={(score) => setQuizPassed({ passed: true, score })}
         />
       )}
     </div>

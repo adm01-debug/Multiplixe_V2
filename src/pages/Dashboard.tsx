@@ -5,6 +5,7 @@ import { useUserXP } from '@/hooks/useUserXP';
 import { useLevelUp } from '@/hooks/useLevelUp';
 import { useAchievements } from '@/hooks/useAchievements';
 import { useStreaks } from '@/hooks/useStreaks';
+import { useAdminRole } from '@/hooks/useAdminRole';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import CourseCard from '@/components/catalog/CourseCard';
@@ -32,7 +33,8 @@ import {
   ChevronRight,
   Rocket,
   Crown,
-  Medal
+  Medal,
+  ShieldAlert
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -83,6 +85,7 @@ const Dashboard = () => {
     totalCount 
   } = useAchievements();
   const { currentStreak, longestStreak, isStreakAtRisk, hasStudiedToday } = useStreaks();
+  const { isAdmin } = useAdminRole();
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
@@ -337,6 +340,15 @@ const Dashboard = () => {
                 <Trophy className="h-4 w-4" />
                 Ranking
               </Link>
+              {isAdmin && (
+                <Link 
+                  to="/admin" 
+                  className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
+                >
+                  <ShieldAlert className="h-4 w-4" />
+                  Admin
+                </Link>
+              )}
             </nav>
 
             <div className="flex items-center gap-3">

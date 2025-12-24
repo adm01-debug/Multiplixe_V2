@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -54,10 +54,28 @@ interface QuizRanking {
   }[];
 }
 
+interface PerformanceAlert {
+  id: string;
+  quiz_id: string;
+  alert_type: string;
+  passing_rate: number;
+  total_attempts: number;
+  passed_attempts: number;
+  threshold: number;
+  is_resolved: boolean;
+  resolved_at: string | null;
+  notes: string | null;
+  created_at: string;
+  quizTitle?: string;
+  courseTitle?: string;
+}
+
 export const QuizStats = () => {
   const [stats, setStats] = useState<CourseQuizStat[]>([]);
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [rankings, setRankings] = useState<QuizRanking[]>([]);
+  const [alertHistory, setAlertHistory] = useState<PerformanceAlert[]>([]);
+  const [showAlertHistory, setShowAlertHistory] = useState(false);
   const [loading, setLoading] = useState(true);
   const [periodFilter, setPeriodFilter] = useState<PeriodFilter>(30);
   const [selectedQuizId, setSelectedQuizId] = useState<string>('all');
@@ -275,6 +293,126 @@ export const QuizStats = () => {
     fetchQuizStats();
   }, [periodFilter, selectedQuizId]);
 
+  // Fetch alert history
+  useEffect(() => {
+    const fetchAlertHistory = async () => {
+      try {
+        const { data: alerts } = await supabase
+          .from('quiz_performance_alerts')
+          .select(`
+            *,
+            quizzes (
+              title,
+              courses (
+                title
+              )
+            )
+          `)
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (alerts) {
+          const mappedAlerts: PerformanceAlert[] = alerts.map((alert: any) => ({
+            ...alert,
+            quizTitle: alert.quizzes?.title || 'Quiz desconhecido',
+            courseTitle: alert.quizzes?.courses?.title || 'Curso desconhecido'
+          }));
+          setAlertHistory(mappedAlerts);
+        }
+      } catch (error) {
+        console.error('Error fetching alert history:', error);
+      }
+    };
+
+    fetchAlertHistory();
+  }, []);
+
+  // Register new alerts for low performing quizzes
+  const registerAlert = async (quiz: CourseQuizStat) => {
+    try {
+      // Check if there's already an unresolved alert for this quiz
+      const { data: existingAlert } = await supabase
+        .from('quiz_performance_alerts')
+        .select('id')
+        .eq('quiz_id', quiz.quizId)
+        .eq('is_resolved', false)
+        .maybeSingle();
+
+      if (existingAlert) {
+        toast.info('Já existe um alerta ativo para este quiz');
+        return;
+      }
+
+      const { error } = await supabase
+        .from('quiz_performance_alerts')
+        .insert({
+          quiz_id: quiz.quizId,
+          alert_type: 'low_passing_rate',
+          passing_rate: quiz.passingRate,
+          total_attempts: quiz.totalAttempts,
+          passed_attempts: quiz.passedAttempts,
+          threshold: 50
+        });
+
+      if (error) throw error;
+
+      toast.success('Alerta registrado no histórico');
+      
+      // Refresh alert history
+      const { data: alerts } = await supabase
+        .from('quiz_performance_alerts')
+        .select(`
+          *,
+          quizzes (
+            title,
+            courses (
+              title
+            )
+          )
+        `)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (alerts) {
+        const mappedAlerts: PerformanceAlert[] = alerts.map((alert: any) => ({
+          ...alert,
+          quizTitle: alert.quizzes?.title || 'Quiz desconhecido',
+          courseTitle: alert.quizzes?.courses?.title || 'Curso desconhecido'
+        }));
+        setAlertHistory(mappedAlerts);
+      }
+    } catch (error) {
+      console.error('Error registering alert:', error);
+      toast.error('Erro ao registrar alerta');
+    }
+  };
+
+  // Resolve an alert
+  const resolveAlert = async (alertId: string) => {
+    try {
+      const { error } = await supabase
+        .from('quiz_performance_alerts')
+        .update({
+          is_resolved: true,
+          resolved_at: new Date().toISOString()
+        })
+        .eq('id', alertId);
+
+      if (error) throw error;
+
+      toast.success('Alerta marcado como resolvido');
+      
+      setAlertHistory(prev => prev.map(alert => 
+        alert.id === alertId 
+          ? { ...alert, is_resolved: true, resolved_at: new Date().toISOString() }
+          : alert
+      ));
+    } catch (error) {
+      console.error('Error resolving alert:', error);
+      toast.error('Erro ao resolver alerta');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -463,9 +601,20 @@ export const QuizStats = () => {
           <div className="flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
             <div className="flex-1">
-              <h4 className="font-semibold text-destructive mb-2">
-                Quizzes com Taxa de Aprovação Baixa (&lt;50%)
-              </h4>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-destructive">
+                  Quizzes com Taxa de Aprovação Baixa (&lt;50%)
+                </h4>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAlertHistory(!showAlertHistory)}
+                  className="gap-2"
+                >
+                  <History className="h-4 w-4" />
+                  Histórico
+                </Button>
+              </div>
               <p className="text-sm text-muted-foreground mb-3">
                 Os seguintes quizzes precisam de atenção - considere revisar o conteúdo ou as perguntas:
               </p>
@@ -485,11 +634,21 @@ export const QuizStats = () => {
                           <p className="text-xs text-muted-foreground">{quiz.courseTitle}</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-bold text-destructive">{quiz.passingRate}%</p>
-                        <p className="text-xs text-muted-foreground">
-                          {quiz.passedAttempts}/{quiz.totalAttempts} aprovados
-                        </p>
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <p className="font-bold text-destructive">{quiz.passingRate}%</p>
+                          <p className="text-xs text-muted-foreground">
+                            {quiz.passedAttempts}/{quiz.totalAttempts} aprovados
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => registerAlert(quiz)}
+                          className="text-xs"
+                        >
+                          Registrar
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -505,6 +664,87 @@ export const QuizStats = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Alert History Panel */}
+      {showAlertHistory && (
+        <div className="p-6 rounded-2xl bg-card/80 border border-border/50">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <History className="h-5 w-5 text-primary" />
+              Histórico de Alertas de Desempenho
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowAlertHistory(false)}
+            >
+              Fechar
+            </Button>
+          </div>
+
+          {alertHistory.length === 0 ? (
+            <p className="text-muted-foreground text-center py-8">
+              Nenhum alerta registrado ainda.
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {alertHistory.map((alert) => (
+                <div 
+                  key={alert.id}
+                  className={`p-4 rounded-xl border ${
+                    alert.is_resolved 
+                      ? 'bg-muted/30 border-border/50' 
+                      : 'bg-destructive/5 border-destructive/30'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-3">
+                      {alert.is_resolved ? (
+                        <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" />
+                      ) : (
+                        <Clock className="h-5 w-5 text-amber-500 mt-0.5" />
+                      )}
+                      <div>
+                        <p className="font-medium">{alert.quizTitle}</p>
+                        <p className="text-sm text-muted-foreground">{alert.courseTitle}</p>
+                        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                          <span>Taxa: <span className="font-medium text-destructive">{alert.passing_rate}%</span></span>
+                          <span>{alert.passed_attempts}/{alert.total_attempts} aprovados</span>
+                          <span>
+                            {new Date(alert.created_at).toLocaleDateString('pt-BR', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        {alert.is_resolved && alert.resolved_at && (
+                          <p className="text-xs text-green-600 mt-1">
+                            Resolvido em {new Date(alert.resolved_at).toLocaleDateString('pt-BR')}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {!alert.is_resolved && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => resolveAlert(alert.id)}
+                        className="gap-2 text-green-600 hover:text-green-700"
+                      >
+                        <CheckCircle2 className="h-4 w-4" />
+                        Resolver
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

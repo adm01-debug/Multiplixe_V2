@@ -328,6 +328,56 @@ export type Database = {
           },
         ]
       }
+      quiz_performance_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          id: string
+          is_resolved: boolean
+          notes: string | null
+          passed_attempts: number
+          passing_rate: number
+          quiz_id: string
+          resolved_at: string | null
+          threshold: number
+          total_attempts: number
+        }
+        Insert: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          notes?: string | null
+          passed_attempts: number
+          passing_rate: number
+          quiz_id: string
+          resolved_at?: string | null
+          threshold?: number
+          total_attempts: number
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          notes?: string | null
+          passed_attempts?: number
+          passing_rate?: number
+          quiz_id?: string
+          resolved_at?: string | null
+          threshold?: number
+          total_attempts?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_performance_alerts_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quiz_questions: {
         Row: {
           created_at: string

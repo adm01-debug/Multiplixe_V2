@@ -12,6 +12,7 @@ import VideoPlayer from "@/components/player/VideoPlayer";
 import LessonList from "@/components/player/LessonList";
 import AchievementUnlocked from "@/components/AchievementUnlocked";
 import StreakCelebration from "@/components/StreakCelebration";
+import { QuizCard } from "@/components/quiz/QuizCard";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -463,6 +464,17 @@ const LessonPlayer = () => {
                   {currentLesson.description}
                 </p>
               )}
+
+              {/* Quiz Section */}
+              <div className="mt-6">
+                <QuizCard 
+                  lessonId={currentLesson.id} 
+                  onComplete={() => {
+                    refetchXP();
+                    checkAchievements();
+                  }}
+                />
+              </div>
             </div>
 
             {/* Navigation Buttons */}

@@ -27,7 +27,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { LessonForm } from './LessonForm';
-import { Plus, Edit, Trash2, Loader2, Clock, GripVertical, Play } from 'lucide-react';
+import { QuizManager } from './QuizManager';
+import { Plus, Edit, Trash2, Loader2, Clock, GripVertical, Play, FileQuestion } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Lesson {
@@ -59,6 +60,8 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
   const [lessonFormOpen, setLessonFormOpen] = useState(false);
   const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
   const [deletingLesson, setDeletingLesson] = useState<Lesson | null>(null);
+  const [quizManagerOpen, setQuizManagerOpen] = useState(false);
+  const [quizLessonId, setQuizLessonId] = useState<string | null>(null);
 
   const fetchLessons = async () => {
     if (!course) return;
@@ -156,19 +159,20 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
                     <TableHead>Título</TableHead>
                     <TableHead className="w-24 text-center">Duração</TableHead>
                     <TableHead className="w-24 text-center">Status</TableHead>
+                    <TableHead className="w-24 text-center">Quiz</TableHead>
                     <TableHead className="w-24 text-center">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {loading ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-8">
+                      <TableCell colSpan={6} className="text-center py-8">
                         <Loader2 className="h-6 w-6 animate-spin mx-auto" />
                       </TableCell>
                     </TableRow>
                   ) : lessons.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                         Nenhuma aula cadastrada. Clique em "Nova Aula" para adicionar.
                       </TableCell>
                     </TableRow>
@@ -205,6 +209,19 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
                           ) : (
                             <Badge variant="outline">Premium</Badge>
                           )}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setQuizLessonId(lesson.id);
+                              setQuizManagerOpen(true);
+                            }}
+                            className="gap-1"
+                          >
+                            <FileQuestion className="h-4 w-4" />
+                          </Button>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center justify-center gap-1">
@@ -247,6 +264,18 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
         nextOrderIndex={lessons.length}
         onSuccess={fetchLessons}
       />
+
+      {/* Quiz Manager Dialog */}
+      <Dialog open={quizManagerOpen} onOpenChange={setQuizManagerOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          {quizLessonId && (
+            <QuizManager 
+              lessonId={quizLessonId} 
+              onClose={() => setQuizManagerOpen(false)} 
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
       <AlertDialog open={!!deletingLesson} onOpenChange={() => setDeletingLesson(null)}>
         <AlertDialogContent>

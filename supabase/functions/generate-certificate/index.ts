@@ -48,6 +48,40 @@ serve(async (req: Request): Promise<Response> => {
       throw new Error("Course not completed");
     }
 
+    // Check if user passed the final quiz with at least 70%
+    const { data: quizAttempts, error: quizError } = await supabaseClient
+      .from("user_quiz_attempts")
+      .select(`
+        score,
+        total_questions,
+        passed,
+        quizzes!inner (
+          course_id
+        )
+      `)
+      .eq("user_id", user.id)
+      .eq("quizzes.course_id", courseId)
+      .order("completed_at", { ascending: false })
+      .limit(1);
+
+    if (quizError) {
+      console.error("Quiz check error:", quizError);
+      throw new Error("Failed to check quiz status");
+    }
+
+    // Must have attempted the course quiz
+    if (!quizAttempts || quizAttempts.length === 0) {
+      throw new Error("Você precisa completar o quiz final do curso antes de receber o certificado");
+    }
+
+    // Calculate percentage and check if passed with 70%+
+    const latestAttempt = quizAttempts[0];
+    const percentage = Math.round((latestAttempt.score / latestAttempt.total_questions) * 100);
+    
+    if (percentage < 70) {
+      throw new Error(`Você precisa ter pelo menos 70% de acerto no quiz final para receber o certificado. Sua pontuação: ${percentage}%`);
+    }
+
     // Issue certificate using database function
     const { data: certificate, error: certError } = await supabaseClient
       .rpc("issue_certificate", {

@@ -16,7 +16,9 @@ interface UserRank {
   total_users: number;
 }
 
-export const useLeaderboard = (limit: number = 50) => {
+export type LeaderboardPeriod = 'all' | 'week' | 'month';
+
+export const useLeaderboard = (limit: number = 50, period: LeaderboardPeriod = 'all') => {
   const { user } = useAuth();
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [userRank, setUserRank] = useState<UserRank | null>(null);
@@ -29,7 +31,7 @@ export const useLeaderboard = (limit: number = 50) => {
       setError(null);
 
       const { data, error: fetchError } = await supabase
-        .rpc('get_leaderboard', { p_limit: limit });
+        .rpc('get_leaderboard', { p_limit: limit, p_period: period });
 
       if (fetchError) {
         console.error('Error fetching leaderboard:', fetchError);
@@ -44,7 +46,7 @@ export const useLeaderboard = (limit: number = 50) => {
     } finally {
       setLoading(false);
     }
-  }, [limit]);
+  }, [limit, period]);
 
   const fetchUserRank = useCallback(async () => {
     if (!user) {

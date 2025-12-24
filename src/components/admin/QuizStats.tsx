@@ -4,6 +4,9 @@ import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Meda
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+type PeriodFilter = 7 | 30 | 90;
 
 interface CourseQuizStat {
   courseId: string;
@@ -44,6 +47,7 @@ export const QuizStats = () => {
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [rankings, setRankings] = useState<QuizRanking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [periodFilter, setPeriodFilter] = useState<PeriodFilter>(30);
   const [overallStats, setOverallStats] = useState({
     totalAttempts: 0,
     totalPassed: 0,
@@ -85,16 +89,17 @@ export const QuizStats = () => {
           return;
         }
 
-        // Calculate daily stats for the chart (last 30 days)
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        // Calculate daily stats for the chart based on period filter
+        const periodDays = periodFilter;
+        const periodAgo = new Date();
+        periodAgo.setDate(periodAgo.getDate() - periodDays);
         
         const dailyMap = new Map<string, { attempts: number; passed: number; totalScore: number }>();
         
-        // Initialize last 30 days
-        for (let i = 0; i < 30; i++) {
+        // Initialize days based on period
+        for (let i = 0; i < periodDays; i++) {
           const date = new Date();
-          date.setDate(date.getDate() - (29 - i));
+          date.setDate(date.getDate() - (periodDays - 1 - i));
           const dateStr = date.toISOString().split('T')[0];
           dailyMap.set(dateStr, { attempts: 0, passed: 0, totalScore: 0 });
         }
@@ -236,7 +241,7 @@ export const QuizStats = () => {
     };
 
     fetchQuizStats();
-  }, []);
+  }, [periodFilter]);
 
   if (loading) {
     return (
@@ -285,10 +290,23 @@ export const QuizStats = () => {
 
       {/* Evolution Chart */}
       <div className="p-6 rounded-2xl bg-card/80 border border-border/50">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-primary" />
-          Evolução dos Últimos 30 Dias
-        </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-primary" />
+            Evolução dos Últimos {periodFilter} Dias
+          </h3>
+          <Tabs 
+            value={periodFilter.toString()} 
+            onValueChange={(value) => setPeriodFilter(Number(value) as PeriodFilter)}
+            className="w-auto"
+          >
+            <TabsList className="grid grid-cols-3 w-fit">
+              <TabsTrigger value="7" className="px-4">7 dias</TabsTrigger>
+              <TabsTrigger value="30" className="px-4">30 dias</TabsTrigger>
+              <TabsTrigger value="90" className="px-4">90 dias</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
 
         {dailyStats.length === 0 || dailyStats.every(d => d.attempts === 0) ? (
           <p className="text-muted-foreground text-center py-8">

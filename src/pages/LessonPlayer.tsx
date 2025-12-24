@@ -3,10 +3,12 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useConfetti } from "@/hooks/useConfetti";
 import { useUserXP } from "@/hooks/useUserXP";
+import { useAchievements } from "@/hooks/useAchievements";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import LessonList from "@/components/player/LessonList";
+import AchievementUnlocked from "@/components/AchievementUnlocked";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -53,7 +55,8 @@ const LessonPlayer = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
   const { fireLessonComplete, fireCourseComplete } = useConfetti();
-  const { addXP } = useUserXP();
+  const { addXP, refetch: refetchXP } = useUserXP();
+  const { checkAchievements, newAchievements, dismissAchievement } = useAchievements();
   const celebratedLessons = useRef<Set<string>>(new Set());
 
   const [course, setCourse] = useState<Course | null>(null);
@@ -62,6 +65,22 @@ const LessonPlayer = () => {
   const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
   const [loading, setLoading] = useState(true);
   const [showSidebar, setShowSidebar] = useState(true);
+  const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
+
+  // Show new achievements one by one
+  useEffect(() => {
+    if (newAchievements.length > 0 && !currentNewAchievement) {
+      setCurrentNewAchievement(newAchievements[0]);
+    }
+  }, [newAchievements, currentNewAchievement]);
+
+  const handleDismissNewAchievement = () => {
+    if (currentNewAchievement) {
+      dismissAchievement(currentNewAchievement.id);
+      setCurrentNewAchievement(null);
+      refetchXP();
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -191,6 +210,9 @@ const LessonPlayer = () => {
               await addXP(25, 'lesson');
               toast.success("🎉 Aula concluída! +25 XP Continue assim!");
             }
+
+            // Check for new achievements after XP is awarded
+            await checkAchievements();
           }
 
           await updateCourseProgress();
@@ -279,6 +301,12 @@ const LessonPlayer = () => {
   const isLastLesson = currentIndex === lessons.length - 1;
 
   return (
+    <>
+      {/* Achievement Unlocked Modal */}
+      <AchievementUnlocked 
+        achievement={currentNewAchievement} 
+        onClose={handleDismissNewAchievement} 
+      />
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
@@ -492,6 +520,7 @@ const LessonPlayer = () => {
         </aside>
       </div>
     </div>
+    </>
   );
 };
 

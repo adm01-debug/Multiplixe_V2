@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          gradient: string | null
+          icon: string
+          id: string
+          name: string
+          requirement_type: string
+          requirement_value: number
+          slug: string
+          xp_reward: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          gradient?: string | null
+          icon?: string
+          id?: string
+          name: string
+          requirement_type: string
+          requirement_value?: number
+          slug: string
+          xp_reward?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          gradient?: string | null
+          icon?: string
+          id?: string
+          name?: string
+          requirement_type?: string
+          requirement_value?: number
+          slug?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           color: string | null
@@ -182,6 +224,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          id: string
+          notified: boolean
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          id?: string
+          notified?: boolean
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          id?: string
+          notified?: boolean
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_course_progress: {
         Row: {
@@ -363,6 +437,22 @@ export type Database = {
           to: "user_xp"
           isOneToOne: true
           isSetofReturn: false
+        }
+      }
+      check_and_award_achievements: {
+        Args: { p_user_id: string }
+        Returns: {
+          achievement_id: string
+          id: string
+          notified: boolean
+          unlocked_at: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "user_achievements"
+          isOneToOne: false
+          isSetofReturn: true
         }
       }
       has_role: {

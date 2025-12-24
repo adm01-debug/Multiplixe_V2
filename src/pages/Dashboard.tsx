@@ -3,12 +3,15 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useLevelUp } from '@/hooks/useLevelUp';
+import { useAchievements } from '@/hooks/useAchievements';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import CourseCard from '@/components/catalog/CourseCard';
 import AchievementCelebration from '@/components/AchievementCelebration';
 import LevelUpCelebration from '@/components/LevelUpCelebration';
+import AchievementUnlocked from '@/components/AchievementUnlocked';
 import LevelProgress from '@/components/LevelProgress';
+import AchievementsGrid from '@/components/AchievementsGrid';
 import {
   GraduationCap, 
   BookOpen, 
@@ -65,12 +68,44 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading, signOut } = useAuth();
-  const { totalXP, loading: loadingXP } = useUserXP();
+  const { totalXP, loading: loadingXP, refetch: refetchXP } = useUserXP();
   const { levelUpData, clearLevelUp } = useLevelUp(totalXP);
+  const { 
+    achievements: allAchievements, 
+    newAchievements, 
+    dismissAchievement, 
+    checkAchievements, 
+    isUnlocked,
+    unlockedCount,
+    totalCount 
+  } = useAchievements();
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [currentAchievement, setCurrentAchievement] = useState<Achievement | null>(null);
+  const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
+
+  // Check achievements when XP or progress changes
+  useEffect(() => {
+    if (totalXP > 0) {
+      checkAchievements();
+    }
+  }, [totalXP, checkAchievements]);
+
+  // Show new achievements one by one
+  useEffect(() => {
+    if (newAchievements.length > 0 && !currentNewAchievement) {
+      setCurrentNewAchievement(newAchievements[0]);
+    }
+  }, [newAchievements, currentNewAchievement]);
+
+  const handleDismissNewAchievement = () => {
+    if (currentNewAchievement) {
+      dismissAchievement(currentNewAchievement.id);
+      setCurrentNewAchievement(null);
+      refetchXP(); // Refresh XP in case achievement gave XP reward
+    }
+  };
 
   // Check for achievement celebrations from URL params
   useEffect(() => {
@@ -234,12 +269,6 @@ const Dashboard = () => {
     }
   ];
 
-  const achievements = [
-    { icon: Medal, name: "Primeira Aula", unlocked: completedCount > 0 || inProgressCount > 0, gradient: "from-amber-500 to-yellow-500" },
-    { icon: Target, name: "Focado", unlocked: inProgressCount >= 2, gradient: "from-blue-500 to-cyan-500" },
-    { icon: Crown, name: "Mestre", unlocked: completedCount >= 3, gradient: "from-purple-500 to-pink-500" },
-    { icon: Rocket, name: "Veloz", unlocked: completedCount >= 5, gradient: "from-orange-500 to-red-500" },
-  ];
 
 
   return (
@@ -254,6 +283,12 @@ const Dashboard = () => {
       <LevelUpCelebration 
         levelUpData={levelUpData} 
         onClose={clearLevelUp} 
+      />
+
+      {/* New Achievement Unlocked Modal */}
+      <AchievementUnlocked 
+        achievement={currentNewAchievement} 
+        onClose={handleDismissNewAchievement} 
       />
 
       {/* Header */}
@@ -428,47 +463,15 @@ const Dashboard = () => {
               </div>
               <div>
                 <h3 className="text-2xl font-display font-bold text-foreground">Conquistas</h3>
-                <p className="text-sm text-muted-foreground">Seus badges e troféus</p>
+                <p className="text-sm text-muted-foreground">{unlockedCount} de {totalCount} desbloqueadas</p>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {achievements.map((achievement, index) => {
-              const IconComponent = achievement.icon;
-              return (
-                <div
-                  key={achievement.name}
-                  className={`group relative p-6 rounded-2xl border transition-all duration-300 neon-card ${
-                    achievement.unlocked 
-                      ? 'bg-card/80 border-border/50 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-[0_0_30px_hsl(270_100%_70%/0.3)]' 
-                      : 'bg-muted/30 border-border/30 opacity-50'
-                  }`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`relative w-16 h-16 rounded-2xl flex items-center justify-center mb-4 ${
-                      achievement.unlocked 
-                        ? `bg-gradient-to-br ${achievement.gradient} shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 dark:shadow-[0_0_25px_currentColor]` 
-                        : 'bg-muted'
-                    }`}>
-                      <IconComponent className={`h-8 w-8 ${achievement.unlocked ? 'text-white' : 'text-muted-foreground'}`} />
-                      {achievement.unlocked && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center dark:shadow-[0_0_15px_hsl(150_100%_45%/0.8)]">
-                          <Sparkles className="w-3 h-3 text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <p className={`font-semibold ${achievement.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
-                      {achievement.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {achievement.unlocked ? 'Desbloqueado!' : 'Bloqueado'}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <AchievementsGrid 
+            achievements={allAchievements} 
+            isUnlocked={isUnlocked} 
+          />
         </section>
 
         {/* Continue Learning Section */}

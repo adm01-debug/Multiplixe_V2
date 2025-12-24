@@ -365,6 +365,7 @@ export type Database = {
       }
       quizzes: {
         Row: {
+          cooldown_hours: number
           course_id: string | null
           created_at: string
           description: string | null
@@ -377,6 +378,7 @@ export type Database = {
           xp_reward: number
         }
         Insert: {
+          cooldown_hours?: number
           course_id?: string | null
           created_at?: string
           description?: string | null
@@ -389,6 +391,7 @@ export type Database = {
           xp_reward?: number
         }
         Update: {
+          cooldown_hours?: number
           course_id?: string | null
           created_at?: string
           description?: string | null

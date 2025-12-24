@@ -32,6 +32,7 @@ interface Quiz {
   passing_score: number;
   xp_reward: number;
   time_limit_seconds: number | null;
+  cooldown_hours: number;
   questions: QuizQuestion[];
 }
 
@@ -45,9 +46,10 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
   const [quiz, setQuiz] = useState<Quiz>({
     title: 'Quiz da aula',
     description: '',
-    passing_score: 70,
+    passing_score: 90,
     xp_reward: 50,
     time_limit_seconds: null,
+    cooldown_hours: 24,
     questions: []
   });
   const [loading, setLoading] = useState(false);
@@ -91,6 +93,7 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
           passing_score: data.passing_score,
           xp_reward: data.xp_reward,
           time_limit_seconds: data.time_limit_seconds,
+          cooldown_hours: data.cooldown_hours || 24,
           questions: data.quiz_questions
             .sort((a: any, b: any) => a.order_index - b.order_index)
             .map((q: any) => ({
@@ -234,7 +237,8 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
           description: quiz.description || null,
           passing_score: quiz.passing_score,
           xp_reward: quiz.xp_reward,
-          time_limit_seconds: quiz.time_limit_seconds
+          time_limit_seconds: quiz.time_limit_seconds,
+          cooldown_hours: quiz.cooldown_hours
         })
         .select()
         .single();
@@ -344,7 +348,19 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
             min="0"
             max="100"
             value={quiz.passing_score}
-            onChange={(e) => setQuiz(prev => ({ ...prev, passing_score: parseInt(e.target.value) || 70 }))}
+            onChange={(e) => setQuiz(prev => ({ ...prev, passing_score: parseInt(e.target.value) || 90 }))}
+          />
+        </div>
+        <div>
+          <Label htmlFor="cooldown">Cooldown entre tentativas (horas)</Label>
+          <Input
+            id="cooldown"
+            type="number"
+            min="0"
+            max="720"
+            value={quiz.cooldown_hours}
+            onChange={(e) => setQuiz(prev => ({ ...prev, cooldown_hours: parseInt(e.target.value) || 0 }))}
+            placeholder="24"
           />
         </div>
         <div>

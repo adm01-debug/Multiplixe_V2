@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import LevelProgress from '@/components/LevelProgress';
 import AchievementsGrid from '@/components/AchievementsGrid';
+import XPEvolutionChart from '@/components/XPEvolutionChart';
 import { calculateUserLevel } from '@/lib/levelSystem';
 import {
   GraduationCap,
@@ -328,6 +329,11 @@ const Profile = () => {
               );
             })}
           </div>
+        </section>
+
+        {/* XP Evolution Chart */}
+        <section className="mb-12">
+          <XPEvolutionChart />
         </section>
 
         {/* Statistics */}

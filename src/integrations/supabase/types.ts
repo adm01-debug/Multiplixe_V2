@@ -481,6 +481,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_xp_history: {
+        Row: {
+          created_at: string
+          id: string
+          source: string
+          total_xp_after: number
+          user_id: string
+          xp_amount: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          source?: string
+          total_xp_after: number
+          user_id: string
+          xp_amount: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          source?: string
+          total_xp_after?: number
+          user_id?: string
+          xp_amount?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -551,6 +578,14 @@ export type Database = {
         Returns: {
           rank: number
           total_users: number
+        }[]
+      }
+      get_xp_history: {
+        Args: { p_days?: number; p_user_id: string }
+        Returns: {
+          cumulative_xp: number
+          daily_xp: number
+          date: string
         }[]
       }
       has_role: {

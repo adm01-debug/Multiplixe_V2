@@ -28,6 +28,7 @@ interface Quiz {
   passing_score: number;
   xp_reward: number;
   time_limit_seconds: number | null;
+  cooldown_hours: number;
   quiz_questions: QuizQuestion[];
 }
 

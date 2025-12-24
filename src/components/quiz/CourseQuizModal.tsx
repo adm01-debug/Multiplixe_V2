@@ -22,7 +22,7 @@ interface QuizAttemptHistory {
   completed_at: string;
 }
 
-const COOLDOWN_HOURS = 24;
+const DEFAULT_COOLDOWN_HOURS = 24;
 
 export const CourseQuizModal = ({ 
   isOpen, 
@@ -76,19 +76,24 @@ export const CourseQuizModal = ({
           
           // Check cooldown (only if not passed)
           if (!attempts.some(a => a.passed)) {
-            const lastAttempt = new Date(attempts[0].completed_at);
-            const now = new Date();
-            const hoursSinceLastAttempt = (now.getTime() - lastAttempt.getTime()) / (1000 * 60 * 60);
+            const cooldownHours = quizData.cooldown_hours ?? DEFAULT_COOLDOWN_HOURS;
             
-            if (hoursSinceLastAttempt < COOLDOWN_HOURS) {
-              setIsOnCooldown(true);
-              const remainingHours = Math.floor(COOLDOWN_HOURS - hoursSinceLastAttempt);
-              const remainingMinutes = Math.floor(((COOLDOWN_HOURS - hoursSinceLastAttempt) % 1) * 60);
+            // If cooldown is 0, no cooldown is applied
+            if (cooldownHours > 0) {
+              const lastAttempt = new Date(attempts[0].completed_at);
+              const now = new Date();
+              const hoursSinceLastAttempt = (now.getTime() - lastAttempt.getTime()) / (1000 * 60 * 60);
               
-              if (remainingHours > 0) {
-                setCooldownRemaining(`${remainingHours}h ${remainingMinutes}min`);
-              } else {
-                setCooldownRemaining(`${remainingMinutes} minutos`);
+              if (hoursSinceLastAttempt < cooldownHours) {
+                setIsOnCooldown(true);
+                const remainingHours = Math.floor(cooldownHours - hoursSinceLastAttempt);
+                const remainingMinutes = Math.floor(((cooldownHours - hoursSinceLastAttempt) % 1) * 60);
+                
+                if (remainingHours > 0) {
+                  setCooldownRemaining(`${remainingHours}h ${remainingMinutes}min`);
+                } else {
+                  setCooldownRemaining(`${remainingMinutes} minutos`);
+                }
               }
             }
           }

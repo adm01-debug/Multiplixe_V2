@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock, Activity, Award, Zap } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -593,6 +593,132 @@ export const QuizStats = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      </div>
+
+      {/* Summary Dashboard */}
+      <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Activity className="h-5 w-5 text-primary" />
+          Resumo Geral de Quizzes
+        </h3>
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {/* Total Quizzes */}
+          <div className="p-4 rounded-xl bg-card/80 border border-border/50 text-center">
+            <div className="flex items-center justify-center mb-2">
+              <div className="p-2 rounded-full bg-blue-500/10">
+                <Target className="h-5 w-5 text-blue-500" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold">{stats.length}</p>
+            <p className="text-xs text-muted-foreground">Total de Quizzes</p>
+          </div>
+
+          {/* Total Attempts */}
+          <div className="p-4 rounded-xl bg-card/80 border border-border/50 text-center">
+            <div className="flex items-center justify-center mb-2">
+              <div className="p-2 rounded-full bg-purple-500/10">
+                <Users className="h-5 w-5 text-purple-500" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold">{overallStats.totalAttempts}</p>
+            <p className="text-xs text-muted-foreground">Tentativas</p>
+          </div>
+
+          {/* Passed */}
+          <div className="p-4 rounded-xl bg-card/80 border border-border/50 text-center">
+            <div className="flex items-center justify-center mb-2">
+              <div className="p-2 rounded-full bg-green-500/10">
+                <CheckCircle className="h-5 w-5 text-green-500" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-green-500">{overallStats.totalPassed}</p>
+            <p className="text-xs text-muted-foreground">Aprovações</p>
+          </div>
+
+          {/* Passing Rate */}
+          <div className="p-4 rounded-xl bg-card/80 border border-border/50 text-center">
+            <div className="flex items-center justify-center mb-2">
+              <div className="p-2 rounded-full bg-amber-500/10">
+                <TrendingUp className="h-5 w-5 text-amber-500" />
+              </div>
+            </div>
+            <p className={`text-2xl font-bold ${
+              overallStats.overallPassingRate >= 70 ? 'text-green-500' : 
+              overallStats.overallPassingRate >= 50 ? 'text-amber-500' : 'text-destructive'
+            }`}>{overallStats.overallPassingRate}%</p>
+            <p className="text-xs text-muted-foreground">Taxa Aprovação</p>
+          </div>
+
+          {/* Average Score */}
+          <div className="p-4 rounded-xl bg-card/80 border border-border/50 text-center">
+            <div className="flex items-center justify-center mb-2">
+              <div className="p-2 rounded-full bg-primary/10">
+                <Award className="h-5 w-5 text-primary" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold">{overallStats.averageScore}%</p>
+            <p className="text-xs text-muted-foreground">Média Geral</p>
+          </div>
+
+          {/* Low Performance Quizzes */}
+          <div className="p-4 rounded-xl bg-card/80 border border-border/50 text-center">
+            <div className="flex items-center justify-center mb-2">
+              <div className="p-2 rounded-full bg-destructive/10">
+                <AlertTriangle className="h-5 w-5 text-destructive" />
+              </div>
+            </div>
+            <p className={`text-2xl font-bold ${
+              stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length > 0 
+                ? 'text-destructive' 
+                : 'text-green-500'
+            }`}>
+              {stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length}
+            </p>
+            <p className="text-xs text-muted-foreground">Baixo Desempenho</p>
+          </div>
+        </div>
+
+        {/* Quick Stats Bar */}
+        <div className="mt-4 p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <Zap className="h-4 w-4 text-amber-500" />
+                <span className="text-sm">
+                  <span className="font-medium">Quiz mais tentado:</span>{' '}
+                  <span className="text-muted-foreground">
+                    {stats.length > 0 
+                      ? stats.reduce((a, b) => a.totalAttempts > b.totalAttempts ? a : b).quizTitle
+                      : 'N/A'
+                    }
+                  </span>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="h-4 w-4 text-green-500" />
+                <span className="text-sm">
+                  <span className="font-medium">Melhor taxa:</span>{' '}
+                  <span className="text-muted-foreground">
+                    {stats.filter(s => s.totalAttempts >= 5).length > 0 
+                      ? `${stats.filter(s => s.totalAttempts >= 5).reduce((a, b) => a.passingRate > b.passingRate ? a : b).quizTitle} (${stats.filter(s => s.totalAttempts >= 5).reduce((a, b) => a.passingRate > b.passingRate ? a : b).passingRate}%)`
+                      : 'N/A'
+                    }
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Usuários únicos:</span>
+              <span className="font-medium text-foreground">
+                {new Set(stats.flatMap(s => s.uniqueUsers)).size > 0 
+                  ? stats.reduce((sum, s) => sum + s.uniqueUsers, 0)
+                  : 0
+                }
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Low Performance Alerts */}

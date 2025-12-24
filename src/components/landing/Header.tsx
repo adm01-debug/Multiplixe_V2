@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, GraduationCap, Sparkles } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,6 +52,7 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <Link to="/auth">
               <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5">
                 <Sparkles className="w-4 h-4 mr-2" />
@@ -83,7 +85,11 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
-              <div className="pt-4 mt-2 border-t border-border/50">
+              <div className="flex items-center justify-between pt-4 mt-2 border-t border-border/50">
+                <span className="text-sm text-muted-foreground px-4">Tema</span>
+                <ThemeToggle />
+              </div>
+              <div className="pt-4">
                 <Link to="/auth">
                   <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold h-12">
                     <Sparkles className="w-4 h-4 mr-2" />

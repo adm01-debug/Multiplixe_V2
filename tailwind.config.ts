@@ -20,8 +20,8 @@ export default {
     extend: {
       /* === TIPOGRAFIA === */
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+        sans: ["Outfit", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "system-ui", "sans-serif"],
       },
       fontSize: {
         "2xs": ["0.625rem", { lineHeight: "0.875rem" }],
@@ -112,6 +112,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
+        "3xl": "1.5rem",
+        "4xl": "2rem",
       },
 
       /* === SOMBRAS === */
@@ -121,6 +123,8 @@ export default {
         lg: "var(--shadow-lg)",
         xl: "var(--shadow-xl)",
         glow: "var(--shadow-glow)",
+        "glow-pink": "var(--shadow-glow-pink)",
+        card: "var(--shadow-card)",
       },
 
       /* === ANIMAÇÕES === */
@@ -177,6 +181,18 @@ export default {
           "0%": { transform: "translateY(0) rotate(0deg)", opacity: "1" },
           "100%": { transform: "translateY(100vh) rotate(720deg)", opacity: "0" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        "gradient-x": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -192,6 +208,9 @@ export default {
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         bounce: "bounce 1s infinite",
         confetti: "confetti 3s ease-out forwards",
+        float: "float 6s ease-in-out infinite",
+        "gradient-x": "gradient-x 3s ease infinite",
+        shimmer: "shimmer 2s infinite",
       },
 
       /* === SPACING EXTRAS === */
@@ -214,6 +233,8 @@ export default {
       /* === BACKDROP BLUR === */
       backdropBlur: {
         xs: "2px",
+        "2xl": "40px",
+        "3xl": "64px",
       },
 
       /* === TRANSITION === */

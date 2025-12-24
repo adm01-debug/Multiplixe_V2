@@ -12,7 +12,7 @@ interface CourseQuizModalProps {
   onClose: () => void;
   courseId: string;
   courseTitle: string;
-  onQuizPassed: () => void;
+  onQuizPassed?: () => void;
 }
 
 export const CourseQuizModal = ({ 

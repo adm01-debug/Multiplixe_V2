@@ -5,7 +5,7 @@ import { QuizPlayer } from './QuizPlayer';
 import { useQuizzes } from '@/hooks/useQuizzes';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { GraduationCap, Trophy, Target, Sparkles, Loader2, Award, AlertCircle } from 'lucide-react';
+import { GraduationCap, Trophy, Target, Sparkles, Loader2, Award, AlertCircle, Clock } from 'lucide-react';
 
 interface CourseQuizModalProps {
   isOpen: boolean;
@@ -14,6 +14,8 @@ interface CourseQuizModalProps {
   courseTitle: string;
   onQuizPassed?: (score: number) => void;
 }
+
+const COOLDOWN_HOURS = 24;
 
 export const CourseQuizModal = ({ 
   isOpen, 
@@ -29,30 +31,55 @@ export const CourseQuizModal = ({
   const [showQuiz, setShowQuiz] = useState(false);
   const [hasPassedQuiz, setHasPassedQuiz] = useState(false);
   const [bestScore, setBestScore] = useState<number | null>(null);
+  const [cooldownRemaining, setCooldownRemaining] = useState<string | null>(null);
+  const [isOnCooldown, setIsOnCooldown] = useState(false);
 
   useEffect(() => {
     const loadQuiz = async () => {
       if (!isOpen || !courseId || !user) return;
       
       setLoadingQuiz(true);
+      setCooldownRemaining(null);
+      setIsOnCooldown(false);
       
       // Fetch course quiz
       const quizData = await fetchQuizForCourse(courseId);
       setQuiz(quizData);
       
-      // Check if user already passed the quiz
+      // Check if user already passed the quiz and cooldown status
       if (quizData) {
         const { data: attempts } = await supabase
           .from('user_quiz_attempts')
-          .select('score, total_questions, passed')
+          .select('score, passed, completed_at')
           .eq('user_id', user.id)
           .eq('quiz_id', quizData.id)
-          .order('score', { ascending: false });
+          .order('completed_at', { ascending: false });
         
         if (attempts && attempts.length > 0) {
-          const best = Math.round((attempts[0].score / attempts[0].total_questions) * 100);
+          // Get best score
+          const scores = attempts.map(a => a.score);
+          const best = Math.max(...scores);
           setBestScore(best);
           setHasPassedQuiz(attempts.some(a => a.passed));
+          
+          // Check cooldown (only if not passed)
+          if (!attempts.some(a => a.passed)) {
+            const lastAttempt = new Date(attempts[0].completed_at);
+            const now = new Date();
+            const hoursSinceLastAttempt = (now.getTime() - lastAttempt.getTime()) / (1000 * 60 * 60);
+            
+            if (hoursSinceLastAttempt < COOLDOWN_HOURS) {
+              setIsOnCooldown(true);
+              const remainingHours = Math.floor(COOLDOWN_HOURS - hoursSinceLastAttempt);
+              const remainingMinutes = Math.floor(((COOLDOWN_HOURS - hoursSinceLastAttempt) % 1) * 60);
+              
+              if (remainingHours > 0) {
+                setCooldownRemaining(`${remainingHours}h ${remainingMinutes}min`);
+              } else {
+                setCooldownRemaining(`${remainingMinutes} minutos`);
+              }
+            }
+          }
         }
       }
       
@@ -174,6 +201,18 @@ export const CourseQuizModal = ({
                   </div>
                 </div>
               )}
+
+              {isOnCooldown && !hasPassedQuiz && (
+                <div className="flex items-center gap-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                  <Clock className="h-5 w-5 text-blue-500 shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-sm text-blue-600">Aguarde para tentar novamente</p>
+                    <p className="text-muted-foreground text-sm">
+                      Você poderá fazer outra tentativa em {cooldownRemaining}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3">
@@ -186,9 +225,13 @@ export const CourseQuizModal = ({
                   Ver Certificado
                 </Button>
               ) : (
-                <Button onClick={() => setShowQuiz(true)} className="flex-1 btn-gradient">
+                <Button 
+                  onClick={() => setShowQuiz(true)} 
+                  className="flex-1 btn-gradient"
+                  disabled={isOnCooldown}
+                >
                   <Target className="w-4 h-4 mr-2" />
-                  Iniciar Quiz
+                  {isOnCooldown ? 'Em cooldown' : 'Iniciar Quiz'}
                 </Button>
               )}
             </div>

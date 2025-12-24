@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, BookOpen, User } from "lucide-react";
+import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 
 interface CourseCardProps {
   id: string;
@@ -25,10 +24,10 @@ const levelLabels: Record<string, string> = {
   avancado: "Avançado",
 };
 
-const levelColors: Record<string, string> = {
-  iniciante: "bg-green-500/10 text-green-600",
-  intermediario: "bg-yellow-500/10 text-yellow-600",
-  avancado: "bg-red-500/10 text-red-600",
+const levelConfig: Record<string, { bg: string; text: string; icon: string }> = {
+  iniciante: { bg: "bg-emerald-500/15", text: "text-emerald-600 dark:text-emerald-400", icon: "🌱" },
+  intermediario: { bg: "bg-amber-500/15", text: "text-amber-600 dark:text-amber-400", icon: "🚀" },
+  avancado: { bg: "bg-rose-500/15", text: "text-rose-600 dark:text-rose-400", icon: "⚡" },
 };
 
 const CourseCard = ({
@@ -50,16 +49,36 @@ const CourseCard = ({
     ? `${hours}h ${minutes > 0 ? `${minutes}min` : ''}`
     : `${minutes}min`;
 
+  const levelStyle = levelConfig[level] || levelConfig.iniciante;
+
   return (
-    <Link to={`/curso/${slug}`}>
-      <Card className="group h-full border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden">
-        {/* Thumbnail */}
-        <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
+    <Link to={`/curso/${slug}`} className="group block">
+      <div className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-card hover:border-primary/30">
+        {/* Gradient Background */}
+        <div className="aspect-[16/10] relative overflow-hidden">
+          {/* Animated Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10" />
+          
+          {/* Mesh Pattern */}
+          <div className="absolute inset-0 opacity-30">
+            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <pattern id={`grid-${slug}`} width="10" height="10" patternUnits="userSpaceOnUse">
+                  <circle cx="1" cy="1" r="0.5" fill="currentColor" className="text-primary/20" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill={`url(#grid-${slug})`} />
+            </svg>
+          </div>
+
+          {/* Decorative Elements */}
+          <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-2xl group-hover:scale-150 transition-transform duration-700" />
+          <div className="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-gradient-to-br from-accent/30 to-primary/20 blur-xl group-hover:scale-150 transition-transform duration-700" />
           
           {/* Featured badge */}
           {isFeatured && (
-            <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
+            <Badge className="absolute top-4 left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg gap-1.5 font-semibold">
+              <Sparkles className="h-3.5 w-3.5" />
               Destaque
             </Badge>
           )}
@@ -67,69 +86,85 @@ const CourseCard = ({
           {/* Category badge */}
           {categoryName && (
             <Badge 
-              className="absolute top-3 right-3"
-              style={{ backgroundColor: categoryColor ? `${categoryColor}20` : undefined, color: categoryColor }}
+              className="absolute top-4 right-4 border-0 shadow-md font-medium backdrop-blur-sm"
+              style={{ 
+                backgroundColor: categoryColor ? `${categoryColor}25` : 'hsl(var(--muted))', 
+                color: categoryColor || 'hsl(var(--muted-foreground))'
+              }}
             >
               {categoryName}
             </Badge>
           )}
 
+          {/* Play Button Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+            <div className="w-16 h-16 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center shadow-xl transform scale-75 group-hover:scale-100 transition-transform duration-300">
+              <Play className="h-6 w-6 text-primary ml-1" />
+            </div>
+          </div>
+
           {/* Progress bar overlay */}
           {progress !== undefined && progress > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-muted">
-              <div 
-                className="h-full bg-primary transition-all"
-                style={{ width: `${progress}%` }}
-              />
+            <div className="absolute bottom-0 left-0 right-0">
+              <div className="h-1.5 bg-muted/50 backdrop-blur-sm">
+                <div 
+                  className="h-full bg-gradient-to-r from-primary to-secondary rounded-r-full progress-animated"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
           )}
         </div>
 
-        <CardHeader className="pb-2">
-          <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-            {title}
-          </h3>
-        </CardHeader>
-
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {description}
-          </p>
-
-          {/* Meta info */}
-          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5" />
-              <span>{durationText}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <BookOpen className="h-3.5 w-3.5" />
-              <span>{totalLessons} aulas</span>
-            </div>
-            <Badge variant="secondary" className={levelColors[level]}>
-              {levelLabels[level]}
-            </Badge>
+        {/* Content */}
+        <div className="p-5 space-y-4">
+          <div>
+            <h3 className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
+              {title}
+            </h3>
+            <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+              {description}
+            </p>
           </div>
 
-          {/* Instructor */}
-          {instructorName && (
-            <div className="flex items-center gap-2 pt-2 border-t border-border/50">
-              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="h-3 w-3 text-primary" />
-              </div>
-              <span className="text-sm text-muted-foreground">{instructorName}</span>
+          {/* Meta info */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/50 px-2.5 py-1.5 rounded-full">
+              <Clock className="h-3.5 w-3.5" />
+              <span className="font-medium">{durationText}</span>
             </div>
-          )}
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/50 px-2.5 py-1.5 rounded-full">
+              <BookOpen className="h-3.5 w-3.5" />
+              <span className="font-medium">{totalLessons} aulas</span>
+            </div>
+            <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full ${levelStyle.bg} ${levelStyle.text}`}>
+              <span>{levelStyle.icon}</span>
+              <span className="font-medium">{levelLabels[level]}</span>
+            </div>
+          </div>
 
-          {/* Progress indicator */}
-          {progress !== undefined && progress > 0 && (
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Progresso</span>
-              <span className="font-medium text-primary">{progress}%</span>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+          {/* Footer */}
+          <div className="flex items-center justify-between pt-3 border-t border-border/50">
+            {/* Instructor */}
+            {instructorName && (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <User className="h-4 w-4 text-primary" />
+                </div>
+                <span className="text-sm text-muted-foreground font-medium">{instructorName}</span>
+              </div>
+            )}
+
+            {/* Progress indicator */}
+            {progress !== undefined && progress > 0 && (
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-primary" />
+                <span className="text-sm font-bold text-primary">{progress}%</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </Link>
   );
 };

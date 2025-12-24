@@ -4,7 +4,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLeaderboard, LeaderboardPeriod } from '@/hooks/useLeaderboard';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ArrowLeft, Trophy, Medal, Crown, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity } from 'lucide-react';
+import RankBadge from '@/components/RankBadge';
+import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity } from 'lucide-react';
 import { calculateUserLevel } from '@/lib/levelSystem';
 
 const periodOptions: { value: LeaderboardPeriod; label: string; icon: typeof Calendar }[] = [
@@ -18,19 +19,6 @@ const Leaderboard = () => {
   const { user } = useAuth();
   const [period, setPeriod] = useState<LeaderboardPeriod>('all');
   const { leaderboard, userRank, loading } = useLeaderboard(50, period);
-
-  const getRankIcon = (rank: number) => {
-    switch (rank) {
-      case 1:
-        return <Crown className="h-6 w-6 text-yellow-400" />;
-      case 2:
-        return <Medal className="h-6 w-6 text-gray-300" />;
-      case 3:
-        return <Medal className="h-6 w-6 text-amber-600" />;
-      default:
-        return <span className="text-muted-foreground font-bold">#{rank}</span>;
-    }
-  };
 
   const getRankBgClass = (rank: number) => {
     switch (rank) {
@@ -166,9 +154,9 @@ const Leaderboard = () => {
                       hover:scale-[1.01]
                     `}
                   >
-                    {/* Rank */}
-                    <div className="w-12 flex items-center justify-center">
-                      {getRankIcon(entry.rank)}
+                    {/* Rank Badge */}
+                    <div className="w-14 flex items-center justify-center">
+                      <RankBadge rank={entry.rank} size={entry.rank <= 3 ? 'md' : 'sm'} />
                     </div>
 
                     {/* Avatar */}

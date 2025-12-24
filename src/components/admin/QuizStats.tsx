@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock, Activity, Award, Zap, PieChart as PieChartIcon } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle, History, CheckCircle2, Clock, Activity, Award, Zap, PieChart as PieChartIcon, FolderOpen } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell, PieChart, Pie } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -18,6 +18,12 @@ interface QuizOption {
   id: string;
   title: string;
   courseTitle: string;
+  categoryId: string | null;
+}
+
+interface CategoryOption {
+  id: string;
+  name: string;
 }
 
 interface CourseQuizStat {
@@ -79,7 +85,9 @@ export const QuizStats = () => {
   const [loading, setLoading] = useState(true);
   const [periodFilter, setPeriodFilter] = useState<PeriodFilter>(30);
   const [selectedQuizId, setSelectedQuizId] = useState<string>('all');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('all');
   const [quizOptions, setQuizOptions] = useState<QuizOption[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [overallStats, setOverallStats] = useState({
     totalAttempts: 0,
     totalPassed: 0,
@@ -91,7 +99,17 @@ export const QuizStats = () => {
     const fetchQuizStats = async () => {
       setLoading(true);
       try {
-        // Fetch all quizzes with course info
+        // Fetch categories for filter
+        const { data: categories } = await supabase
+          .from('categories')
+          .select('id, name')
+          .order('name');
+
+        if (categories) {
+          setCategoryOptions(categories);
+        }
+
+        // Fetch all quizzes with course info including category
         const { data: quizzes } = await supabase
           .from('quizzes')
           .select(`
@@ -100,7 +118,8 @@ export const QuizStats = () => {
             course_id,
             courses (
               id,
-              title
+              title,
+              category_id
             )
           `)
           .not('course_id', 'is', null);
@@ -116,7 +135,8 @@ export const QuizStats = () => {
           .map(q => ({
             id: q.id,
             title: q.title,
-            courseTitle: (q.courses as any)?.title || 'Curso desconhecido'
+            courseTitle: (q.courses as any)?.title || 'Curso desconhecido',
+            categoryId: (q.courses as any)?.category_id || null
           }));
         setQuizOptions(options);
 
@@ -131,10 +151,19 @@ export const QuizStats = () => {
           return;
         }
 
-        // Filter attempts based on selected quiz
-        const filteredAttempts = selectedQuizId === 'all' 
-          ? attempts 
-          : attempts.filter(a => a.quiz_id === selectedQuizId);
+        // Get quiz IDs that match category filter
+        const quizIdsInCategory = selectedCategoryId === 'all'
+          ? quizzes.map(q => q.id)
+          : quizzes
+              .filter(q => (q.courses as any)?.category_id === selectedCategoryId)
+              .map(q => q.id);
+
+        // Filter attempts based on selected quiz and category
+        const filteredAttempts = attempts.filter(a => {
+          const matchesQuiz = selectedQuizId === 'all' || a.quiz_id === selectedQuizId;
+          const matchesCategory = quizIdsInCategory.includes(a.quiz_id);
+          return matchesQuiz && matchesCategory;
+        });
 
         // Calculate daily stats for the chart based on period filter
         const periodDays = periodFilter;
@@ -186,10 +215,13 @@ export const QuizStats = () => {
           (profiles || []).map(p => [p.user_id, { name: p.full_name, avatar: p.avatar_url }])
         );
 
-        // Filter quizzes based on selection
-        const filteredQuizzes = selectedQuizId === 'all' 
-          ? quizzes.filter(q => q.courses)
-          : quizzes.filter(q => q.id === selectedQuizId && q.courses);
+        // Filter quizzes based on selection and category
+        const filteredQuizzes = quizzes.filter(q => {
+          if (!q.courses) return false;
+          const matchesQuiz = selectedQuizId === 'all' || q.id === selectedQuizId;
+          const matchesCategory = selectedCategoryId === 'all' || (q.courses as any)?.category_id === selectedCategoryId;
+          return matchesQuiz && matchesCategory;
+        });
 
         // Calculate stats per course quiz
         const courseStats: CourseQuizStat[] = filteredQuizzes
@@ -291,7 +323,7 @@ export const QuizStats = () => {
     };
 
     fetchQuizStats();
-  }, [periodFilter, selectedQuizId]);
+  }, [periodFilter, selectedQuizId, selectedCategoryId]);
 
   // Fetch alert history
   useEffect(() => {
@@ -558,22 +590,50 @@ export const QuizStats = () => {
   return (
     <div className="space-y-6">
       {/* Filters and Export */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Filtrar por Quiz:</span>
-          <Select value={selectedQuizId} onValueChange={setSelectedQuizId}>
-            <SelectTrigger className="w-[280px]">
-              <SelectValue placeholder="Todos os quizzes" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os quizzes</SelectItem>
-              {quizOptions.map((quiz) => (
-                <SelectItem key={quiz.id} value={quiz.id}>
-                  {quiz.title} - {quiz.courseTitle}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          {/* Category Filter */}
+          <div className="flex items-center gap-2">
+            <FolderOpen className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Categoria:</span>
+            <Select value={selectedCategoryId} onValueChange={(value) => {
+              setSelectedCategoryId(value);
+              setSelectedQuizId('all'); // Reset quiz filter when category changes
+            }}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Todas as categorias" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas as categorias</SelectItem>
+                {categoryOptions.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Quiz Filter */}
+          <div className="flex items-center gap-2">
+            <Target className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Quiz:</span>
+            <Select value={selectedQuizId} onValueChange={setSelectedQuizId}>
+              <SelectTrigger className="w-[280px]">
+                <SelectValue placeholder="Todos os quizzes" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os quizzes</SelectItem>
+                {quizOptions
+                  .filter(quiz => selectedCategoryId === 'all' || quiz.categoryId === selectedCategoryId)
+                  .map((quiz) => (
+                    <SelectItem key={quiz.id} value={quiz.id}>
+                      {quiz.title} - {quiz.courseTitle}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

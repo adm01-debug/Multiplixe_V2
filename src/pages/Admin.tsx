@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { CourseForm } from '@/components/admin/CourseForm';
 import { LessonsManager } from '@/components/admin/LessonsManager';
+import { QuizStats } from '@/components/admin/QuizStats';
 import {
   GraduationCap,
   ArrowLeft,
@@ -48,6 +49,7 @@ import {
   Play,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Target } from 'lucide-react';
 
 interface Course {
   id: string;
@@ -332,7 +334,7 @@ const Admin = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsList className="grid w-full max-w-lg grid-cols-4">
             <TabsTrigger value="courses" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               Cursos
@@ -340,6 +342,10 @@ const Admin = () => {
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Usuários
+            </TabsTrigger>
+            <TabsTrigger value="quizzes" className="flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              Quizzes
             </TabsTrigger>
             <TabsTrigger value="stats" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
@@ -547,6 +553,11 @@ const Admin = () => {
                 </TableBody>
               </Table>
             </div>
+          </TabsContent>
+
+          {/* Quizzes Tab */}
+          <TabsContent value="quizzes">
+            <QuizStats />
           </TabsContent>
 
           {/* Stats Tab */}

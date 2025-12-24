@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { toast } from 'sonner';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 type PeriodFilter = 7 | 30 | 90;
 
@@ -251,8 +256,164 @@ export const QuizStats = () => {
     );
   }
 
+  const exportToCSV = () => {
+    try {
+      // Header
+      const headers = ['Curso', 'Quiz', 'Tentativas', 'Aprovações', 'Reprovações', 'Usuários Únicos', 'Média (%)', 'Taxa Aprovação (%)'];
+      
+      // Data rows
+      const rows = stats.map(stat => [
+        stat.courseTitle,
+        stat.quizTitle,
+        stat.totalAttempts,
+        stat.passedAttempts,
+        stat.totalAttempts - stat.passedAttempts,
+        stat.uniqueUsers,
+        stat.averageScore,
+        stat.passingRate
+      ]);
+      
+      // Add overall stats at the end
+      rows.push([]);
+      rows.push(['RESUMO GERAL', '', overallStats.totalAttempts, overallStats.totalPassed, overallStats.totalAttempts - overallStats.totalPassed, '', overallStats.averageScore, overallStats.overallPassingRate]);
+      
+      // Convert to CSV string
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.join(','))
+      ].join('\n');
+      
+      // Create and download file
+      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `estatisticas-quizzes-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast.success('CSV exportado com sucesso!');
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+      toast.error('Erro ao exportar CSV');
+    }
+  };
+
+  const exportToPDF = () => {
+    try {
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      
+      // Title
+      doc.setFontSize(18);
+      doc.text('Estatísticas de Quizzes', pageWidth / 2, 20, { align: 'center' });
+      
+      // Date
+      doc.setFontSize(10);
+      doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, pageWidth / 2, 28, { align: 'center' });
+      
+      // Overall stats
+      doc.setFontSize(14);
+      doc.text('Resumo Geral', 14, 40);
+      
+      doc.setFontSize(10);
+      doc.text(`Total de Tentativas: ${overallStats.totalAttempts}`, 14, 50);
+      doc.text(`Aprovações: ${overallStats.totalPassed}`, 14, 56);
+      doc.text(`Média Geral: ${overallStats.averageScore}%`, 14, 62);
+      doc.text(`Taxa de Aprovação: ${overallStats.overallPassingRate}%`, 14, 68);
+      
+      // Table with course stats
+      doc.setFontSize(14);
+      doc.text('Estatísticas por Curso', 14, 82);
+      
+      const tableData = stats.map(stat => [
+        stat.courseTitle.length > 25 ? stat.courseTitle.substring(0, 25) + '...' : stat.courseTitle,
+        stat.quizTitle.length > 20 ? stat.quizTitle.substring(0, 20) + '...' : stat.quizTitle,
+        stat.totalAttempts.toString(),
+        stat.passedAttempts.toString(),
+        `${stat.averageScore}%`,
+        `${stat.passingRate}%`
+      ]);
+      
+      autoTable(doc, {
+        startY: 88,
+        head: [['Curso', 'Quiz', 'Tentativas', 'Aprovações', 'Média', 'Taxa Aprov.']],
+        body: tableData,
+        theme: 'striped',
+        headStyles: { fillColor: [59, 130, 246] },
+        styles: { fontSize: 8 },
+        columnStyles: {
+          0: { cellWidth: 45 },
+          1: { cellWidth: 40 },
+          2: { cellWidth: 22 },
+          3: { cellWidth: 25 },
+          4: { cellWidth: 20 },
+          5: { cellWidth: 28 }
+        }
+      });
+      
+      // Rankings section (new page if needed)
+      if (rankings.length > 0) {
+        doc.addPage();
+        doc.setFontSize(14);
+        doc.text('Rankings por Quiz', 14, 20);
+        
+        let yPos = 30;
+        rankings.slice(0, 5).forEach((ranking, idx) => {
+          if (yPos > 250) {
+            doc.addPage();
+            yPos = 20;
+          }
+          
+          doc.setFontSize(11);
+          doc.text(`${ranking.quizTitle} - ${ranking.courseTitle}`, 14, yPos);
+          yPos += 6;
+          
+          ranking.topUsers.slice(0, 3).forEach((user, userIdx) => {
+            doc.setFontSize(9);
+            doc.text(`${userIdx + 1}º ${user.userName}: ${user.bestScore}%`, 20, yPos);
+            yPos += 5;
+          });
+          
+          yPos += 6;
+        });
+      }
+      
+      // Save PDF
+      doc.save(`estatisticas-quizzes-${new Date().toISOString().split('T')[0]}.pdf`);
+      toast.success('PDF exportado com sucesso!');
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      toast.error('Erro ao exportar PDF');
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {/* Export Buttons */}
+      <div className="flex justify-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="gap-2">
+              <Download className="h-4 w-4" />
+              Exportar
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={exportToCSV} className="gap-2 cursor-pointer">
+              <FileSpreadsheet className="h-4 w-4" />
+              Exportar CSV
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={exportToPDF} className="gap-2 cursor-pointer">
+              <FileText className="h-4 w-4" />
+              Exportar PDF
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
       {/* Overall Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl bg-card/80 border border-border/50">

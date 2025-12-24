@@ -5,7 +5,7 @@ import { QuizPlayer } from './QuizPlayer';
 import { useQuizzes } from '@/hooks/useQuizzes';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { GraduationCap, Trophy, Target, Sparkles, Loader2, Award, AlertCircle, Clock } from 'lucide-react';
+import { GraduationCap, Trophy, Target, Sparkles, Loader2, Award, AlertCircle, Clock, History, CheckCircle, XCircle } from 'lucide-react';
 
 interface CourseQuizModalProps {
   isOpen: boolean;
@@ -13,6 +13,13 @@ interface CourseQuizModalProps {
   courseId: string;
   courseTitle: string;
   onQuizPassed?: (score: number) => void;
+}
+
+interface QuizAttemptHistory {
+  id: string;
+  score: number;
+  passed: boolean;
+  completed_at: string;
 }
 
 const COOLDOWN_HOURS = 24;
@@ -33,6 +40,8 @@ export const CourseQuizModal = ({
   const [bestScore, setBestScore] = useState<number | null>(null);
   const [cooldownRemaining, setCooldownRemaining] = useState<string | null>(null);
   const [isOnCooldown, setIsOnCooldown] = useState(false);
+  const [attemptHistory, setAttemptHistory] = useState<QuizAttemptHistory[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     const loadQuiz = async () => {
@@ -41,6 +50,7 @@ export const CourseQuizModal = ({
       setLoadingQuiz(true);
       setCooldownRemaining(null);
       setIsOnCooldown(false);
+      setAttemptHistory([]);
       
       // Fetch course quiz
       const quizData = await fetchQuizForCourse(courseId);
@@ -50,12 +60,14 @@ export const CourseQuizModal = ({
       if (quizData) {
         const { data: attempts } = await supabase
           .from('user_quiz_attempts')
-          .select('score, passed, completed_at')
+          .select('id, score, passed, completed_at')
           .eq('user_id', user.id)
           .eq('quiz_id', quizData.id)
           .order('completed_at', { ascending: false });
         
         if (attempts && attempts.length > 0) {
+          // Store all attempts for history
+          setAttemptHistory(attempts);
           // Get best score
           const scores = attempts.map(a => a.score);
           const best = Math.max(...scores);
@@ -168,7 +180,7 @@ export const CourseQuizModal = ({
                 <Target className="h-5 w-5 text-primary shrink-0" />
                 <div className="flex-1">
                   <p className="font-medium text-sm">Aprovação mínima</p>
-                  <p className="text-muted-foreground text-sm">Você precisa acertar pelo menos 70% das questões</p>
+                  <p className="text-muted-foreground text-sm">Você precisa acertar pelo menos 90% das questões</p>
                 </div>
               </div>
 
@@ -197,8 +209,61 @@ export const CourseQuizModal = ({
                   <AlertCircle className="h-5 w-5 text-orange-500 shrink-0" />
                   <div className="flex-1">
                     <p className="font-medium text-sm text-orange-600">Melhor pontuação: {bestScore}%</p>
-                    <p className="text-muted-foreground text-sm">Continue tentando para alcançar 70%!</p>
+                    <p className="text-muted-foreground text-sm">Continue tentando para alcançar 90%!</p>
                   </div>
+                </div>
+              )}
+
+              {attemptHistory.length > 0 && (
+                <div className="border border-border rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="w-full flex items-center gap-3 p-4 bg-muted/30 hover:bg-muted/50 transition-colors"
+                  >
+                    <History className="h-5 w-5 text-muted-foreground shrink-0" />
+                    <div className="flex-1 text-left">
+                      <p className="font-medium text-sm">Histórico de tentativas ({attemptHistory.length})</p>
+                    </div>
+                    <span className="text-muted-foreground text-sm">
+                      {showHistory ? '▲' : '▼'}
+                    </span>
+                  </button>
+                  
+                  {showHistory && (
+                    <div className="max-h-48 overflow-y-auto divide-y divide-border">
+                      {attemptHistory.map((attempt, index) => (
+                        <div
+                          key={attempt.id}
+                          className="flex items-center justify-between p-3 bg-background hover:bg-muted/20 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            {attempt.passed ? (
+                              <CheckCircle className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <XCircle className="h-4 w-4 text-red-500" />
+                            )}
+                            <span className="text-sm">
+                              Tentativa {attemptHistory.length - index}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className={`text-sm font-medium ${attempt.passed ? 'text-green-600' : 'text-red-600'}`}>
+                              {attempt.score}%
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(attempt.completed_at).toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

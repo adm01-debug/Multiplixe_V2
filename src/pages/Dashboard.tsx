@@ -3,7 +3,6 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import CourseCard from '@/components/catalog/CourseCard';
 import AchievementCelebration from '@/components/AchievementCelebration';
 import { 
@@ -20,7 +19,13 @@ import {
   Target,
   Zap,
   TrendingUp,
-  Star
+  Star,
+  Award,
+  Play,
+  ChevronRight,
+  Rocket,
+  Crown,
+  Medal
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -111,7 +116,6 @@ const Dashboard = () => {
       
       if (achievement) {
         setCurrentAchievement(achievement);
-        // Clear the search params after showing
         setSearchParams({});
       }
     }
@@ -165,14 +169,20 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/30">
+        <div className="flex flex-col items-center gap-6">
           <div className="relative">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary animate-spin-slow" />
-            <div className="absolute inset-2 bg-background rounded-full" />
-            <Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin text-primary" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-50 animate-pulse" />
+            <div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-primary to-accent p-1">
+              <div className="w-full h-full bg-background rounded-full flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            </div>
           </div>
-          <p className="text-muted-foreground font-medium animate-pulse">Carregando...</p>
+          <div className="text-center">
+            <p className="text-lg font-semibold text-foreground animate-pulse">Carregando...</p>
+            <p className="text-sm text-muted-foreground">Preparando seu dashboard</p>
+          </div>
         </div>
       </div>
     );
@@ -185,45 +195,52 @@ const Dashboard = () => {
   const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Colaborador';
   const inProgressCount = userProgress.filter(p => p.progress_percentage > 0 && p.progress_percentage < 100).length;
   const completedCount = userProgress.filter(p => p.progress_percentage === 100).length;
+  const totalXP = completedCount * 100 + inProgressCount * 25; // Simulated XP
 
   const stats = [
     {
       label: "Cursos em Andamento",
       value: inProgressCount,
-      subtitle: "cursos ativos",
-      icon: BookOpen,
-      gradient: "from-primary to-secondary",
-      bgGradient: "from-primary/10 to-secondary/10"
+      subtitle: "Continue de onde parou",
+      icon: Play,
+      gradient: "from-primary to-accent",
+      glowColor: "shadow-primary/25"
     },
     {
       label: "Cursos Concluídos",
       value: completedCount,
-      subtitle: "certificados",
+      subtitle: "Certificados conquistados",
       icon: Trophy,
       gradient: "from-amber-500 to-orange-500",
-      bgGradient: "from-amber-500/10 to-orange-500/10"
+      glowColor: "shadow-amber-500/25"
     },
     {
-      label: "Horas de Estudo",
-      value: "0h",
-      subtitle: "este mês",
-      icon: Clock,
+      label: "XP Total",
+      value: totalXP,
+      subtitle: "Pontos de experiência",
+      icon: Zap,
       gradient: "from-emerald-500 to-teal-500",
-      bgGradient: "from-emerald-500/10 to-teal-500/10"
+      glowColor: "shadow-emerald-500/25"
     },
     {
       label: "Sequência",
-      value: 0,
-      subtitle: "dias seguidos",
+      value: `${Math.min(completedCount + inProgressCount, 7)} dias`,
+      subtitle: "Mantenha o ritmo!",
       icon: Flame,
       gradient: "from-rose-500 to-pink-500",
-      bgGradient: "from-rose-500/10 to-pink-500/10"
+      glowColor: "shadow-rose-500/25"
     }
   ];
 
-  // Demo function to trigger achievements (can be called from buttons or events)
+  const achievements = [
+    { icon: Medal, name: "Primeira Aula", unlocked: completedCount > 0 || inProgressCount > 0, gradient: "from-amber-500 to-yellow-500" },
+    { icon: Target, name: "Focado", unlocked: inProgressCount >= 2, gradient: "from-blue-500 to-cyan-500" },
+    { icon: Crown, name: "Mestre", unlocked: completedCount >= 3, gradient: "from-purple-500 to-pink-500" },
+    { icon: Rocket, name: "Veloz", unlocked: completedCount >= 5, gradient: "from-orange-500 to-red-500" },
+  ];
+
   const triggerAchievement = (type: 'xp' | 'badge' | 'streak' | 'course', value?: number) => {
-    const achievements: Record<string, Achievement> = {
+    const achievementData: Record<string, Achievement> = {
       xp: {
         id: 'xp-gain',
         type: 'xp',
@@ -250,63 +267,74 @@ const Dashboard = () => {
         description: 'Você estudou por 7 dias seguidos. Incrível!',
       },
     };
-    setCurrentAchievement(achievements[type]);
+    setCurrentAchievement(achievementData[type]);
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Achievement Celebration Modal */}
       <AchievementCelebration 
         achievement={currentAchievement} 
         onClose={() => setCurrentAchievement(null)} 
       />
+
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/dashboard" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div className="relative p-2.5 bg-gradient-to-r from-primary to-secondary rounded-xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
+                <div className="relative p-2.5 bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg">
                   <GraduationCap className="h-6 w-6 text-white" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent flex items-center justify-center">
+                  <Sparkles className="w-2.5 h-2.5 text-accent-foreground" />
                 </div>
               </div>
               <div>
-                <h1 className="font-display font-bold text-xl text-foreground">MULTIPLIXE</h1>
-                <p className="text-xs text-muted-foreground">by Promo Brindes</p>
+                <h1 className="font-display font-bold text-xl text-foreground tracking-tight">
+                  MULTIPLI<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">XE</span>
+                </h1>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">by Promo Brindes</p>
               </div>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl">
               <Link 
                 to="/dashboard" 
-                className="px-4 py-2 text-foreground font-medium bg-primary/10 text-primary rounded-xl"
+                className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white rounded-xl shadow-lg"
               >
                 Dashboard
               </Link>
               <Link 
                 to="/catalogo" 
-                className="px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-all"
+                className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors"
               >
                 Catálogo
               </Link>
             </nav>
 
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-xl">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <User className="h-4 w-4 text-primary" />
+              {/* XP Badge */}
+              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl">
+                <Zap className="h-4 w-4 text-emerald-500" />
+                <span className="text-sm font-bold text-emerald-600">{totalXP} XP</span>
+              </div>
+
+              <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm">
+                  {userName.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-sm font-medium text-foreground">{userName}</span>
               </div>
               <Button 
                 variant="outline" 
-                size="sm" 
+                size="icon"
                 onClick={handleSignOut}
-                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50"
+                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11"
               >
                 <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline ml-2">Sair</span>
               </Button>
             </div>
           </div>
@@ -316,111 +344,197 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Hero Welcome Section */}
-        <div className="relative mb-10 p-8 md:p-12 rounded-3xl overflow-hidden">
-          {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/5" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-accent/20 to-primary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className="relative mb-12 rounded-[2rem] overflow-hidden">
+          {/* Background with mesh */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-background" />
+          <div className="absolute inset-0 opacity-30" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.2) 1px, transparent 0)`,
+            backgroundSize: '32px 32px'
+          }} />
+          
+          {/* Glowing orbs */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary/30 to-accent/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-br from-accent/20 to-warning/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
           
           {/* Floating elements */}
-          <div className="absolute top-8 right-8 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg float animate-bounce-subtle">
-            <Star className="h-6 w-6 text-white" />
-          </div>
-          <div className="absolute bottom-8 right-24 w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg float" style={{ animationDelay: '0.5s' }}>
-            <Zap className="h-5 w-5 text-white" />
-          </div>
-
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="px-3 py-1.5 bg-primary/10 rounded-full">
-                <div className="flex items-center gap-2 text-primary">
-                  <Sparkles className="h-4 w-4" />
-                  <span className="text-sm font-semibold">Bem-vindo de volta!</span>
-                </div>
-              </div>
+          <div className="absolute top-8 right-8 animate-float">
+            <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-xl shadow-orange-500/30 rotate-12">
+              <Crown className="h-7 w-7 text-white" />
             </div>
-            
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
-              Olá, <span className="text-gradient">{userName}</span>! 👋
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              Continue sua jornada de aprendizado na MULTIPLIXE. Cada curso te aproxima mais dos seus objetivos! 🚀
-            </p>
+          </div>
+          <div className="absolute top-24 right-32 animate-float" style={{ animationDelay: '0.5s' }}>
+            <div className="w-11 h-11 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 -rotate-6">
+              <Zap className="h-5 w-5 text-white" />
+            </div>
+          </div>
+          <div className="absolute bottom-12 right-16 animate-float" style={{ animationDelay: '1s' }}>
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30 rotate-6">
+              <Star className="h-5 w-5 text-white" />
+            </div>
+          </div>
 
-            {/* Quick action */}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button 
-                asChild 
-                className="btn-gradient rounded-2xl h-12 px-6 text-base font-semibold gap-2"
-              >
-                <Link to="/catalogo">
-                  <Target className="h-5 w-5" />
-                  Explorar Cursos
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-              </Button>
+          <div className="relative z-10 p-8 md:p-12 lg:p-16">
+            <div className="max-w-3xl">
+              {/* Welcome Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-sm font-semibold text-foreground">Bem-vindo de volta!</span>
+              </div>
               
-              {/* Demo buttons for testing confetti */}
-              <Button 
-                variant="outline"
-                onClick={() => triggerAchievement('xp', 150)}
-                className="rounded-2xl h-12 px-4 gap-2 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10 hover:border-emerald-500/50"
-              >
-                <Zap className="h-5 w-5" />
-                Testar XP
-              </Button>
-              <Button 
-                variant="outline"
-                onClick={() => triggerAchievement('badge')}
-                className="rounded-2xl h-12 px-4 gap-2 border-amber-500/30 text-amber-600 hover:bg-amber-500/10 hover:border-amber-500/50"
-              >
-                <Star className="h-5 w-5" />
-                Testar Badge
-              </Button>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-4 leading-tight">
+                Olá, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary">{userName}</span>! 
+                <span className="inline-block animate-bounce ml-2">👋</span>
+              </h2>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8">
+                Continue sua jornada de aprendizado. Cada aula te aproxima mais dos seus objetivos profissionais!
+              </p>
+
+              {/* Quick actions */}
+              <div className="flex flex-wrap gap-4">
+                <Button 
+                  asChild 
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-2xl h-14 px-8 text-base font-semibold shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 group"
+                >
+                  <Link to="/catalogo">
+                    <Rocket className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
+                    Explorar Cursos
+                    <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+                
+                {/* Test buttons */}
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => triggerAchievement('xp', 150)}
+                  className="rounded-2xl h-14 px-6 gap-2 border-2 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10 hover:border-emerald-500/50 font-semibold"
+                >
+                  <Zap className="h-5 w-5" />
+                  +150 XP
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => triggerAchievement('badge')}
+                  className="rounded-2xl h-14 px-6 gap-2 border-2 border-amber-500/30 text-amber-600 hover:bg-amber-500/10 hover:border-amber-500/50 font-semibold"
+                >
+                  <Award className="h-5 w-5" />
+                  Badge
+                </Button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className="group relative rounded-2xl bg-card border border-border/50 p-5 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-card animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Gradient background on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
-                  <div className={`p-2 rounded-xl bg-gradient-to-br ${stat.gradient}`}>
-                    <stat.icon className="h-4 w-4 text-white" />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+          {stats.map((stat, index) => {
+            const IconComponent = stat.icon;
+            return (
+              <div
+                key={stat.label}
+                className={`group relative rounded-3xl bg-card/80 backdrop-blur-sm border border-border/50 p-6 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${stat.glowColor} animate-fade-in`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {/* Gradient glow on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`p-3 rounded-2xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.glowColor} group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                      <IconComponent className="h-6 w-6 text-white" />
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <div className="text-4xl font-display font-bold text-foreground mb-1">
+                    {stat.value}
+                  </div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">{stat.label}</p>
+                  <p className="text-xs text-muted-foreground/70">{stat.subtitle}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Achievements Section */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+                <Trophy className="h-6 w-6 text-amber-500" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-display font-bold text-foreground">Conquistas</h3>
+                <p className="text-sm text-muted-foreground">Seus badges e troféus</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {achievements.map((achievement, index) => {
+              const IconComponent = achievement.icon;
+              return (
+                <div
+                  key={achievement.name}
+                  className={`group relative p-6 rounded-2xl border transition-all duration-300 ${
+                    achievement.unlocked 
+                      ? 'bg-card/80 border-border/50 hover:-translate-y-1 hover:shadow-xl cursor-pointer' 
+                      : 'bg-muted/30 border-border/30 opacity-50'
+                  }`}
+                  onClick={() => achievement.unlocked && triggerAchievement('badge')}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className={`relative w-16 h-16 rounded-2xl flex items-center justify-center mb-4 ${
+                      achievement.unlocked 
+                        ? `bg-gradient-to-br ${achievement.gradient} shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300` 
+                        : 'bg-muted'
+                    }`}>
+                      <IconComponent className={`h-8 w-8 ${achievement.unlocked ? 'text-white' : 'text-muted-foreground'}`} />
+                      {achievement.unlocked && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                          <Sparkles className="w-3 h-3 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <p className={`font-semibold ${achievement.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+                      {achievement.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {achievement.unlocked ? 'Desbloqueado!' : 'Bloqueado'}
+                    </p>
                   </div>
                 </div>
-                <div className="text-3xl font-display font-bold text-foreground mb-1">
-                  {stat.value}
-                </div>
-                <p className="text-sm text-muted-foreground">{stat.subtitle}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        </section>
 
         {/* Continue Learning Section */}
         {userProgress.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10">
-                  <TrendingUp className="h-5 w-5 text-primary" />
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20">
+                  <TrendingUp className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold text-foreground">Continue Aprendendo</h3>
-                  <p className="text-sm text-muted-foreground">Retome de onde parou</p>
+                  <h3 className="text-2xl font-display font-bold text-foreground">Continue Aprendendo</h3>
+                  <p className="text-sm text-muted-foreground">Retome seus cursos em andamento</p>
                 </div>
               </div>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                asChild
+                className="rounded-xl gap-2 text-primary hover:text-primary hover:bg-primary/10"
+              >
+                <Link to="/catalogo">
+                  Ver todos
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {userProgress.map((progress, index) => (
@@ -452,12 +566,12 @@ const Dashboard = () => {
         {/* Featured Courses */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10">
-                <Sparkles className="h-5 w-5 text-amber-500" />
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-warning/10 to-orange-500/10 border border-warning/20">
+                <Sparkles className="h-6 w-6 text-warning" />
               </div>
               <div>
-                <h3 className="text-xl font-display font-bold text-foreground">Cursos em Destaque</h3>
+                <h3 className="text-2xl font-display font-bold text-foreground">Cursos em Destaque</h3>
                 <p className="text-sm text-muted-foreground">Os mais populares da plataforma</p>
               </div>
             </div>
@@ -465,10 +579,10 @@ const Dashboard = () => {
               variant="outline" 
               size="sm" 
               asChild
-              className="rounded-xl border-border/50 gap-2 hover:bg-primary/5 hover:border-primary/50 hover:text-primary"
+              className="rounded-xl border-2 border-border/50 gap-2 hover:bg-primary/5 hover:border-primary/50 hover:text-primary font-semibold"
             >
               <Link to="/catalogo">
-                Ver todos
+                Ver catálogo
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -477,12 +591,12 @@ const Dashboard = () => {
           {loadingCourses ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden animate-pulse">
-                  <div className="aspect-[16/10] bg-muted" />
+                <div key={i} className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden">
+                  <div className="aspect-[16/10] bg-gradient-to-br from-muted to-muted/50 animate-pulse" />
                   <div className="p-5 space-y-4">
-                    <div className="h-5 bg-muted rounded-lg w-3/4" />
-                    <div className="h-4 bg-muted rounded-lg w-full" />
-                    <div className="h-4 bg-muted rounded-lg w-1/2" />
+                    <div className="h-5 bg-muted rounded-lg w-3/4 animate-pulse" />
+                    <div className="h-4 bg-muted rounded-lg w-full animate-pulse" />
+                    <div className="h-4 bg-muted rounded-lg w-1/2 animate-pulse" />
                   </div>
                 </div>
               ))}
@@ -513,30 +627,35 @@ const Dashboard = () => {
               ))}
             </div>
           ) : (
-            <div className="relative rounded-3xl border border-dashed border-border/50 bg-card/30 overflow-hidden">
+            <div className="relative rounded-3xl border-2 border-dashed border-border/50 bg-gradient-to-br from-card/50 to-muted/30 overflow-hidden">
               {/* Background decoration */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
+              <div className="absolute inset-0">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl" />
+              </div>
               
               <div className="relative flex flex-col items-center justify-center py-20 px-4 text-center">
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full blur-2xl" />
-                  <div className="relative p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full border border-border/50">
-                    <BookOpen className="h-12 w-12 text-primary" />
+                <div className="relative mb-8">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-accent/30 rounded-full blur-2xl animate-pulse" />
+                  <div className="relative p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full border border-primary/20">
+                    <BookOpen className="h-16 w-16 text-primary" />
                   </div>
                 </div>
-                <h4 className="text-2xl font-display font-bold text-foreground mb-2">
+                <h4 className="text-3xl font-display font-bold text-foreground mb-3">
                   Explore o catálogo
                 </h4>
-                <p className="text-muted-foreground max-w-md mb-6">
+                <p className="text-lg text-muted-foreground max-w-md mb-8">
                   Descubra cursos incríveis para desenvolver suas habilidades e impulsionar sua carreira
                 </p>
                 <Button 
                   asChild
-                  className="btn-gradient rounded-xl h-11 px-6 gap-2"
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-2xl h-14 px-8 font-semibold shadow-xl shadow-primary/25 gap-2"
                 >
                   <Link to="/catalogo">
+                    <Sparkles className="h-5 w-5" />
                     Ver Catálogo
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
               </div>

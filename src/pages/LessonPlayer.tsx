@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useConfetti } from "@/hooks/useConfetti";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
@@ -50,6 +51,8 @@ const LessonPlayer = () => {
   const { slug, lessonId } = useParams<{ slug: string; lessonId: string }>();
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
+  const { fireLessonComplete, fireCourseComplete } = useConfetti();
+  const celebratedLessons = useRef<Set<string>>(new Set());
 
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -154,6 +157,8 @@ const LessonPlayer = () => {
         );
 
         if (!error && isCompleted) {
+          const wasAlreadyCompleted = lessonsProgress.find((p) => p.lesson_id === currentLesson.id)?.is_completed;
+          
           setLessonsProgress((prev) => {
             const existing = prev.find((p) => p.lesson_id === currentLesson.id);
             if (existing) {
@@ -166,6 +171,21 @@ const LessonPlayer = () => {
               { lesson_id: currentLesson.id, is_completed: true, last_position_seconds: Math.floor(currentTime) },
             ];
           });
+
+          // Fire confetti only once per lesson
+          if (!wasAlreadyCompleted && !celebratedLessons.current.has(currentLesson.id)) {
+            celebratedLessons.current.add(currentLesson.id);
+            
+            // Check if this completes the course
+            const newCompletedCount = lessonsProgress.filter((p) => p.is_completed).length + 1;
+            if (newCompletedCount >= lessons.length) {
+              fireCourseComplete();
+              toast.success("🏆 Parabéns! Você concluiu o curso!", { duration: 5000 });
+            } else {
+              fireLessonComplete();
+              toast.success("🎉 Aula concluída! Continue assim!");
+            }
+          }
 
           await updateCourseProgress();
         }
@@ -196,8 +216,6 @@ const LessonPlayer = () => {
 
   const handleComplete = async () => {
     if (!currentLesson) return;
-
-    toast.success("🎉 Aula concluída! Parabéns!");
 
     const currentIndex = lessons.findIndex((l) => l.id === currentLesson.id);
     if (currentIndex < lessons.length - 1) {

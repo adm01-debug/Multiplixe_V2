@@ -13,6 +13,7 @@ import LessonList from "@/components/player/LessonList";
 import AchievementUnlocked from "@/components/AchievementUnlocked";
 import StreakCelebration from "@/components/StreakCelebration";
 import { QuizCard } from "@/components/quiz/QuizCard";
+import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -78,6 +79,8 @@ const LessonPlayer = () => {
     xpAwarded: number;
     isNewRecord: boolean;
   } | null>(null);
+  const [showCourseQuizModal, setShowCourseQuizModal] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false);
 
   // Show new achievements one by one
   useEffect(() => {
@@ -217,13 +220,8 @@ const LessonPlayer = () => {
               await addXP(100, 'course');
               toast.success("🏆 Parabéns! Você concluiu o curso! +100 XP", { duration: 5000 });
               
-              // Generate certificate
-              const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "Colaborador";
-              generateCertificate(course.id, userName, course.title).then((cert) => {
-                if (cert) {
-                  toast.success("📜 Certificado gerado! Veja em seu perfil.", { duration: 5000 });
-                }
-              });
+              // Show course quiz modal instead of generating certificate directly
+              setShowCourseQuizModal(true);
             } else {
               fireLessonComplete();
               // Award XP for completing a lesson (25 XP)
@@ -350,6 +348,26 @@ const LessonPlayer = () => {
           onClose={() => {
             setStreakCelebration(null);
             refetchXP();
+          }}
+        />
+      )}
+
+      {/* Course Quiz Modal - appears when course is 100% complete */}
+      {course && (
+        <CourseQuizModal
+          isOpen={showCourseQuizModal}
+          onClose={() => setShowCourseQuizModal(false)}
+          courseId={course.id}
+          courseTitle={course.title}
+          onQuizPassed={() => {
+            setQuizPassed(true);
+            // Generate certificate after passing quiz
+            const userName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Colaborador";
+            generateCertificate(course.id, userName, course.title).then((cert) => {
+              if (cert) {
+                toast.success("📜 Certificado gerado! Veja em seu perfil.", { duration: 5000 });
+              }
+            });
           }}
         />
       )}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, GraduationCap } from "lucide-react";
 
@@ -45,9 +46,11 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Button className="btn-gradient">
-              Acessar Plataforma
-            </Button>
+            <Link to="/auth">
+              <Button className="btn-gradient">
+                Acessar Plataforma
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -75,9 +78,11 @@ const Header = () => {
                 </a>
               ))}
               <div className="pt-4 border-t border-border">
-                <Button className="btn-gradient w-full">
-                  Acessar Plataforma
-                </Button>
+                <Link to="/auth">
+                  <Button className="btn-gradient w-full">
+                    Acessar Plataforma
+                  </Button>
+                </Link>
               </div>
             </nav>
           </div>

@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import CourseCard from '@/components/catalog/CourseCard';
 import AchievementCelebration from '@/components/AchievementCelebration';
+import LevelProgress from '@/components/LevelProgress';
 import { 
   GraduationCap, 
   BookOpen, 
@@ -402,6 +403,11 @@ const Dashboard = () => {
             );
           })}
         </div>
+
+        {/* Level Progress Section */}
+        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          <LevelProgress totalXP={totalXP} />
+        </section>
 
         {/* Achievements Section */}
         <section className="mb-12">

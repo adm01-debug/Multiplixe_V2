@@ -14,8 +14,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { CourseForm } from '@/components/admin/CourseForm';
+import { LessonsManager } from '@/components/admin/LessonsManager';
 import {
   GraduationCap,
   ArrowLeft,
@@ -32,6 +44,8 @@ import {
   Eye,
   Edit,
   Trash2,
+  Plus,
+  Play,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -39,12 +53,15 @@ interface Course {
   id: string;
   title: string;
   slug: string;
+  description: string | null;
   is_published: boolean;
   is_featured: boolean;
   level: string;
   total_lessons: number;
   duration_minutes: number;
   created_at: string;
+  instructor_name: string | null;
+  category_id: string | null;
 }
 
 interface UserStat {
@@ -77,6 +94,13 @@ const Admin = () => {
   const [searchCourses, setSearchCourses] = useState('');
   const [searchUsers, setSearchUsers] = useState('');
   const [loadingData, setLoadingData] = useState(true);
+  
+  // CRUD states
+  const [courseFormOpen, setCourseFormOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
+  const [deletingCourse, setDeletingCourse] = useState<Course | null>(null);
+  const [lessonsManagerOpen, setLessonsManagerOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -91,83 +115,83 @@ const Admin = () => {
     }
   }, [isAdmin, adminLoading, user, navigate]);
 
+  const fetchData = async () => {
+    if (!isAdmin) return;
+
+    setLoadingData(true);
+
+    try {
+      // Fetch courses
+      const { data: coursesData } = await supabase
+        .from('courses')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (coursesData) setCourses(coursesData);
+
+      // Fetch user stats
+      const { data: xpData } = await supabase
+        .from('user_xp')
+        .select('user_id, total_xp, current_level, created_at');
+
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('user_id, full_name');
+
+      const { data: lessonProgressData } = await supabase
+        .from('user_lesson_progress')
+        .select('user_id, is_completed');
+
+      const { data: courseProgressData } = await supabase
+        .from('user_course_progress')
+        .select('user_id, progress_percentage');
+
+      // Combine user data
+      const userStats: UserStat[] = (xpData || []).map(xp => {
+        const profile = profilesData?.find(p => p.user_id === xp.user_id);
+        const lessonsCompleted = lessonProgressData?.filter(
+          l => l.user_id === xp.user_id && l.is_completed
+        ).length || 0;
+        const coursesCompleted = courseProgressData?.filter(
+          c => c.user_id === xp.user_id && c.progress_percentage === 100
+        ).length || 0;
+
+        return {
+          user_id: xp.user_id,
+          email: '',
+          full_name: profile?.full_name || 'Usuário',
+          total_xp: xp.total_xp,
+          current_level: xp.current_level,
+          lessons_completed: lessonsCompleted,
+          courses_completed: coursesCompleted,
+          created_at: xp.created_at,
+        };
+      });
+
+      setUsers(userStats.sort((a, b) => b.total_xp - a.total_xp));
+
+      // Calculate platform stats
+      const { count: totalLessons } = await supabase
+        .from('lessons')
+        .select('*', { count: 'exact', head: true });
+
+      setStats({
+        totalUsers: xpData?.length || 0,
+        totalCourses: coursesData?.length || 0,
+        totalLessons: totalLessons || 0,
+        totalXPEarned: xpData?.reduce((sum, u) => sum + u.total_xp, 0) || 0,
+        totalLessonsCompleted: lessonProgressData?.filter(l => l.is_completed).length || 0,
+        totalCoursesCompleted: courseProgressData?.filter(c => c.progress_percentage === 100).length || 0,
+      });
+    } catch (error) {
+      console.error('Error fetching admin data:', error);
+      toast.error('Erro ao carregar dados');
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (!isAdmin) return;
-
-      setLoadingData(true);
-
-      try {
-        // Fetch courses
-        const { data: coursesData } = await supabase
-          .from('courses')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (coursesData) setCourses(coursesData);
-
-        // Fetch user stats
-        const { data: xpData } = await supabase
-          .from('user_xp')
-          .select('user_id, total_xp, current_level, created_at');
-
-        const { data: profilesData } = await supabase
-          .from('profiles')
-          .select('user_id, full_name');
-
-        const { data: lessonProgressData } = await supabase
-          .from('user_lesson_progress')
-          .select('user_id, is_completed');
-
-        const { data: courseProgressData } = await supabase
-          .from('user_course_progress')
-          .select('user_id, progress_percentage');
-
-        // Combine user data
-        const userStats: UserStat[] = (xpData || []).map(xp => {
-          const profile = profilesData?.find(p => p.user_id === xp.user_id);
-          const lessonsCompleted = lessonProgressData?.filter(
-            l => l.user_id === xp.user_id && l.is_completed
-          ).length || 0;
-          const coursesCompleted = courseProgressData?.filter(
-            c => c.user_id === xp.user_id && c.progress_percentage === 100
-          ).length || 0;
-
-          return {
-            user_id: xp.user_id,
-            email: '',
-            full_name: profile?.full_name || 'Usuário',
-            total_xp: xp.total_xp,
-            current_level: xp.current_level,
-            lessons_completed: lessonsCompleted,
-            courses_completed: coursesCompleted,
-            created_at: xp.created_at,
-          };
-        });
-
-        setUsers(userStats.sort((a, b) => b.total_xp - a.total_xp));
-
-        // Calculate platform stats
-        const { count: totalLessons } = await supabase
-          .from('lessons')
-          .select('*', { count: 'exact', head: true });
-
-        setStats({
-          totalUsers: xpData?.length || 0,
-          totalCourses: coursesData?.length || 0,
-          totalLessons: totalLessons || 0,
-          totalXPEarned: xpData?.reduce((sum, u) => sum + u.total_xp, 0) || 0,
-          totalLessonsCompleted: lessonProgressData?.filter(l => l.is_completed).length || 0,
-          totalCoursesCompleted: courseProgressData?.filter(c => c.progress_percentage === 100).length || 0,
-        });
-      } catch (error) {
-        console.error('Error fetching admin data:', error);
-        toast.error('Erro ao carregar dados');
-      } finally {
-        setLoadingData(false);
-      }
-    };
-
     fetchData();
   }, [isAdmin]);
 
@@ -201,6 +225,24 @@ const Admin = () => {
       );
       toast.success(`Curso ${!currentValue ? 'destacado' : 'removido dos destaques'}`);
     }
+  };
+
+  const handleDeleteCourse = async () => {
+    if (!deletingCourse) return;
+
+    const { error } = await supabase
+      .from('courses')
+      .delete()
+      .eq('id', deletingCourse.id);
+
+    if (error) {
+      toast.error('Erro ao excluir curso');
+    } else {
+      toast.success('Curso excluído com sucesso!');
+      setCourses(prev => prev.filter(c => c.id !== deletingCourse.id));
+    }
+
+    setDeletingCourse(null);
   };
 
   if (authLoading || adminLoading) {
@@ -307,7 +349,7 @@ const Admin = () => {
 
           {/* Courses Tab */}
           <TabsContent value="courses" className="space-y-4">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between gap-4">
               <div className="relative flex-1 max-w-sm">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -317,6 +359,15 @@ const Admin = () => {
                   className="pl-10"
                 />
               </div>
+              <Button
+                onClick={() => {
+                  setEditingCourse(null);
+                  setCourseFormOpen(true);
+                }}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Curso
+              </Button>
             </div>
 
             <div className="rounded-xl border border-border/50 overflow-hidden">
@@ -372,14 +423,48 @@ const Admin = () => {
                           />
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1">
                             <Button
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8"
                               onClick={() => navigate(`/curso/${course.slug}`)}
+                              title="Visualizar"
                             >
                               <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => {
+                                setSelectedCourse(course);
+                                setLessonsManagerOpen(true);
+                              }}
+                              title="Gerenciar aulas"
+                            >
+                              <Play className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => {
+                                setEditingCourse(course);
+                                setCourseFormOpen(true);
+                              }}
+                              title="Editar"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                              onClick={() => setDeletingCourse(course)}
+                              title="Excluir"
+                            >
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
                         </TableCell>
@@ -556,6 +641,43 @@ const Admin = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Course Form Modal */}
+      <CourseForm
+        open={courseFormOpen}
+        onOpenChange={setCourseFormOpen}
+        course={editingCourse}
+        onSuccess={fetchData}
+      />
+
+      {/* Lessons Manager Modal */}
+      <LessonsManager
+        open={lessonsManagerOpen}
+        onOpenChange={setLessonsManagerOpen}
+        course={selectedCourse}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deletingCourse} onOpenChange={() => setDeletingCourse(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir Curso</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir o curso "{deletingCourse?.title}"? 
+              Esta ação não pode ser desfeita e todas as aulas associadas também serão excluídas.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteCourse}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

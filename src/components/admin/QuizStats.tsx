@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, XCircle, TrendingUp, Users } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 interface CourseQuizStat {
   courseId: string;
@@ -14,8 +15,18 @@ interface CourseQuizStat {
   passingRate: number;
 }
 
+interface DailyStats {
+  date: string;
+  displayDate: string;
+  attempts: number;
+  passed: number;
+  passingRate: number;
+  averageScore: number;
+}
+
 export const QuizStats = () => {
   const [stats, setStats] = useState<CourseQuizStat[]>([]);
+  const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [overallStats, setOverallStats] = useState({
     totalAttempts: 0,
@@ -47,15 +58,56 @@ export const QuizStats = () => {
           return;
         }
 
-        // Fetch all quiz attempts
+        // Fetch all quiz attempts with date
         const { data: attempts } = await supabase
           .from('user_quiz_attempts')
-          .select('quiz_id, user_id, score, passed');
+          .select('quiz_id, user_id, score, passed, completed_at')
+          .order('completed_at', { ascending: true });
 
         if (!attempts) {
           setLoading(false);
           return;
         }
+
+        // Calculate daily stats for the chart (last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const dailyMap = new Map<string, { attempts: number; passed: number; totalScore: number }>();
+        
+        // Initialize last 30 days
+        for (let i = 0; i < 30; i++) {
+          const date = new Date();
+          date.setDate(date.getDate() - (29 - i));
+          const dateStr = date.toISOString().split('T')[0];
+          dailyMap.set(dateStr, { attempts: 0, passed: 0, totalScore: 0 });
+        }
+        
+        // Aggregate attempts by day
+        attempts.forEach(attempt => {
+          const dateStr = attempt.completed_at.split('T')[0];
+          if (dailyMap.has(dateStr)) {
+            const current = dailyMap.get(dateStr)!;
+            current.attempts++;
+            if (attempt.passed) current.passed++;
+            current.totalScore += attempt.score;
+          }
+        });
+        
+        // Convert to array for chart
+        const dailyStatsArray: DailyStats[] = Array.from(dailyMap.entries()).map(([date, data]) => {
+          const dateObj = new Date(date);
+          return {
+            date,
+            displayDate: dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+            attempts: data.attempts,
+            passed: data.passed,
+            passingRate: data.attempts > 0 ? Math.round((data.passed / data.attempts) * 100) : 0,
+            averageScore: data.attempts > 0 ? Math.round(data.totalScore / data.attempts) : 0
+          };
+        });
+        
+        setDailyStats(dailyStatsArray);
 
         // Calculate stats per course quiz
         const courseStats: CourseQuizStat[] = quizzes
@@ -155,6 +207,128 @@ export const QuizStats = () => {
           </div>
           <p className="text-2xl font-bold">{overallStats.overallPassingRate}%</p>
         </div>
+      </div>
+
+      {/* Evolution Chart */}
+      <div className="p-6 rounded-2xl bg-card/80 border border-border/50">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Calendar className="h-5 w-5 text-primary" />
+          Evolução dos Últimos 30 Dias
+        </h3>
+
+        {dailyStats.length === 0 || dailyStats.every(d => d.attempts === 0) ? (
+          <p className="text-muted-foreground text-center py-8">
+            Nenhum dado disponível para o período.
+          </p>
+        ) : (
+          <div className="space-y-6">
+            {/* Passing Rate Chart */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">Taxa de Aprovação (%)</p>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={dailyStats}>
+                    <defs>
+                      <linearGradient id="passingRateGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis 
+                      dataKey="displayDate" 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      tickLine={false}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      tickLine={false}
+                      domain={[0, 100]}
+                      tickFormatter={(value) => `${value}%`}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                      labelStyle={{ color: 'hsl(var(--foreground))' }}
+                      formatter={(value: number) => [`${value}%`, 'Taxa de Aprovação']}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="passingRate" 
+                      stroke="hsl(var(--primary))" 
+                      fill="url(#passingRateGradient)"
+                      strokeWidth={2}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Attempts Chart */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">Tentativas por Dia</p>
+              <div className="h-40">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={dailyStats}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis 
+                      dataKey="displayDate" 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      tickLine={false}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis 
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={10}
+                      tickLine={false}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                      labelStyle={{ color: 'hsl(var(--foreground))' }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="attempts" 
+                      stroke="hsl(217 91% 60%)" 
+                      strokeWidth={2}
+                      dot={false}
+                      name="Tentativas"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="passed" 
+                      stroke="hsl(142 76% 36%)" 
+                      strokeWidth={2}
+                      dot={false}
+                      name="Aprovados"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex items-center justify-center gap-6 mt-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(217 91% 60%)' }} />
+                  <span className="text-muted-foreground">Tentativas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(142 76% 36%)' }} />
+                  <span className="text-muted-foreground">Aprovados</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Per Course Stats */}

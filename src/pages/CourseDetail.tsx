@@ -23,7 +23,10 @@ import {
   TrendingUp,
   Star,
   Zap,
+  FileQuestion,
 } from "lucide-react";
+import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
+import { useQuizzes } from "@/hooks/useQuizzes";
 
 interface Course {
   id: string;
@@ -82,6 +85,10 @@ const CourseDetail = () => {
   const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
+  const [showQuizModal, setShowQuizModal] = useState(false);
+  
+  const { fetchQuizForCourse } = useQuizzes();
+  const [hasQuiz, setHasQuiz] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -147,11 +154,15 @@ const CourseDetail = () => {
         setLessonsProgress(lessonsProgressData);
       }
 
+      // Check if course has a final quiz
+      const quiz = await fetchQuizForCourse(courseData.id);
+      setHasQuiz(!!quiz);
+
       setLoading(false);
     };
 
     fetchCourse();
-  }, [user, slug, navigate]);
+  }, [user, slug, navigate, fetchQuizForCourse]);
 
   const handleStartCourse = async () => {
     if (!user || !course || lessons.length === 0) return;
@@ -493,6 +504,17 @@ const CourseDetail = () => {
                   </div>
                 )}
 
+                {/* Quiz Final Button - Show when progress is 100% and has quiz */}
+                {progress && progress.progress_percentage >= 100 && hasQuiz && (
+                  <Button 
+                    className="w-full h-12 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl text-base font-semibold gap-2 shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 transition-all" 
+                    onClick={() => setShowQuizModal(true)}
+                  >
+                    <FileQuestion className="h-5 w-5" />
+                    Fazer Quiz Final
+                  </Button>
+                )}
+
                 {/* CTA Button */}
                 {progress ? (
                   <Button 
@@ -561,6 +583,16 @@ const CourseDetail = () => {
           </div>
         </div>
       </main>
+
+      {/* Quiz Modal */}
+      {course && (
+        <CourseQuizModal
+          courseId={course.id}
+          courseTitle={course.title}
+          isOpen={showQuizModal}
+          onClose={() => setShowQuizModal(false)}
+        />
+      )}
     </div>
   );
 };

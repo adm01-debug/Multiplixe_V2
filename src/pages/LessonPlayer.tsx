@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useConfetti } from "@/hooks/useConfetti";
+import { useUserXP } from "@/hooks/useUserXP";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
@@ -52,6 +53,7 @@ const LessonPlayer = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
   const { fireLessonComplete, fireCourseComplete } = useConfetti();
+  const { addXP } = useUserXP();
   const celebratedLessons = useRef<Set<string>>(new Set());
 
   const [course, setCourse] = useState<Course | null>(null);
@@ -172,7 +174,7 @@ const LessonPlayer = () => {
             ];
           });
 
-          // Fire confetti only once per lesson
+          // Fire confetti and add XP only once per lesson
           if (!wasAlreadyCompleted && !celebratedLessons.current.has(currentLesson.id)) {
             celebratedLessons.current.add(currentLesson.id);
             
@@ -180,10 +182,14 @@ const LessonPlayer = () => {
             const newCompletedCount = lessonsProgress.filter((p) => p.is_completed).length + 1;
             if (newCompletedCount >= lessons.length) {
               fireCourseComplete();
-              toast.success("🏆 Parabéns! Você concluiu o curso!", { duration: 5000 });
+              // Award XP for completing the course (100 XP)
+              await addXP(100, 'course');
+              toast.success("🏆 Parabéns! Você concluiu o curso! +100 XP", { duration: 5000 });
             } else {
               fireLessonComplete();
-              toast.success("🎉 Aula concluída! Continue assim!");
+              // Award XP for completing a lesson (25 XP)
+              await addXP(25, 'lesson');
+              toast.success("🎉 Aula concluída! +25 XP Continue assim!");
             }
           }
 

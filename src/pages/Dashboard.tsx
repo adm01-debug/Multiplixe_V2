@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserXP } from '@/hooks/useUserXP';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import CourseCard from '@/components/catalog/CourseCard';
@@ -62,6 +63,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading, signOut } = useAuth();
+  const { totalXP, loading: loadingXP } = useUserXP();
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
@@ -193,7 +195,6 @@ const Dashboard = () => {
   const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Colaborador';
   const inProgressCount = userProgress.filter(p => p.progress_percentage > 0 && p.progress_percentage < 100).length;
   const completedCount = userProgress.filter(p => p.progress_percentage === 100).length;
-  const totalXP = completedCount * 100 + inProgressCount * 25; // Simulated XP
 
   const stats = [
     {

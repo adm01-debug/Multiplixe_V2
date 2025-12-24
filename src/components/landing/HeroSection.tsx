@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, Users, BookOpen, Award } from "lucide-react";
+import { Play, ArrowRight, Users, BookOpen, Award, TrendingUp } from "lucide-react";
 
 const HeroSection = () => {
   const stats = [
-    { icon: Users, value: "50.000+", label: "Colaboradores treinados" },
-    { icon: BookOpen, value: "500+", label: "Cursos disponíveis" },
-    { icon: Award, value: "98%", label: "Taxa de satisfação" },
+    { icon: BookOpen, value: "50+", label: "Cursos disponíveis" },
+    { icon: TrendingUp, value: "12", label: "Trilhas de carreira" },
+    { icon: Award, value: "100%", label: "Certificados válidos" },
   ];
 
   return (
@@ -27,25 +27,25 @@ const HeroSection = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Plataforma #1 em Treinamento Corporativo
+              Exclusivo para colaboradores Promo Brindes
             </div>
 
             {/* Heading */}
             <h1 className="text-foreground leading-tight">
-              Transforme sua equipe com{" "}
-              <span className="text-gradient">aprendizado contínuo</span>
+              Invista no seu{" "}
+              <span className="text-gradient">crescimento profissional</span>
             </h1>
 
             {/* Description */}
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-              Capacite seus colaboradores com cursos de alta qualidade, trilhas 
-              personalizadas e certificações reconhecidas. Tudo em uma única plataforma.
+              A Promo Brindes acredita no seu potencial. Acesse cursos exclusivos, 
+              desenvolva novas habilidades e construa a carreira que você sempre quis.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="btn-gradient text-lg px-8 h-14">
-                Começar Gratuitamente
+                Acessar Minha Conta
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
               <Button 
@@ -54,25 +54,16 @@ const HeroSection = () => {
                 className="text-lg px-8 h-14 group"
               >
                 <Play className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform" />
-                Ver Demonstração
+                Conhecer a Plataforma
               </Button>
             </div>
 
-            {/* Trust badges */}
-            <div className="pt-4">
-              <p className="text-sm text-muted-foreground mb-4">
-                Empresas que confiam em nós:
-              </p>
-              <div className="flex flex-wrap gap-8 items-center opacity-60">
-                {["Empresa A", "Empresa B", "Empresa C", "Empresa D"].map((company) => (
-                  <div 
-                    key={company}
-                    className="font-display font-bold text-lg text-muted-foreground"
-                  >
-                    {company}
-                  </div>
-                ))}
-              </div>
+            {/* Internal message */}
+            <div className="pt-4 flex items-center gap-3 text-muted-foreground">
+              <Users className="w-5 h-5 text-primary" />
+              <span>
+                Todos os colaboradores têm acesso completo e gratuito
+              </span>
             </div>
           </div>
 
@@ -96,10 +87,10 @@ const HeroSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-card-foreground">
-                      Inteligência Emocional 2.0
+                      Atendimento de Excelência
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      Prof. Dr. João Silva
+                      Trilha obrigatória • 8 módulos
                     </p>
                   </div>
                 </div>

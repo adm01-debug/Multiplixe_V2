@@ -2,68 +2,68 @@ import {
   PlayCircle, 
   Trophy, 
   BarChart3, 
-  Users, 
+  Target,
   Smartphone, 
-  Shield,
-  Zap,
-  Target
+  Award,
+  Clock,
+  Sparkles
 } from "lucide-react";
 
 const FeaturesSection = () => {
   const features = [
     {
       icon: PlayCircle,
-      title: "Player Avançado",
-      description: "Assista em qualquer velocidade, com legendas e salve seu progresso automaticamente.",
+      title: "Cursos em Vídeo",
+      description: "Assista no seu ritmo, pause quando quiser e continue de onde parou.",
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
       icon: Target,
-      title: "Trilhas Personalizadas",
-      description: "Crie jornadas de aprendizado sob medida para cada cargo e departamento.",
+      title: "Trilhas por Área",
+      description: "Conteúdos organizados por departamento e função para seu desenvolvimento.",
       color: "text-secondary",
       bgColor: "bg-secondary/10",
     },
     {
       icon: Trophy,
       title: "Gamificação",
-      description: "Engaje sua equipe com pontos XP, badges, rankings e desafios semanais.",
+      description: "Ganhe XP, conquiste badges e suba no ranking dos colaboradores.",
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
       icon: BarChart3,
-      title: "Analytics Completo",
-      description: "Dashboards detalhados para acompanhar o desenvolvimento de cada colaborador.",
+      title: "Acompanhe seu Progresso",
+      description: "Dashboard pessoal para visualizar sua evolução e conquistas.",
       color: "text-info",
       bgColor: "bg-info/10",
     },
     {
-      icon: Users,
-      title: "Gestão de Equipes",
-      description: "Gerencie licenças, atribua cursos e monitore o progresso em tempo real.",
+      icon: Clock,
+      title: "Aprenda no seu Tempo",
+      description: "Acesse 24h por dia, de qualquer lugar, no horário que preferir.",
       color: "text-warning",
       bgColor: "bg-warning/10",
     },
     {
       icon: Smartphone,
-      title: "100% Responsivo",
-      description: "Acesse de qualquer dispositivo: desktop, tablet ou smartphone.",
+      title: "Acesso pelo Celular",
+      description: "Plataforma 100% responsiva, funciona perfeitamente no mobile.",
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
-      icon: Shield,
-      title: "Certificados Válidos",
-      description: "Emita certificados digitais com código de validação para cada conclusão.",
+      icon: Award,
+      title: "Certificados",
+      description: "Receba certificados ao concluir cursos para seu currículo.",
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
-      icon: Zap,
-      title: "Masterclasses ao Vivo",
-      description: "Realize eventos ao vivo com especialistas do mercado.",
+      icon: Sparkles,
+      title: "Conteúdo Exclusivo",
+      description: "Cursos desenvolvidos especialmente para a realidade da Promo Brindes.",
       color: "text-secondary",
       bgColor: "bg-secondary/10",
     },
@@ -78,12 +78,12 @@ const FeaturesSection = () => {
             Recursos
           </span>
           <h2 className="text-foreground">
-            Tudo que você precisa para{" "}
-            <span className="text-gradient">capacitar sua equipe</span>
+            Tudo para o seu{" "}
+            <span className="text-gradient">desenvolvimento</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Uma plataforma completa com recursos avançados para transformar 
-            o desenvolvimento profissional da sua empresa.
+            A MULTIPLIXE oferece recursos completos para você evoluir 
+            profissionalmente dentro da Promo Brindes.
           </p>
         </div>
 

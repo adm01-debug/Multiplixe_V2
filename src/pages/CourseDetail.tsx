@@ -222,39 +222,46 @@ const CourseDetail = () => {
   const completedLessons = lessonsProgress.filter(p => p.is_completed).length;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
+      <header className="sticky top-0 z-50 glass neon-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/dashboard" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div className="relative p-2.5 bg-gradient-to-r from-primary to-secondary rounded-xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity dark:opacity-70 dark:group-hover:opacity-100" />
+                <div className="relative p-2.5 bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg neon-button">
                   <GraduationCap className="h-6 w-6 text-white" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent flex items-center justify-center pulse-glow">
+                  <Sparkles className="w-2.5 h-2.5 text-accent-foreground" />
                 </div>
               </div>
               <div>
-                <h1 className="font-display font-bold text-xl text-foreground">MULTIPLIXE</h1>
-                <p className="text-xs text-muted-foreground">by Promo Brindes</p>
+                <h1 className="font-display font-bold text-xl text-foreground tracking-tight">
+                  MULTIPLI<span className="text-gradient neon-text">XE</span>
+                </h1>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">by Promo Brindes</p>
               </div>
             </Link>
 
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-xl">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <User className="h-4 w-4 text-primary" />
+              <Link 
+                to="/perfil" 
+                className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl neon-border hover:bg-muted transition-colors"
+              >
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm neon-button">
+                  {userName.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-sm font-medium text-foreground">{userName}</span>
-              </div>
+              </Link>
               <Button 
                 variant="outline" 
-                size="sm" 
+                size="icon"
                 onClick={handleSignOut}
-                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50"
+                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"
               >
                 <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline ml-2">Sair</span>
               </Button>
             </div>
           </div>
@@ -268,7 +275,7 @@ const CourseDetail = () => {
           variant="ghost" 
           size="sm" 
           asChild 
-          className="mb-6 rounded-xl hover:bg-muted/50"
+          className="mb-6 rounded-xl hover:bg-muted/50 neon-border"
         >
           <Link to="/catalogo">
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -280,15 +287,19 @@ const CourseDetail = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Course Hero */}
-            <div className="relative rounded-3xl overflow-hidden p-8 md:p-10">
+            <div className="relative rounded-[2rem] overflow-hidden p-8 md:p-10 neon-card">
               {/* Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/5" />
-              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-primary/25 to-secondary/25 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-              <div className="absolute bottom-0 left-0 w-60 h-60 bg-gradient-to-br from-accent/25 to-primary/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-background dark:from-primary/30 dark:via-accent/20" />
+              <div className="absolute inset-0 opacity-30 dark:opacity-50" style={{
+                backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.2) 1px, transparent 0)`,
+                backgroundSize: '32px 32px'
+              }} />
+              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-primary/30 to-accent/30 dark:from-primary/50 dark:to-accent/40 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
+              <div className="absolute bottom-0 left-0 w-60 h-60 bg-gradient-to-br from-accent/25 to-primary/15 dark:from-accent/40 dark:to-primary/30 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
               
               {/* Floating decorations */}
-              <div className="absolute top-6 right-6 w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg animate-bounce-subtle">
-                <Star className="h-5 w-5 text-white" />
+              <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg animate-float dark:shadow-[0_0_25px_hsl(25_100%_55%/0.5)]">
+                <Star className="h-6 w-6 text-white" />
               </div>
 
               <div className="relative z-10">
@@ -348,14 +359,14 @@ const CourseDetail = () => {
 
             {/* Course Preview Video */}
             <div 
-              className="group relative aspect-video rounded-3xl overflow-hidden cursor-pointer"
+              className="group relative aspect-video rounded-[2rem] overflow-hidden cursor-pointer neon-card"
               onClick={progress ? handleContinueCourse : handleStartCourse}
             >
               {/* Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/15 to-secondary/10 dark:from-primary/30 dark:via-accent/25" />
               
               {/* Decorative grid */}
-              <div className="absolute inset-0 opacity-30">
+              <div className="absolute inset-0 opacity-30 dark:opacity-50">
                 <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                   <defs>
                     <pattern id="course-grid" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -367,14 +378,14 @@ const CourseDetail = () => {
               </div>
 
               {/* Floating elements */}
-              <div className="absolute top-8 left-8 w-16 h-16 bg-gradient-to-br from-primary/40 to-secondary/40 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700" />
+              <div className="absolute top-8 left-8 w-16 h-16 bg-gradient-to-br from-primary/40 to-accent/40 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700" />
               <div className="absolute bottom-8 right-8 w-20 h-20 bg-gradient-to-br from-accent/40 to-primary/30 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700" />
 
               {/* Play button */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-50 group-hover:opacity-75 transition-opacity dark:shadow-[0_0_40px_hsl(270_100%_70%/0.5)]" />
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 neon-button">
                     <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" />
                   </div>
                 </div>
@@ -389,7 +400,7 @@ const CourseDetail = () => {
             </div>
 
             {/* What you'll learn */}
-            <div className="rounded-3xl bg-card border border-border/50 overflow-hidden">
+            <div className="rounded-[2rem] bg-card border border-border/50 overflow-hidden neon-card">
               <div className="p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-secondary/5">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10">
@@ -422,12 +433,12 @@ const CourseDetail = () => {
 
             {/* Lessons List */}
             {lessons.length > 0 && (
-              <div className="rounded-3xl bg-card border border-border/50 overflow-hidden">
-                <div className="p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-secondary/5">
+              <div className="rounded-[2rem] bg-card border border-border/50 overflow-hidden neon-card">
+                <div className="p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-accent/5 dark:from-primary/10 dark:to-accent/10">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10">
-                        <BookOpen className="h-5 w-5 text-primary" />
+                      <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg dark:shadow-[0_0_20px_hsl(270_100%_70%/0.4)]">
+                        <BookOpen className="h-5 w-5 text-white" />
                       </div>
                       <div>
                         <h3 className="text-lg font-display font-bold text-foreground">Conteúdo do Curso</h3>
@@ -435,8 +446,8 @@ const CourseDetail = () => {
                       </div>
                     </div>
                     {progress && (
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
-                        <TrendingUp className="h-4 w-4 text-primary" />
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full dark:shadow-[0_0_15px_hsl(270_100%_70%/0.3)]">
+                        <TrendingUp className="h-4 w-4 text-primary neon-icon" />
                         <span className="text-sm font-semibold text-primary">{completedLessons}/{lessons.length}</span>
                       </div>
                     )}
@@ -456,9 +467,9 @@ const CourseDetail = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Course Info Card */}
-            <div className="sticky top-24 rounded-3xl bg-card border border-border/50 overflow-hidden">
+            <div className="sticky top-24 rounded-[2rem] bg-card border border-border/50 overflow-hidden neon-card">
               {/* Header gradient */}
-              <div className="h-2 bg-gradient-to-r from-primary via-secondary to-accent" />
+              <div className="h-2 bg-gradient-to-r from-primary via-accent to-secondary" />
               
               <div className="p-6 space-y-6">
                 {/* Progress */}
@@ -466,13 +477,13 @@ const CourseDetail = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-muted-foreground">Seu progresso</span>
-                      <span className="text-lg font-bold text-primary">
+                      <span className="text-lg font-bold text-primary neon-text">
                         {progress.progress_percentage}%
                       </span>
                     </div>
                     <div className="h-3 rounded-full bg-muted overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-primary to-secondary progress-animated transition-all duration-500"
+                        className="h-full rounded-full bg-gradient-to-r from-primary to-accent progress-animated transition-all duration-500 dark:shadow-[0_0_10px_hsl(270_100%_70%/0.5)]"
                         style={{ width: `${progress.progress_percentage}%` }}
                       />
                     </div>
@@ -485,7 +496,7 @@ const CourseDetail = () => {
                 {/* CTA Button */}
                 {progress ? (
                   <Button 
-                    className="w-full h-12 btn-gradient rounded-2xl text-base font-semibold gap-2" 
+                    className="w-full h-12 bg-gradient-to-r from-primary to-accent text-white rounded-2xl text-base font-semibold gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all neon-button" 
                     onClick={handleContinueCourse}
                   >
                     <Play className="h-5 w-5" />
@@ -493,7 +504,7 @@ const CourseDetail = () => {
                   </Button>
                 ) : (
                   <Button
-                    className="w-full h-12 btn-gradient rounded-2xl text-base font-semibold gap-2"
+                    className="w-full h-12 bg-gradient-to-r from-primary to-accent text-white rounded-2xl text-base font-semibold gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all neon-button"
                     onClick={handleStartCourse}
                     disabled={starting || lessons.length === 0}
                   >
@@ -515,7 +526,7 @@ const CourseDetail = () => {
                 <div className="space-y-4 pt-4 border-t border-border/50">
                   {[
                     { icon: Clock, label: durationText, sublabel: "Duração total", gradient: "from-blue-500 to-cyan-500" },
-                    { icon: BookOpen, label: `${lessons.length} aulas`, sublabel: "Conteúdo do curso", gradient: "from-primary to-secondary" },
+                    { icon: BookOpen, label: `${lessons.length} aulas`, sublabel: "Conteúdo do curso", gradient: "from-primary to-accent" },
                     { icon: Award, label: "Certificado", sublabel: "Ao concluir o curso", gradient: "from-amber-500 to-orange-500" },
                   ].map((stat, index) => (
                     <div key={index} className="flex items-center gap-3 group">

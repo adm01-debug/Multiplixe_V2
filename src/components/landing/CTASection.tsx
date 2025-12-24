@@ -30,7 +30,7 @@ const CTASection = () => {
 
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
             Junte-se a mais de 500 empresas que já estão capacitando seus 
-            colaboradores com a CorpLearn.
+            colaboradores com a MULTIPLIXE.
           </p>
 
           {/* Benefits */}

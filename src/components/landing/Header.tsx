@@ -21,9 +21,14 @@ const Header = () => {
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center group-hover:scale-105 transition-transform">
               <GraduationCap className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-xl text-foreground">
-              Corp<span className="text-primary">Learn</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="font-display font-bold text-xl text-foreground leading-tight">
+                MULTIPLI<span className="text-primary">XE</span>
+              </span>
+              <span className="text-2xs text-muted-foreground font-medium">
+                by Promo Brindes
+              </span>
+            </div>
           </a>
 
           {/* Desktop Navigation */}

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import LessonList from "@/components/player/LessonList";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -39,10 +40,24 @@ interface Course {
   } | null;
 }
 
+interface Lesson {
+  id: string;
+  title: string;
+  description: string | null;
+  duration_seconds: number;
+  order_index: number;
+  is_free: boolean;
+}
+
 interface UserProgress {
   progress_percentage: number;
   started_at: string;
   completed_at: string | null;
+}
+
+interface LessonProgress {
+  lesson_id: string;
+  is_completed: boolean;
 }
 
 const levelLabels: Record<string, string> = {
@@ -57,7 +72,9 @@ const CourseDetail = () => {
   const { user, loading: authLoading, signOut } = useAuth();
 
   const [course, setCourse] = useState<Course | null>(null);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
 
@@ -91,6 +108,17 @@ const CourseDetail = () => {
 
       setCourse(courseData as Course);
 
+      // Fetch lessons
+      const { data: lessonsData } = await supabase
+        .from("lessons")
+        .select("id, title, description, duration_seconds, order_index, is_free")
+        .eq("course_id", courseData.id)
+        .order("order_index");
+
+      if (lessonsData) {
+        setLessons(lessonsData);
+      }
+
       // Fetch user progress
       const { data: progressData } = await supabase
         .from("user_course_progress")
@@ -103,6 +131,17 @@ const CourseDetail = () => {
         setProgress(progressData);
       }
 
+      // Fetch lessons progress
+      const { data: lessonsProgressData } = await supabase
+        .from("user_lesson_progress")
+        .select("lesson_id, is_completed")
+        .eq("user_id", user.id)
+        .eq("course_id", courseData.id);
+
+      if (lessonsProgressData) {
+        setLessonsProgress(lessonsProgressData);
+      }
+
       setLoading(false);
     };
 
@@ -110,7 +149,7 @@ const CourseDetail = () => {
   }, [user, slug, navigate]);
 
   const handleStartCourse = async () => {
-    if (!user || !course) return;
+    if (!user || !course || lessons.length === 0) return;
 
     setStarting(true);
 
@@ -120,22 +159,31 @@ const CourseDetail = () => {
       progress_percentage: 0,
     });
 
-    if (error) {
-      if (error.code === "23505") {
-        toast.info("Você já iniciou este curso!");
-      } else {
-        toast.error("Erro ao iniciar curso");
-      }
-    } else {
-      toast.success("Curso iniciado! Bons estudos!");
-      setProgress({
-        progress_percentage: 0,
-        started_at: new Date().toISOString(),
-        completed_at: null,
-      });
+    if (error && error.code !== "23505") {
+      toast.error("Erro ao iniciar curso");
+      setStarting(false);
+      return;
     }
 
+    // Navigate to first lesson
+    navigate(`/curso/${slug}/aula/${lessons[0].id}`);
     setStarting(false);
+  };
+
+  const handleContinueCourse = () => {
+    if (!course || lessons.length === 0) return;
+
+    // Find the first incomplete lesson
+    const incompleteLesson = lessons.find(
+      (lesson) => !lessonsProgress.find((p) => p.lesson_id === lesson.id && p.is_completed)
+    );
+
+    if (incompleteLesson) {
+      navigate(`/curso/${slug}/aula/${incompleteLesson.id}`);
+    } else {
+      // All lessons completed, go to first lesson
+      navigate(`/curso/${slug}/aula/${lessons[0].id}`);
+    }
   };
 
   const handleSignOut = async () => {
@@ -232,7 +280,10 @@ const CourseDetail = () => {
             </div>
 
             {/* Course Preview */}
-            <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center relative overflow-hidden">
+            <div 
+              className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center relative overflow-hidden cursor-pointer"
+              onClick={progress ? handleContinueCourse : handleStartCourse}
+            >
               <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
               <button className="w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
                 <Play className="w-8 h-8 ml-1" fill="currentColor" />
@@ -263,6 +314,25 @@ const CourseDetail = () => {
                 </ul>
               </CardContent>
             </Card>
+
+            {/* Lessons List */}
+            {lessons.length > 0 && (
+              <Card className="border-border/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="h-5 w-5 text-primary" />
+                    Conteúdo do Curso ({lessons.length} aulas)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <LessonList
+                    lessons={lessons}
+                    progress={lessonsProgress}
+                    courseSlug={slug!}
+                  />
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -290,7 +360,7 @@ const CourseDetail = () => {
 
                 {/* CTA Button */}
                 {progress ? (
-                  <Button className="w-full" size="lg">
+                  <Button className="w-full" size="lg" onClick={handleContinueCourse}>
                     <Play className="h-4 w-4 mr-2" />
                     Continuar Curso
                   </Button>
@@ -299,7 +369,7 @@ const CourseDetail = () => {
                     className="w-full"
                     size="lg"
                     onClick={handleStartCourse}
-                    disabled={starting}
+                    disabled={starting || lessons.length === 0}
                   >
                     {starting ? (
                       <>
@@ -329,7 +399,7 @@ const CourseDetail = () => {
                     <BookOpen className="h-5 w-5 text-muted-foreground" />
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        {course.total_lessons} aulas
+                        {lessons.length} aulas
                       </p>
                       <p className="text-xs text-muted-foreground">Conteúdo do curso</p>
                     </div>

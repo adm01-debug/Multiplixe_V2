@@ -1,0 +1,252 @@
+import { useState, useEffect, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface QuizOption {
+  id: string;
+  option_text: string;
+  is_correct: boolean;
+  order_index: number;
+}
+
+interface QuizQuestion {
+  id: string;
+  question_text: string;
+  explanation: string | null;
+  order_index: number;
+  quiz_options: QuizOption[];
+}
+
+interface Quiz {
+  id: string;
+  title: string;
+  description: string | null;
+  passing_score: number;
+  xp_reward: number;
+  time_limit_seconds: number | null;
+  quiz_questions: QuizQuestion[];
+}
+
+interface QuizPlayerProps {
+  quiz: Quiz;
+  onComplete: (answers: Record<string, string>) => Promise<{ score: number; passed: boolean; xpEarned: number } | null>;
+  onClose: () => void;
+  loading?: boolean;
+}
+
+export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerProps) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState<{ score: number; passed: boolean; xpEarned: number } | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number | null>(quiz.time_limit_seconds);
+  const [showExplanation, setShowExplanation] = useState(false);
+
+  const currentQuestion = quiz.quiz_questions[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / quiz.quiz_questions.length) * 100;
+  const isLastQuestion = currentQuestionIndex === quiz.quiz_questions.length - 1;
+  const hasAnswered = currentQuestion && answers[currentQuestion.id];
+
+  // Timer effect
+  useEffect(() => {
+    if (timeLeft === null || timeLeft <= 0 || showResult) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev === null || prev <= 1) {
+          clearInterval(timer);
+          handleSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, showResult]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleSelectOption = (optionId: string) => {
+    if (showExplanation) return;
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: optionId
+    }));
+  };
+
+  const handleNext = () => {
+    if (isLastQuestion) {
+      handleSubmit();
+    } else {
+      setCurrentQuestionIndex(prev => prev + 1);
+      setShowExplanation(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    const finalAnswers = { ...answers };
+    const res = await onComplete(finalAnswers);
+    if (res) {
+      setResult(res);
+      setShowResult(true);
+    }
+  };
+
+  const handleRetry = () => {
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setShowResult(false);
+    setResult(null);
+    setTimeLeft(quiz.time_limit_seconds);
+    setShowExplanation(false);
+  };
+
+  if (showResult && result) {
+    return (
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader className="text-center">
+          <div className={cn(
+            "w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-4",
+            result.passed ? "bg-green-500/20" : "bg-red-500/20"
+          )}>
+            {result.passed ? (
+              <Trophy className="w-10 h-10 text-green-500" />
+            ) : (
+              <XCircle className="w-10 h-10 text-red-500" />
+            )}
+          </div>
+          <CardTitle className="text-2xl">
+            {result.passed ? '🎉 Parabéns!' : 'Continue tentando!'}
+          </CardTitle>
+          <CardDescription>
+            {result.passed 
+              ? 'Você passou no quiz!' 
+              : `Você precisa de ${quiz.passing_score}% para passar.`}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="text-center">
+            <div className="text-5xl font-bold mb-2">{result.score}%</div>
+            <p className="text-muted-foreground">Pontuação</p>
+          </div>
+
+          {result.xpEarned > 0 && (
+            <div className="flex items-center justify-center gap-2 p-4 bg-primary/10 rounded-lg">
+              <Star className="w-6 h-6 text-primary" />
+              <span className="text-lg font-semibold">+{result.xpEarned} XP ganhos!</span>
+            </div>
+          )}
+
+          <div className="flex gap-3">
+            {!result.passed && (
+              <Button onClick={handleRetry} variant="outline" className="flex-1">
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Tentar novamente
+              </Button>
+            )}
+            <Button onClick={onClose} className="flex-1">
+              {result.passed ? 'Continuar' : 'Fechar'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <div className="flex items-center justify-between mb-4">
+          <Badge variant="outline">
+            Questão {currentQuestionIndex + 1} de {quiz.quiz_questions.length}
+          </Badge>
+          {timeLeft !== null && (
+            <Badge variant={timeLeft < 60 ? "destructive" : "secondary"} className="gap-1">
+              <Clock className="w-3 h-3" />
+              {formatTime(timeLeft)}
+            </Badge>
+          )}
+        </div>
+        <Progress value={progress} className="h-2" />
+        <CardTitle className="mt-4 text-lg">{quiz.title}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="text-lg font-medium">{currentQuestion.question_text}</div>
+
+        <div className="space-y-3">
+          {currentQuestion.quiz_options.map((option) => {
+            const isSelected = answers[currentQuestion.id] === option.id;
+            const showCorrect = showExplanation && option.is_correct;
+            const showIncorrect = showExplanation && isSelected && !option.is_correct;
+
+            return (
+              <button
+                key={option.id}
+                onClick={() => handleSelectOption(option.id)}
+                disabled={showExplanation}
+                className={cn(
+                  "w-full p-4 rounded-lg border text-left transition-all",
+                  "hover:border-primary hover:bg-primary/5",
+                  isSelected && !showExplanation && "border-primary bg-primary/10",
+                  showCorrect && "border-green-500 bg-green-500/10",
+                  showIncorrect && "border-red-500 bg-red-500/10",
+                  showExplanation && "cursor-default"
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0",
+                    isSelected && !showExplanation && "border-primary bg-primary",
+                    showCorrect && "border-green-500 bg-green-500",
+                    showIncorrect && "border-red-500 bg-red-500"
+                  )}>
+                    {showCorrect && <CheckCircle className="w-4 h-4 text-white" />}
+                    {showIncorrect && <XCircle className="w-4 h-4 text-white" />}
+                    {isSelected && !showExplanation && <div className="w-2 h-2 rounded-full bg-white" />}
+                  </div>
+                  <span className="flex-1">{option.option_text}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {showExplanation && currentQuestion.explanation && (
+          <div className="p-4 bg-muted rounded-lg">
+            <p className="text-sm font-medium mb-1">Explicação:</p>
+            <p className="text-sm text-muted-foreground">{currentQuestion.explanation}</p>
+          </div>
+        )}
+
+        <div className="flex gap-3">
+          {hasAnswered && !showExplanation && currentQuestion.explanation && (
+            <Button 
+              variant="outline" 
+              onClick={() => setShowExplanation(true)}
+              className="flex-1"
+            >
+              Ver explicação
+            </Button>
+          )}
+          <Button 
+            onClick={handleNext} 
+            disabled={!hasAnswered || loading}
+            className="flex-1"
+          >
+            {loading ? 'Enviando...' : isLastQuestion ? 'Finalizar' : 'Próxima'}
+            {!isLastQuestion && <ArrowRight className="w-4 h-4 ml-2" />}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};

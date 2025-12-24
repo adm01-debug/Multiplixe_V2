@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3 } from 'lucide-react';
+import { Loader2, Target, CheckCircle, TrendingUp, Users, Calendar, Trophy, Medal, Download, FileText, FileSpreadsheet, BarChart3, AlertTriangle, XCircle } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Legend, Cell } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -456,6 +456,57 @@ export const QuizStats = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* Low Performance Alerts */}
+      {stats.filter(s => s.totalAttempts >= 5 && s.passingRate < 50).length > 0 && (
+        <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+            <div className="flex-1">
+              <h4 className="font-semibold text-destructive mb-2">
+                Quizzes com Taxa de Aprovação Baixa (&lt;50%)
+              </h4>
+              <p className="text-sm text-muted-foreground mb-3">
+                Os seguintes quizzes precisam de atenção - considere revisar o conteúdo ou as perguntas:
+              </p>
+              <div className="space-y-2">
+                {stats
+                  .filter(s => s.totalAttempts >= 5 && s.passingRate < 50)
+                  .sort((a, b) => a.passingRate - b.passingRate)
+                  .map((quiz) => (
+                    <div 
+                      key={quiz.quizId} 
+                      className="flex items-center justify-between p-3 rounded-lg bg-background/60 border border-border/50"
+                    >
+                      <div className="flex items-center gap-3">
+                        <XCircle className="h-4 w-4 text-destructive" />
+                        <div>
+                          <p className="font-medium text-sm">{quiz.quizTitle}</p>
+                          <p className="text-xs text-muted-foreground">{quiz.courseTitle}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-destructive">{quiz.passingRate}%</p>
+                        <p className="text-xs text-muted-foreground">
+                          {quiz.passedAttempts}/{quiz.totalAttempts} aprovados
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <div className="mt-3 p-3 rounded-lg bg-muted/30 text-sm text-muted-foreground">
+                <p className="font-medium mb-1">💡 Sugestões:</p>
+                <ul className="list-disc list-inside space-y-1 text-xs">
+                  <li>Revise as perguntas para garantir que estão claras</li>
+                  <li>Verifique se o conteúdo das aulas cobre os tópicos do quiz</li>
+                  <li>Considere adicionar explicações mais detalhadas nas respostas</li>
+                  <li>Avalie se a nota de aprovação está adequada</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Overall Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

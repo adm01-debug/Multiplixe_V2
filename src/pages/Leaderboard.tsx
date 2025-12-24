@@ -1,15 +1,23 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { useLeaderboard } from '@/hooks/useLeaderboard';
+import { useLeaderboard, LeaderboardPeriod } from '@/hooks/useLeaderboard';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ArrowLeft, Trophy, Medal, Crown, Star, TrendingUp, Users } from 'lucide-react';
+import { ArrowLeft, Trophy, Medal, Crown, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity } from 'lucide-react';
 import { calculateUserLevel } from '@/lib/levelSystem';
+
+const periodOptions: { value: LeaderboardPeriod; label: string; icon: typeof Calendar }[] = [
+  { value: 'week', label: 'Esta Semana', icon: Calendar },
+  { value: 'month', label: 'Este Mês', icon: CalendarDays },
+  { value: 'all', label: 'Geral', icon: Infinity },
+];
 
 const Leaderboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { leaderboard, userRank, loading } = useLeaderboard(50);
+  const [period, setPeriod] = useState<LeaderboardPeriod>('all');
+  const { leaderboard, userRank, loading } = useLeaderboard(50, period);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -34,6 +42,17 @@ const Leaderboard = () => {
         return 'bg-gradient-to-r from-amber-600/20 to-orange-600/20 border-amber-600/50';
       default:
         return 'bg-card/50 border-border/50';
+    }
+  };
+
+  const getPeriodLabel = () => {
+    switch (period) {
+      case 'week':
+        return 'desta semana';
+      case 'month':
+        return 'deste mês';
+      default:
+        return 'de todos os tempos';
     }
   };
 
@@ -65,7 +84,7 @@ const Leaderboard = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold neon-text">Ranking</h1>
-                <p className="text-sm text-muted-foreground">Top jogadores por XP</p>
+                <p className="text-sm text-muted-foreground">Top jogadores {getPeriodLabel()}</p>
               </div>
             </div>
           </div>
@@ -73,8 +92,32 @@ const Leaderboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-8">
+        {/* Period Filter */}
+        <div className="flex flex-wrap gap-2 p-1.5 bg-muted/50 rounded-2xl neon-border w-fit">
+          {periodOptions.map((option) => {
+            const IconComponent = option.icon;
+            const isActive = period === option.value;
+            return (
+              <button
+                key={option.value}
+                onClick={() => setPeriod(option.value)}
+                className={`
+                  flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300
+                  ${isActive 
+                    ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg neon-button' 
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  }
+                `}
+              >
+                <IconComponent className="h-4 w-4" />
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+
         {/* User's Rank Card */}
-        {userRank && userRank.rank > 0 && (
+        {userRank && userRank.rank > 0 && period === 'all' && (
           <div className="neon-card p-6 rounded-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -82,7 +125,7 @@ const Leaderboard = () => {
                   <TrendingUp className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Sua posição</p>
+                  <p className="text-sm text-muted-foreground">Sua posição geral</p>
                   <p className="text-3xl font-bold neon-text">#{userRank.rank}</p>
                 </div>
               </div>
@@ -104,7 +147,7 @@ const Leaderboard = () => {
           {leaderboard.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Trophy className="h-16 w-16 mx-auto mb-4 opacity-50" />
-              <p>Nenhum jogador no ranking ainda.</p>
+              <p>Nenhum jogador no ranking {getPeriodLabel()}.</p>
               <p className="text-sm">Complete lições para aparecer aqui!</p>
             </div>
           ) : (

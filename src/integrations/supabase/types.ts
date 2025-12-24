@@ -492,7 +492,7 @@ export type Database = {
         }
       }
       get_leaderboard: {
-        Args: { p_limit?: number }
+        Args: { p_limit?: number; p_period?: string }
         Returns: {
           avatar_url: string
           current_level: number

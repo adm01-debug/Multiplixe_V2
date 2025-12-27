@@ -14,6 +14,7 @@ import AchievementUnlocked from "@/components/AchievementUnlocked";
 import StreakCelebration from "@/components/StreakCelebration";
 import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
+import PomodoroTimer from "@/components/pomodoro/PomodoroTimer";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -565,6 +566,11 @@ const LessonPlayer = () => {
                 style={{ width: `${courseProgress}%` }}
               />
             </div>
+          </div>
+
+          {/* Pomodoro Timer */}
+          <div className="p-4 border-b border-border/50">
+            <PomodoroTimer variant="compact" />
           </div>
 
           {/* Lessons List */}

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, GraduationCap, Sparkles } from "lucide-react";
+import { Menu, GraduationCap, Sparkles, Route } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import {
   Sheet,
@@ -13,7 +13,7 @@ import {
 const Header = () => {
   const navLinks = [
     { label: "Recursos", href: "#recursos" },
-    { label: "Trilhas", href: "#trilhas" },
+    { label: "Trilhas", href: "/trilhas", isRoute: true },
     { label: "Como Funciona", href: "#como-funciona" },
   ];
 
@@ -44,13 +44,24 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50"
-              >
-                {link.label}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50 flex items-center gap-1.5"
+                >
+                  <Route className="h-4 w-4" />
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
           </nav>
 
@@ -91,13 +102,24 @@ const Header = () => {
                 </SheetHeader>
                 <nav className="flex flex-col gap-2 mt-8">
                   {navLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-4 rounded-xl hover:bg-muted/50"
-                    >
-                      {link.label}
-                    </a>
+                    link.isRoute ? (
+                      <Link
+                        key={link.label}
+                        to={link.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-4 rounded-xl hover:bg-muted/50 flex items-center gap-2"
+                      >
+                        <Route className="h-4 w-4" />
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-4 rounded-xl hover:bg-muted/50"
+                      >
+                        {link.label}
+                      </a>
+                    )
                   ))}
                 </nav>
                 <div className="flex items-center justify-between pt-6 mt-6 border-t border-border/50">

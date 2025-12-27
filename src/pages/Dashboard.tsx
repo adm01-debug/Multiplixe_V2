@@ -34,7 +34,8 @@ import {
   Rocket,
   Crown,
   Medal,
-  ShieldAlert
+  ShieldAlert,
+  Route
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -339,6 +340,13 @@ const Dashboard = () => {
               >
                 <Trophy className="h-4 w-4" />
                 Ranking
+              </Link>
+              <Link 
+                to="/trilhas" 
+                className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
+              >
+                <Route className="h-4 w-4" />
+                Trilhas
               </Link>
               {isAdmin && (
                 <Link 

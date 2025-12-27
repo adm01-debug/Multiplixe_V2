@@ -186,6 +186,128 @@ export type Database = {
           },
         ]
       }
+      learning_path_certificates: {
+        Row: {
+          id: string
+          issued_at: string
+          learning_path_id: string
+          path_title: string
+          user_id: string
+          user_name: string
+          verification_code: string
+        }
+        Insert: {
+          id?: string
+          issued_at?: string
+          learning_path_id: string
+          path_title: string
+          user_id: string
+          user_name: string
+          verification_code: string
+        }
+        Update: {
+          id?: string
+          issued_at?: string
+          learning_path_id?: string
+          path_title?: string
+          user_id?: string
+          user_name?: string
+          verification_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_path_certificates_learning_path_id_fkey"
+            columns: ["learning_path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_paths"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_path_courses: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          learning_path_id: string
+          order_index: number
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          learning_path_id: string
+          order_index?: number
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          learning_path_id?: string
+          order_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_path_courses_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_path_courses_learning_path_id_fkey"
+            columns: ["learning_path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_paths"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_paths: {
+        Row: {
+          created_at: string
+          description: string | null
+          difficulty_level: string | null
+          estimated_hours: number | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          slug: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          xp_reward: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          estimated_hours?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          slug: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          xp_reward?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          estimated_hours?: number | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          slug?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          xp_reward?: number | null
+        }
+        Relationships: []
+      }
       lessons: {
         Row: {
           course_id: string
@@ -540,6 +662,53 @@ export type Database = {
           },
         ]
       }
+      user_learning_path_progress: {
+        Row: {
+          completed_at: string | null
+          courses_completed: number | null
+          created_at: string
+          id: string
+          learning_path_id: string
+          progress_percentage: number | null
+          started_at: string
+          total_courses: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          courses_completed?: number | null
+          created_at?: string
+          id?: string
+          learning_path_id: string
+          progress_percentage?: number | null
+          started_at?: string
+          total_courses?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          courses_completed?: number | null
+          created_at?: string
+          id?: string
+          learning_path_id?: string
+          progress_percentage?: number | null
+          started_at?: string
+          total_courses?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_learning_path_progress_learning_path_id_fkey"
+            columns: ["learning_path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_paths"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_lesson_progress: {
         Row: {
           completed_at: string | null
@@ -873,6 +1042,29 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      issue_learning_path_certificate: {
+        Args: {
+          p_learning_path_id: string
+          p_path_title: string
+          p_user_id: string
+          p_user_name: string
+        }
+        Returns: {
+          id: string
+          issued_at: string
+          learning_path_id: string
+          path_title: string
+          user_id: string
+          user_name: string
+          verification_code: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "learning_path_certificates"
           isOneToOne: true
           isSetofReturn: false
         }

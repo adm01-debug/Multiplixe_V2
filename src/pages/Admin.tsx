@@ -29,6 +29,7 @@ import { Switch } from '@/components/ui/switch';
 import { CourseForm } from '@/components/admin/CourseForm';
 import { LessonsManager } from '@/components/admin/LessonsManager';
 import { QuizStats } from '@/components/admin/QuizStats';
+import { LearningPathsManager } from '@/components/admin/LearningPathsManager';
 import {
   GraduationCap,
   ArrowLeft,
@@ -47,6 +48,7 @@ import {
   Trash2,
   Plus,
   Play,
+  Route,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Target } from 'lucide-react';
@@ -334,10 +336,14 @@ const Admin = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-4">
+          <TabsList className="grid w-full max-w-2xl grid-cols-5">
             <TabsTrigger value="courses" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               Cursos
+            </TabsTrigger>
+            <TabsTrigger value="paths" className="flex items-center gap-2">
+              <Route className="h-4 w-4" />
+              Trilhas
             </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
@@ -480,6 +486,11 @@ const Admin = () => {
                 </TableBody>
               </Table>
             </div>
+          </TabsContent>
+
+          {/* Learning Paths Tab */}
+          <TabsContent value="paths">
+            <LearningPathsManager />
           </TabsContent>
 
           {/* Users Tab */}

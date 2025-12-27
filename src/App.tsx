@@ -36,30 +36,30 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <TooltipProvider>
-          <AuthProvider>
           <Toaster />
           <Sonner />
-          <CommandPalette />
-          <ConditionalPomodoroButton />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/catalogo" element={<Catalog />} />
-              <Route path="/curso/:slug" element={<CourseDetail />} />
-              <Route path="/curso/:slug/aula/:lessonId" element={<LessonPlayer />} />
-              <Route path="/perfil" element={<Profile />} />
-              <Route path="/ranking" element={<Leaderboard />} />
-              <Route path="/trilhas" element={<LearningPaths />} />
-              <Route path="/trilha/:slug" element={<LearningPathDetail />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/verificar-certificado" element={<VerifyCertificate />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <AuthProvider>
+              <CommandPalette />
+              <ConditionalPomodoroButton />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/catalogo" element={<Catalog />} />
+                <Route path="/curso/:slug" element={<CourseDetail />} />
+                <Route path="/curso/:slug/aula/:lessonId" element={<LessonPlayer />} />
+                <Route path="/perfil" element={<Profile />} />
+                <Route path="/ranking" element={<Leaderboard />} />
+                <Route path="/trilhas" element={<LearningPaths />} />
+                <Route path="/trilha/:slug" element={<LearningPathDetail />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/verificar-certificado" element={<VerifyCertificate />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
           </BrowserRouter>
-          </AuthProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

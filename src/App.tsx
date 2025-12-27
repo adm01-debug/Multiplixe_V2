@@ -4,9 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { AuthProvider } from "@/hooks/useAuth";
+import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "next-themes";
 import CommandPalette from "@/components/CommandPalette";
+import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -23,6 +24,13 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Component that conditionally shows the Pomodoro button
+const ConditionalPomodoroButton = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  return <FloatingPomodoroButton />;
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -32,6 +40,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <CommandPalette />
+          <ConditionalPomodoroButton />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />

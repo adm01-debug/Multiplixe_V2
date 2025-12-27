@@ -388,6 +388,36 @@ export type Database = {
         }
         Relationships: []
       }
+      pomodoro_sessions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          session_type: string
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          duration_minutes: number
+          id?: string
+          session_type: string
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          session_type?: string
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -980,6 +1010,17 @@ export type Database = {
         }
       }
       check_streak_risk_notifications: { Args: never; Returns: undefined }
+      complete_pomodoro_session: {
+        Args: {
+          p_duration_minutes: number
+          p_session_type: string
+          p_user_id: string
+        }
+        Returns: {
+          session_id: string
+          xp_earned: number
+        }[]
+      }
       create_notification: {
         Args: {
           p_action_url?: string

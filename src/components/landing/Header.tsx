@@ -1,12 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, GraduationCap, Sparkles } from "lucide-react";
+import { Menu, GraduationCap, Sparkles } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const navLinks = [
     { label: "Recursos", href: "#recursos" },
     { label: "Trilhas", href: "#trilhas" },
@@ -61,45 +65,57 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2.5 text-foreground rounded-xl hover:bg-muted/50 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden py-6 border-t border-border/50 animate-fade-in">
-            <nav className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-4 rounded-xl hover:bg-muted/50"
-                  onClick={() => setIsMenuOpen(false)}
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-xl"
+                  aria-label="Abrir menu"
                 >
-                  {link.label}
-                </a>
-              ))}
-              <div className="flex items-center justify-between pt-4 mt-2 border-t border-border/50">
-                <span className="text-sm text-muted-foreground px-4">Tema</span>
-                <ThemeToggle />
-              </div>
-              <div className="pt-4">
-                <Link to="/auth">
-                  <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold h-12">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Acessar Plataforma
-                  </Button>
-                </Link>
-              </div>
-            </nav>
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                      <GraduationCap className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <span className="font-display font-bold text-lg">
+                      MULTIPLI<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">XE</span>
+                    </span>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-2 mt-8">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-4 rounded-xl hover:bg-muted/50"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </nav>
+                <div className="flex items-center justify-between pt-6 mt-6 border-t border-border/50">
+                  <span className="text-sm text-muted-foreground">Tema</span>
+                  <ThemeToggle />
+                </div>
+                <div className="pt-6">
+                  <Link to="/auth">
+                    <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold h-12">
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Acessar Plataforma
+                    </Button>
+                  </Link>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

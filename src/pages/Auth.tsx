@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
 import { 
   GraduationCap, 
   Mail, 
@@ -29,7 +30,11 @@ const emailSchema = z.string()
   );
 
 const passwordSchema = z.string()
-  .min(6, 'A senha deve ter pelo menos 6 caracteres');
+  .min(8, 'A senha deve ter pelo menos 8 caracteres')
+  .regex(/[A-Z]/, 'Deve conter letra maiúscula')
+  .regex(/[a-z]/, 'Deve conter letra minúscula')
+  .regex(/[0-9]/, 'Deve conter número')
+  .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Deve conter caractere especial');
 
 const fullNameSchema = z.string()
   .min(2, 'Nome deve ter pelo menos 2 caracteres')
@@ -329,12 +334,13 @@ const Auth = () => {
                 <Input
                   id="password"
                   type="password"
-                  placeholder={isSignUp ? "Mínimo 6 caracteres" : "••••••••"}
+                  placeholder={isSignUp ? "Crie uma senha forte" : "••••••••"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="h-12 pl-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors"
                 />
               </div>
+              {isSignUp && <PasswordStrengthIndicator password={password} />}
               {errors.password && (
                 <p className="text-sm text-destructive flex items-center gap-1">
                   <span className="inline-block w-1 h-1 rounded-full bg-destructive" />

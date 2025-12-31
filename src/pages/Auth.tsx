@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
-import { 
+import {
   GraduationCap, 
   Mail, 
   Lock, 
@@ -21,7 +23,8 @@ import {
   BookOpen,
   Trophy,
   Eye,
-  EyeOff
+  EyeOff,
+  ShieldAlert
 } from 'lucide-react';
 
 const emailSchema = z.string()
@@ -54,12 +57,74 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isPasswordBreached, setIsPasswordBreached] = useState<boolean | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [lockoutSeconds, setLockoutSeconds] = useState(0);
+  const [attemptCount, setAttemptCount] = useState(0);
 
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
     }
   }, [user, navigate]);
+
+  // Countdown timer for lockout
+  useEffect(() => {
+    if (lockoutSeconds <= 0) return;
+    
+    const timer = setInterval(() => {
+      setLockoutSeconds(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [lockoutSeconds]);
+
+  // Check lockout status when email changes
+  const checkLockoutStatus = useCallback(async (emailToCheck: string) => {
+    if (!emailToCheck || isSignUp) return;
+    
+    try {
+      const { data, error } = await supabase.rpc('check_login_allowed', { 
+        p_email: emailToCheck 
+      });
+      
+      if (!error && data && data.length > 0) {
+        const result = data[0];
+        if (!result.is_allowed) {
+          setLockoutSeconds(result.remaining_seconds);
+          setAttemptCount(result.attempt_count);
+        } else {
+          setLockoutSeconds(0);
+          setAttemptCount(result.attempt_count);
+        }
+      }
+    } catch (err) {
+      console.error('Error checking lockout status:', err);
+    }
+  }, [isSignUp]);
+
+  // Debounce email check
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (email && !isSignUp) {
+        checkLockoutStatus(email);
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [email, isSignUp, checkLockoutStatus]);
+
+  const formatLockoutTime = (seconds: number): string => {
+    if (seconds >= 60) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}m ${secs}s`;
+    }
+    return `${seconds}s`;
+  };
 
   const validateForm = (isSignUpMode: boolean) => {
     const newErrors: { email?: string; password?: string; fullName?: string } = {};
@@ -89,21 +154,55 @@ const Auth = () => {
     e.preventDefault();
     if (!validateForm(false)) return;
     
+    // Check if currently locked out
+    if (lockoutSeconds > 0) {
+      toast.error(`Conta temporariamente bloqueada. Tente novamente em ${formatLockoutTime(lockoutSeconds)}.`);
+      return;
+    }
+    
     setLoading(true);
     const { error } = await signIn(email, password);
-    setLoading(false);
     
     if (error) {
-      if (error.message.includes('Invalid login credentials')) {
-        toast.error('Email ou senha incorretos');
-      } else if (error.message.includes('Email not confirmed')) {
-        toast.error('Por favor, confirme seu email antes de fazer login');
-      } else {
+      // Record failed attempt
+      try {
+        const { data } = await supabase.rpc('record_failed_login', { 
+          p_email: email,
+          p_ip_address: null
+        });
+        
+        if (data && data.length > 0) {
+          const result = data[0];
+          setAttemptCount(result.total_attempts);
+          
+          if (result.is_locked) {
+            setLockoutSeconds(result.lockout_seconds);
+            toast.error(`Muitas tentativas. Conta bloqueada por ${formatLockoutTime(result.lockout_seconds)}.`);
+          } else if (result.total_attempts >= 3) {
+            toast.error(`Email ou senha incorretos. ${5 - result.total_attempts} tentativas restantes.`);
+          } else if (error.message.includes('Invalid login credentials')) {
+            toast.error('Email ou senha incorretos');
+          } else if (error.message.includes('Email not confirmed')) {
+            toast.error('Por favor, confirme seu email antes de fazer login');
+          } else {
+            toast.error('Erro ao fazer login. Tente novamente.');
+          }
+        }
+      } catch (err) {
+        console.error('Error recording failed login:', err);
         toast.error('Erro ao fazer login. Tente novamente.');
       }
     } else {
+      // Reset attempts on successful login
+      try {
+        await supabase.rpc('reset_login_attempts', { p_email: email });
+      } catch (err) {
+        console.error('Error resetting login attempts:', err);
+      }
       toast.success('Bem-vindo(a) de volta!');
     }
+    
+    setLoading(false);
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -281,6 +380,29 @@ const Auth = () => {
               Cadastrar
             </button>
           </div>
+
+          {/* Lockout Alert */}
+          {!isSignUp && lockoutSeconds > 0 && (
+            <Alert variant="destructive" className="mb-6">
+              <ShieldAlert className="h-4 w-4" />
+              <AlertDescription className="ml-2">
+                <span className="font-medium">Conta temporariamente bloqueada.</span>
+                <br />
+                Muitas tentativas de login falhadas. Tente novamente em{' '}
+                <span className="font-bold">{formatLockoutTime(lockoutSeconds)}</span>.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Attempts Warning */}
+          {!isSignUp && attemptCount >= 3 && attemptCount < 5 && lockoutSeconds === 0 && (
+            <Alert variant="default" className="mb-6 border-warning bg-warning/10">
+              <ShieldAlert className="h-4 w-4 text-warning" />
+              <AlertDescription className="ml-2 text-warning">
+                Atenção: {5 - attemptCount} tentativas restantes antes do bloqueio temporário.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Form */}
           <form onSubmit={isSignUp ? handleSignUp : handleSignIn} className="space-y-5">

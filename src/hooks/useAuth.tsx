@@ -18,13 +18,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const checkNewDevice = async (userId: string, userEmail: string) => {
+    try {
+      // Get IP address from a public API
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      const ipAddress = ipData.ip || '0.0.0.0';
+      
+      await supabase.functions.invoke('detect-new-device', {
+        body: {
+          user_id: userId,
+          user_email: userEmail,
+          ip_address: ipAddress,
+          user_agent: navigator.userAgent
+        }
+      });
+    } catch (error) {
+      console.error('Error checking device:', error);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        // Check for new device on sign in
+        if (event === 'SIGNED_IN' && session?.user) {
+          // Use setTimeout to avoid blocking the auth flow
+          setTimeout(() => {
+            checkNewDevice(session.user.id, session.user.email || '');
+          }, 100);
+        }
       }
     );
 

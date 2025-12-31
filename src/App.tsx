@@ -23,8 +23,9 @@ import Admin from "./pages/Admin";
 import VerifyCertificate from "./pages/VerifyCertificate";
 import LearningPaths from "./pages/LearningPaths";
 import LearningPathDetail from "./pages/LearningPathDetail";
-import SecuritySettings from "./pages/SecuritySettings";
+
 import RateLimitDashboard from "./pages/RateLimitDashboard";
+import SecurityDashboard from "./pages/SecurityDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,7 +63,7 @@ const App = () => (
                 <Route path="/trilha/:slug" element={<ProtectedRoute><LearningPathDetail /></ProtectedRoute>} />
                 <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
                 <Route path="/admin/security" element={<ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute>} />
-                <Route path="/seguranca" element={<ProtectedRoute><SecuritySettings /></ProtectedRoute>} />
+                <Route path="/seguranca" element={<ProtectedRoute><SecurityDashboard /></ProtectedRoute>} />
                 <Route path="/verificar-certificado" element={<VerifyCertificate />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

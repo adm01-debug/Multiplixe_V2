@@ -29,6 +29,7 @@ import { Switch } from '@/components/ui/switch';
 import { CourseForm } from '@/components/admin/CourseForm';
 import { LessonsManager } from '@/components/admin/LessonsManager';
 import { QuizStats } from '@/components/admin/QuizStats';
+import PermissionsManager from '@/components/admin/PermissionsManager';
 import { LearningPathsManager } from '@/components/admin/LearningPathsManager';
 import {
   GraduationCap,
@@ -49,6 +50,7 @@ import {
   Plus,
   Play,
   Route,
+  Shield,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Target } from 'lucide-react';
@@ -336,7 +338,7 @@ const Admin = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-5">
+          <TabsList className="grid w-full max-w-3xl grid-cols-6">
             <TabsTrigger value="courses" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               Cursos
@@ -352,6 +354,10 @@ const Admin = () => {
             <TabsTrigger value="quizzes" className="flex items-center gap-2">
               <Target className="h-4 w-4" />
               Quizzes
+            </TabsTrigger>
+            <TabsTrigger value="permissions" className="flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Permissões
             </TabsTrigger>
             <TabsTrigger value="stats" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
@@ -660,6 +666,11 @@ const Admin = () => {
                 ))}
               </div>
             </div>
+          </TabsContent>
+
+          {/* Permissions Tab */}
+          <TabsContent value="permissions">
+            <PermissionsManager />
           </TabsContent>
         </Tabs>
       </main>

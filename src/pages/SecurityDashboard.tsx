@@ -7,6 +7,7 @@ import { useUserSessions } from '@/hooks/useUserSessions';
 import { useSecurityAlerts } from '@/hooks/useSecurityAlerts';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 import NotificationPermissionBanner from '@/components/security/NotificationPermissionBanner';
+import PasskeyManager from '@/components/security/PasskeyManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -565,6 +566,9 @@ const SecurityDashboard = () => {
                   )}
                 </CardContent>
               </Card>
+
+              {/* Passkeys Section */}
+              <PasskeyManager />
             </TabsContent>
 
             {/* Alerts Tab */}

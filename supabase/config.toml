@@ -2,3 +2,15 @@ project_id = "gyqtndkjvwvtkfeaxtlv"
 
 [functions.generate-certificate]
 verify_jwt = true
+
+[functions.approve-password-reset]
+verify_jwt = true
+
+[functions.detect-new-device]
+verify_jwt = false
+
+[functions.cleanup-security-logs]
+verify_jwt = true
+
+[functions.send-security-alert]
+verify_jwt = true

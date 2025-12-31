@@ -526,6 +526,36 @@ export type Database = {
           },
         ]
       }
+      login_attempts: {
+        Row: {
+          attempt_count: number
+          created_at: string
+          email: string
+          id: string
+          ip_address: unknown
+          last_attempt_at: string
+          locked_until: string | null
+        }
+        Insert: {
+          attempt_count?: number
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: unknown
+          last_attempt_at?: string
+          locked_until?: string | null
+        }
+        Update: {
+          attempt_count?: number
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: unknown
+          last_attempt_at?: string
+          locked_until?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           action_url: string | null
@@ -1566,6 +1596,14 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      check_login_allowed: {
+        Args: { p_email: string }
+        Returns: {
+          attempt_count: number
+          is_allowed: boolean
+          remaining_seconds: number
+        }[]
+      }
       check_rate_limit: {
         Args: { p_endpoint: string; p_ip_address: unknown; p_user_id?: string }
         Returns: {
@@ -1701,6 +1739,15 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      record_failed_login: {
+        Args: { p_email: string; p_ip_address?: unknown }
+        Returns: {
+          is_locked: boolean
+          lockout_seconds: number
+          total_attempts: number
+        }[]
+      }
+      reset_login_attempts: { Args: { p_email: string }; Returns: undefined }
       update_user_streak: {
         Args: { p_user_id: string }
         Returns: {

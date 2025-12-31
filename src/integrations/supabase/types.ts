@@ -261,6 +261,45 @@ export type Database = {
           },
         ]
       }
+      known_devices: {
+        Row: {
+          created_at: string
+          device_fingerprint: string
+          device_name: string
+          first_seen_at: string
+          id: string
+          ip_address: unknown
+          is_trusted: boolean | null
+          last_seen_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_fingerprint: string
+          device_name: string
+          first_seen_at?: string
+          id?: string
+          ip_address?: unknown
+          is_trusted?: boolean | null
+          last_seen_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_fingerprint?: string
+          device_name?: string
+          first_seen_at?: string
+          id?: string
+          ip_address?: unknown
+          is_trusted?: boolean | null
+          last_seen_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       learning_path_certificates: {
         Row: {
           id: string

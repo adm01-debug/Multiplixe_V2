@@ -5,6 +5,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useMFA } from '@/hooks/useMFA';
 import { useUserSessions } from '@/hooks/useUserSessions';
 import { useSecurityAlerts } from '@/hooks/useSecurityAlerts';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
+import NotificationPermissionBanner from '@/components/security/NotificationPermissionBanner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +26,8 @@ import {
   Clock,
   MapPin,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  Bell
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -36,6 +39,7 @@ const SecurityDashboard = () => {
   const { settings: mfaSettings, loading: mfaLoading } = useMFA();
   const { sessions, loading: sessionsLoading, revokeSession, revokeAllOtherSessions, refetch: refetchSessions } = useUserSessions();
   const { alerts, loading: alertsLoading, unreadCount, resolveAlert, refetch: refetchAlerts } = useSecurityAlerts();
+  const { isEnabled: notificationsEnabled, requestPermission } = usePushNotifications();
   const [revokingSession, setRevokingSession] = useState<string | null>(null);
 
   const handleRevokeSession = async (sessionId: string) => {
@@ -91,10 +95,11 @@ const SecurityDashboard = () => {
   };
 
   const securityScore = (() => {
-    let score = 50;
+    let score = 40;
     if (mfaSettings?.totp_enabled) score += 30;
     if (mfaSettings?.backup_codes && mfaSettings.backup_codes.length > 0) score += 10;
     if (sessions.length <= 3) score += 10;
+    if (notificationsEnabled) score += 10;
     return Math.min(score, 100);
   })();
 
@@ -150,6 +155,9 @@ const SecurityDashboard = () => {
               Atualizar
             </Button>
           </div>
+
+          {/* Notification Permission Banner */}
+          <NotificationPermissionBanner />
 
           {/* Security Score Card */}
           <Card className="mb-8 border-2">

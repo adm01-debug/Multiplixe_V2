@@ -8,8 +8,11 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "next-themes";
 import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Catalog from "./pages/Catalog";
 import CourseDetail from "./pages/CourseDetail";
@@ -45,15 +48,17 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/catalogo" element={<Catalog />} />
-                <Route path="/curso/:slug" element={<CourseDetail />} />
-                <Route path="/curso/:slug/aula/:lessonId" element={<LessonPlayer />} />
-                <Route path="/perfil" element={<Profile />} />
-                <Route path="/ranking" element={<Leaderboard />} />
-                <Route path="/trilhas" element={<LearningPaths />} />
-                <Route path="/trilha/:slug" element={<LearningPathDetail />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/catalogo" element={<ProtectedRoute><Catalog /></ProtectedRoute>} />
+                <Route path="/curso/:slug" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
+                <Route path="/curso/:slug/aula/:lessonId" element={<ProtectedRoute><LessonPlayer /></ProtectedRoute>} />
+                <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                <Route path="/ranking" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+                <Route path="/trilhas" element={<ProtectedRoute><LearningPaths /></ProtectedRoute>} />
+                <Route path="/trilha/:slug" element={<ProtectedRoute><LearningPathDetail /></ProtectedRoute>} />
+                <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
                 <Route path="/verificar-certificado" element={<VerifyCertificate />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

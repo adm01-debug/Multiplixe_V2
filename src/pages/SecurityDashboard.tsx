@@ -6,8 +6,10 @@ import { useMFA } from '@/hooks/useMFA';
 import { useUserSessions } from '@/hooks/useUserSessions';
 import { useSecurityAlerts } from '@/hooks/useSecurityAlerts';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
+import { useAdminRole } from '@/hooks/useAdminRole';
 import NotificationPermissionBanner from '@/components/security/NotificationPermissionBanner';
 import PasskeyManager from '@/components/security/PasskeyManager';
+import IPWhitelistManager from '@/components/admin/IPWhitelistManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,7 +30,8 @@ import {
   MapPin,
   Loader2,
   RefreshCw,
-  Bell
+  Bell,
+  ShieldCheck
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -37,6 +40,7 @@ import { ptBR } from 'date-fns/locale';
 const SecurityDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useAdminRole();
   const { settings: mfaSettings, loading: mfaLoading } = useMFA();
   const { sessions, loading: sessionsLoading, revokeSession, revokeAllOtherSessions, refetch: refetchSessions } = useUserSessions();
   const { alerts, loading: alertsLoading, unreadCount, resolveAlert, refetch: refetchAlerts } = useSecurityAlerts();
@@ -219,7 +223,7 @@ const SecurityDashboard = () => {
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-5' : 'grid-cols-4'}`}>
               <TabsTrigger value="overview">Visão Geral</TabsTrigger>
               <TabsTrigger value="sessions">
                 Sessões
@@ -239,6 +243,12 @@ const SecurityDashboard = () => {
                   <Badge variant="destructive" className="ml-2">{unreadCount}</Badge>
                 )}
               </TabsTrigger>
+              {isAdmin && (
+                <TabsTrigger value="admin" className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4" />
+                  Admin
+                </TabsTrigger>
+              )}
             </TabsList>
 
             {/* Overview Tab */}
@@ -648,6 +658,13 @@ const SecurityDashboard = () => {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {/* Admin Tab - Only visible for admins */}
+            {isAdmin && (
+              <TabsContent value="admin" className="space-y-6">
+                <IPWhitelistManager />
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

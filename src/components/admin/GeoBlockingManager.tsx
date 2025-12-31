@@ -40,12 +40,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, Trash2, Globe, MapPin, Search, Shield } from 'lucide-react';
+import { Loader2, Plus, Trash2, Globe, MapPin, Search, Shield, Check, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-interface BlockedCountry {
+interface GeoCountry {
   id: string;
   country_code: string;
   country_name: string;
@@ -53,6 +53,13 @@ interface BlockedCountry {
   blocked_by: string | null;
   created_at: string;
   is_active: boolean;
+  list_type: string | null;
+}
+
+interface GeoConfig {
+  id: string;
+  mode: 'whitelist' | 'blacklist';
+  is_enabled: boolean;
 }
 
 // Common countries list
@@ -136,12 +143,13 @@ const COUNTRIES = [
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 const GeoBlockingManager = () => {
-  const [blockedCountries, setBlockedCountries] = useState<BlockedCountry[]>([]);
+  const [countries, setCountries] = useState<GeoCountry[]>([]);
+  const [config, setConfig] = useState<GeoConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<BlockedCountry | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<GeoCountry | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   
   const [formData, setFormData] = useState({
@@ -150,23 +158,63 @@ const GeoBlockingManager = () => {
   });
 
   useEffect(() => {
-    fetchBlockedCountries();
+    fetchData();
   }, []);
 
-  const fetchBlockedCountries = async () => {
+  const fetchData = async () => {
     try {
-      const { data, error } = await supabase
-        .from('blocked_countries')
-        .select('*')
-        .order('country_name', { ascending: true });
+      const [countriesRes, configRes] = await Promise.all([
+        supabase
+          .from('geo_countries')
+          .select('*')
+          .order('country_name', { ascending: true }),
+        supabase
+          .from('geo_blocking_config')
+          .select('*')
+          .maybeSingle(),
+      ]);
 
-      if (error) throw error;
-      setBlockedCountries(data || []);
+      if (countriesRes.error) throw countriesRes.error;
+      if (configRes.error) throw configRes.error;
+
+      setCountries(countriesRes.data || []);
+      if (configRes.data) {
+        setConfig({
+          id: configRes.data.id,
+          mode: configRes.data.mode as 'whitelist' | 'blacklist',
+          is_enabled: configRes.data.is_enabled,
+        });
+      }
     } catch (error) {
-      console.error('Error fetching blocked countries:', error);
-      toast.error('Erro ao carregar países bloqueados');
+      console.error('Error fetching data:', error);
+      toast.error('Erro ao carregar configurações');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleEnabled = async () => {
+    if (!config) return;
+    
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      
+      const { error } = await supabase
+        .from('geo_blocking_config')
+        .update({ 
+          is_enabled: !config.is_enabled,
+          updated_at: new Date().toISOString(),
+          updated_by: userData.user?.id,
+        })
+        .eq('id', config.id);
+
+      if (error) throw error;
+
+      setConfig({ ...config, is_enabled: !config.is_enabled } as GeoConfig);
+      toast.success(config.is_enabled ? 'Bloqueio geográfico desativado' : 'Bloqueio geográfico ativado');
+    } catch (error) {
+      console.error('Error toggling geo blocking:', error);
+      toast.error('Erro ao atualizar configuração');
     }
   };
 
@@ -187,24 +235,25 @@ const GeoBlockingManager = () => {
       const { data: userData } = await supabase.auth.getUser();
       
       const { error } = await supabase
-        .from('blocked_countries')
+        .from('geo_countries')
         .insert({
           country_code: formData.country_code,
           country_name: country.name,
           reason: formData.reason.trim() || null,
           blocked_by: userData.user?.id || null,
+          list_type: 'allowed',
         });
 
       if (error) throw error;
 
-      toast.success(`${country.name} adicionado à lista de bloqueio`);
+      toast.success(`${country.name} adicionado à lista de países permitidos`);
       setDialogOpen(false);
       setFormData({ country_code: '', reason: '' });
-      await fetchBlockedCountries();
+      await fetchData();
     } catch (error: any) {
       console.error('Error adding country:', error);
       if (error.code === '23505') {
-        toast.error('Este país já está na lista de bloqueio');
+        toast.error('Este país já está na lista');
       } else {
         toast.error('Erro ao adicionar país');
       }
@@ -213,10 +262,10 @@ const GeoBlockingManager = () => {
     }
   };
 
-  const handleToggleActive = async (country: BlockedCountry) => {
+  const handleToggleActive = async (country: GeoCountry) => {
     try {
       const { error } = await supabase
-        .from('blocked_countries')
+        .from('geo_countries')
         .update({ is_active: !country.is_active })
         .eq('id', country.id);
 
@@ -224,10 +273,10 @@ const GeoBlockingManager = () => {
 
       toast.success(
         country.is_active 
-          ? `Bloqueio de ${country.country_name} desativado` 
-          : `Bloqueio de ${country.country_name} ativado`
+          ? `${country.country_name} desativado` 
+          : `${country.country_name} ativado`
       );
-      await fetchBlockedCountries();
+      await fetchData();
     } catch (error) {
       console.error('Error toggling country status:', error);
       toast.error('Erro ao atualizar status');
@@ -239,32 +288,32 @@ const GeoBlockingManager = () => {
 
     try {
       const { error } = await supabase
-        .from('blocked_countries')
+        .from('geo_countries')
         .delete()
         .eq('id', selectedCountry.id);
 
       if (error) throw error;
 
-      toast.success(`${selectedCountry.country_name} removido da lista de bloqueio`);
+      toast.success(`${selectedCountry.country_name} removido da lista`);
       setDeleteDialogOpen(false);
       setSelectedCountry(null);
-      await fetchBlockedCountries();
+      await fetchData();
     } catch (error) {
       console.error('Error deleting country:', error);
       toast.error('Erro ao remover país');
     }
   };
 
-  const filteredCountries = blockedCountries.filter(country =>
+  const filteredCountries = countries.filter(country =>
     country.country_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     country.country_code.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const availableCountries = COUNTRIES.filter(
-    c => !blockedCountries.some(bc => bc.country_code === c.code)
+    c => !countries.some(gc => gc.country_code === c.code)
   );
 
-  const activeBlocksCount = blockedCountries.filter(c => c.is_active).length;
+  const activeCount = countries.filter(c => c.is_active).length;
 
   if (loading) {
     return (
@@ -280,38 +329,72 @@ const GeoBlockingManager = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-orange-500/10">
-                <Globe className="h-5 w-5 text-orange-500" />
+              <div className="p-2 rounded-lg bg-emerald-500/10">
+                <Globe className="h-5 w-5 text-emerald-500" />
               </div>
               <div>
                 <CardTitle>Bloqueio Geográfico</CardTitle>
                 <CardDescription>
-                  Bloqueie acessos de países específicos
+                  Modo Whitelist: apenas países na lista podem acessar
                 </CardDescription>
               </div>
             </div>
-            <Button onClick={() => setDialogOpen(true)} disabled={availableCountries.length === 0}>
-              <Plus className="h-4 w-4 mr-2" />
-              Bloquear País
-            </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  {config?.is_enabled ? 'Ativo' : 'Inativo'}
+                </span>
+                <Switch
+                  checked={config?.is_enabled || false}
+                  onCheckedChange={handleToggleEnabled}
+                />
+              </div>
+              <Button onClick={() => setDialogOpen(true)} disabled={availableCountries.length === 0}>
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar País
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Status Banner */}
+          <div className={`p-4 rounded-lg border ${config?.is_enabled ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-muted/50 border-border'}`}>
+            <div className="flex items-center gap-3">
+              {config?.is_enabled ? (
+                <Check className="h-5 w-5 text-emerald-500" />
+              ) : (
+                <X className="h-5 w-5 text-muted-foreground" />
+              )}
+              <div>
+                <p className="font-medium">
+                  {config?.is_enabled 
+                    ? 'Bloqueio Geográfico Ativo' 
+                    : 'Bloqueio Geográfico Desativado'}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {config?.is_enabled 
+                    ? `Apenas usuários dos ${activeCount} países na lista podem acessar a plataforma.`
+                    : 'Todos os países podem acessar a plataforma.'}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Stats */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-2 gap-4">
             <div className="p-4 rounded-lg bg-muted/50">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
                 <Shield className="h-4 w-4" />
-                <span className="text-sm">Total Bloqueados</span>
+                <span className="text-sm">Países na Lista</span>
               </div>
-              <p className="text-2xl font-bold">{blockedCountries.length}</p>
+              <p className="text-2xl font-bold">{countries.length}</p>
             </div>
             <div className="p-4 rounded-lg bg-muted/50">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
                 <MapPin className="h-4 w-4" />
-                <span className="text-sm">Bloqueios Ativos</span>
+                <span className="text-sm">Países Ativos</span>
               </div>
-              <p className="text-2xl font-bold text-orange-500">{activeBlocksCount}</p>
+              <p className="text-2xl font-bold text-emerald-500">{activeCount}</p>
             </div>
           </div>
 
@@ -328,8 +411,8 @@ const GeoBlockingManager = () => {
           {filteredCountries.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Globe className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>Nenhum país bloqueado</p>
-              <p className="text-sm">Adicione países para restringir acesso geográfico</p>
+              <p>Nenhum país na whitelist</p>
+              <p className="text-sm">Adicione países para permitir acesso geográfico</p>
             </div>
           ) : (
             <div className="rounded-lg border overflow-hidden">
@@ -337,7 +420,7 @@ const GeoBlockingManager = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>País</TableHead>
-                    <TableHead>Motivo</TableHead>
+                    <TableHead>Observação</TableHead>
                     <TableHead>Adicionado em</TableHead>
                     <TableHead className="text-center">Ativo</TableHead>
                     <TableHead className="text-center w-[100px]">Ações</TableHead>
@@ -386,6 +469,13 @@ const GeoBlockingManager = () => {
               </Table>
             </div>
           )}
+
+          <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <p className="text-sm text-amber-600 dark:text-amber-400">
+              <strong>⚠️ Modo Whitelist:</strong> Quando ativado, apenas usuários dos países listados poderão acessar. 
+              Certifique-se de incluir o Brasil antes de ativar.
+            </p>
+          </div>
         </CardContent>
       </Card>
 
@@ -393,9 +483,9 @@ const GeoBlockingManager = () => {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Bloquear País</DialogTitle>
+            <DialogTitle>Adicionar País Permitido</DialogTitle>
             <DialogDescription>
-              Usuários do país selecionado não poderão acessar a plataforma.
+              Usuários deste país poderão acessar a plataforma quando o bloqueio estiver ativo.
             </DialogDescription>
           </DialogHeader>
           
@@ -424,10 +514,10 @@ const GeoBlockingManager = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="reason">Motivo (opcional)</Label>
+              <Label htmlFor="reason">Observação (opcional)</Label>
               <Textarea
                 id="reason"
-                placeholder="Ex: Alto índice de tentativas de fraude..."
+                placeholder="Ex: Sede da empresa, filial..."
                 value={formData.reason}
                 onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
                 rows={3}
@@ -441,7 +531,7 @@ const GeoBlockingManager = () => {
             </Button>
             <Button onClick={handleAddCountry} disabled={saving}>
               {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              Bloquear
+              Adicionar
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -451,11 +541,11 @@ const GeoBlockingManager = () => {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remover Bloqueio</AlertDialogTitle>
+            <AlertDialogTitle>Remover País</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja remover o bloqueio de{' '}
-              <span className="font-medium">{selectedCountry?.country_name}</span>?
-              Usuários deste país voltarão a poder acessar a plataforma.
+              Tem certeza que deseja remover{' '}
+              <span className="font-medium">{selectedCountry?.country_name}</span> da whitelist?
+              Usuários deste país não poderão mais acessar a plataforma quando o bloqueio estiver ativo.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

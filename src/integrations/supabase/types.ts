@@ -98,36 +98,6 @@ export type Database = {
         }
         Relationships: []
       }
-      blocked_countries: {
-        Row: {
-          blocked_by: string | null
-          country_code: string
-          country_name: string
-          created_at: string | null
-          id: string
-          is_active: boolean | null
-          reason: string | null
-        }
-        Insert: {
-          blocked_by?: string | null
-          country_code: string
-          country_name: string
-          created_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          reason?: string | null
-        }
-        Update: {
-          blocked_by?: string | null
-          country_code?: string
-          country_name?: string
-          created_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          reason?: string | null
-        }
-        Relationships: []
-      }
       blocked_ips: {
         Row: {
           blocked_at: string | null
@@ -290,6 +260,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      geo_blocking_config: {
+        Row: {
+          id: string
+          is_enabled: boolean | null
+          mode: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          is_enabled?: boolean | null
+          mode?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          is_enabled?: boolean | null
+          mode?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      geo_countries: {
+        Row: {
+          blocked_by: string | null
+          country_code: string
+          country_name: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          list_type: string | null
+          reason: string | null
+        }
+        Insert: {
+          blocked_by?: string | null
+          country_code: string
+          country_name: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          list_type?: string | null
+          reason?: string | null
+        }
+        Update: {
+          blocked_by?: string | null
+          country_code?: string
+          country_name?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          list_type?: string | null
+          reason?: string | null
+        }
+        Relationships: []
       }
       known_devices: {
         Row: {

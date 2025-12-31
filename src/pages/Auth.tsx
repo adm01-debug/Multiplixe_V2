@@ -19,7 +19,9 @@ import {
   Star,
   Zap,
   BookOpen,
-  Trophy
+  Trophy,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 const emailSchema = z.string()
@@ -51,6 +53,7 @@ const Auth = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string; fullName?: string }>({});
   const [isSignUp, setIsSignUp] = useState(false);
   const [isPasswordBreached, setIsPasswordBreached] = useState<boolean | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -340,12 +343,24 @@ const Auth = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder={isSignUp ? "Crie uma senha forte" : "••••••••"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 pl-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors"
+                  className="h-12 pl-12 pr-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
               {isSignUp && <PasswordStrengthIndicator password={password} onBreachCheck={setIsPasswordBreached} />}
               {errors.password && (

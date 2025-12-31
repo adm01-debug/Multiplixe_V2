@@ -1,0 +1,485 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, Plus, Trash2, Globe, MapPin, Search, Shield } from 'lucide-react';
+import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+interface BlockedCountry {
+  id: string;
+  country_code: string;
+  country_name: string;
+  reason: string | null;
+  blocked_by: string | null;
+  created_at: string;
+  is_active: boolean;
+}
+
+// Common countries list
+const COUNTRIES = [
+  { code: 'AF', name: 'Afeganistão' },
+  { code: 'AL', name: 'Albânia' },
+  { code: 'DZ', name: 'Argélia' },
+  { code: 'AR', name: 'Argentina' },
+  { code: 'AU', name: 'Austrália' },
+  { code: 'AT', name: 'Áustria' },
+  { code: 'BD', name: 'Bangladesh' },
+  { code: 'BY', name: 'Bielorrússia' },
+  { code: 'BE', name: 'Bélgica' },
+  { code: 'BO', name: 'Bolívia' },
+  { code: 'BR', name: 'Brasil' },
+  { code: 'BG', name: 'Bulgária' },
+  { code: 'CA', name: 'Canadá' },
+  { code: 'CL', name: 'Chile' },
+  { code: 'CN', name: 'China' },
+  { code: 'CO', name: 'Colômbia' },
+  { code: 'CR', name: 'Costa Rica' },
+  { code: 'HR', name: 'Croácia' },
+  { code: 'CU', name: 'Cuba' },
+  { code: 'CZ', name: 'República Tcheca' },
+  { code: 'DK', name: 'Dinamarca' },
+  { code: 'EC', name: 'Equador' },
+  { code: 'EG', name: 'Egito' },
+  { code: 'FI', name: 'Finlândia' },
+  { code: 'FR', name: 'França' },
+  { code: 'DE', name: 'Alemanha' },
+  { code: 'GR', name: 'Grécia' },
+  { code: 'HK', name: 'Hong Kong' },
+  { code: 'HU', name: 'Hungria' },
+  { code: 'IN', name: 'Índia' },
+  { code: 'ID', name: 'Indonésia' },
+  { code: 'IR', name: 'Irã' },
+  { code: 'IQ', name: 'Iraque' },
+  { code: 'IE', name: 'Irlanda' },
+  { code: 'IL', name: 'Israel' },
+  { code: 'IT', name: 'Itália' },
+  { code: 'JP', name: 'Japão' },
+  { code: 'KZ', name: 'Cazaquistão' },
+  { code: 'KE', name: 'Quênia' },
+  { code: 'KP', name: 'Coreia do Norte' },
+  { code: 'KR', name: 'Coreia do Sul' },
+  { code: 'KW', name: 'Kuwait' },
+  { code: 'MY', name: 'Malásia' },
+  { code: 'MX', name: 'México' },
+  { code: 'MA', name: 'Marrocos' },
+  { code: 'NL', name: 'Países Baixos' },
+  { code: 'NZ', name: 'Nova Zelândia' },
+  { code: 'NG', name: 'Nigéria' },
+  { code: 'NO', name: 'Noruega' },
+  { code: 'PK', name: 'Paquistão' },
+  { code: 'PA', name: 'Panamá' },
+  { code: 'PY', name: 'Paraguai' },
+  { code: 'PE', name: 'Peru' },
+  { code: 'PH', name: 'Filipinas' },
+  { code: 'PL', name: 'Polônia' },
+  { code: 'PT', name: 'Portugal' },
+  { code: 'QA', name: 'Catar' },
+  { code: 'RO', name: 'Romênia' },
+  { code: 'RU', name: 'Rússia' },
+  { code: 'SA', name: 'Arábia Saudita' },
+  { code: 'SG', name: 'Singapura' },
+  { code: 'ZA', name: 'África do Sul' },
+  { code: 'ES', name: 'Espanha' },
+  { code: 'SE', name: 'Suécia' },
+  { code: 'CH', name: 'Suíça' },
+  { code: 'SY', name: 'Síria' },
+  { code: 'TW', name: 'Taiwan' },
+  { code: 'TH', name: 'Tailândia' },
+  { code: 'TR', name: 'Turquia' },
+  { code: 'UA', name: 'Ucrânia' },
+  { code: 'AE', name: 'Emirados Árabes Unidos' },
+  { code: 'GB', name: 'Reino Unido' },
+  { code: 'US', name: 'Estados Unidos' },
+  { code: 'UY', name: 'Uruguai' },
+  { code: 'VE', name: 'Venezuela' },
+  { code: 'VN', name: 'Vietnã' },
+].sort((a, b) => a.name.localeCompare(b.name));
+
+const GeoBlockingManager = () => {
+  const [blockedCountries, setBlockedCountries] = useState<BlockedCountry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<BlockedCountry | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const [formData, setFormData] = useState({
+    country_code: '',
+    reason: '',
+  });
+
+  useEffect(() => {
+    fetchBlockedCountries();
+  }, []);
+
+  const fetchBlockedCountries = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blocked_countries')
+        .select('*')
+        .order('country_name', { ascending: true });
+
+      if (error) throw error;
+      setBlockedCountries(data || []);
+    } catch (error) {
+      console.error('Error fetching blocked countries:', error);
+      toast.error('Erro ao carregar países bloqueados');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddCountry = async () => {
+    if (!formData.country_code) {
+      toast.error('Selecione um país');
+      return;
+    }
+
+    const country = COUNTRIES.find(c => c.code === formData.country_code);
+    if (!country) {
+      toast.error('País inválido');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      
+      const { error } = await supabase
+        .from('blocked_countries')
+        .insert({
+          country_code: formData.country_code,
+          country_name: country.name,
+          reason: formData.reason.trim() || null,
+          blocked_by: userData.user?.id || null,
+        });
+
+      if (error) throw error;
+
+      toast.success(`${country.name} adicionado à lista de bloqueio`);
+      setDialogOpen(false);
+      setFormData({ country_code: '', reason: '' });
+      await fetchBlockedCountries();
+    } catch (error: any) {
+      console.error('Error adding country:', error);
+      if (error.code === '23505') {
+        toast.error('Este país já está na lista de bloqueio');
+      } else {
+        toast.error('Erro ao adicionar país');
+      }
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleToggleActive = async (country: BlockedCountry) => {
+    try {
+      const { error } = await supabase
+        .from('blocked_countries')
+        .update({ is_active: !country.is_active })
+        .eq('id', country.id);
+
+      if (error) throw error;
+
+      toast.success(
+        country.is_active 
+          ? `Bloqueio de ${country.country_name} desativado` 
+          : `Bloqueio de ${country.country_name} ativado`
+      );
+      await fetchBlockedCountries();
+    } catch (error) {
+      console.error('Error toggling country status:', error);
+      toast.error('Erro ao atualizar status');
+    }
+  };
+
+  const handleDeleteCountry = async () => {
+    if (!selectedCountry) return;
+
+    try {
+      const { error } = await supabase
+        .from('blocked_countries')
+        .delete()
+        .eq('id', selectedCountry.id);
+
+      if (error) throw error;
+
+      toast.success(`${selectedCountry.country_name} removido da lista de bloqueio`);
+      setDeleteDialogOpen(false);
+      setSelectedCountry(null);
+      await fetchBlockedCountries();
+    } catch (error) {
+      console.error('Error deleting country:', error);
+      toast.error('Erro ao remover país');
+    }
+  };
+
+  const filteredCountries = blockedCountries.filter(country =>
+    country.country_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    country.country_code.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const availableCountries = COUNTRIES.filter(
+    c => !blockedCountries.some(bc => bc.country_code === c.code)
+  );
+
+  const activeBlocksCount = blockedCountries.filter(c => c.is_active).length;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-orange-500/10">
+                <Globe className="h-5 w-5 text-orange-500" />
+              </div>
+              <div>
+                <CardTitle>Bloqueio Geográfico</CardTitle>
+                <CardDescription>
+                  Bloqueie acessos de países específicos
+                </CardDescription>
+              </div>
+            </div>
+            <Button onClick={() => setDialogOpen(true)} disabled={availableCountries.length === 0}>
+              <Plus className="h-4 w-4 mr-2" />
+              Bloquear País
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Stats */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="p-4 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                <Shield className="h-4 w-4" />
+                <span className="text-sm">Total Bloqueados</span>
+              </div>
+              <p className="text-2xl font-bold">{blockedCountries.length}</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                <MapPin className="h-4 w-4" />
+                <span className="text-sm">Bloqueios Ativos</span>
+              </div>
+              <p className="text-2xl font-bold text-orange-500">{activeBlocksCount}</p>
+            </div>
+          </div>
+
+          <div className="relative max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar país..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+
+          {filteredCountries.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <Globe className="h-12 w-12 mx-auto mb-3 opacity-50" />
+              <p>Nenhum país bloqueado</p>
+              <p className="text-sm">Adicione países para restringir acesso geográfico</p>
+            </div>
+          ) : (
+            <div className="rounded-lg border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>País</TableHead>
+                    <TableHead>Motivo</TableHead>
+                    <TableHead>Adicionado em</TableHead>
+                    <TableHead className="text-center">Ativo</TableHead>
+                    <TableHead className="text-center w-[100px]">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredCountries.map((country) => (
+                    <TableRow key={country.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl">{getFlagEmoji(country.country_code)}</span>
+                          <div>
+                            <p className="font-medium">{country.country_name}</p>
+                            <p className="text-xs text-muted-foreground">{country.country_code}</p>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground max-w-[200px] truncate">
+                        {country.reason || '—'}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {format(new Date(country.created_at), "dd/MM/yyyy", { locale: ptBR })}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Switch
+                          checked={country.is_active}
+                          onCheckedChange={() => handleToggleActive(country)}
+                        />
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-destructive hover:text-destructive"
+                          onClick={() => {
+                            setSelectedCountry(country);
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Add Country Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Bloquear País</DialogTitle>
+            <DialogDescription>
+              Usuários do país selecionado não poderão acessar a plataforma.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="country">País *</Label>
+              <Select
+                value={formData.country_code}
+                onValueChange={(value) => setFormData({ ...formData, country_code: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione um país" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  {availableCountries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      <span className="flex items-center gap-2">
+                        <span>{getFlagEmoji(country.code)}</span>
+                        <span>{country.name}</span>
+                        <span className="text-muted-foreground">({country.code})</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="reason">Motivo (opcional)</Label>
+              <Textarea
+                id="reason"
+                placeholder="Ex: Alto índice de tentativas de fraude..."
+                value={formData.reason}
+                onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                rows={3}
+              />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleAddCountry} disabled={saving}>
+              {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              Bloquear
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remover Bloqueio</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja remover o bloqueio de{' '}
+              <span className="font-medium">{selectedCountry?.country_name}</span>?
+              Usuários deste país voltarão a poder acessar a plataforma.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteCountry}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Remover
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+};
+
+// Helper function to get flag emoji from country code
+function getFlagEmoji(countryCode: string): string {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}
+
+export default GeoBlockingManager;

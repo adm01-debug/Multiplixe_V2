@@ -10,6 +10,7 @@ import { useAdminRole } from '@/hooks/useAdminRole';
 import NotificationPermissionBanner from '@/components/security/NotificationPermissionBanner';
 import PasskeyManager from '@/components/security/PasskeyManager';
 import IPWhitelistManager from '@/components/admin/IPWhitelistManager';
+import GeoBlockingManager from '@/components/admin/GeoBlockingManager';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -663,6 +664,7 @@ const SecurityDashboard = () => {
             {isAdmin && (
               <TabsContent value="admin" className="space-y-6">
                 <IPWhitelistManager />
+                <GeoBlockingManager />
               </TabsContent>
             )}
           </Tabs>

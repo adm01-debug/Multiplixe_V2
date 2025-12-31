@@ -98,6 +98,36 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_countries: {
+        Row: {
+          blocked_by: string | null
+          country_code: string
+          country_name: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          reason: string | null
+        }
+        Insert: {
+          blocked_by?: string | null
+          country_code: string
+          country_name: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          reason?: string | null
+        }
+        Update: {
+          blocked_by?: string | null
+          country_code?: string
+          country_name?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
       blocked_ips: {
         Row: {
           blocked_at: string | null

@@ -50,6 +50,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; fullName?: string }>({});
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isPasswordBreached, setIsPasswordBreached] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -105,6 +106,12 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm(true)) return;
+    
+    // Block if password is breached
+    if (isPasswordBreached) {
+      toast.error('Esta senha foi encontrada em vazamentos. Por favor, escolha outra senha.');
+      return;
+    }
     
     setLoading(true);
     const { error } = await signUp(email, password, fullName);
@@ -340,7 +347,7 @@ const Auth = () => {
                   className="h-12 pl-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors"
                 />
               </div>
-              {isSignUp && <PasswordStrengthIndicator password={password} />}
+              {isSignUp && <PasswordStrengthIndicator password={password} onBreachCheck={setIsPasswordBreached} />}
               {errors.password && (
                 <p className="text-sm text-destructive flex items-center gap-1">
                   <span className="inline-block w-1 h-1 rounded-full bg-destructive" />

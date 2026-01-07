@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import PrefetchLink from '@/components/PrefetchLink';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +26,7 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
   const isStarted = !!progress && progress.progress_percentage > 0;
 
   return (
-    <Link to={`/trilha/${learningPath.slug}`}>
+    <PrefetchLink to={`/trilha/${learningPath.slug}`}>
       <MotionCard 
         className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm"
         initial={{ opacity: 0, y: 20 }}
@@ -139,6 +139,6 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
           </CardFooter>
         )}
       </MotionCard>
-    </Link>
+    </PrefetchLink>
   );
 }

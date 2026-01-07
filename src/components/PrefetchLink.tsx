@@ -16,6 +16,10 @@ const routeModules: Record<string, () => Promise<unknown>> = {
   '/admin/security': () => import('@/pages/RateLimitDashboard'),
   '/seguranca': () => import('@/pages/SecurityDashboard'),
   '/verificar-certificado': () => import('@/pages/VerifyCertificate'),
+  // Dynamic routes
+  '/curso': () => import('@/pages/CourseDetail'),
+  '/trilha': () => import('@/pages/LearningPathDetail'),
+  '/aula': () => import('@/pages/LessonPlayer'),
 };
 
 // Cache for prefetched modules

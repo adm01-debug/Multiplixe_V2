@@ -7,6 +7,7 @@ import { LearningPathGridSkeleton } from '@/components/skeletons/PageSkeletons';
 import { useLearningPaths, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import { useAuth } from '@/hooks/useAuth';
 import { LearningPathCard } from '@/components/learning-paths/LearningPathCard';
+import VirtualizedLearningPathGrid from '@/components/VirtualizedLearningPathGrid';
 import { supabase } from '@/integrations/supabase/client';
 import EmptyState from '@/components/EmptyState';
 import { 
@@ -15,6 +16,9 @@ import {
   Route,
   Sparkles
 } from 'lucide-react';
+
+// Threshold para ativar virtualização
+const VIRTUALIZATION_THRESHOLD = 12;
 
 export default function LearningPaths() {
   const { user } = useAuth();
@@ -142,42 +146,50 @@ export default function LearningPaths() {
                 </section>
               )}
 
-              {/* All Paths */}
+              {/* All Paths - com virtualização para listas grandes */}
               {regularPaths.length > 0 && (
                 <section>
                   <h3 className="mb-6 text-xl font-semibold">Todas as Trilhas</h3>
-                  <motion.div 
-                    className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-                    initial="hidden"
-                    animate="visible"
-                    variants={{
-                      hidden: { opacity: 0 },
-                      visible: {
-                        opacity: 1,
-                        transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-                      }
-                    }}
-                  >
-                    {regularPaths.map((path) => (
-                      <motion.div
-                        key={path.id}
-                        variants={{
-                          hidden: { opacity: 0, y: 20, scale: 0.95 },
-                          visible: { 
-                            opacity: 1, 
-                            y: 0, 
-                            scale: 1,
-                            transition: { duration: 0.4, ease: "easeOut" }
-                          }
-                        }}
-                      >
-                        <LearningPathCard
-                          learningPath={path}
-                          progress={userProgress[path.id]}
-                        />
-                      </motion.div>
-                    ))}
-                  </motion.div>
+                  {regularPaths.length >= VIRTUALIZATION_THRESHOLD ? (
+                    <VirtualizedLearningPathGrid
+                      learningPaths={regularPaths}
+                      userProgress={userProgress}
+                      columns={3}
+                    />
+                  ) : (
+                    <motion.div 
+                      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                      initial="hidden"
+                      animate="visible"
+                      variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                          opacity: 1,
+                          transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+                        }
+                      }}
+                    >
+                      {regularPaths.map((path) => (
+                        <motion.div
+                          key={path.id}
+                          variants={{
+                            hidden: { opacity: 0, y: 20, scale: 0.95 },
+                            visible: { 
+                              opacity: 1, 
+                              y: 0, 
+                              scale: 1,
+                              transition: { duration: 0.4, ease: "easeOut" }
+                            }
+                          }}
+                        >
+                          <LearningPathCard
+                            learningPath={path}
+                            progress={userProgress[path.id]}
+                          />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
                 </section>
               )}
             </>

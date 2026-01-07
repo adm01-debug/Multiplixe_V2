@@ -56,11 +56,16 @@ const Catalog = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   
   // Usar hooks cacheados com React Query
-  const { data: courses = [], isLoading: coursesLoading, isStale: coursesStale, isFetching: coursesFetching } = useCourses();
-  const { data: categories = [], isLoading: categoriesLoading, isStale: categoriesStale, isFetching: categoriesFetching } = useCategories();
+  const { data: courses = [], isLoading: coursesLoading, isStale: coursesStale, isFetching: coursesFetching, refetch: refetchCourses } = useCourses();
+  const { data: categories = [], isLoading: categoriesLoading, isStale: categoriesStale, isFetching: categoriesFetching, refetch: refetchCategories } = useCategories();
   
   const isStale = coursesStale || categoriesStale;
   const isFetching = coursesFetching || categoriesFetching;
+  
+  const handleRefresh = () => {
+    refetchCourses();
+    refetchCategories();
+  };
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -313,7 +318,7 @@ const Catalog = () => {
             <p className="text-sm text-muted-foreground">
               <span className="font-semibold text-foreground">{filteredCourses.length}</span> {filteredCourses.length === 1 ? "curso encontrado" : "cursos encontrados"}
             </p>
-            <CacheIndicator isStale={isStale} isFetching={isFetching} showLabel />
+            <CacheIndicator isStale={isStale} isFetching={isFetching} showLabel onRefresh={handleRefresh} />
           </div>
         </div>
 

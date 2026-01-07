@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { useCourses, useCategories } from "@/hooks/useCachedQuery";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/catalog/CourseCard";
 import CategoryFilter from "@/components/catalog/CategoryFilter";
@@ -41,11 +41,11 @@ interface Course {
   slug: string;
   description: string | null;
   thumbnail_url: string | null;
-  duration_minutes: number;
-  level: string;
+  duration_minutes: number | null;
+  level: string | null;
   instructor_name: string | null;
-  total_lessons: number;
-  is_featured: boolean;
+  total_lessons: number | null;
+  is_featured: boolean | null;
   category_id: string | null;
   categories: Category | null;
 }
@@ -54,55 +54,23 @@ const Catalog = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
   
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Usar hooks cacheados com React Query
+  const { data: courses = [], isLoading: coursesLoading } = useCourses();
+  const { data: categories = [], isLoading: categoriesLoading } = useCategories();
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth");
-    }
-  }, [user, authLoading, navigate]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return;
-      
-      setLoading(true);
-      
-      const [coursesRes, categoriesRes] = await Promise.all([
-        supabase
-          .from("courses")
-          .select(`
-            *,
-            categories (*)
-          `)
-          .eq("is_published", true)
-          .order("is_featured", { ascending: false })
-          .order("created_at", { ascending: false }),
-        supabase.from("categories").select("*").order("name"),
-      ]);
-
-      if (coursesRes.data) {
-        setCourses(coursesRes.data as Course[]);
-      }
-      if (categoriesRes.data) {
-        setCategories(categoriesRes.data);
-      }
-      
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [user]);
+  // Redirecionar se não autenticado
+  if (!authLoading && !user) {
+    navigate("/auth");
+    return null;
+  }
 
   const filteredCourses = useMemo(() => {
-    return courses.filter((course) => {
+    return (courses as Course[]).filter((course) => {
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matchesTitle = course.title.toLowerCase().includes(query);
@@ -129,6 +97,8 @@ const Catalog = () => {
     await signOut();
     navigate("/");
   };
+
+  const loading = coursesLoading || categoriesLoading;
 
   if (authLoading) {
     return (
@@ -298,7 +268,7 @@ const Catalog = () => {
                   <span>📂</span> Categorias
                 </p>
                 <CategoryFilter
-                  categories={categories}
+                  categories={categories as Category[]}
                   selectedCategory={selectedCategory}
                   onSelectCategory={setSelectedCategory}
                 />

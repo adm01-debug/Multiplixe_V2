@@ -13,11 +13,11 @@ import XPEvolutionChart from '@/components/XPEvolutionChart';
 import { CertificateCard } from '@/components/CertificateCard';
 import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
+import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, CertificateCardSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
 import {
   GraduationCap,
   LogOut,
   ArrowLeft,
-  Loader2,
   Sparkles,
   Trophy,
   Zap,
@@ -126,18 +126,47 @@ const Profile = () => {
 
   if (loading || loadingXP) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/30">
-        <div className="flex flex-col items-center gap-6">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-50 animate-pulse" />
-            <div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-primary to-accent p-1">
-              <div className="w-full h-full bg-background rounded-full flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        {/* Header Skeleton */}
+        <header className="sticky top-0 z-50 glass neon-border">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-xl bg-muted animate-pulse" />
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-2xl bg-muted animate-pulse" />
+                  <div className="space-y-2">
+                    <div className="h-5 w-32 bg-muted rounded animate-pulse" />
+                    <div className="h-3 w-20 bg-muted rounded animate-pulse" />
+                  </div>
+                </div>
               </div>
+              <div className="h-10 w-10 rounded-xl bg-muted animate-pulse" />
             </div>
           </div>
-          <p className="text-lg font-semibold text-foreground animate-pulse">Carregando perfil...</p>
-        </div>
+        </header>
+
+        <main className="container mx-auto px-4 py-8 space-y-12">
+          {/* Profile Header Skeleton */}
+          <div className="rounded-[2rem] bg-card/50 border border-border/50 p-8 md:p-12">
+            <ProfileSkeleton />
+          </div>
+
+          {/* Stats Skeleton */}
+          <DashboardStatsSkeleton />
+
+          {/* Chart Skeleton */}
+          <div className="space-y-4">
+            <div className="h-8 w-48 bg-muted rounded animate-pulse" />
+            <ChartSkeleton height={300} />
+          </div>
+
+          {/* Achievements Skeleton */}
+          <div className="space-y-4">
+            <div className="h-8 w-32 bg-muted rounded animate-pulse" />
+            <AchievementsGridSkeleton count={8} />
+          </div>
+        </main>
       </div>
     );
   }

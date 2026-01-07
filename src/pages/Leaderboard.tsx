@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RankBadge from '@/components/RankBadge';
 import DepartmentLeaderboard from '@/components/leaderboard/DepartmentLeaderboard';
 import EmptyState from '@/components/EmptyState';
+import { LeaderboardSkeleton } from '@/components/skeletons/PageSkeletons';
 import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2 } from 'lucide-react';
 import { calculateUserLevel } from '@/lib/levelSystem';
 
@@ -49,8 +50,34 @@ const Leaderboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
+      <div className="min-h-screen bg-background">
+        {/* Header */}
+        <header className="sticky top-0 z-50 glass border-b border-border/50">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="hover:bg-primary/10"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500">
+                  <Trophy className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold neon-text">Ranking</h1>
+                  <p className="text-sm text-muted-foreground">Carregando...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="container mx-auto px-4 py-8">
+          <LeaderboardSkeleton />
+        </main>
       </div>
     );
   }

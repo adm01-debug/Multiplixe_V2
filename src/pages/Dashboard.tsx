@@ -17,6 +17,7 @@ import AchievementsGrid from '@/components/AchievementsGrid';
 import StreakDisplay from '@/components/StreakDisplay';
 import NotificationBell from '@/components/NotificationBell';
 import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
+import OnboardingTutorial, { useOnboardingTutorial } from '@/components/onboarding/OnboardingTutorial';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import EmptyState from '@/components/EmptyState';
@@ -98,6 +99,13 @@ const Dashboard = () => {
   const [currentAchievement, setCurrentAchievement] = useState<Achievement | null>(null);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
   const [showWelcomeWizard, setShowWelcomeWizard] = useState(false);
+  
+  // Onboarding tutorial hook
+  const { 
+    shouldShow: showTutorial, 
+    startTutorial, 
+    completeTutorial 
+  } = useOnboardingTutorial();
 
   // Check if user needs onboarding
   useEffect(() => {
@@ -111,6 +119,12 @@ const Dashboard = () => {
 
   const handleOnboardingComplete = () => {
     setShowWelcomeWizard(false);
+    // Start the tutorial after welcome wizard completes
+    startTutorial();
+  };
+  
+  const handleTutorialComplete = () => {
+    completeTutorial();
   };
   // Check achievements when XP or progress changes
   useEffect(() => {
@@ -301,6 +315,16 @@ const Dashboard = () => {
   // Show Welcome Wizard for new users
   if (showWelcomeWizard) {
     return <WelcomeWizard onComplete={handleOnboardingComplete} />;
+  }
+  
+  // Show Tutorial after Welcome Wizard
+  if (showTutorial) {
+    return (
+      <OnboardingTutorial 
+        onComplete={handleTutorialComplete} 
+        onSkip={handleTutorialComplete}
+      />
+    );
   }
 
   return (

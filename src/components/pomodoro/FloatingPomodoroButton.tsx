@@ -21,6 +21,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const FloatingPomodoroButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,18 +74,45 @@ const FloatingPomodoroButton = () => {
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button
+          <motion.button
             className={cn(
-              "fixed bottom-6 right-6 z-50 h-14 rounded-full shadow-lg transition-all duration-300",
+              "fixed bottom-6 right-6 z-50 h-14 rounded-full shadow-lg flex items-center justify-center",
               state !== 'idle' ? "px-4 gap-2" : "w-14 px-0",
               getStateColor(state)
             )}
+            whileHover={{ 
+              scale: 1.1,
+              boxShadow: "0 20px 40px -10px rgba(0,0,0,0.3)",
+            }}
+            whileTap={{ 
+              scale: 0.95,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 17,
+            }}
+            animate={state === 'work' ? {
+              boxShadow: [
+                "0 0 0 0 rgba(239, 68, 68, 0.4)",
+                "0 0 0 12px rgba(239, 68, 68, 0)",
+              ],
+            } : {}}
+            // @ts-ignore - framer-motion types issue
+            transition={state === 'work' ? {
+              repeat: Infinity,
+              duration: 1.5,
+            } : {
+              type: "spring",
+              stiffness: 400,
+              damping: 17,
+            }}
           >
             {getStateIcon(state)}
             {state !== 'idle' && (
               <span className="font-mono font-bold">{formattedTime}</span>
             )}
-          </Button>
+          </motion.button>
         </SheetTrigger>
 
         <SheetContent className="w-full sm:max-w-md">

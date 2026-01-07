@@ -12,6 +12,7 @@ import PasskeyManager from '@/components/security/PasskeyManager';
 import IPWhitelistManager from '@/components/admin/IPWhitelistManager';
 import GeoBlockingManager from '@/components/admin/GeoBlockingManager';
 import PasswordResetApproval from '@/components/admin/PasswordResetApproval';
+import BlockedLoginAttempts from '@/components/admin/BlockedLoginAttempts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -664,6 +665,7 @@ const SecurityDashboard = () => {
             {/* Admin Tab - Only visible for admins */}
             {isAdmin && (
               <TabsContent value="admin" className="space-y-6">
+                <BlockedLoginAttempts />
                 <PasswordResetApproval />
                 <IPWhitelistManager />
                 <GeoBlockingManager />

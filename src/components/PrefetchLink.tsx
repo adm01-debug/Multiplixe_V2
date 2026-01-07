@@ -1,5 +1,6 @@
 import { Link, LinkProps } from 'react-router-dom';
 import { useCallback, useRef } from 'react';
+import { queryClient } from '@/lib/queryClient';
 
 // Map of routes to their lazy-loaded components for prefetching
 const routeModules: Record<string, () => Promise<unknown>> = {
@@ -28,18 +29,21 @@ const prefetchedRoutes = new Set<string>();
 interface PrefetchLinkProps extends LinkProps {
   prefetch?: 'intent' | 'render' | 'none';
   prefetchDelay?: number;
+  onPrefetchData?: () => void;
 }
 
 const PrefetchLink = ({ 
   to, 
   prefetch = 'intent', 
   prefetchDelay = 100,
+  onPrefetchData,
   onMouseEnter,
   onFocus,
   children,
   ...props 
 }: PrefetchLinkProps) => {
   const timeoutRef = useRef<NodeJS.Timeout>();
+  const dataPrefetchedRef = useRef(false);
   
   const prefetchRoute = useCallback(() => {
     const path = typeof to === 'string' ? to : to.pathname || '';
@@ -55,7 +59,13 @@ const PrefetchLink = ({
         prefetchedRoutes.delete(path);
       });
     }
-  }, [to]);
+
+    // Prefetch data if callback provided and not already prefetched
+    if (onPrefetchData && !dataPrefetchedRef.current) {
+      dataPrefetchedRef.current = true;
+      onPrefetchData();
+    }
+  }, [to, onPrefetchData]);
 
   const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     if (prefetch === 'intent') {
@@ -111,4 +121,95 @@ export const usePrefetch = () => {
   }, [prefetch]);
 
   return { prefetch, prefetchMultiple };
+};
+
+// Hook for prefetching query data
+export const usePrefetchQuery = () => {
+  const prefetchCourseDetail = useCallback((slug: string) => {
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      queryClient.prefetchQuery({
+        queryKey: ['course', slug],
+        queryFn: async () => {
+          const { data } = await supabase
+            .from('courses')
+            .select('*, categories (*)')
+            .eq('slug', slug)
+            .eq('is_published', true)
+            .maybeSingle();
+          return data;
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+
+      // Also prefetch lessons
+      queryClient.prefetchQuery({
+        queryKey: ['course-lessons', slug],
+        queryFn: async () => {
+          const { data: course } = await supabase
+            .from('courses')
+            .select('id')
+            .eq('slug', slug)
+            .maybeSingle();
+          
+          if (!course) return [];
+          
+          const { data } = await supabase
+            .from('lessons')
+            .select('id, title, description, duration_seconds, order_index, is_free')
+            .eq('course_id', course.id)
+            .order('order_index');
+          return data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+    });
+  }, []);
+
+  const prefetchLearningPathDetail = useCallback((slug: string) => {
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      queryClient.prefetchQuery({
+        queryKey: ['learning-path', slug],
+        queryFn: async () => {
+          const { data } = await supabase
+            .from('learning_paths')
+            .select('*')
+            .eq('slug', slug)
+            .eq('is_published', true)
+            .maybeSingle();
+          return data;
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+
+      // Also prefetch courses in the path
+      queryClient.prefetchQuery({
+        queryKey: ['learning-path-courses', slug],
+        queryFn: async () => {
+          const { data: path } = await supabase
+            .from('learning_paths')
+            .select('id')
+            .eq('slug', slug)
+            .maybeSingle();
+          
+          if (!path) return [];
+
+          const { data } = await supabase
+            .from('learning_path_courses')
+            .select(`
+              *,
+              course:courses (
+                id, title, slug, description, thumbnail_url, 
+                duration_minutes, level, total_lessons
+              )
+            `)
+            .eq('learning_path_id', path.id)
+            .order('order_index');
+          return data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+    });
+  }, []);
+
+  return { prefetchCourseDetail, prefetchLearningPathDetail };
 };

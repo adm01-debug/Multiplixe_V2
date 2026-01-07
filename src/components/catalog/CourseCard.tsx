@@ -1,8 +1,9 @@
-import PrefetchLink from "@/components/PrefetchLink";
+import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
+import { useCallback } from "react";
 
 interface CourseCardProps {
   id: string;
@@ -53,9 +54,14 @@ const CourseCard = ({
     : `${minutes}min`;
 
   const levelStyle = levelConfig[level] || levelConfig.iniciante;
+  const { prefetchCourseDetail } = usePrefetchQuery();
+
+  const handlePrefetchData = useCallback(() => {
+    prefetchCourseDetail(slug);
+  }, [slug, prefetchCourseDetail]);
 
   return (
-    <PrefetchLink to={`/curso/${slug}`} className="group block">
+    <PrefetchLink to={`/curso/${slug}`} className="group block" onPrefetchData={handlePrefetchData}>
       <motion.div 
         className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden"
         initial={{ opacity: 0, y: 20 }}

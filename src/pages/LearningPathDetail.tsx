@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +24,7 @@ import {
   LearningPathCertificate
 } from '@/hooks/useLearningPaths';
 import { supabase } from '@/integrations/supabase/client';
+import PrefetchLink, { usePrefetchQuery } from '@/components/PrefetchLink';
 import { 
   ArrowLeft, 
   BookOpen, 
@@ -42,6 +44,138 @@ const levelConfig: Record<string, { label: string; emoji: string; color: string 
   intermediario: { label: 'Intermediário', emoji: '🌿', color: 'bg-yellow-500/20 text-yellow-400' },
   avancado: { label: 'Avançado', emoji: '🌳', color: 'bg-red-500/20 text-red-400' },
 };
+
+// Course List Item Component with Prefetch
+interface CourseListItemProps {
+  pathCourse: LearningPathCourse;
+  index: number;
+  isUnlocked: boolean;
+  isCompleted: boolean;
+  currentProgress: number;
+}
+
+function CourseListItem({ pathCourse, index, isUnlocked, isCompleted, currentProgress }: CourseListItemProps) {
+  const { prefetchCourseDetail } = usePrefetchQuery();
+  const [isPrefetching, setIsPrefetching] = useState(false);
+
+  const handlePrefetch = useCallback(() => {
+    if (!isUnlocked) return;
+    setIsPrefetching(true);
+    prefetchCourseDetail(pathCourse.course.slug);
+    setTimeout(() => setIsPrefetching(false), 800);
+  }, [pathCourse.course.slug, prefetchCourseDetail, isUnlocked]);
+
+  const cardContent = (
+    <Card 
+      className={`relative overflow-hidden transition-all duration-300 ${
+        isUnlocked 
+          ? 'border-border/50 hover:border-primary/50 hover:shadow-lg' 
+          : 'opacity-60'
+      }`}
+    >
+      {/* Prefetch indicator */}
+      {isPrefetching && (
+        <div className="absolute top-3 right-3 z-20">
+          <motion.div
+            className="w-2 h-2 rounded-full bg-primary"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ 
+              opacity: [0.5, 1, 0.5], 
+              scale: [0.8, 1.2, 0.8] 
+            }}
+            transition={{ 
+              duration: 0.6, 
+              repeat: Infinity,
+              ease: "easeInOut" 
+            }}
+          />
+        </div>
+      )}
+      
+      <CardContent className="p-0">
+        <div className="flex items-center gap-4 p-4">
+          {/* Order Number */}
+          <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold ${
+            isCompleted 
+              ? 'bg-green-500 text-white' 
+              : isUnlocked
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted text-muted-foreground'
+          }`}>
+            {isCompleted ? (
+              <CheckCircle2 className="h-5 w-5" />
+            ) : (
+              index + 1
+            )}
+          </div>
+
+          {/* Thumbnail */}
+          <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg">
+            {pathCourse.course.thumbnail_url ? (
+              <img
+                src={pathCourse.course.thumbnail_url}
+                alt={pathCourse.course.title}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-muted">
+                <BookOpen className="h-6 w-6 text-muted-foreground" />
+              </div>
+            )}
+            {!isUnlocked && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                <Lock className="h-5 w-5 text-white" />
+              </div>
+            )}
+          </div>
+
+          {/* Info */}
+          <div className="min-w-0 flex-1">
+            <h3 className="mb-1 truncate font-semibold">
+              {pathCourse.course.title}
+            </h3>
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span>{pathCourse.course.total_lessons} aulas</span>
+              <span>{Math.round(pathCourse.course.duration_minutes / 60)}h</span>
+              {currentProgress > 0 && currentProgress < 100 && (
+                <span className="text-primary">{currentProgress}% concluído</span>
+              )}
+            </div>
+          </div>
+
+          {/* Action */}
+          {isUnlocked && (
+            <Button 
+              variant={isCompleted ? 'outline' : 'default'} 
+              size="sm"
+            >
+              {isCompleted ? 'Revisar' : currentProgress > 0 ? 'Continuar' : 'Começar'}
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Button>
+          )}
+        </div>
+
+        {currentProgress > 0 && currentProgress < 100 && (
+          <Progress value={currentProgress} className="h-1 rounded-none" />
+        )}
+      </CardContent>
+    </Card>
+  );
+
+  if (!isUnlocked) {
+    return cardContent;
+  }
+
+  return (
+    <PrefetchLink 
+      to={`/curso/${pathCourse.course.slug}`} 
+      onPrefetchData={handlePrefetch}
+      className="block"
+    >
+      {cardContent}
+    </PrefetchLink>
+  );
+}
 
 export default function LearningPathDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -334,92 +468,16 @@ export default function LearningPathDetail() {
             </h2>
 
             <div className="space-y-4">
-              {courses.map((pathCourse, index) => {
-                const isUnlocked = isCourseUnlocked(index);
-                const isCompleted = courseProgress[pathCourse.course_id] === 100;
-                const currentProgress = courseProgress[pathCourse.course_id] || 0;
-
-                return (
-                  <Card 
-                    key={pathCourse.id}
-                    className={`overflow-hidden transition-all duration-300 ${
-                      isUnlocked 
-                        ? 'border-border/50 hover:border-primary/50 hover:shadow-lg' 
-                        : 'opacity-60'
-                    }`}
-                  >
-                    <CardContent className="p-0">
-                      <div className="flex items-center gap-4 p-4">
-                        {/* Order Number */}
-                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold ${
-                          isCompleted 
-                            ? 'bg-green-500 text-white' 
-                            : isUnlocked
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted text-muted-foreground'
-                        }`}>
-                          {isCompleted ? (
-                            <CheckCircle2 className="h-5 w-5" />
-                          ) : (
-                            index + 1
-                          )}
-                        </div>
-
-                        {/* Thumbnail */}
-                        <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg">
-                          {pathCourse.course.thumbnail_url ? (
-                            <img
-                              src={pathCourse.course.thumbnail_url}
-                              alt={pathCourse.course.title}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-muted">
-                              <BookOpen className="h-6 w-6 text-muted-foreground" />
-                            </div>
-                          )}
-                          {!isUnlocked && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                              <Lock className="h-5 w-5 text-white" />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Info */}
-                        <div className="min-w-0 flex-1">
-                          <h3 className="mb-1 truncate font-semibold">
-                            {pathCourse.course.title}
-                          </h3>
-                          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                            <span>{pathCourse.course.total_lessons} aulas</span>
-                            <span>{Math.round(pathCourse.course.duration_minutes / 60)}h</span>
-                            {currentProgress > 0 && currentProgress < 100 && (
-                              <span className="text-primary">{currentProgress}% concluído</span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Action */}
-                        {isUnlocked && (
-                          <Link to={`/curso/${pathCourse.course.slug}`}>
-                            <Button 
-                              variant={isCompleted ? 'outline' : 'default'} 
-                              size="sm"
-                            >
-                              {isCompleted ? 'Revisar' : currentProgress > 0 ? 'Continuar' : 'Começar'}
-                              <ChevronRight className="ml-1 h-4 w-4" />
-                            </Button>
-                          </Link>
-                        )}
-                      </div>
-
-                      {currentProgress > 0 && currentProgress < 100 && (
-                        <Progress value={currentProgress} className="h-1 rounded-none" />
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              {courses.map((pathCourse, index) => (
+                <CourseListItem
+                  key={pathCourse.id}
+                  pathCourse={pathCourse}
+                  index={index}
+                  isUnlocked={isCourseUnlocked(index)}
+                  isCompleted={courseProgress[pathCourse.course_id] === 100}
+                  currentProgress={courseProgress[pathCourse.course_id] || 0}
+                />
+              ))}
             </div>
           </section>
         </main>

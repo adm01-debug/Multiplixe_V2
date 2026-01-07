@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, GraduationCap, Sparkles, Route } from "lucide-react";
+import { motion } from "framer-motion";
 import ThemeToggle from "@/components/ThemeToggle";
 import {
   Sheet,
@@ -22,11 +23,21 @@ const Header = () => {
       <div className="container-app">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
+          <motion.a 
+            href="/" 
+            className="flex items-center gap-3 group"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <div className="relative">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center group-hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/25">
+              <motion.div 
+                className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center shadow-lg shadow-primary/25"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
                 <GraduationCap className="w-6 h-6 text-primary-foreground" />
-              </div>
+              </motion.div>
               <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent flex items-center justify-center animate-pulse">
                 <Sparkles className="w-2.5 h-2.5 text-accent-foreground" />
               </div>
@@ -39,28 +50,37 @@ const Header = () => {
                 by Promo Brindes
               </span>
             </div>
-          </a>
+          </motion.a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               link.isRoute ? (
-                <Link
+                <motion.div
                   key={link.label}
-                  to={link.href}
-                  className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50 flex items-center gap-1.5"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
-                  <Route className="h-4 w-4" />
-                  {link.label}
-                </Link>
+                  <Link
+                    to={link.href}
+                    className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50 flex items-center gap-1.5"
+                  >
+                    <Route className="h-4 w-4" />
+                    {link.label}
+                  </Link>
+                </motion.div>
               ) : (
-                <a
+                <motion.a
                   key={link.label}
                   href={link.href}
                   className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
                   {link.label}
-                </a>
+                </motion.a>
               )
             ))}
           </nav>
@@ -69,10 +89,16 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
             <Link to="/auth">
-              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5">
-                <Sparkles className="w-4 h-4 mr-2" />
-                Acessar Plataforma
-              </Button>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Acessar Plataforma
+                </Button>
+              </motion.div>
             </Link>
           </div>
 

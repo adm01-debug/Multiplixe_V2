@@ -1,21 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton, ShimmerOverlay, WaveSkeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-// Efeito shimmer avançado com múltiplas camadas
-const ShimmerOverlay = ({ className }: { className?: string }) => (
-  <div className={cn("absolute inset-0 overflow-hidden", className)}>
-    <motion.div
-      className="absolute inset-0 -translate-x-full"
-      style={{
-        background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%)"
-      }}
-      animate={{ translateX: ["-100%", "100%"] }}
-      transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 0.5 }}
-    />
-  </div>
-);
 
 // Efeito de pulso suave para elementos importantes
 const PulseGlow = ({ color = "primary" }: { color?: string }) => (
@@ -29,18 +15,6 @@ const PulseGlow = ({ color = "primary" }: { color?: string }) => (
     animate={{ opacity: [0, 0.5, 0] }}
     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
   />
-);
-
-// Skeleton com animação de onda
-const WaveSkeleton = ({ className, delay = 0 }: { className?: string; delay?: number }) => (
-  <motion.div
-    className={cn("relative overflow-hidden rounded-md bg-muted", className)}
-    initial={{ opacity: 0.5 }}
-    animate={{ opacity: [0.5, 0.8, 0.5] }}
-    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay }}
-  >
-    <ShimmerOverlay />
-  </motion.div>
 );
 
 // Animação de entrada staggered otimizada

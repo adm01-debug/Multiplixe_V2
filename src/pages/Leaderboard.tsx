@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RankBadge from '@/components/RankBadge';
 import DepartmentLeaderboard from '@/components/leaderboard/DepartmentLeaderboard';
+import EmptyState from '@/components/EmptyState';
 import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2 } from 'lucide-react';
 import { calculateUserLevel } from '@/lib/levelSystem';
 
@@ -149,11 +150,13 @@ const Leaderboard = () => {
               </div>
 
           {leaderboard.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <Trophy className="h-16 w-16 mx-auto mb-4 opacity-50" />
-              <p>Nenhum jogador no ranking {getPeriodLabel()}.</p>
-              <p className="text-sm">Complete lições para aparecer aqui!</p>
-            </div>
+            <EmptyState
+              type="leaderboard"
+              title={`Ranking ${getPeriodLabel()} vazio`}
+              description="Complete lições para aparecer no ranking! Seja um dos primeiros a conquistar o topo."
+              actionLabel="Começar a estudar"
+              onAction={() => navigate('/catalogo')}
+            />
           ) : (
             <div className="space-y-3">
               {leaderboard.map((entry) => {

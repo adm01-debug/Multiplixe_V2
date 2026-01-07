@@ -19,6 +19,7 @@ import NotificationBell from '@/components/NotificationBell';
 import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
+import EmptyState from '@/components/EmptyState';
 import {
   GraduationCap, 
   BookOpen, 
@@ -669,38 +670,14 @@ const Dashboard = () => {
               ))}
             </div>
           ) : (
-            <div className="relative rounded-3xl border-2 border-dashed border-border/50 bg-gradient-to-br from-card/50 to-muted/30 overflow-hidden neon-card">
-              {/* Background decoration */}
-              <div className="absolute inset-0">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/10 to-transparent dark:from-primary/30 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-accent/10 to-transparent dark:from-accent/30 rounded-full blur-3xl" />
-              </div>
-              
-              <div className="relative flex flex-col items-center justify-center py-20 px-4 text-center">
-                <div className="relative mb-8">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-accent/30 dark:from-primary/50 dark:to-accent/50 rounded-full blur-2xl animate-pulse" />
-                  <div className="relative p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full border border-primary/20 dark:border-primary/40 dark:shadow-[0_0_30px_hsl(270_100%_70%/0.3)]">
-                    <BookOpen className="h-16 w-16 text-primary neon-icon" />
-                  </div>
-                </div>
-                <h4 className="text-3xl font-display font-bold text-foreground mb-3">
-                  Explore o catálogo
-                </h4>
-                <p className="text-lg text-muted-foreground max-w-md mb-8">
-                  Descubra cursos incríveis para desenvolver suas habilidades e impulsionar sua carreira
-                </p>
-                <Button 
-                  asChild
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-2xl h-14 px-8 font-semibold shadow-xl shadow-primary/25 gap-2 neon-button"
-                >
-                  <Link to="/catalogo">
-                    <Sparkles className="h-5 w-5" />
-                    Ver Catálogo
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
+            <div className="rounded-2xl border border-border/50 bg-card/50 neon-card">
+              <EmptyState
+                type="courses"
+                title="Explore o catálogo"
+                description="Descubra cursos incríveis para desenvolver suas habilidades e impulsionar sua carreira"
+                actionLabel="Ver Catálogo"
+                onAction={() => navigate('/catalogo')}
+              />
             </div>
           )}
         </section>

@@ -7,11 +7,11 @@ import CourseCard from "@/components/catalog/CourseCard";
 import CategoryFilter from "@/components/catalog/CategoryFilter";
 import LevelFilter from "@/components/catalog/LevelFilter";
 import SearchInput from "@/components/catalog/SearchInput";
+import EmptyState from "@/components/EmptyState";
 import { 
   GraduationCap, 
   LogOut, 
   User, 
-  BookOpen, 
   Loader2, 
   Sparkles, 
   Rocket,
@@ -379,31 +379,17 @@ const Catalog = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="relative mb-6">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-2xl dark:opacity-70" />
-              <div className="relative p-6 bg-card rounded-full border border-border/50 neon-card">
-                <BookOpen className="h-12 w-12 text-muted-foreground" />
-              </div>
-            </div>
-            <h3 className="text-xl font-display font-bold text-foreground mb-2">
-              Nenhum curso encontrado
-            </h3>
-            <p className="text-muted-foreground max-w-md mb-6">
-              Tente ajustar os filtros ou buscar por outros termos para encontrar o curso perfeito para você
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory(null);
-                setSelectedLevel(null);
-              }}
-              className="rounded-xl neon-border"
-            >
-              Limpar busca
-            </Button>
-          </div>
+          <EmptyState
+            type="search"
+            title="Nenhum curso encontrado"
+            description="Tente ajustar os filtros ou buscar por outros termos para encontrar o curso perfeito para você"
+            actionLabel="Limpar busca"
+            onAction={() => {
+              setSearchQuery("");
+              setSelectedCategory(null);
+              setSelectedLevel(null);
+            }}
+          />
         )}
       </main>
     </div>

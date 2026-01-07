@@ -12,6 +12,7 @@ import AchievementsGrid from '@/components/AchievementsGrid';
 import XPEvolutionChart from '@/components/XPEvolutionChart';
 import { CertificateCard } from '@/components/CertificateCard';
 import { calculateUserLevel } from '@/lib/levelSystem';
+import EmptyState from '@/components/EmptyState';
 import {
   GraduationCap,
   LogOut,
@@ -389,25 +390,38 @@ const Profile = () => {
         </section>
 
         {/* Certificates */}
-        {certificates.length > 0 && (
-          <section className="mb-12">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20">
-                <FileText className="h-6 w-6 text-amber-500" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-display font-bold text-foreground">Certificados</h3>
-                <p className="text-sm text-muted-foreground">{certificates.length} certificado{certificates.length !== 1 ? 's' : ''} emitido{certificates.length !== 1 ? 's' : ''}</p>
-              </div>
+        <section className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20">
+              <FileText className="h-6 w-6 text-amber-500" />
             </div>
+            <div>
+              <h3 className="text-2xl font-display font-bold text-foreground">Certificados</h3>
+              <p className="text-sm text-muted-foreground">
+                {certificates.length > 0 
+                  ? `${certificates.length} certificado${certificates.length !== 1 ? 's' : ''} emitido${certificates.length !== 1 ? 's' : ''}`
+                  : 'Complete cursos para receber certificados'
+                }
+              </p>
+            </div>
+          </div>
 
+          {certificates.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {certificates.map((cert) => (
                 <CertificateCard key={cert.id} certificate={cert} />
               ))}
             </div>
-          </section>
-        )}
+          ) : (
+            <div className="rounded-2xl border border-border/50 bg-card/50 neon-card">
+              <EmptyState
+                type="certificates"
+                actionLabel="Explorar cursos"
+                onAction={() => navigate('/catalogo')}
+              />
+            </div>
+          )}
+        </section>
 
         {/* Achievements */}
         <section className="mb-12">

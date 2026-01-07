@@ -38,16 +38,24 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
   return (
     <PrefetchLink to={`/trilha/${learningPath.slug}`} onPrefetchData={handlePrefetchData}>
       <MotionCard 
-        className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm"
+        className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm cursor-pointer will-change-transform"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ 
-          y: -6, 
-          boxShadow: "0 15px 30px -10px rgba(0,0,0,0.15)",
-          borderColor: "hsl(var(--primary) / 0.5)"
+          y: -8, 
+          scale: 1.02,
+          boxShadow: "0 20px 40px -15px hsl(var(--primary) / 0.25), 0 8px 16px -8px rgba(0,0,0,0.15)",
+          borderColor: "hsl(var(--primary) / 0.6)"
         }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        whileTap={{ 
+          scale: 0.97,
+          y: -4
+        }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 400, 
+          damping: 25 
+        }}
       >
         {/* Prefetch indicator */}
         {isPrefetching && (

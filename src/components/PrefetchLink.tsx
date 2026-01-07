@@ -211,5 +211,79 @@ export const usePrefetchQuery = () => {
     });
   }, []);
 
-  return { prefetchCourseDetail, prefetchLearningPathDetail };
+  // Prefetch catalog data (courses and categories)
+  const prefetchCatalog = useCallback(() => {
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      queryClient.prefetchQuery({
+        queryKey: ['courses'],
+        queryFn: async () => {
+          const { data } = await supabase
+            .from('courses')
+            .select('*, categories (*)')
+            .eq('is_published', true)
+            .order('created_at', { ascending: false });
+          return data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+
+      queryClient.prefetchQuery({
+        queryKey: ['categories'],
+        queryFn: async () => {
+          const { data } = await supabase
+            .from('categories')
+            .select('*')
+            .order('name');
+          return data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+    });
+  }, []);
+
+  // Prefetch learning paths list
+  const prefetchLearningPaths = useCallback(() => {
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      queryClient.prefetchQuery({
+        queryKey: ['learning-paths'],
+        queryFn: async () => {
+          const { data } = await supabase
+            .from('learning_paths')
+            .select(`
+              *,
+              learning_path_courses (
+                id, course_id, order_index
+              )
+            `)
+            .eq('is_published', true)
+            .order('created_at', { ascending: false });
+          return data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+    });
+  }, []);
+
+  // Prefetch leaderboard data
+  const prefetchLeaderboard = useCallback(() => {
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      queryClient.prefetchQuery({
+        queryKey: ['leaderboard', 'all'],
+        queryFn: async () => {
+          const { data } = await supabase
+            .rpc('get_leaderboard', { p_limit: 50 });
+          return data || [];
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+    });
+  }, []);
+
+  return { 
+    prefetchCourseDetail, 
+    prefetchLearningPathDetail,
+    prefetchCatalog,
+    prefetchLearningPaths,
+    prefetchLeaderboard
+  };
 };

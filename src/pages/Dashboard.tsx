@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import PrefetchLink from '@/components/PrefetchLink';
+import PrefetchLink, { usePrefetchQuery } from '@/components/PrefetchLink';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useLevelUp } from '@/hooks/useLevelUp';
@@ -161,6 +161,9 @@ const Dashboard = () => {
   // Usar hook cacheado para status de cache
   const { isStale: coursesStale, isFetching: coursesFetching, refetch: refetchCourses } = useCourses();
   
+  // Prefetch hooks para navegação
+  const { prefetchCatalog, prefetchLearningPaths, prefetchLeaderboard } = usePrefetchQuery();
+
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
@@ -448,6 +451,7 @@ const Dashboard = () => {
               <PrefetchLink 
                 to="/catalogo" 
                 prefetch="intent"
+                onPrefetchData={prefetchCatalog}
                 className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors"
               >
                 Catálogo
@@ -455,6 +459,7 @@ const Dashboard = () => {
               <PrefetchLink 
                 to="/ranking" 
                 prefetch="intent"
+                onPrefetchData={prefetchLeaderboard}
                 className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
               >
                 <Trophy className="h-4 w-4" />
@@ -463,6 +468,7 @@ const Dashboard = () => {
               <PrefetchLink 
                 to="/trilhas" 
                 prefetch="intent"
+                onPrefetchData={prefetchLearningPaths}
                 className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
               >
                 <Route className="h-4 w-4" />

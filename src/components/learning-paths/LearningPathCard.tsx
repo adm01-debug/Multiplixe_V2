@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Clock, BookOpen, Trophy, ChevronRight } from 'lucide-react';
 import { LearningPath, UserLearningPathProgress } from '@/hooks/useLearningPaths';
+import LazyImage from '@/components/LazyImage';
 
 interface LearningPathCardProps {
   learningPath: LearningPath;
@@ -40,13 +41,18 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
       >
         <div className="relative aspect-video overflow-hidden">
           {learningPath.thumbnail_url ? (
-            <motion.img
-              src={learningPath.thumbnail_url}
-              alt={learningPath.title}
-              className="h-full w-full object-cover"
+            <motion.div
+              className="h-full w-full"
               whileHover={{ scale: 1.08 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-            />
+            >
+              <LazyImage
+                src={learningPath.thumbnail_url}
+                alt={learningPath.title}
+                className="h-full w-full"
+                placeholderClassName="bg-gradient-to-br from-primary/30 to-primary/10"
+              />
+            </motion.div>
           ) : (
             <motion.div 
               className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/30 to-primary/10"

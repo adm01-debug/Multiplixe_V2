@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
+import LazyImage from "@/components/LazyImage";
 
 interface CourseCardProps {
   id: string;
@@ -35,6 +36,7 @@ const CourseCard = ({
   slug,
   title,
   description,
+  thumbnailUrl,
   durationMinutes,
   level,
   instructorName,
@@ -68,20 +70,32 @@ const CourseCard = ({
       >
         {/* Gradient Background */}
         <div className="aspect-[16/10] relative overflow-hidden">
-          {/* Animated Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10" />
-          
-          {/* Mesh Pattern */}
-          <div className="absolute inset-0 opacity-30">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <pattern id={`grid-${slug}`} width="10" height="10" patternUnits="userSpaceOnUse">
-                  <circle cx="1" cy="1" r="0.5" fill="currentColor" className="text-primary/20" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill={`url(#grid-${slug})`} />
-            </svg>
-          </div>
+          {/* Thumbnail with lazy loading or gradient fallback */}
+          {thumbnailUrl ? (
+            <LazyImage
+              src={thumbnailUrl}
+              alt={title}
+              className="absolute inset-0 w-full h-full"
+              placeholderClassName="bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10"
+            />
+          ) : (
+            <>
+              {/* Animated Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10" />
+              
+              {/* Mesh Pattern */}
+              <div className="absolute inset-0 opacity-30">
+                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <defs>
+                    <pattern id={`grid-${slug}`} width="10" height="10" patternUnits="userSpaceOnUse">
+                      <circle cx="1" cy="1" r="0.5" fill="currentColor" className="text-primary/20" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill={`url(#grid-${slug})`} />
+                </svg>
+              </div>
+            </>
+          )}
 
           {/* Decorative Elements */}
           <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-2xl group-hover:scale-150 transition-transform duration-700" />

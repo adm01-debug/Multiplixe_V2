@@ -201,19 +201,40 @@ const VideoPlayer = ({
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      switch (e.key) {
+      // Don't trigger if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      
+      switch (e.key.toLowerCase()) {
         case " ":
         case "k":
           e.preventDefault();
           togglePlay();
           break;
-        case "ArrowLeft":
+        case "j":
           e.preventDefault();
           handleSkip(-10);
           break;
-        case "ArrowRight":
+        case "l":
           e.preventDefault();
           handleSkip(10);
+          break;
+        case "arrowleft":
+          e.preventDefault();
+          handleSkip(-5);
+          break;
+        case "arrowright":
+          e.preventDefault();
+          handleSkip(5);
+          break;
+        case "arrowup":
+          e.preventDefault();
+          handleVolumeChange([Math.min(1, volume + 0.1)]);
+          break;
+        case "arrowdown":
+          e.preventDefault();
+          handleVolumeChange([Math.max(0, volume - 0.1)]);
           break;
         case "m":
           e.preventDefault();
@@ -223,9 +244,41 @@ const VideoPlayer = ({
           e.preventDefault();
           toggleFullscreen();
           break;
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+          e.preventDefault();
+          if (videoRef.current && duration > 0) {
+            const percent = parseInt(e.key) / 10;
+            videoRef.current.currentTime = duration * percent;
+          }
+          break;
+        case ",":
+          e.preventDefault();
+          const slowerRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
+          const currentSlowerIndex = slowerRates.indexOf(playbackRate);
+          if (currentSlowerIndex > 0) {
+            handlePlaybackRateChange(slowerRates[currentSlowerIndex - 1]);
+          }
+          break;
+        case ".":
+          e.preventDefault();
+          const fasterRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
+          const currentFasterIndex = fasterRates.indexOf(playbackRate);
+          if (currentFasterIndex < fasterRates.length - 1) {
+            handlePlaybackRateChange(fasterRates[currentFasterIndex + 1]);
+          }
+          break;
       }
     },
-    [isPlaying, isMuted]
+    [isPlaying, isMuted, volume, duration, playbackRate]
   );
 
   useEffect(() => {

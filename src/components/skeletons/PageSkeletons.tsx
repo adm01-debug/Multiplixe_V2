@@ -2,36 +2,66 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 
-// Animação de shimmer para skeletons
-const shimmerVariants: Variants = {
-  initial: { opacity: 0.5 },
-  animate: { 
-    opacity: [0.5, 1, 0.5],
-    transition: { 
-      duration: 1.5, 
-      repeat: Infinity, 
-      ease: "easeInOut" as const
-    }
+// Efeito shimmer otimizado com gradiente animado
+const ShimmerOverlay = () => (
+  <motion.div
+    className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent"
+    animate={{ translateX: ["−100%", "100%"] }}
+    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+  />
+);
+
+// Animação de entrada staggered
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 }
   }
 };
-// Course Card Skeleton with animation
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 12, scale: 0.98 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+};
+
+// Course Card Skeleton otimizado - simula o layout real
 export const CourseCardSkeleton = () => (
   <motion.div 
-    className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden"
-    variants={shimmerVariants}
-    initial="initial"
-    animate="animate"
+    className="relative rounded-3xl bg-card/50 border border-border/50 overflow-hidden"
+    variants={itemVariants}
   >
-    <Skeleton className="aspect-[16/10] w-full" />
+    {/* Thumbnail area */}
+    <div className="relative aspect-[16/10] overflow-hidden">
+      <Skeleton className="absolute inset-0 w-full h-full" />
+      {/* Decorative blur circles */}
+      <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-primary/5 blur-xl" />
+      <div className="absolute bottom-4 left-4 w-12 h-12 rounded-full bg-accent/5 blur-xl" />
+      <ShimmerOverlay />
+    </div>
+    
+    {/* Content area */}
     <div className="p-5 space-y-4">
-      <Skeleton className="h-5 w-3/4" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-1/2" />
-      <div className="flex gap-2">
-        <Skeleton className="h-6 w-16 rounded-full" />
-        <Skeleton className="h-6 w-16 rounded-full" />
-        <Skeleton className="h-6 w-20 rounded-full" />
+      {/* Title */}
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-[85%]" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-[60%]" />
       </div>
+      
+      {/* Meta badges */}
+      <div className="flex flex-wrap gap-2">
+        <Skeleton className="h-7 w-[72px] rounded-full" />
+        <Skeleton className="h-7 w-[68px] rounded-full" />
+        <Skeleton className="h-7 w-[88px] rounded-full" />
+      </div>
+      
+      {/* Footer */}
       <div className="flex items-center justify-between pt-3 border-t border-border/30">
         <div className="flex items-center gap-2">
           <Skeleton className="h-8 w-8 rounded-full" />
@@ -42,30 +72,16 @@ export const CourseCardSkeleton = () => (
   </motion.div>
 );
 
-// Course Grid Skeleton with staggered animation
+// Course Grid Skeleton otimizado com stagger rápido
 export const CourseGridSkeleton = ({ count = 8 }: { count?: number }) => (
   <motion.div 
     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
     initial="hidden"
     animate="visible"
-    variants={{
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.08 }
-      }
-    }}
+    variants={containerVariants}
   >
     {[...Array(count)].map((_, i) => (
-      <motion.div
-        key={i}
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0 }
-        }}
-      >
-        <CourseCardSkeleton />
-      </motion.div>
+      <CourseCardSkeleton key={i} />
     ))}
   </motion.div>
 );
@@ -105,55 +121,61 @@ export const DashboardStatsSkeleton = () => (
   </motion.div>
 );
 
-// Learning Path Card Skeleton with animation
+// Learning Path Card Skeleton otimizado
 export const LearningPathCardSkeleton = () => (
   <motion.div 
-    className="rounded-2xl bg-card border border-border/50 overflow-hidden"
-    variants={shimmerVariants}
-    initial="initial"
-    animate="animate"
+    className="relative rounded-2xl bg-card/50 border border-border/50 overflow-hidden"
+    variants={itemVariants}
   >
-    <Skeleton className="aspect-video w-full" />
-    <div className="p-6 space-y-4">
-      <div className="flex items-center gap-2">
-        <Skeleton className="h-5 w-20 rounded-full" />
-        <Skeleton className="h-5 w-16 rounded-full" />
+    {/* Thumbnail */}
+    <div className="relative aspect-video overflow-hidden">
+      <Skeleton className="absolute inset-0 w-full h-full" />
+      <div className="absolute top-3 left-3">
+        <Skeleton className="h-6 w-20 rounded-full" />
       </div>
-      <Skeleton className="h-6 w-3/4" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-2/3" />
-      <div className="flex justify-between items-center pt-2">
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-9 w-24 rounded-lg" />
+      <ShimmerOverlay />
+    </div>
+    
+    {/* Content */}
+    <div className="p-4 space-y-3">
+      {/* Badge */}
+      <Skeleton className="h-5 w-24 rounded-full" />
+      
+      {/* Title & description */}
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-[90%]" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-[70%]" />
+      </div>
+      
+      {/* Meta info */}
+      <div className="flex items-center gap-4 pt-1">
+        <Skeleton className="h-4 w-16" />
+        <Skeleton className="h-4 w-12" />
+        <Skeleton className="h-4 w-14" />
+      </div>
+    </div>
+    
+    {/* Footer */}
+    <div className="border-t border-border/50 px-4 py-3">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-4 w-4 rounded" />
       </div>
     </div>
   </motion.div>
 );
 
-// Learning Path Grid Skeleton with staggered animation
+// Learning Path Grid Skeleton otimizado
 export const LearningPathGridSkeleton = ({ count = 6 }: { count?: number }) => (
   <motion.div 
     className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
     initial="hidden"
     animate="visible"
-    variants={{
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-      }
-    }}
+    variants={containerVariants}
   >
     {[...Array(count)].map((_, i) => (
-      <motion.div
-        key={i}
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0 }
-        }}
-      >
-        <LearningPathCardSkeleton />
-      </motion.div>
+      <LearningPathCardSkeleton key={i} />
     ))}
   </motion.div>
 );
@@ -181,9 +203,7 @@ export const HeroSkeleton = () => (
 export const DailyChallengeSkeleton = () => (
   <motion.div 
     className="p-4 rounded-xl bg-card border border-border/50"
-    variants={shimmerVariants}
-    initial="initial"
-    animate="animate"
+    variants={itemVariants}
   >
     <div className="flex items-center gap-4">
       <Skeleton className="h-12 w-12 rounded-xl" />
@@ -201,9 +221,7 @@ export const DailyChallengeSkeleton = () => (
 export const StreakSkeleton = () => (
   <motion.div 
     className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50"
-    variants={shimmerVariants}
-    initial="initial"
-    animate="animate"
+    variants={itemVariants}
   >
     <Skeleton className="h-14 w-14 rounded-xl" />
     <div className="space-y-2">

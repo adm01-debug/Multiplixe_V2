@@ -46,9 +46,9 @@ const PageTransition = ({ children }: PageTransitionProps) => {
   const pageVariants: Variants = {
     initial: (dir: 'forward' | 'backward') => ({
       opacity: 0,
-      x: dir === 'forward' ? 20 : -20,
-      scale: 0.98,
-      filter: 'blur(4px)',
+      x: dir === 'forward' ? 60 : -60,
+      scale: 0.96,
+      filter: 'blur(8px)',
     }),
     animate: {
       opacity: 1,
@@ -56,20 +56,25 @@ const PageTransition = ({ children }: PageTransitionProps) => {
       scale: 1,
       filter: 'blur(0px)',
       transition: {
-        duration: 0.35,
-        ease: [0.32, 0.72, 0, 1],
-        opacity: { duration: 0.25 },
-        filter: { duration: 0.2 },
+        type: 'spring',
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        opacity: { duration: 0.3, ease: 'easeOut' },
+        filter: { duration: 0.25, ease: 'easeOut' },
       },
     },
     exit: (dir: 'forward' | 'backward') => ({
       opacity: 0,
-      x: dir === 'forward' ? -20 : 20,
+      x: dir === 'forward' ? -40 : 40,
       scale: 0.98,
-      filter: 'blur(4px)',
+      filter: 'blur(6px)',
       transition: {
-        duration: 0.25,
-        ease: [0.32, 0.72, 0, 1],
+        type: 'spring',
+        stiffness: 400,
+        damping: 35,
+        opacity: { duration: 0.2, ease: 'easeIn' },
+        filter: { duration: 0.15 },
       },
     }),
   };

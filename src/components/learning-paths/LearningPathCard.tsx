@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Clock, BookOpen, Trophy, ChevronRight } from 'lucide-react';
 import { LearningPath, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import LazyImage from '@/components/LazyImage';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 interface LearningPathCardProps {
   learningPath: LearningPath;
@@ -26,9 +26,13 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
   const isCompleted = progress?.progress_percentage === 100;
   const isStarted = !!progress && progress.progress_percentage > 0;
   const { prefetchLearningPathDetail } = usePrefetchQuery();
+  const [isPrefetching, setIsPrefetching] = useState(false);
 
   const handlePrefetchData = useCallback(() => {
+    setIsPrefetching(true);
     prefetchLearningPathDetail(learningPath.slug);
+    // Clear indicator after a short delay
+    setTimeout(() => setIsPrefetching(false), 800);
   }, [learningPath.slug, prefetchLearningPathDetail]);
 
   return (
@@ -45,6 +49,25 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
         whileTap={{ scale: 0.98 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
+        {/* Prefetch indicator */}
+        {isPrefetching && (
+          <div className="absolute top-3 right-3 z-20">
+            <motion.div
+              className="w-2 h-2 rounded-full bg-primary"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ 
+                opacity: [0.5, 1, 0.5], 
+                scale: [0.8, 1.2, 0.8] 
+              }}
+              transition={{ 
+                duration: 0.6, 
+                repeat: Infinity,
+                ease: "easeInOut" 
+              }}
+            />
+          </div>
+        )}
+        
         <div className="relative aspect-video overflow-hidden">
           {learningPath.thumbnail_url ? (
             <motion.div

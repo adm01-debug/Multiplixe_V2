@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 interface CourseCardProps {
   id: string;
@@ -55,9 +55,13 @@ const CourseCard = ({
 
   const levelStyle = levelConfig[level] || levelConfig.iniciante;
   const { prefetchCourseDetail } = usePrefetchQuery();
+  const [isPrefetching, setIsPrefetching] = useState(false);
 
   const handlePrefetchData = useCallback(() => {
+    setIsPrefetching(true);
     prefetchCourseDetail(slug);
+    // Clear indicator after a short delay
+    setTimeout(() => setIsPrefetching(false), 800);
   }, [slug, prefetchCourseDetail]);
 
   return (
@@ -74,6 +78,24 @@ const CourseCard = ({
         whileTap={{ scale: 0.98 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
+        {/* Prefetch indicator */}
+        {isPrefetching && (
+          <div className="absolute top-3 right-3 z-20">
+            <motion.div
+              className="w-2 h-2 rounded-full bg-primary"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ 
+                opacity: [0.5, 1, 0.5], 
+                scale: [0.8, 1.2, 0.8] 
+              }}
+              transition={{ 
+                duration: 0.6, 
+                repeat: Infinity,
+                ease: "easeInOut" 
+              }}
+            />
+          </div>
+        )}
         {/* Gradient Background */}
         <div className="aspect-[16/10] relative overflow-hidden">
           {/* Thumbnail with lazy loading or gradient fallback */}

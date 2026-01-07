@@ -12,7 +12,11 @@ import {
   Users,
   Zap,
   Check,
-  Rocket
+  Rocket,
+  Clock,
+  Star,
+  Play,
+  Gift
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -48,10 +52,16 @@ const goals = [
 ];
 
 const studyTimes = [
-  { id: '15min', label: '15 minutos', description: 'Ritmo leve' },
-  { id: '30min', label: '30 minutos', description: 'Ritmo moderado' },
-  { id: '60min', label: '1 hora', description: 'Ritmo intenso' },
-  { id: 'flexivel', label: 'Flexível', description: 'Sem meta fixa' },
+  { id: '15min', label: '15 minutos', description: 'Ritmo leve', xp: '+50 XP/dia' },
+  { id: '30min', label: '30 minutos', description: 'Ritmo moderado', xp: '+100 XP/dia' },
+  { id: '60min', label: '1 hora', description: 'Ritmo intenso', xp: '+200 XP/dia' },
+  { id: 'flexivel', label: 'Flexível', description: 'Sem meta fixa', xp: 'XP variável' },
+];
+
+const quickWinCourses = [
+  { id: 'intro-plataforma', title: 'Tour pela Plataforma', duration: '5 min', xp: 25, icon: Rocket },
+  { id: 'primeiro-badge', title: 'Conquiste seu 1º Badge', duration: '10 min', xp: 50, icon: Trophy },
+  { id: 'produtividade-101', title: 'Produtividade 101', duration: '8 min', xp: 40, icon: Zap },
 ];
 
 const WelcomeWizard = ({ onComplete }: WelcomeWizardProps) => {
@@ -60,9 +70,10 @@ const WelcomeWizard = ({ onComplete }: WelcomeWizardProps) => {
   const [department, setDepartment] = useState('');
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [studyTime, setStudyTime] = useState('');
+  const [selectedQuickWin, setSelectedQuickWin] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const totalSteps = 4;
+  const totalSteps = 5;
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   const canProceed = () => {
@@ -71,6 +82,7 @@ const WelcomeWizard = ({ onComplete }: WelcomeWizardProps) => {
       case 1: return department !== '';
       case 2: return selectedGoals.length > 0;
       case 3: return studyTime !== '';
+      case 4: return true; // Quick win step (optional selection)
       default: return false;
     }
   };
@@ -305,9 +317,91 @@ const WelcomeWizard = ({ onComplete }: WelcomeWizardProps) => {
                 <span className="text-sm text-muted-foreground">
                   {time.description}
                 </span>
+                <span className={`text-xs font-semibold ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}>
+                  {time.xp}
+                </span>
               </button>
             );
           })}
+        </motion.div>
+      ),
+    },
+    // Step 4: Quick Win - First Course
+    {
+      title: 'Comece com uma Vitória Rápida! 🎯',
+      subtitle: 'Escolha seu primeiro mini-curso (opcional)',
+      content: (
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="space-y-4"
+        >
+          <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-4 border border-primary/20 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                <Gift className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Bônus de Boas-Vindas!</p>
+                <p className="text-sm text-muted-foreground">Complete um mini-curso e ganhe XP extra</p>
+              </div>
+            </div>
+          </div>
+          
+          {quickWinCourses.map((course) => {
+            const Icon = course.icon;
+            const isSelected = selectedQuickWin === course.id;
+            return (
+              <motion.button
+                key={course.id}
+                onClick={() => setSelectedQuickWin(course.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`
+                  w-full p-5 rounded-xl border-2 transition-all duration-200
+                  flex items-center gap-4 text-left
+                  ${isSelected 
+                    ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' 
+                    : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                  }
+                `}
+              >
+                <div className={`
+                  w-14 h-14 rounded-xl flex items-center justify-center shrink-0
+                  ${isSelected ? 'bg-gradient-to-br from-primary to-accent text-white' : 'bg-muted text-muted-foreground'}
+                `}>
+                  <Icon className="h-7 w-7" />
+                </div>
+                <div className="flex-1">
+                  <span className={`text-base font-semibold ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                    {course.title}
+                  </span>
+                  <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      {course.duration}
+                    </span>
+                    <span className="flex items-center gap-1 text-primary font-semibold">
+                      <Star className="w-3.5 h-3.5" />
+                      +{course.xp} XP
+                    </span>
+                  </div>
+                </div>
+                {isSelected ? (
+                  <Check className="h-6 w-6 text-primary shrink-0" />
+                ) : (
+                  <Play className="h-6 w-6 text-muted-foreground shrink-0" />
+                )}
+              </motion.button>
+            );
+          })}
+          
+          <button
+            onClick={() => setSelectedQuickWin('')}
+            className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+          >
+            Pular por agora, quero explorar sozinho
+          </button>
         </motion.div>
       ),
     },

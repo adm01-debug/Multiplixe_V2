@@ -20,6 +20,7 @@ import StreakDisplay from '@/components/StreakDisplay';
 import NotificationBell from '@/components/NotificationBell';
 import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
 import OnboardingTutorial, { useOnboardingTutorial } from '@/components/onboarding/OnboardingTutorial';
+import ProfileCompletionBar from '@/components/onboarding/ProfileCompletionBar';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import EmptyState from '@/components/EmptyState';
@@ -561,6 +562,9 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Profile Completion Bar */}
+        <ProfileCompletionBar />
+        
         {/* Hero Welcome Section */}
         <div className="relative mb-12 rounded-[2rem] overflow-hidden neon-card">
           {/* Background with mesh */}

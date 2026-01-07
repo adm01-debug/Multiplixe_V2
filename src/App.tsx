@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "next-themes";
 import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
+import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -37,6 +38,13 @@ const ConditionalPomodoroButton = () => {
   return <FloatingPomodoroButton />;
 };
 
+// Component that conditionally shows the Mobile Bottom Nav
+const ConditionalMobileNav = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  return <MobileBottomNav />;
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -48,6 +56,7 @@ const App = () => (
             <AuthProvider>
               <CommandPalette />
               <ConditionalPomodoroButton />
+              <ConditionalMobileNav />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />

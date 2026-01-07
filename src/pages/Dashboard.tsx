@@ -48,6 +48,7 @@ import {
   Route
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 // Animation variants
 const containerVariants = {
@@ -488,32 +489,71 @@ const Dashboard = () => {
 
             <div className="flex items-center gap-3">
               {/* Notifications */}
-              <NotificationBell />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <NotificationBell />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Notificações</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               {/* XP Badge */}
-              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl dark:border-emerald-500/40 dark:shadow-[0_0_20px_hsl(150_100%_45%/0.2)]">
-                <Zap className="h-4 w-4 text-emerald-500 neon-icon" />
-                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{totalXP} XP</span>
-                <CacheIndicator isStale={coursesStale} isFetching={coursesFetching} onRefresh={refetchCourses} />
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl dark:border-emerald-500/40 dark:shadow-[0_0_20px_hsl(150_100%_45%/0.2)]">
+                      <Zap className="h-4 w-4 text-emerald-500 neon-icon" />
+                      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{totalXP} XP</span>
+                      <CacheIndicator isStale={coursesStale} isFetching={coursesFetching} onRefresh={refetchCourses} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Seus pontos de experiência totais</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-              <Link 
-                to="/perfil" 
-                className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl neon-border hover:bg-muted transition-colors"
-              >
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm neon-button">
-                  {userName.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-sm font-medium text-foreground">{userName}</span>
-              </Link>
-              <Button 
-                variant="outline" 
-                size="icon"
-                onClick={handleSignOut}
-                className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"
-              >
-                <LogOut className="h-4 w-4" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link 
+                      to="/perfil" 
+                      className="hidden sm:flex items-center gap-3 px-4 py-2 bg-muted/50 rounded-2xl neon-border hover:bg-muted transition-colors"
+                    >
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm neon-button">
+                        {userName.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-sm font-medium text-foreground">{userName}</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Ver meu perfil</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      onClick={handleSignOut}
+                      className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"
+                    >
+                      <LogOut className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Sair da conta</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import LessonList from "@/components/player/LessonList";
+import FloatingProgress from "@/components/player/FloatingProgress";
 import AchievementUnlocked from "@/components/AchievementUnlocked";
 import StreakCelebration from "@/components/StreakCelebration";
 import { QuizCard } from "@/components/quiz/QuizCard";
@@ -372,6 +373,15 @@ const LessonPlayer = () => {
           }}
         />
       )}
+
+      {/* Floating Progress Bar */}
+      <FloatingProgress
+        progress={courseProgress}
+        lessonTitle={currentLesson.title}
+        lessonNumber={currentIndex + 1}
+        totalLessons={lessons.length}
+      />
+
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">

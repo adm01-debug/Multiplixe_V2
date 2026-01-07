@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import CacheIndicator from "@/components/ui/CacheIndicator";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/catalog/CourseCard";
@@ -74,6 +75,7 @@ const Catalog = () => {
   };
   
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebouncedValue(searchQuery, 300);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -86,8 +88,8 @@ const Catalog = () => {
 
   const filteredCourses = useMemo(() => {
     return (courses as Course[]).filter((course) => {
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
+      if (debouncedSearch) {
+        const query = debouncedSearch.toLowerCase();
         const matchesTitle = course.title.toLowerCase().includes(query);
         const matchesDescription = course.description?.toLowerCase().includes(query);
         const matchesInstructor = course.instructor_name?.toLowerCase().includes(query);

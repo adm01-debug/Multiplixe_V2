@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Award, Download, Eye, ExternalLink } from 'lucide-react';
+import { Award, Download, Eye, ExternalLink, Copy, Check } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCertificates } from '@/hooks/useCertificates';
 import { toast } from 'sonner';
 
@@ -25,7 +26,19 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
   const [showPreview, setShowPreview] = useState(false);
   const [loading, setLoading] = useState(false);
   const [svgContent, setSvgContent] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const { generateCertificate, downloadCertificate } = useCertificates();
+
+  const handleCopyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(certificate.verification_code);
+      setCopied(true);
+      toast.success('Código copiado!');
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error('Erro ao copiar código');
+    }
+  };
 
   const formattedDate = new Date(certificate.issued_at).toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -89,9 +102,28 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
               <p className="text-sm text-muted-foreground">Emitido em {formattedDate}</p>
               
               <div className="flex items-center gap-2 mt-2">
-                <Badge variant="secondary" className="font-mono text-xs">
-                  {certificate.verification_code}
-                </Badge>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={handleCopyCode}
+                        className="group flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Badge variant="secondary" className="font-mono text-xs group-hover:bg-primary/20 transition-colors">
+                          {certificate.verification_code}
+                        </Badge>
+                        {copied ? (
+                          <Check className="h-3.5 w-3.5 text-green-500" />
+                        ) : (
+                          <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        )}
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{copied ? 'Copiado!' : 'Copiar código'}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
           </div>

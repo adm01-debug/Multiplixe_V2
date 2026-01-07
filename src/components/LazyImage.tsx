@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, ImgHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -7,6 +8,7 @@ interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   placeholderClassName?: string;
   threshold?: number;
   rootMargin?: string;
+  blurDataURL?: string;
 }
 
 const LazyImage = ({
@@ -16,11 +18,13 @@ const LazyImage = ({
   placeholderClassName,
   threshold = 0.1,
   rootMargin = '100px',
+  blurDataURL,
   ...props
 }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,29 +48,84 @@ const LazyImage = ({
   }, [threshold, rootMargin]);
 
   return (
-    <div className={cn('relative overflow-hidden', className)}>
-      {/* Placeholder skeleton */}
-      <div
-        className={cn(
-          'absolute inset-0 bg-muted/50 animate-pulse transition-opacity duration-500',
-          placeholderClassName,
-          isLoaded ? 'opacity-0' : 'opacity-100'
+    <div ref={imgRef} className={cn('relative overflow-hidden', className)}>
+      {/* Animated shimmer placeholder */}
+      <AnimatePresence>
+        {!isLoaded && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className={cn(
+              'absolute inset-0 bg-gradient-to-r from-muted via-muted/50 to-muted',
+              placeholderClassName
+            )}
+          >
+            {/* Shimmer effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              animate={{
+                x: ['-100%', '100%'],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+            
+            {/* Blur placeholder if provided */}
+            {blurDataURL && (
+              <img
+                src={blurDataURL}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover blur-xl scale-110"
+              />
+            )}
+          </motion.div>
         )}
-      />
+      </AnimatePresence>
+
+      {/* Error state */}
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
+          <div className="text-center text-muted-foreground">
+            <svg
+              className="w-8 h-8 mx-auto mb-2 opacity-50"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+        </div>
+      )}
       
       {/* Actual image */}
-      <img
-        ref={imgRef}
-        src={isInView ? src : undefined}
-        alt={alt}
-        className={cn(
-          'w-full h-full object-cover transition-opacity duration-500',
-          isLoaded ? 'opacity-100' : 'opacity-0'
-        )}
-        onLoad={() => setIsLoaded(true)}
-        loading="lazy"
-        {...props}
-      />
+      {isInView && !hasError && (
+        <motion.div
+          className="w-full h-full"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={isLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className="w-full h-full object-cover"
+            onLoad={() => setIsLoaded(true)}
+            onError={() => setHasError(true)}
+            loading="lazy"
+            decoding="async"
+          />
+        </motion.div>
+      )}
     </div>
   );
 };

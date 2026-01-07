@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useLevelUp } from '@/hooks/useLevelUp';
@@ -44,6 +45,66 @@ import {
   Route
 } from 'lucide-react';
 import { toast } from 'sonner';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+} as const;
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 12
+    }
+  }
+};
+
+const statCardVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 15
+    }
+  },
+  hover: {
+    y: -8,
+    scale: 1.02,
+    transition: {
+      type: "spring" as const,
+      stiffness: 400,
+      damping: 25
+    }
+  }
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 80,
+      damping: 20
+    }
+  }
+};
 
 interface Course {
   id: string;
@@ -504,89 +565,160 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {stats.map((stat, index) => {
             const IconComponent = stat.icon;
             return (
-              <div
+              <motion.div
                 key={stat.label}
-                className={`group relative rounded-3xl bg-card/80 backdrop-blur-sm border border-border/50 p-6 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${stat.glowColor} animate-fade-in neon-card`}
-                style={{ animationDelay: `${index * 0.1}s` }}
+                variants={statCardVariants}
+                whileHover="hover"
+                whileTap={{ scale: 0.98 }}
+                className={`group relative rounded-3xl bg-card/80 backdrop-blur-sm border border-border/50 p-6 overflow-hidden cursor-pointer ${stat.glowColor} neon-card`}
               >
                 {/* Gradient glow on hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 dark:group-hover:opacity-20 transition-opacity duration-500`} />
                 
                 <div className="relative z-10">
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`p-3 rounded-2xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.glowColor} group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 dark:shadow-[0_0_25px_currentColor]`}>
+                    <motion.div 
+                      className={`p-3 rounded-2xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.glowColor} dark:shadow-[0_0_25px_currentColor]`}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    >
                       <IconComponent className="h-6 w-6 text-white" />
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity neon-icon" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      whileHover={{ opacity: 1, x: 0 }}
+                    >
+                      <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity neon-icon" />
+                    </motion.div>
                   </div>
-                  <div className="text-4xl font-display font-bold text-foreground mb-1 dark:drop-shadow-[0_0_10px_currentColor]">
+                  <motion.div 
+                    className="text-4xl font-display font-bold text-foreground mb-1 dark:drop-shadow-[0_0_10px_currentColor]"
+                    initial={{ scale: 1 }}
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  >
                     {stat.value}
-                  </div>
+                  </motion.div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">{stat.label}</p>
                   <p className="text-xs text-muted-foreground/70">{stat.subtitle}</p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Daily Challenges Section */}
-        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.35s' }}>
+        <motion.section 
+          className="mb-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           <DailyChallenges />
-        </section>
+        </motion.section>
 
         {/* Level Progress Section */}
-        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <motion.section 
+          className="mb-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           <LevelProgress totalXP={totalXP} />
-        </section>
+        </motion.section>
 
         {/* Streak Section */}
-        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+        <motion.section 
+          className="mb-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           <StreakDisplay 
             currentStreak={currentStreak} 
             longestStreak={longestStreak} 
             isAtRisk={isStreakAtRisk}
             hasStudiedToday={hasStudiedToday}
           />
-        </section>
+        </motion.section>
 
         {/* Achievements Section */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
+        <motion.section 
+          className="mb-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.div 
+            className="flex items-center justify-between mb-6"
+            variants={itemVariants}
+          >
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 dark:border-amber-500/40 dark:shadow-[0_0_20px_hsl(25_100%_55%/0.3)]">
+              <motion.div 
+                className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 dark:border-amber-500/40 dark:shadow-[0_0_20px_hsl(25_100%_55%/0.3)]"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
                 <Trophy className="h-6 w-6 text-amber-500 neon-icon" />
-              </div>
+              </motion.div>
               <div>
                 <h3 className="text-2xl font-display font-bold text-foreground">Conquistas</h3>
                 <p className="text-sm text-muted-foreground">{unlockedCount} de {totalCount} desbloqueadas</p>
               </div>
             </div>
-          </div>
+          </motion.div>
           
           <AchievementsGrid 
             achievements={allAchievements} 
             isUnlocked={isUnlocked} 
           />
-        </section>
+        </motion.section>
 
         {/* Skill Radar Chart */}
-        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.7s' }}>
+        <motion.section 
+          className="mb-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           <SkillRadarChart />
-        </section>
+        </motion.section>
 
         {/* Continue Learning Section */}
         {userProgress.length > 0 && (
-          <section className="mb-12">
-            <div className="flex items-center justify-between mb-6">
+          <motion.section 
+            className="mb-12"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <motion.div 
+              className="flex items-center justify-between mb-6"
+              variants={itemVariants}
+            >
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 dark:border-primary/40 dark:shadow-[0_0_20px_hsl(270_100%_70%/0.3)]">
+                <motion.div 
+                  className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 dark:border-primary/40 dark:shadow-[0_0_20px_hsl(270_100%_70%/0.3)]"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
                   <TrendingUp className="h-6 w-6 text-primary neon-icon" />
-                </div>
+                </motion.div>
                 <div>
                   <h3 className="text-2xl font-display font-bold text-foreground">Continue Aprendendo</h3>
                   <p className="text-sm text-muted-foreground">Retome seus cursos em andamento</p>
@@ -603,13 +735,18 @@ const Dashboard = () => {
                   <ArrowRight className="h-4 w-4 neon-icon" />
                 </Link>
               </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {userProgress.map((progress, index) => (
-                <div 
+            </motion.div>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {userProgress.map((progress) => (
+                <motion.div 
                   key={progress.course_id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  variants={itemVariants}
                 >
                   <CourseCard
                     id={progress.courses.id}
@@ -625,46 +762,63 @@ const Dashboard = () => {
                     categoryColor={progress.courses.categories?.color || undefined}
                     progress={progress.progress_percentage}
                   />
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </section>
+            </motion.div>
+          </motion.section>
         )}
 
         {/* Featured Courses */}
-        <section>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-warning/10 to-orange-500/10 border border-warning/20 dark:border-warning/40 dark:shadow-[0_0_20px_hsl(45_100%_55%/0.3)]">
-                  <Sparkles className="h-6 w-6 text-warning neon-icon" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-display font-bold text-foreground">Cursos em Destaque</h3>
-                  <p className="text-sm text-muted-foreground">Os mais populares da plataforma</p>
-                </div>
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                asChild
-                className="rounded-xl border-2 border-border/50 gap-2 hover:bg-primary/5 hover:border-primary/50 hover:text-primary font-semibold neon-border"
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.div 
+            className="flex items-center justify-between mb-6"
+            variants={itemVariants}
+          >
+            <div className="flex items-center gap-4">
+              <motion.div 
+                className="p-3 rounded-2xl bg-gradient-to-br from-warning/10 to-orange-500/10 border border-warning/20 dark:border-warning/40 dark:shadow-[0_0_20px_hsl(45_100%_55%/0.3)]"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <Link to="/catalogo">
-                  Ver catálogo
-                  <ArrowRight className="h-4 w-4 neon-icon" />
-                </Link>
-              </Button>
-          </div>
+                <Sparkles className="h-6 w-6 text-warning neon-icon" />
+              </motion.div>
+              <div>
+                <h3 className="text-2xl font-display font-bold text-foreground">Cursos em Destaque</h3>
+                <p className="text-sm text-muted-foreground">Os mais populares da plataforma</p>
+              </div>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              asChild
+              className="rounded-xl border-2 border-border/50 gap-2 hover:bg-primary/5 hover:border-primary/50 hover:text-primary font-semibold neon-border"
+            >
+              <Link to="/catalogo">
+                Ver catálogo
+                <ArrowRight className="h-4 w-4 neon-icon" />
+              </Link>
+            </Button>
+          </motion.div>
 
           {loadingCourses ? (
             <CourseGridSkeleton count={4} />
           ) : featuredCourses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredCourses.map((course, index) => (
-                <div 
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {featuredCourses.map((course) => (
+                <motion.div 
                   key={course.id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  variants={itemVariants}
                 >
                   <CourseCard
                     id={course.id}
@@ -680,11 +834,14 @@ const Dashboard = () => {
                     categoryColor={course.categories?.color || undefined}
                     isFeatured={course.is_featured}
                   />
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <div className="rounded-2xl border border-border/50 bg-card/50 neon-card">
+            <motion.div 
+              className="rounded-2xl border border-border/50 bg-card/50 neon-card"
+              variants={itemVariants}
+            >
               <EmptyState
                 type="courses"
                 title="Explore o catálogo"
@@ -692,9 +849,9 @@ const Dashboard = () => {
                 actionLabel="Ver Catálogo"
                 onAction={() => navigate('/catalogo')}
               />
-            </div>
+            </motion.div>
           )}
-        </section>
+        </motion.section>
       </main>
     </div>
   );

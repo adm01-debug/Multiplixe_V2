@@ -2,14 +2,16 @@ import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "next-themes";
+import { queryClient } from "@/lib/queryClient";
 import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
+import NavigationProgress from "@/components/navigation/NavigationProgress";
 import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
 import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -33,8 +35,6 @@ const LearningPathDetail = lazy(() => import("./pages/LearningPathDetail"));
 const RateLimitDashboard = lazy(() => import("./pages/RateLimitDashboard"));
 const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-
-const queryClient = new QueryClient();
 
 // Component that conditionally shows the Pomodoro button
 const ConditionalPomodoroButton = () => {
@@ -66,6 +66,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <AuthProvider>
+              <NavigationProgress />
               <CommandPalette />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />

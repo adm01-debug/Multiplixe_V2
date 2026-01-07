@@ -1,4 +1,4 @@
-import PrefetchLink from '@/components/PrefetchLink';
+import PrefetchLink, { usePrefetchQuery } from '@/components/PrefetchLink';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Clock, BookOpen, Trophy, ChevronRight } from 'lucide-react';
 import { LearningPath, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import LazyImage from '@/components/LazyImage';
+import { useCallback } from 'react';
 
 interface LearningPathCardProps {
   learningPath: LearningPath;
@@ -24,9 +25,14 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
   const levelInfo = levelConfig[learningPath.difficulty_level] || levelConfig.iniciante;
   const isCompleted = progress?.progress_percentage === 100;
   const isStarted = !!progress && progress.progress_percentage > 0;
+  const { prefetchLearningPathDetail } = usePrefetchQuery();
+
+  const handlePrefetchData = useCallback(() => {
+    prefetchLearningPathDetail(learningPath.slug);
+  }, [learningPath.slug, prefetchLearningPathDetail]);
 
   return (
-    <PrefetchLink to={`/trilha/${learningPath.slug}`}>
+    <PrefetchLink to={`/trilha/${learningPath.slug}`} onPrefetchData={handlePrefetchData}>
       <MotionCard 
         className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm"
         initial={{ opacity: 0, y: 20 }}

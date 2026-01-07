@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "next-themes";
 import { queryClient } from "@/lib/queryClient";
+import { setupCachePersistence } from "@/lib/queryPersister";
 import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
@@ -16,6 +17,9 @@ import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
 import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
+
+// Setup cache persistence
+const cleanupPersistence = setupCachePersistence(queryClient);
 
 // Lazy loaded pages for code splitting
 const Index = lazy(() => import("./pages/Index"));

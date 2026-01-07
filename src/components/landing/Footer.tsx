@@ -1,6 +1,32 @@
-import { GraduationCap, Mail, Phone, MapPin, HelpCircle, BookOpen, MessageCircle, Sparkles, ArrowUpRight, Heart } from "lucide-react";
+import { useState } from "react";
+import { GraduationCap, Mail, Phone, MapPin, HelpCircle, BookOpen, MessageCircle, Sparkles, ArrowUpRight, Heart, Send, CheckCircle, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsSubscribing(true);
+    // Simular inscrição
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsSubscribing(false);
+    setIsSubscribed(true);
+    setEmail("");
+    toast.success("Inscrição realizada!", {
+      description: "Você receberá atualizações sobre novos cursos."
+    });
+    
+    setTimeout(() => setIsSubscribed(false), 3000);
+  };
+
   const footerLinks = {
     plataforma: [
       { label: "Meus Cursos", href: "#" },
@@ -76,7 +102,7 @@ const Footer = () => {
               Plataforma de desenvolvimento profissional exclusiva para 
               colaboradores da Promo Brindes. Transforme sua carreira com nossos cursos.
             </p>
-            <div className="space-y-4">
+            <div className="space-y-4 mb-8">
               <a href="mailto:rh@promobrindes.com.br" className="flex items-center gap-3 text-background/60 hover:text-background transition-colors group">
                 <div className="w-10 h-10 rounded-xl bg-background/5 flex items-center justify-center group-hover:bg-background/10 transition-colors">
                   <Mail className="w-5 h-5" />
@@ -95,6 +121,64 @@ const Footer = () => {
                 </div>
                 Goiânia, GO
               </p>
+            </div>
+            
+            {/* Newsletter Section */}
+            <div className="bg-background/5 rounded-2xl p-6 border border-background/10">
+              <h4 className="font-bold text-background mb-2 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-warning" />
+                Fique por dentro
+              </h4>
+              <p className="text-background/50 text-sm mb-4">
+                Receba notificações sobre novos cursos e trilhas
+              </p>
+              <form onSubmit={handleNewsletter} className="flex gap-2">
+                <Input
+                  type="email"
+                  placeholder="seu.email@promobrindes.com.br"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-background/10 border-background/20 text-background placeholder:text-background/40 flex-1"
+                  disabled={isSubscribing}
+                />
+                <Button 
+                  type="submit" 
+                  size="icon"
+                  disabled={isSubscribing || !email}
+                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90 shrink-0"
+                >
+                  <AnimatePresence mode="wait">
+                    {isSubscribing ? (
+                      <motion.div
+                        key="loading"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                      >
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      </motion.div>
+                    ) : isSubscribed ? (
+                      <motion.div
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="send"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                      >
+                        <Send className="w-4 h-4" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              </form>
             </div>
           </div>
 

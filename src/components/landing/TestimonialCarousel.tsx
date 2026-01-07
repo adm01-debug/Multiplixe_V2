@@ -11,6 +11,7 @@ interface Testimonial {
   rating: number;
   text: string;
   gradient: string;
+  metric: string;
 }
 
 const testimonials: Testimonial[] = [
@@ -22,6 +23,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     text: "A plataforma me ajudou muito a entender melhor nossos produtos. Os cursos são práticos e consigo aplicar o que aprendo no mesmo dia!",
     gradient: "from-primary to-accent",
+    metric: "+35% em vendas",
   },
   {
     name: "Carlos Eduardo",
@@ -31,6 +33,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     text: "Adoro o sistema de gamificação! Me motiva a completar os cursos e competir com os colegas. Já conquistei 5 badges!",
     gradient: "from-accent to-warning",
+    metric: "20 cursos concluídos",
   },
   {
     name: "Juliana Mendes",
@@ -40,6 +43,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     text: "Os certificados são um diferencial para o meu currículo. A empresa investir no nosso desenvolvimento mostra que valoriza a gente.",
     gradient: "from-warning to-primary",
+    metric: "Promovida em 6 meses",
   },
   {
     name: "Roberto Silva",
@@ -49,6 +53,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     text: "A qualidade dos cursos é excelente! Consegui me atualizar em várias tecnologias que uso no dia a dia.",
     gradient: "from-primary to-secondary",
+    metric: "+45% produtividade",
   },
   {
     name: "Fernanda Costa",
@@ -58,6 +63,37 @@ const testimonials: Testimonial[] = [
     rating: 5,
     text: "Interface incrível e cursos super didáticos. A trilha de UX Design me ajudou muito a evoluir profissionalmente!",
     gradient: "from-secondary to-accent",
+    metric: "3 certificações",
+  },
+  {
+    name: "Marcos Oliveira",
+    role: "Supervisor",
+    department: "Produção",
+    avatar: "MO",
+    rating: 5,
+    text: "Depois dos cursos de liderança, minha equipe melhorou muito a performance. Recomendo demais!",
+    gradient: "from-accent to-primary",
+    metric: "+28% eficiência equipe",
+  },
+  {
+    name: "Patricia Santos",
+    role: "Analista",
+    department: "Financeiro",
+    avatar: "PS",
+    rating: 5,
+    text: "Os cursos de Excel avançado e BI transformaram minha forma de trabalhar. Economizo horas toda semana!",
+    gradient: "from-warning to-accent",
+    metric: "8h/semana economizadas",
+  },
+  {
+    name: "Lucas Pereira",
+    role: "Vendedor",
+    department: "Comercial",
+    avatar: "LP",
+    rating: 5,
+    text: "Comecei como trainee e hoje sou referência em produtos. A plataforma foi fundamental nessa evolução!",
+    gradient: "from-primary to-warning",
+    metric: "Top 3 do ranking",
   },
 ];
 
@@ -161,22 +197,34 @@ const TestimonialCarousel = () => {
 
             {/* Author */}
             <motion.div 
-              className="flex items-center gap-4"
+              className="flex items-center justify-between flex-wrap gap-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
-                {testimonial.avatar}
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
+                  {testimonial.avatar}
+                </div>
+                <div>
+                  <p className="font-bold text-card-foreground text-lg">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {testimonial.role} • {testimonial.department}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-card-foreground text-lg">
-                  {testimonial.name}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {testimonial.role} • {testimonial.department}
-                </p>
-              </div>
+              
+              {/* Metric Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, type: "spring" }}
+                className={`px-4 py-2 rounded-full bg-gradient-to-r ${testimonial.gradient} text-white font-bold text-sm shadow-lg`}
+              >
+                {testimonial.metric}
+              </motion.div>
             </motion.div>
           </motion.div>
         </AnimatePresence>

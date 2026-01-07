@@ -67,14 +67,22 @@ const CourseCard = ({
   return (
     <PrefetchLink to={`/curso/${slug}`} className="group block h-full" onPrefetchData={handlePrefetchData}>
       <motion.div 
-        className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden"
+        className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden cursor-pointer will-change-transform"
         whileHover={{ 
           y: -8, 
-          boxShadow: "0 20px 40px -15px rgba(0,0,0,0.2)",
-          borderColor: "hsl(var(--primary) / 0.3)"
+          scale: 1.02,
+          boxShadow: "0 20px 40px -15px hsl(var(--primary) / 0.25), 0 8px 16px -8px rgba(0,0,0,0.15)",
+          borderColor: "hsl(var(--primary) / 0.6)"
         }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        whileTap={{ 
+          scale: 0.97,
+          y: -4
+        }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 400, 
+          damping: 25 
+        }}
       >
         {/* Prefetch indicator */}
         {isPrefetching && (

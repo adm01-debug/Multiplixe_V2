@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LearningPathGridSkeleton } from '@/components/skeletons/PageSkeletons';
 import { useLearningPaths, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import { useAuth } from '@/hooks/useAuth';
 import { LearningPathCard } from '@/components/learning-paths/LearningPathCard';
@@ -94,16 +94,7 @@ export default function LearningPaths() {
           </div>
 
           {loading ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="space-y-4">
-                  <Skeleton className="aspect-video w-full rounded-lg" />
-                  <Skeleton className="h-6 w-3/4" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-2/3" />
-                </div>
-              ))}
-            </div>
+            <LearningPathGridSkeleton count={6} />
           ) : learningPaths.length === 0 ? (
             <EmptyState type="learning-paths" />
           ) : (

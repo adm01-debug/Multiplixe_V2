@@ -20,6 +20,7 @@ import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import EmptyState from '@/components/EmptyState';
+import { DashboardStatsSkeleton, CourseGridSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
 import {
   GraduationCap, 
   BookOpen, 
@@ -632,18 +633,7 @@ const Dashboard = () => {
           </div>
 
           {loadingCourses ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden">
-                  <div className="aspect-[16/10] bg-gradient-to-br from-muted to-muted/50 animate-pulse" />
-                  <div className="p-5 space-y-4">
-                    <div className="h-5 bg-muted rounded-lg w-3/4 animate-pulse" />
-                    <div className="h-4 bg-muted rounded-lg w-full animate-pulse" />
-                    <div className="h-4 bg-muted rounded-lg w-1/2 animate-pulse" />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <CourseGridSkeleton count={4} />
           ) : featuredCourses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredCourses.map((course, index) => (

@@ -8,10 +8,10 @@ import CategoryFilter from "@/components/catalog/CategoryFilter";
 import LevelFilter from "@/components/catalog/LevelFilter";
 import SearchInput from "@/components/catalog/SearchInput";
 import EmptyState from "@/components/EmptyState";
+import { CourseGridSkeleton } from "@/components/skeletons/PageSkeletons";
 import { 
   GraduationCap, 
   LogOut, 
-  User, 
   Loader2, 
   Sparkles, 
   Rocket,
@@ -337,22 +337,7 @@ const Catalog = () => {
 
         {/* Course Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden animate-pulse">
-                <div className="aspect-[16/10] bg-muted" />
-                <div className="p-5 space-y-4">
-                  <div className="h-5 bg-muted rounded-lg w-3/4" />
-                  <div className="h-4 bg-muted rounded-lg w-full" />
-                  <div className="h-4 bg-muted rounded-lg w-1/2" />
-                  <div className="flex gap-2">
-                    <div className="h-6 bg-muted rounded-full w-16" />
-                    <div className="h-6 bg-muted rounded-full w-16" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <CourseGridSkeleton count={8} />
         ) : filteredCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredCourses.map((course, index) => (

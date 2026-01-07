@@ -1,36 +1,8 @@
-import { Star, Quote, Sparkles, Users, ArrowRight, Flame } from "lucide-react";
+import { Sparkles, Users, Flame } from "lucide-react";
+import { motion } from "framer-motion";
+import TestimonialCarousel from "./TestimonialCarousel";
 
 const TestimonialsSection = () => {
-  const testimonials = [
-    {
-      name: "Ana Paula",
-      role: "Vendas",
-      department: "Comercial",
-      avatar: "AP",
-      rating: 5,
-      text: "A plataforma me ajudou muito a entender melhor nossos produtos. Os cursos são práticos e consigo aplicar o que aprendo no mesmo dia!",
-      gradient: "from-primary to-accent",
-    },
-    {
-      name: "Carlos Eduardo",
-      role: "Atendimento",
-      department: "SAC",
-      avatar: "CE",
-      rating: 5,
-      text: "Adoro o sistema de gamificação! Me motiva a completar os cursos e competir com os colegas. Já conquistei 5 badges!",
-      gradient: "from-accent to-warning",
-    },
-    {
-      name: "Juliana Mendes",
-      role: "Coordenadora",
-      department: "Logística",
-      avatar: "JM",
-      rating: 5,
-      text: "Os certificados são um diferencial para o meu currículo. A empresa investir no nosso desenvolvimento mostra que valoriza a gente.",
-      gradient: "from-warning to-primary",
-    },
-  ];
-
   const steps = [
     {
       step: "1",
@@ -81,49 +53,25 @@ const TestimonialsSection = () => {
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-24">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={testimonial.name}
-              className="group relative bg-card/50 backdrop-blur-sm rounded-3xl p-8 border border-border/50 hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 animate-fade-in overflow-hidden"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Quote Icon Background */}
-              <Quote className="absolute top-6 right-6 w-16 h-16 text-primary/5 group-hover:text-primary/10 transition-colors" />
-              
-              {/* Rating */}
-              <div className="flex gap-1 mb-6">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-warning fill-warning" />
-                ))}
-              </div>
-
-              {/* Text */}
-              <p className="text-card-foreground leading-relaxed mb-8 text-lg">
-                "{testimonial.text}"
-              </p>
-
-              {/* Author */}
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
-                  {testimonial.avatar}
-                </div>
-                <div>
-                  <p className="font-bold text-card-foreground text-lg">
-                    {testimonial.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {testimonial.role} • {testimonial.department}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Testimonials Carousel */}
+        <motion.div 
+          className="mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <TestimonialCarousel />
+        </motion.div>
 
         {/* How it works */}
-        <div className="relative">
+        <motion.div 
+          className="relative"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
           {/* Background Glow */}
           <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-[3rem] blur-2xl opacity-50" />
           
@@ -132,10 +80,16 @@ const TestimonialsSection = () => {
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/10 to-transparent rounded-full blur-3xl" />
             
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-6">
+              <motion.div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
                 <Flame className="w-4 h-4 text-primary" />
                 <span className="text-sm font-semibold text-primary">Comece Agora</span>
-              </div>
+              </motion.div>
               <h3 className="text-3xl md:text-4xl font-display font-bold text-card-foreground">
                 Como começar a aprender
               </h3>
@@ -143,27 +97,38 @@ const TestimonialsSection = () => {
 
             <div className="grid md:grid-cols-3 gap-10">
               {steps.map((item, index) => (
-                <div key={item.step} className="relative text-center group">
+                <motion.div 
+                  key={item.step} 
+                  className="relative text-center group"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 * index, duration: 0.5 }}
+                >
                   {/* Connector Line */}
                   {index < steps.length - 1 && (
                     <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-border to-border/0" />
                   )}
                   
-                  <div className={`relative w-20 h-20 rounded-3xl bg-gradient-to-br ${item.gradient} text-white font-display font-bold text-3xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                  <motion.div 
+                    className={`relative w-20 h-20 rounded-3xl bg-gradient-to-br ${item.gradient} text-white font-display font-bold text-3xl flex items-center justify-center mx-auto mb-6 shadow-xl`}
+                    whileHover={{ scale: 1.1, rotate: 3 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     {item.step}
                     <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-warning animate-pulse" />
-                  </div>
+                  </motion.div>
                   <h4 className="text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors">
                     {item.title}
                   </h4>
                   <p className="text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

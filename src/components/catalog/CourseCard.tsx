@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 
@@ -53,7 +54,18 @@ const CourseCard = ({
 
   return (
     <Link to={`/curso/${slug}`} className="group block">
-      <div className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-card hover:border-primary/30">
+      <motion.div 
+        className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ 
+          y: -8, 
+          boxShadow: "0 20px 40px -15px rgba(0,0,0,0.2)",
+          borderColor: "hsl(var(--primary) / 0.3)"
+        }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
         {/* Gradient Background */}
         <div className="aspect-[16/10] relative overflow-hidden">
           {/* Animated Gradient Background */}
@@ -97,11 +109,20 @@ const CourseCard = ({
           )}
 
           {/* Play Button Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <div className="w-16 h-16 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center shadow-xl transform scale-75 group-hover:scale-100 transition-transform duration-300">
+          <motion.div 
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+          >
+            <motion.div 
+              className="w-16 h-16 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center shadow-xl"
+              initial={{ scale: 0.7, opacity: 0 }}
+              whileHover={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            >
               <Play className="h-6 w-6 text-primary ml-1" />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Progress bar overlay */}
           {progress !== undefined && progress > 0 && (
@@ -164,7 +185,7 @@ const CourseCard = ({
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 };

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -16,6 +17,8 @@ const levelConfig: Record<string, { label: string; color: string }> = {
   avancado: { label: 'Avançado', color: 'bg-red-500/20 text-red-400' },
 };
 
+const MotionCard = motion.create(Card);
+
 export function LearningPathCard({ learningPath, progress }: LearningPathCardProps) {
   const levelInfo = levelConfig[learningPath.difficulty_level] || levelConfig.iniciante;
   const isCompleted = progress?.progress_percentage === 100;
@@ -23,18 +26,35 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
 
   return (
     <Link to={`/trilha/${learningPath.slug}`}>
-      <Card className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+      <MotionCard 
+        className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ 
+          y: -6, 
+          boxShadow: "0 15px 30px -10px rgba(0,0,0,0.15)",
+          borderColor: "hsl(var(--primary) / 0.5)"
+        }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
         <div className="relative aspect-video overflow-hidden">
           {learningPath.thumbnail_url ? (
-            <img
+            <motion.img
               src={learningPath.thumbnail_url}
               alt={learningPath.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover"
+              whileHover={{ scale: 1.08 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/30 to-primary/10">
+            <motion.div 
+              className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/30 to-primary/10"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.4 }}
+            >
               <Trophy className="h-16 w-16 text-primary/50" />
-            </div>
+            </motion.div>
           )}
           
           {learningPath.is_featured && (
@@ -103,11 +123,16 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
           <CardFooter className="border-t border-border/50 px-4 py-3">
             <div className="flex w-full items-center justify-between text-sm">
               <span className="text-muted-foreground">Começar trilha</span>
-              <ChevronRight className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1" />
+              <motion.div
+                whileHover={{ x: 4 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <ChevronRight className="h-4 w-4 text-primary" />
+              </motion.div>
             </div>
           </CardFooter>
         )}
-      </Card>
+      </MotionCard>
     </Link>
   );
 }

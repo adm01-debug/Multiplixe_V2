@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
+import CacheIndicator from "@/components/ui/CacheIndicator";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/catalog/CourseCard";
 import CategoryFilter from "@/components/catalog/CategoryFilter";
@@ -55,8 +56,11 @@ const Catalog = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   
   // Usar hooks cacheados com React Query
-  const { data: courses = [], isLoading: coursesLoading } = useCourses();
-  const { data: categories = [], isLoading: categoriesLoading } = useCategories();
+  const { data: courses = [], isLoading: coursesLoading, isStale: coursesStale, isFetching: coursesFetching } = useCourses();
+  const { data: categories = [], isLoading: categoriesLoading, isStale: categoriesStale, isFetching: categoriesFetching } = useCategories();
+  
+  const isStale = coursesStale || categoriesStale;
+  const isFetching = coursesFetching || categoriesFetching;
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -305,9 +309,12 @@ const Catalog = () => {
 
         {/* Results count */}
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">{filteredCourses.length}</span> {filteredCourses.length === 1 ? "curso encontrado" : "cursos encontrados"}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">{filteredCourses.length}</span> {filteredCourses.length === 1 ? "curso encontrado" : "cursos encontrados"}
+            </p>
+            <CacheIndicator isStale={isStale} isFetching={isFetching} showLabel />
+          </div>
         </div>
 
         {/* Course Grid */}

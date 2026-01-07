@@ -4,8 +4,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLeaderboard, LeaderboardPeriod } from '@/hooks/useLeaderboard';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RankBadge from '@/components/RankBadge';
-import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity } from 'lucide-react';
+import DepartmentLeaderboard from '@/components/leaderboard/DepartmentLeaderboard';
+import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2 } from 'lucide-react';
 import { calculateUserLevel } from '@/lib/levelSystem';
 
 const periodOptions: { value: LeaderboardPeriod; label: string; icon: typeof Calendar }[] = [
@@ -80,57 +82,71 @@ const Leaderboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-8">
-        {/* Period Filter */}
-        <div className="flex flex-wrap gap-2 p-1.5 bg-muted/50 rounded-2xl neon-border w-fit">
-          {periodOptions.map((option) => {
-            const IconComponent = option.icon;
-            const isActive = period === option.value;
-            return (
-              <button
-                key={option.value}
-                onClick={() => setPeriod(option.value)}
-                className={`
-                  flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300
-                  ${isActive 
-                    ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg neon-button' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  }
-                `}
-              >
-                <IconComponent className="h-4 w-4" />
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
+        {/* Tabs: Individual vs Teams */}
+        <Tabs defaultValue="individual" className="w-full">
+          <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
+            <TabsTrigger value="individual" className="gap-2">
+              <Users className="h-4 w-4" />
+              Individual
+            </TabsTrigger>
+            <TabsTrigger value="teams" className="gap-2">
+              <Building2 className="h-4 w-4" />
+              Por Departamento
+            </TabsTrigger>
+          </TabsList>
 
-        {/* User's Rank Card */}
-        {userRank && userRank.rank > 0 && period === 'all' && (
-          <div className="neon-card p-6 rounded-2xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-primary/50">
-                  <TrendingUp className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Sua posição geral</p>
-                  <p className="text-3xl font-bold neon-text">#{userRank.rank}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Users className="h-5 w-5" />
-                <span>de {userRank.total_users} jogadores</span>
-              </div>
+          <TabsContent value="individual" className="space-y-8">
+            {/* Period Filter */}
+            <div className="flex flex-wrap gap-2 p-1.5 bg-muted/50 rounded-2xl neon-border w-fit">
+              {periodOptions.map((option) => {
+                const IconComponent = option.icon;
+                const isActive = period === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => setPeriod(option.value)}
+                    className={`
+                      flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300
+                      ${isActive 
+                        ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg neon-button' 
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      }
+                    `}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                    {option.label}
+                  </button>
+                );
+              })}
             </div>
-          </div>
-        )}
 
-        {/* Leaderboard */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 mb-6">
-            <Star className="h-5 w-5 text-primary" />
-            <h2 className="text-xl font-semibold">Top 50 Jogadores</h2>
-          </div>
+            {/* User's Rank Card */}
+            {userRank && userRank.rank > 0 && period === 'all' && (
+              <div className="neon-card p-6 rounded-2xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-primary/50">
+                      <TrendingUp className="h-6 w-6 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Sua posição geral</p>
+                      <p className="text-3xl font-bold neon-text">#{userRank.rank}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Users className="h-5 w-5" />
+                    <span>de {userRank.total_users} jogadores</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Leaderboard */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-6">
+                <Star className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold">Top 50 Jogadores</h2>
+              </div>
 
           {leaderboard.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
@@ -191,7 +207,13 @@ const Leaderboard = () => {
               })}
             </div>
           )}
-        </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="teams">
+            <DepartmentLeaderboard limit={20} />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

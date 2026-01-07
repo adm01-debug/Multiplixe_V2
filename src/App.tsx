@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
+import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -57,6 +58,7 @@ const App = () => (
               <CommandPalette />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />
+              <PWAInstallPrompt />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />

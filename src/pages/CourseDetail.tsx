@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import { useQuizzes } from "@/hooks/useQuizzes";
+import CourseDiscussions from "@/components/discussions/CourseDiscussions";
 
 interface Course {
   id: string;
@@ -634,6 +635,11 @@ const CourseDetail = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Discussion Forum */}
+        <div className="mt-12">
+          <CourseDiscussions courseId={course.id} />
         </div>
       </main>
 

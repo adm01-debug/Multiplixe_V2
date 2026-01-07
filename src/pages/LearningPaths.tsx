@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
@@ -106,15 +107,38 @@ export default function LearningPaths() {
                     <Sparkles className="h-5 w-5 text-yellow-500" />
                     Trilhas em Destaque
                   </h3>
-                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  <motion.div 
+                    className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: { staggerChildren: 0.1 }
+                      }
+                    }}
+                  >
                     {featuredPaths.map((path) => (
-                      <LearningPathCard
+                      <motion.div
                         key={path.id}
-                        learningPath={path}
-                        progress={userProgress[path.id]}
-                      />
+                        variants={{
+                          hidden: { opacity: 0, y: 20, scale: 0.95 },
+                          visible: { 
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1,
+                            transition: { duration: 0.4, ease: "easeOut" }
+                          }
+                        }}
+                      >
+                        <LearningPathCard
+                          learningPath={path}
+                          progress={userProgress[path.id]}
+                        />
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </section>
               )}
 
@@ -122,15 +146,38 @@ export default function LearningPaths() {
               {regularPaths.length > 0 && (
                 <section>
                   <h3 className="mb-6 text-xl font-semibold">Todas as Trilhas</h3>
-                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  <motion.div 
+                    className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+                      }
+                    }}
+                  >
                     {regularPaths.map((path) => (
-                      <LearningPathCard
+                      <motion.div
                         key={path.id}
-                        learningPath={path}
-                        progress={userProgress[path.id]}
-                      />
+                        variants={{
+                          hidden: { opacity: 0, y: 20, scale: 0.95 },
+                          visible: { 
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1,
+                            transition: { duration: 0.4, ease: "easeOut" }
+                          }
+                        }}
+                      >
+                        <LearningPathCard
+                          learningPath={path}
+                          progress={userProgress[path.id]}
+                        />
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </section>
               )}
             </>

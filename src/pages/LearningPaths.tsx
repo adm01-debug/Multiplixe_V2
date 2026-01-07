@@ -24,11 +24,16 @@ export default function LearningPaths() {
   const { user } = useAuth();
   
   // Usar hooks cacheados com React Query
-  const { data: learningPathsData = [], isLoading: pathsLoading, isStale: pathsStale, isFetching: pathsFetching } = useLearningPathsList();
-  const { data: userProgress = {}, isLoading: progressLoading, isStale: progressStale, isFetching: progressFetching } = useUserLearningPathProgressCached(user?.id || '');
+  const { data: learningPathsData = [], isLoading: pathsLoading, isStale: pathsStale, isFetching: pathsFetching, refetch: refetchPaths } = useLearningPathsList();
+  const { data: userProgress = {}, isLoading: progressLoading, isStale: progressStale, isFetching: progressFetching, refetch: refetchProgress } = useUserLearningPathProgressCached(user?.id || '');
 
   const isStale = pathsStale || progressStale;
   const isFetching = pathsFetching || progressFetching;
+  
+  const handleRefresh = () => {
+    refetchPaths();
+    refetchProgress();
+  };
 
   // Transformar dados para o formato esperado pelos componentes
   const learningPaths = useMemo(() => {
@@ -97,7 +102,7 @@ export default function LearningPaths() {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="text-2xl font-bold">{learningPaths.length}</p>
-                    <CacheIndicator isStale={isStale} isFetching={isFetching} />
+                    <CacheIndicator isStale={isStale} isFetching={isFetching} onRefresh={handleRefresh} />
                   </div>
                   <p className="text-sm text-muted-foreground">trilhas disponíveis</p>
                 </div>

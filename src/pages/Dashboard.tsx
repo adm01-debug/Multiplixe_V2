@@ -159,7 +159,7 @@ const Dashboard = () => {
   const { isAdmin } = useAdminRole();
   
   // Usar hook cacheado para status de cache
-  const { isStale: coursesStale, isFetching: coursesFetching } = useCourses();
+  const { isStale: coursesStale, isFetching: coursesFetching, refetch: refetchCourses } = useCourses();
   
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
@@ -488,7 +488,7 @@ const Dashboard = () => {
               <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl dark:border-emerald-500/40 dark:shadow-[0_0_20px_hsl(150_100%_45%/0.2)]">
                 <Zap className="h-4 w-4 text-emerald-500 neon-icon" />
                 <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{totalXP} XP</span>
-                <CacheIndicator isStale={coursesStale} isFetching={coursesFetching} />
+                <CacheIndicator isStale={coursesStale} isFetching={coursesFetching} onRefresh={refetchCourses} />
               </div>
 
               <Link 

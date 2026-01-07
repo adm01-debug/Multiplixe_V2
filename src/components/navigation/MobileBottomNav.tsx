@@ -55,50 +55,64 @@ const MobileBottomNav = () => {
               onPrefetchData={prefetchHandler}
               className="relative flex flex-col items-center justify-center flex-1 py-2 touch-manipulation"
             >
-              {/* Active indicator */}
-              {isActive && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-gradient-to-r from-primary to-accent"
-                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                />
-              )}
-
-              {/* Icon container */}
-              <div
-                className={cn(
-                  'relative flex items-center justify-center w-12 h-8 rounded-xl transition-all duration-200',
-                  isActive 
-                    ? 'bg-primary/10 dark:bg-primary/20' 
-                    : 'hover:bg-muted/50'
-                )}
+              <motion.div
+                className="flex flex-col items-center"
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
-                <Icon 
-                  className={cn(
-                    'h-5 w-5 transition-colors duration-200',
-                    isActive 
-                      ? 'text-primary' 
-                      : 'text-muted-foreground'
-                  )} 
-                />
-                
-                {/* Glow effect for active */}
+                {/* Active indicator */}
                 {isActive && (
-                  <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg" />
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-gradient-to-r from-primary to-accent"
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
                 )}
-              </div>
 
-              {/* Label */}
-              <span
-                className={cn(
-                  'text-[10px] font-medium mt-1 transition-colors duration-200',
-                  isActive 
-                    ? 'text-primary font-semibold' 
-                    : 'text-muted-foreground'
-                )}
-              >
-                {item.label}
-              </span>
+                {/* Icon container */}
+                <motion.div
+                  className={cn(
+                    'relative flex items-center justify-center w-12 h-8 rounded-xl transition-all duration-200',
+                    isActive 
+                      ? 'bg-primary/10 dark:bg-primary/20' 
+                      : 'hover:bg-muted/50'
+                  )}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  <Icon 
+                    className={cn(
+                      'h-5 w-5 transition-colors duration-200',
+                      isActive 
+                        ? 'text-primary' 
+                        : 'text-muted-foreground'
+                    )} 
+                  />
+                  
+                  {/* Glow effect for active */}
+                  {isActive && (
+                    <motion.div 
+                      className="absolute inset-0 bg-primary/20 rounded-xl blur-lg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
+                </motion.div>
+
+                {/* Label */}
+                <span
+                  className={cn(
+                    'text-[10px] font-medium mt-1 transition-colors duration-200',
+                    isActive 
+                      ? 'text-primary font-semibold' 
+                      : 'text-muted-foreground'
+                  )}
+                >
+                  {item.label}
+                </span>
+              </motion.div>
             </PrefetchLink>
           );
         })}

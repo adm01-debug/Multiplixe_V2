@@ -65,11 +65,9 @@ const CourseCard = ({
   }, [slug, prefetchCourseDetail]);
 
   return (
-    <PrefetchLink to={`/curso/${slug}`} className="group block" onPrefetchData={handlePrefetchData}>
+    <PrefetchLink to={`/curso/${slug}`} className="group block h-full" onPrefetchData={handlePrefetchData}>
       <motion.div 
         className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
         whileHover={{ 
           y: -8, 
           boxShadow: "0 20px 40px -15px rgba(0,0,0,0.2)",

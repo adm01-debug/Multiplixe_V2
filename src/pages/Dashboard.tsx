@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import PrefetchLink from '@/components/PrefetchLink';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useLevelUp } from '@/hooks/useLevelUp';
@@ -431,40 +432,45 @@ const Dashboard = () => {
             </Link>
 
             <nav className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
-              <Link 
+              <PrefetchLink 
                 to="/dashboard" 
+                prefetch="intent"
                 className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white rounded-xl shadow-lg neon-button"
               >
                 Dashboard
-              </Link>
-              <Link 
+              </PrefetchLink>
+              <PrefetchLink 
                 to="/catalogo" 
+                prefetch="intent"
                 className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors"
               >
                 Catálogo
-              </Link>
-              <Link 
+              </PrefetchLink>
+              <PrefetchLink 
                 to="/ranking" 
+                prefetch="intent"
                 className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
               >
                 <Trophy className="h-4 w-4" />
                 Ranking
-              </Link>
-              <Link 
+              </PrefetchLink>
+              <PrefetchLink 
                 to="/trilhas" 
+                prefetch="intent"
                 className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
               >
                 <Route className="h-4 w-4" />
                 Trilhas
-              </Link>
+              </PrefetchLink>
               {isAdmin && (
-                <Link 
+                <PrefetchLink 
                   to="/admin" 
+                  prefetch="intent"
                   className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5"
                 >
                   <ShieldAlert className="h-4 w-4" />
                   Admin
-                </Link>
+                </PrefetchLink>
               )}
             </nav>
 

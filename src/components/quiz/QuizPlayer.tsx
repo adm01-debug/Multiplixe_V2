@@ -3,8 +3,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw } from 'lucide-react';
+import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface QuizOption {
   id: string;
@@ -45,11 +55,42 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
   const [result, setResult] = useState<{ score: number; passed: boolean; xpEarned: number } | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(quiz.time_limit_seconds);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const currentQuestion = quiz.quiz_questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.quiz_questions.length) * 100;
   const isLastQuestion = currentQuestionIndex === quiz.quiz_questions.length - 1;
   const hasAnswered = currentQuestion && answers[currentQuestion.id];
+  const hasStartedQuiz = Object.keys(answers).length > 0;
+
+  // Prevent accidental page leave
+  useEffect(() => {
+    if (showResult) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasStartedQuiz) {
+        e.preventDefault();
+        e.returnValue = 'Você tem um quiz em andamento. Tem certeza que deseja sair?';
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasStartedQuiz, showResult]);
+
+  const handleCloseAttempt = () => {
+    if (hasStartedQuiz && !showResult) {
+      setShowExitConfirm(true);
+    } else {
+      onClose();
+    }
+  };
+
+  const handleConfirmExit = () => {
+    setShowExitConfirm(false);
+    onClose();
+  };
 
   // Timer effect
   useEffect(() => {
@@ -247,6 +288,26 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
           </Button>
         </div>
       </CardContent>
+
+      <AlertDialog open={showExitConfirm} onOpenChange={setShowExitConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="mx-auto w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center mb-2">
+              <AlertTriangle className="h-6 w-6 text-amber-500" />
+            </div>
+            <AlertDialogTitle className="text-center">Sair do Quiz?</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Você ainda não finalizou o quiz. Se sair agora, seu progresso será perdido e você precisará começar novamente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center">
+            <AlertDialogCancel>Continuar Quiz</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmExit} className="bg-destructive hover:bg-destructive/90">
+              Sair mesmo assim
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };

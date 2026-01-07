@@ -60,14 +60,39 @@ const NotificationBell = () => {
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <motion.span 
-              className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-primary to-accent text-[10px] font-bold text-white flex items-center justify-center"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 500, damping: 15 }}
-            >
-              {unreadCount > 9 ? '9+' : unreadCount}
-            </motion.span>
+            <>
+              {/* Pulse animation ring */}
+              <motion.span
+                className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-primary to-accent"
+                initial={{ scale: 1, opacity: 0.7 }}
+                animate={{ 
+                  scale: [1, 1.8, 1.8],
+                  opacity: [0.7, 0, 0]
+                }}
+                transition={{ 
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatDelay: 0.5
+                }}
+              />
+              {/* Badge with bounce */}
+              <motion.span 
+                className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-primary to-accent text-[10px] font-bold text-white flex items-center justify-center shadow-lg"
+                initial={{ scale: 0 }}
+                animate={{ 
+                  scale: [1, 1.15, 1],
+                }}
+                transition={{ 
+                  scale: {
+                    duration: 0.6,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }
+                }}
+              >
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </motion.span>
+            </>
           )}
         </motion.button>
       </PopoverTrigger>

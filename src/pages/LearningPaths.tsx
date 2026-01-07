@@ -11,6 +11,12 @@ import { useLearningPathsList, useUserLearningPathProgressCached } from '@/hooks
 import CacheIndicator from '@/components/ui/CacheIndicator';
 import EmptyState from '@/components/EmptyState';
 import { 
+  popInContainerVariants,
+  popInItemVariants,
+  scaleUpContainerVariants,
+  scaleUpItemVariants 
+} from '@/components/ui/stagger-container';
+import { 
   ArrowLeft, 
   GraduationCap, 
   Route,
@@ -125,28 +131,15 @@ export default function LearningPaths() {
                   </h3>
                   <motion.div 
                     className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                    variants={popInContainerVariants}
                     initial="hidden"
                     animate="visible"
-                    variants={{
-                      hidden: { opacity: 0 },
-                      visible: {
-                        opacity: 1,
-                        transition: { staggerChildren: 0.1 }
-                      }
-                    }}
                   >
-                    {featuredPaths.map((path) => (
+                    {featuredPaths.map((path, index) => (
                       <motion.div
                         key={path.id}
-                        variants={{
-                          hidden: { opacity: 0, y: 20, scale: 0.95 },
-                          visible: { 
-                            opacity: 1, 
-                            y: 0, 
-                            scale: 1,
-                            transition: { duration: 0.4, ease: "easeOut" }
-                          }
-                        }}
+                        variants={popInItemVariants}
+                        custom={index}
                       >
                         <LearningPathCard
                           learningPath={path}
@@ -171,28 +164,15 @@ export default function LearningPaths() {
                   ) : (
                     <motion.div 
                       className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                      variants={scaleUpContainerVariants}
                       initial="hidden"
                       animate="visible"
-                      variants={{
-                        hidden: { opacity: 0 },
-                        visible: {
-                          opacity: 1,
-                          transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-                        }
-                      }}
                     >
-                      {regularPaths.map((path) => (
+                      {regularPaths.map((path, index) => (
                         <motion.div
                           key={path.id}
-                          variants={{
-                            hidden: { opacity: 0, y: 20, scale: 0.95 },
-                            visible: { 
-                              opacity: 1, 
-                              y: 0, 
-                              scale: 1,
-                              transition: { duration: 0.4, ease: "easeOut" }
-                            }
-                          }}
+                          variants={scaleUpItemVariants}
+                          custom={index}
                         >
                           <LearningPathCard
                             learningPath={path}

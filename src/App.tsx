@@ -13,6 +13,7 @@ import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import NavigationProgress from "@/components/navigation/NavigationProgress";
+import PageTransition from "@/components/navigation/PageTransition";
 import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
 import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -77,26 +78,28 @@ const App = () => (
               <ConditionalNotificationBanner />
               <PWAInstallPrompt />
               <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
-                  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                  <Route path="/catalogo" element={<ProtectedRoute><Catalog /></ProtectedRoute>} />
-                  <Route path="/curso/:slug" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
-                  <Route path="/curso/:slug/aula/:lessonId" element={<ProtectedRoute><LessonPlayer /></ProtectedRoute>} />
-                  <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                  <Route path="/ranking" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
-                  <Route path="/trilhas" element={<ProtectedRoute><LearningPaths /></ProtectedRoute>} />
-                  <Route path="/trilha/:slug" element={<ProtectedRoute><LearningPathDetail /></ProtectedRoute>} />
-                  <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
-                  <Route path="/admin/security" element={<ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute>} />
-                  <Route path="/seguranca" element={<ProtectedRoute><SecurityDashboard /></ProtectedRoute>} />
-                  <Route path="/verificar-certificado" element={<VerifyCertificate />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <PageTransition>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                    <Route path="/catalogo" element={<ProtectedRoute><Catalog /></ProtectedRoute>} />
+                    <Route path="/curso/:slug" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
+                    <Route path="/curso/:slug/aula/:lessonId" element={<ProtectedRoute><LessonPlayer /></ProtectedRoute>} />
+                    <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                    <Route path="/ranking" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+                    <Route path="/trilhas" element={<ProtectedRoute><LearningPaths /></ProtectedRoute>} />
+                    <Route path="/trilha/:slug" element={<ProtectedRoute><LearningPathDetail /></ProtectedRoute>} />
+                    <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
+                    <Route path="/admin/security" element={<ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute>} />
+                    <Route path="/seguranca" element={<ProtectedRoute><SecurityDashboard /></ProtectedRoute>} />
+                    <Route path="/verificar-certificado" element={<VerifyCertificate />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </PageTransition>
               </Suspense>
             </AuthProvider>
           </BrowserRouter>

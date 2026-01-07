@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { LearningPathCard } from '@/components/learning-paths/LearningPathCard';
 import VirtualizedLearningPathGrid from '@/components/VirtualizedLearningPathGrid';
 import { useLearningPathsList, useUserLearningPathProgressCached } from '@/hooks/useCachedQuery';
+import CacheIndicator from '@/components/ui/CacheIndicator';
 import EmptyState from '@/components/EmptyState';
 import { 
   ArrowLeft, 
@@ -23,8 +24,11 @@ export default function LearningPaths() {
   const { user } = useAuth();
   
   // Usar hooks cacheados com React Query
-  const { data: learningPathsData = [], isLoading: pathsLoading } = useLearningPathsList();
-  const { data: userProgress = {}, isLoading: progressLoading } = useUserLearningPathProgressCached(user?.id || '');
+  const { data: learningPathsData = [], isLoading: pathsLoading, isStale: pathsStale, isFetching: pathsFetching } = useLearningPathsList();
+  const { data: userProgress = {}, isLoading: progressLoading, isStale: progressStale, isFetching: progressFetching } = useUserLearningPathProgressCached(user?.id || '');
+
+  const isStale = pathsStale || progressStale;
+  const isFetching = pathsFetching || progressFetching;
 
   // Transformar dados para o formato esperado pelos componentes
   const learningPaths = useMemo(() => {
@@ -91,7 +95,10 @@ export default function LearningPaths() {
               <div className="flex items-center gap-2 rounded-xl bg-background/50 p-4">
                 <GraduationCap className="h-10 w-10 text-primary" />
                 <div>
-                  <p className="text-2xl font-bold">{learningPaths.length}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-2xl font-bold">{learningPaths.length}</p>
+                    <CacheIndicator isStale={isStale} isFetching={isFetching} />
+                  </div>
                   <p className="text-sm text-muted-foreground">trilhas disponíveis</p>
                 </div>
               </div>

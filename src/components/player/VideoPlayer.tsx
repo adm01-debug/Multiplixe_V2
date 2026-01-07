@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Play,
   Pause,
@@ -11,6 +12,7 @@ import {
   SkipBack,
   SkipForward,
   Settings,
+  Gauge,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -18,6 +20,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface VideoPlayerProps {
   src: string;
@@ -32,6 +39,15 @@ const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${mins}:${secs.toString().padStart(2, "0")}`;
+};
+
+const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+
+const getSpeedLabel = (rate: number) => {
+  if (rate < 1) return "Lento";
+  if (rate === 1) return "Normal";
+  if (rate <= 1.5) return "Rápido";
+  return "Turbo";
 };
 
 const VideoPlayer = ({
@@ -54,8 +70,11 @@ const VideoPlayer = ({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showSpeedIndicator, setShowSpeedIndicator] = useState(false);
+  const [showSkipIndicator, setShowSkipIndicator] = useState<{ direction: 'forward' | 'backward'; seconds: number } | null>(null);
 
   const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
+  const speedIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseMove = useCallback(() => {
     setShowControls(true);
@@ -179,6 +198,10 @@ const VideoPlayer = ({
     if (!video) return;
 
     video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
+    
+    // Show skip indicator
+    setShowSkipIndicator({ direction: seconds > 0 ? 'forward' : 'backward', seconds: Math.abs(seconds) });
+    setTimeout(() => setShowSkipIndicator(null), 800);
   };
 
   const handlePlaybackRateChange = (rate: number) => {
@@ -187,6 +210,15 @@ const VideoPlayer = ({
 
     video.playbackRate = rate;
     setPlaybackRate(rate);
+    
+    // Show speed indicator
+    setShowSpeedIndicator(true);
+    if (speedIndicatorTimeout.current) {
+      clearTimeout(speedIndicatorTimeout.current);
+    }
+    speedIndicatorTimeout.current = setTimeout(() => {
+      setShowSpeedIndicator(false);
+    }, 1500);
   };
 
   const toggleFullscreen = () => {
@@ -302,6 +334,47 @@ const VideoPlayer = ({
         onClick={togglePlay}
         playsInline
       />
+
+      {/* Speed indicator overlay */}
+      <AnimatePresence>
+        {showSpeedIndicator && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"
+          >
+            <div className="bg-black/80 backdrop-blur-xl rounded-2xl px-6 py-4 flex flex-col items-center gap-2 border border-white/10">
+              <Gauge className="w-8 h-8 text-primary" />
+              <span className="text-white font-bold text-2xl">{playbackRate}x</span>
+              <span className="text-white/60 text-sm">{getSpeedLabel(playbackRate)}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Skip indicator overlay */}
+      <AnimatePresence>
+        {showSkipIndicator && (
+          <motion.div
+            initial={{ opacity: 0, x: showSkipIndicator.direction === 'forward' ? 20 : -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0 }}
+            className={`absolute top-1/2 -translate-y-1/2 pointer-events-none z-20 ${
+              showSkipIndicator.direction === 'forward' ? 'right-1/4' : 'left-1/4'
+            }`}
+          >
+            <div className="bg-black/70 backdrop-blur-xl rounded-full p-4 flex items-center gap-2">
+              {showSkipIndicator.direction === 'forward' ? (
+                <SkipForward className="w-6 h-6 text-white" />
+              ) : (
+                <SkipBack className="w-6 h-6 text-white" />
+              )}
+              <span className="text-white font-bold">{showSkipIndicator.seconds}s</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Play button overlay */}
       {!isPlaying && (
@@ -421,29 +494,46 @@ const VideoPlayer = ({
 
           <div className="flex items-center gap-1 md:gap-2">
             {/* Playback speed */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/20 text-xs font-semibold h-10 px-3 rounded-lg"
-                >
-                  <Settings className="h-4 w-4 mr-1" />
-                  {playbackRate}x
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-card/95 backdrop-blur-xl border-border/50 rounded-xl">
-                {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
-                  <DropdownMenuItem
-                    key={rate}
-                    onClick={() => handlePlaybackRateChange(rate)}
-                    className={`rounded-lg ${playbackRate === rate ? "bg-primary/20 text-primary" : ""}`}
-                  >
-                    {rate}x {rate === 1 && "(Normal)"}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`text-white hover:bg-white/20 text-xs font-semibold h-10 px-3 rounded-lg transition-all ${
+                        playbackRate !== 1 ? 'bg-primary/30 border border-primary/50' : ''
+                      }`}
+                    >
+                      <Gauge className="h-4 w-4 mr-1" />
+                      {playbackRate}x
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-card/95 backdrop-blur-xl border-border/50 rounded-xl p-1">
+                    <div className="px-2 py-1.5 text-xs text-muted-foreground border-b border-border/50 mb-1">
+                      Velocidade <span className="text-primary">(teclas , e .)</span>
+                    </div>
+                    {playbackRates.map((rate) => (
+                      <DropdownMenuItem
+                        key={rate}
+                        onClick={() => handlePlaybackRateChange(rate)}
+                        className={`rounded-lg flex items-center justify-between ${
+                          playbackRate === rate ? "bg-primary/20 text-primary" : ""
+                        }`}
+                      >
+                        <span>{rate}x</span>
+                        <span className="text-xs text-muted-foreground ml-4">
+                          {getSpeedLabel(rate)}
+                        </span>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="bg-card/95 backdrop-blur-xl">
+                <p>Velocidade: <kbd className="px-1.5 py-0.5 rounded bg-muted text-xs">,</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-muted text-xs">.</kbd></p>
+              </TooltipContent>
+            </Tooltip>
 
             {/* Fullscreen */}
             <Button

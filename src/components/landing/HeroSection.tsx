@@ -17,14 +17,55 @@ import {
   Volume2,
   VolumeX
 } from "lucide-react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+
+// Typing effect words
+const rotatingWords = ["crescimento", "futuro", "carreira", "potencial", "sucesso"];
+
+// Animated counter component
+const CountUp = ({ target }: { target: number }) => {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    const duration = 1500;
+    const startTime = Date.now();
+    const startDelay = 800;
+    
+    const timeout = setTimeout(() => {
+      const animate = () => {
+        const elapsed = Date.now() - startTime - startDelay;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.floor(easeOut * target));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      requestAnimationFrame(animate);
+    }, startDelay);
+    
+    return () => clearTimeout(timeout);
+  }, [target]);
+  
+  return <>{count}</>;
+};
 
 const HeroSection = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Rotate typing words
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Scroll-based parallax
   const { scrollYProgress } = useScroll({
@@ -195,7 +236,7 @@ const HeroSection = () => {
               </span>
             </motion.div>
 
-            {/* Heading */}
+            {/* Heading with Typing Effect */}
             <motion.h1 
               className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-foreground leading-[1.1] tracking-tight"
               initial={{ opacity: 0, y: 30 }}
@@ -203,10 +244,20 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               Invista no seu{" "}
-              <span className="relative">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-gradient">
-                  crescimento
-                </span>
+              <span className="relative inline-block min-w-[280px] md:min-w-[360px]">
+                <AnimatePresence mode="wait">
+                  <motion.span 
+                    key={currentWordIndex}
+                    className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-gradient absolute left-0"
+                    initial={{ opacity: 0, y: 20, rotateX: -90 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    exit={{ opacity: 0, y: -20, rotateX: 90 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  >
+                    {rotatingWords[currentWordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+                <span className="invisible">{rotatingWords[0]}</span>
                 <Sparkles className="absolute -top-2 -right-6 w-6 h-6 text-accent animate-pulse" />
               </span>
               <br />
@@ -378,39 +429,72 @@ const HeroSection = () => {
                   </div>
                 </div>
                 
-                {/* Progress */}
+                {/* Animated Progress Ring */}
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground font-medium">Seu progresso</span>
-                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">65%</span>
+                    <motion.span 
+                      className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.2 }}
+                    >
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                      >
+                        {/* Animated Counter */}
+                        <CountUp target={65} />%
+                      </motion.span>
+                    </motion.span>
                   </div>
-                  <div className="h-3 rounded-full bg-muted overflow-hidden">
+                  <div className="h-3 rounded-full bg-muted overflow-hidden relative">
                     <motion.div 
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+                      className="h-full rounded-full bg-gradient-to-r from-primary to-accent relative"
                       initial={{ width: 0 }}
                       animate={{ width: "65%" }}
                       transition={{ duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    />
+                    >
+                      {/* Shimmer effect on progress bar */}
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                        animate={{ x: ['-100%', '200%'] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: 2 }}
+                      />
+                    </motion.div>
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Floating Card - XP with enhanced parallax */}
+            {/* Floating Card - XP with 3D Tilt + Enhanced Parallax */}
             <motion.div 
-              className="absolute -bottom-6 -left-6 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4"
+              className="absolute -bottom-6 -left-6 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4 cursor-pointer"
               initial={{ opacity: 0, x: -30, y: 30 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
               style={{
-                x: mousePosition.x * -15,
-                y: mousePosition.y * -15,
+                x: mousePosition.x * -25,
+                y: mousePosition.y * -25,
+                rotateX: mousePosition.y * -8,
+                rotateY: mousePosition.x * 8,
+                transformStyle: "preserve-3d",
+                perspective: 1000,
               }}
+              whileHover={{ 
+                scale: 1.08, 
+                rotateX: 0, 
+                rotateY: 0,
+                boxShadow: "0 25px 50px -12px hsl(var(--primary) / 0.25)",
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              whileTap={{ scale: 0.95 }}
             >
               <motion.div 
                 className="flex items-center gap-3"
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                style={{ transform: "translateZ(20px)" }}
               >
                 <div className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-accent to-warning text-accent-foreground font-bold text-sm">
                   +150 XP
@@ -420,23 +504,42 @@ const HeroSection = () => {
                   <p className="text-muted-foreground text-xs">Curso concluído</p>
                 </div>
               </motion.div>
+              {/* Shine Effect */}
+              <motion.div 
+                className="absolute inset-0 rounded-2xl opacity-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent"
+                whileHover={{ opacity: 1, x: ['-100%', '100%'] }}
+                transition={{ duration: 0.6 }}
+              />
             </motion.div>
 
-            {/* Floating Card - Certificate with enhanced parallax */}
+            {/* Floating Card - Certificate with 3D Tilt + Enhanced Parallax */}
             <motion.div 
-              className="absolute -top-4 -right-4 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4"
+              className="absolute -top-4 -right-4 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4 cursor-pointer"
               initial={{ opacity: 0, x: 30, y: -30 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
               style={{
-                x: mousePosition.x * 12,
-                y: mousePosition.y * 12,
+                x: mousePosition.x * 20,
+                y: mousePosition.y * 20,
+                rotateX: mousePosition.y * 10,
+                rotateY: mousePosition.x * -10,
+                transformStyle: "preserve-3d",
+                perspective: 1000,
               }}
+              whileHover={{ 
+                scale: 1.08, 
+                rotateX: 0, 
+                rotateY: 0,
+                boxShadow: "0 25px 50px -12px hsl(var(--warning) / 0.25)",
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              whileTap={{ scale: 0.95 }}
             >
               <motion.div 
                 className="flex items-center gap-3"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                style={{ transform: "translateZ(20px)" }}
               >
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-warning/20 to-accent/20 flex items-center justify-center">
                   <Award className="w-6 h-6 text-warning" />
@@ -446,6 +549,12 @@ const HeroSection = () => {
                   <p className="text-muted-foreground text-xs">Disponível</p>
                 </div>
               </motion.div>
+              {/* Shine Effect */}
+              <motion.div 
+                className="absolute inset-0 rounded-2xl opacity-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent"
+                whileHover={{ opacity: 1, x: ['-100%', '100%'] }}
+                transition={{ duration: 0.6 }}
+              />
             </motion.div>
           </motion.div>
         </div>

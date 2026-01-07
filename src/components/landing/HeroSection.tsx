@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
@@ -17,11 +17,47 @@ import {
   Volume2,
   VolumeX
 } from "lucide-react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 const HeroSection = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Scroll-based parallax
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  // Parallax transforms for different layers
+  const bgY = useTransform(smoothProgress, [0, 1], [0, 150]);
+  const floatingY1 = useTransform(smoothProgress, [0, 1], [0, -80]);
+  const floatingY2 = useTransform(smoothProgress, [0, 1], [0, -120]);
+  const floatingY3 = useTransform(smoothProgress, [0, 1], [0, -60]);
+  const contentY = useTransform(smoothProgress, [0, 1], [0, 50]);
+  const cardY = useTransform(smoothProgress, [0, 1], [0, -30]);
+  const gridOpacity = useTransform(smoothProgress, [0, 0.5], [0.02, 0]);
+
+  // Mouse parallax effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      setMousePosition({
+        x: (clientX - centerX) / centerX,
+        y: (clientY - centerY) / centerY,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const handlePlayVideo = () => {
     if (videoRef.current) {
@@ -48,54 +84,124 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 -z-10">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      {/* Animated Background with Parallax */}
+      <motion.div className="absolute inset-0 -z-10" style={{ y: bgY }}>
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted" />
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
+        <motion.div 
+          className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]"
+          animate={{
+            x: mousePosition.x * 30,
+            y: mousePosition.y * 30,
+            scale: [1, 1.05, 1],
+          }}
+          transition={{ 
+            x: { type: "spring", stiffness: 50, damping: 30 },
+            y: { type: "spring", stiffness: 50, damping: 30 },
+            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px]"
+          animate={{
+            x: mousePosition.x * -20,
+            y: mousePosition.y * -20,
+            scale: [1, 1.08, 1],
+          }}
+          transition={{ 
+            x: { type: "spring", stiffness: 50, damping: 30 },
+            y: { type: "spring", stiffness: 50, damping: 30 },
+            scale: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }
+          }}
+        />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-secondary/5 rounded-full blur-[150px]" />
-      </div>
+      </motion.div>
 
-      {/* Floating Elements */}
-      <div className="absolute top-32 left-10 animate-float opacity-60">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 backdrop-blur-sm border border-primary/20 flex items-center justify-center">
+      {/* Floating Elements with Parallax */}
+      <motion.div 
+        className="absolute top-32 left-10 opacity-60"
+        style={{ y: floatingY1 }}
+        animate={{
+          x: mousePosition.x * 15,
+          y: mousePosition.y * 15,
+        }}
+        transition={{ type: "spring", stiffness: 50, damping: 30 }}
+      >
+        <motion.div 
+          className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 backdrop-blur-sm border border-primary/20 flex items-center justify-center"
+          animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
           <Zap className="w-8 h-8 text-primary" />
-        </div>
-      </div>
-      <div className="absolute top-48 right-20 animate-float opacity-60" style={{ animationDelay: "0.5s" }}>
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 backdrop-blur-sm border border-accent/20 flex items-center justify-center">
+        </motion.div>
+      </motion.div>
+      <motion.div 
+        className="absolute top-48 right-20 opacity-60"
+        style={{ y: floatingY2 }}
+        animate={{
+          x: mousePosition.x * -10,
+          y: mousePosition.y * -10,
+        }}
+        transition={{ type: "spring", stiffness: 50, damping: 30 }}
+      >
+        <motion.div 
+          className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 backdrop-blur-sm border border-accent/20 flex items-center justify-center"
+          animate={{ y: [0, -15, 0], rotate: [0, -5, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        >
           <Trophy className="w-7 h-7 text-accent" />
-        </div>
-      </div>
-      <div className="absolute bottom-32 left-20 animate-float opacity-60" style={{ animationDelay: "1s" }}>
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-warning/20 to-warning/5 backdrop-blur-sm border border-warning/20 flex items-center justify-center">
+        </motion.div>
+      </motion.div>
+      <motion.div 
+        className="absolute bottom-32 left-20 opacity-60"
+        style={{ y: floatingY3 }}
+        animate={{
+          x: mousePosition.x * 20,
+          y: mousePosition.y * 20,
+        }}
+        transition={{ type: "spring", stiffness: 50, damping: 30 }}
+      >
+        <motion.div 
+          className="w-12 h-12 rounded-2xl bg-gradient-to-br from-warning/20 to-warning/5 backdrop-blur-sm border border-warning/20 flex items-center justify-center"
+          animate={{ y: [0, -8, 0], rotate: [0, 3, 0] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        >
           <Target className="w-6 h-6 text-warning" />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 -z-10 opacity-[0.02]">
+      {/* Grid Pattern with fade on scroll */}
+      <motion.div className="absolute inset-0 -z-10" style={{ opacity: gridOpacity }}>
         <div className="absolute inset-0" style={{
           backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
           backgroundSize: '60px 60px'
         }} />
-      </div>
+      </motion.div>
 
       <div className="container-app py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left Content */}
-          <div className="space-y-8 animate-slide-up">
+          {/* Left Content with subtle parallax */}
+          <motion.div className="space-y-8" style={{ y: contentY }}>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 backdrop-blur-sm">
+            <motion.div 
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               <Flame className="w-4 h-4 text-primary animate-pulse" />
               <span className="text-sm font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Exclusivo para colaboradores Promo Brindes
               </span>
-            </div>
+            </motion.div>
 
             {/* Heading */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-foreground leading-[1.1] tracking-tight">
+            <motion.h1 
+              className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-foreground leading-[1.1] tracking-tight"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Invista no seu{" "}
               <span className="relative">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-gradient">
@@ -107,16 +213,26 @@ const HeroSection = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-warning">
                 profissional
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Description */}
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed">
+            <motion.p 
+              className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               A Promo Brindes acredita no seu potencial. Acesse cursos exclusivos, 
               desenvolva novas habilidades e construa a carreira que você sempre quis.
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               <Link to="/auth">
                 <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground text-lg px-8 h-16 font-semibold shadow-2xl shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-1 group">
                   <Sparkles className="mr-2 w-5 h-5 group-hover:rotate-12 transition-transform" />
@@ -132,10 +248,15 @@ const HeroSection = () => {
                 <Play className="mr-2 w-5 h-5 group-hover:scale-125 transition-transform text-primary" fill="currentColor" />
                 Conhecer a Plataforma
               </Button>
-            </div>
+            </motion.div>
 
             {/* Internal message */}
-            <div className="pt-4 flex items-center gap-4 p-4 rounded-2xl bg-muted/50 border border-border/50 backdrop-blur-sm">
+            <motion.div 
+              className="pt-4 flex items-center gap-4 p-4 rounded-2xl bg-muted/50 border border-border/50 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <Users className="w-6 h-6 text-primary" />
               </div>
@@ -143,16 +264,33 @@ const HeroSection = () => {
                 <p className="font-semibold text-foreground">Acesso 100% gratuito</p>
                 <p className="text-sm text-muted-foreground">Todos os colaboradores têm acesso completo</p>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Right Content - Hero Image/Card */}
-          <div className="relative animate-scale-in">
+          {/* Right Content - Hero Image/Card with parallax */}
+          <motion.div 
+            className="relative"
+            style={{ y: cardY }}
+            initial={{ opacity: 0, scale: 0.9, x: 50 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
             {/* Glow Effect */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-[2rem] blur-2xl opacity-50" />
+            <motion.div 
+              className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-[2rem] blur-2xl opacity-50"
+              animate={{
+                opacity: [0.4, 0.6, 0.4],
+                scale: [1, 1.02, 1],
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
             
             {/* Main Card */}
-            <div className="relative bg-card/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-border/50 overflow-hidden">
+            <motion.div 
+              className="relative bg-card/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-border/50 overflow-hidden"
+              whileHover={{ scale: 1.01 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               {/* Video Preview with Real Video */}
               <div className="aspect-video bg-gradient-to-br from-primary/30 via-accent/20 to-secondary/30 flex items-center justify-center relative overflow-hidden">
                 {/* Background Video */}
@@ -181,10 +319,13 @@ const HeroSection = () => {
                 }} />
                 
                 {/* Play/Pause Button */}
-                <button 
+                <motion.button 
                   onClick={handlePlayVideo}
-                  className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground flex items-center justify-center shadow-2xl shadow-primary/40 hover:scale-110 transition-all duration-300 group"
+                  className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground flex items-center justify-center shadow-2xl shadow-primary/40 group"
                   aria-label={isVideoPlaying ? "Pausar vídeo" : "Reproduzir vídeo"}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
                   {!isVideoPlaying && <div className="absolute inset-0 rounded-full bg-primary/50 animate-ping" />}
                   {isVideoPlaying ? (
@@ -192,21 +333,25 @@ const HeroSection = () => {
                   ) : (
                     <Play className="w-10 h-10 ml-1 group-hover:scale-110 transition-transform" fill="currentColor" />
                   )}
-                </button>
+                </motion.button>
 
                 {/* Video Controls */}
                 {isVideoPlaying && (
-                  <button
+                  <motion.button
                     onClick={handleToggleMute}
                     className="absolute bottom-4 right-4 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
                     aria-label={isMuted ? "Ativar som" : "Desativar som"}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
                     {isMuted ? (
                       <VolumeX className="w-5 h-5 text-foreground" />
                     ) : (
                       <Volume2 className="w-5 h-5 text-foreground" />
                     )}
-                  </button>
+                  </motion.button>
                 )}
 
                 {/* Course Badge */}
@@ -240,18 +385,33 @@ const HeroSection = () => {
                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">65%</span>
                   </div>
                   <div className="h-3 rounded-full bg-muted overflow-hidden">
-                    <div 
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-1000 ease-out"
-                      style={{ width: "65%" }}
+                    <motion.div 
+                      className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+                      initial={{ width: 0 }}
+                      animate={{ width: "65%" }}
+                      transition={{ duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     />
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Floating Card - XP */}
-            <div className="absolute -bottom-6 -left-6 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4 animate-float">
-              <div className="flex items-center gap-3">
+            {/* Floating Card - XP with enhanced parallax */}
+            <motion.div 
+              className="absolute -bottom-6 -left-6 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4"
+              initial={{ opacity: 0, x: -30, y: 30 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              style={{
+                x: mousePosition.x * -15,
+                y: mousePosition.y * -15,
+              }}
+            >
+              <motion.div 
+                className="flex items-center gap-3"
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
                 <div className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-accent to-warning text-accent-foreground font-bold text-sm">
                   +150 XP
                 </div>
@@ -259,12 +419,25 @@ const HeroSection = () => {
                   <p className="font-bold text-card-foreground">Parabéns!</p>
                   <p className="text-muted-foreground text-xs">Curso concluído</p>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Floating Card - Certificate */}
-            <div className="absolute -top-4 -right-4 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4 animate-float" style={{ animationDelay: "0.5s" }}>
-              <div className="flex items-center gap-3">
+            {/* Floating Card - Certificate with enhanced parallax */}
+            <motion.div 
+              className="absolute -top-4 -right-4 bg-card/90 backdrop-blur-xl rounded-2xl shadow-xl border border-border/50 p-4"
+              initial={{ opacity: 0, x: 30, y: -30 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              style={{
+                x: mousePosition.x * 12,
+                y: mousePosition.y * 12,
+              }}
+            >
+              <motion.div 
+                className="flex items-center gap-3"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              >
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-warning/20 to-accent/20 flex items-center justify-center">
                   <Award className="w-6 h-6 text-warning" />
                 </div>
@@ -272,9 +445,9 @@ const HeroSection = () => {
                   <p className="font-bold text-card-foreground">Certificado</p>
                   <p className="text-muted-foreground text-xs">Disponível</p>
                 </div>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* Stats */}

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import PrefetchLink from "@/components/PrefetchLink";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
@@ -55,7 +55,7 @@ const CourseCard = ({
   const levelStyle = levelConfig[level] || levelConfig.iniciante;
 
   return (
-    <Link to={`/curso/${slug}`} className="group block">
+    <PrefetchLink to={`/curso/${slug}`} className="group block">
       <motion.div 
         className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
@@ -200,7 +200,7 @@ const CourseCard = ({
           </div>
         </div>
       </motion.div>
-    </Link>
+    </PrefetchLink>
   );
 };
 

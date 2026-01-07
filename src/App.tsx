@@ -14,6 +14,7 @@ import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import NavigationProgress from "@/components/navigation/NavigationProgress";
 import PageTransition from "@/components/navigation/PageTransition";
+import ScrollRestoration from "@/components/navigation/ScrollRestoration";
 import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
 import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -72,6 +73,7 @@ const App = () => (
           <BrowserRouter>
             <AuthProvider>
               <NavigationProgress />
+              <ScrollRestoration />
               <CommandPalette />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />

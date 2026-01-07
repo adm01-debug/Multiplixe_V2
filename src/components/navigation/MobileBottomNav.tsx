@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import PrefetchLink from '@/components/PrefetchLink';
+import PrefetchLink, { usePrefetchQuery } from '@/components/PrefetchLink';
 import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
@@ -20,6 +20,20 @@ const navItems = [
 
 const MobileBottomNav = () => {
   const location = useLocation();
+  const { prefetchCatalog, prefetchLearningPaths, prefetchLeaderboard } = usePrefetchQuery();
+
+  const getPrefetchHandler = (path: string) => {
+    switch (path) {
+      case '/catalogo':
+        return prefetchCatalog;
+      case '/trilhas':
+        return prefetchLearningPaths;
+      case '/ranking':
+        return prefetchLeaderboard;
+      default:
+        return undefined;
+    }
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
@@ -31,12 +45,14 @@ const MobileBottomNav = () => {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
+          const prefetchHandler = getPrefetchHandler(item.path);
 
           return (
             <PrefetchLink
               key={item.path}
               to={item.path}
               prefetch="intent"
+              onPrefetchData={prefetchHandler}
               className="relative flex flex-col items-center justify-center flex-1 py-2 touch-manipulation"
             >
               {/* Active indicator */}

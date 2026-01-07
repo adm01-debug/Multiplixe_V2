@@ -25,7 +25,7 @@ interface BuscaFulltextOptions {
  * );
  */
 export function useBuscaFulltext<T>(
-  tabela: string,
+  tabela: 'courses' | 'lessons' | 'learning_paths' | 'profiles',
   searchTerm: string,
   colunas: string[] = ['*'],
   options: BuscaFulltextOptions = {}

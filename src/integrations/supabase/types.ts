@@ -1023,6 +1023,45 @@ export type Database = {
           },
         ]
       }
+      saved_filters: {
+        Row: {
+          created_at: string
+          description: string | null
+          entity_type: string
+          filters: Json
+          id: string
+          is_default: boolean
+          is_public: boolean
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          entity_type: string
+          filters?: Json
+          id?: string
+          is_default?: boolean
+          is_public?: boolean
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          entity_type?: string
+          filters?: Json
+          id?: string
+          is_default?: boolean
+          is_public?: boolean
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       security_alerts: {
         Row: {
           alert_type: string

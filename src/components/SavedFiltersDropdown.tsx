@@ -69,6 +69,16 @@ export function SavedFiltersDropdown({
   const [filterDescription, setFilterDescription] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [isDefault, setIsDefault] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  // Fetch current user on mount
+  useState(() => {
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      supabase.auth.getUser().then(({ data }) => {
+        setCurrentUserId(data.user?.id ?? null);
+      });
+    });
+  });
 
   const handleSaveFilter = () => {
     if (!filterName.trim()) return;
@@ -93,9 +103,8 @@ export function SavedFiltersDropdown({
     onApplyFilter(filters);
   };
 
-  const { data: { user } } = await supabase.auth.getUser();
-  const ownFilters = filters.filter(f => f.user_id === user?.id);
-  const publicFilters = filters.filter(f => f.is_public && f.user_id !== user?.id);
+  const ownFilters = filters.filter(f => f.user_id === currentUserId);
+  const publicFilters = filters.filter(f => f.is_public && f.user_id !== currentUserId);
 
   return (
     <>

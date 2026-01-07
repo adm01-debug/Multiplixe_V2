@@ -10,6 +10,7 @@ import LevelFilter from "@/components/catalog/LevelFilter";
 import SearchInput from "@/components/catalog/SearchInput";
 import EmptyState from "@/components/EmptyState";
 import { CourseGridSkeleton } from "@/components/skeletons/PageSkeletons";
+import VirtualizedCourseGrid from "@/components/VirtualizedCourseGrid";
 import { 
   GraduationCap, 
   LogOut, 
@@ -21,6 +22,9 @@ import {
   ChevronDown,
   LayoutGrid
 } from "lucide-react";
+
+// Threshold para ativar virtualização (número de cursos)
+const VIRTUALIZATION_THRESHOLD = 20;
 
 interface Category {
   id: string;
@@ -340,50 +344,64 @@ const Catalog = () => {
         {loading ? (
           <CourseGridSkeleton count={8} />
         ) : filteredCourses.length > 0 ? (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.08
-                }
-              }
-            }}
-          >
-            {filteredCourses.map((course) => (
-              <motion.div 
-                key={course.id}
-                variants={{
-                  hidden: { opacity: 0, y: 20, scale: 0.95 },
-                  visible: { 
-                    opacity: 1, 
-                    y: 0, 
-                    scale: 1,
-                    transition: { duration: 0.4, ease: "easeOut" }
+          // Usar virtualização apenas para listas grandes
+          filteredCourses.length >= VIRTUALIZATION_THRESHOLD ? (
+            <VirtualizedCourseGrid 
+              courses={filteredCourses.map(course => ({
+                ...course,
+                duration_minutes: course.duration_minutes ?? 0,
+                level: course.level ?? 'Iniciante',
+                total_lessons: course.total_lessons ?? 0,
+                is_featured: course.is_featured ?? false,
+              }))} 
+              columns={4}
+            />
+          ) : (
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.08
                   }
-                }}
-              >
-                <CourseCard
-                  id={course.id}
-                  slug={course.slug}
-                  title={course.title}
-                  description={course.description}
-                  thumbnailUrl={course.thumbnail_url}
-                  durationMinutes={course.duration_minutes}
-                  level={course.level}
-                  instructorName={course.instructor_name}
-                  totalLessons={course.total_lessons}
-                  categoryName={course.categories?.name}
-                  categoryColor={course.categories?.color || undefined}
-                  isFeatured={course.is_featured}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+                }
+              }}
+            >
+              {filteredCourses.map((course) => (
+                <motion.div 
+                  key={course.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 20, scale: 0.95 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      scale: 1,
+                      transition: { duration: 0.4, ease: "easeOut" }
+                    }
+                  }}
+                >
+                  <CourseCard
+                    id={course.id}
+                    slug={course.slug}
+                    title={course.title}
+                    description={course.description}
+                    thumbnailUrl={course.thumbnail_url}
+                    durationMinutes={course.duration_minutes ?? 0}
+                    level={course.level ?? 'Iniciante'}
+                    instructorName={course.instructor_name}
+                    totalLessons={course.total_lessons ?? 0}
+                    categoryName={course.categories?.name}
+                    categoryColor={course.categories?.color || undefined}
+                    isFeatured={course.is_featured ?? false}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )
         ) : (
           <EmptyState
             type="search"

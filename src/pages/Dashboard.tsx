@@ -16,6 +16,8 @@ import LevelProgress from '@/components/LevelProgress';
 import AchievementsGrid from '@/components/AchievementsGrid';
 import StreakDisplay from '@/components/StreakDisplay';
 import NotificationBell from '@/components/NotificationBell';
+import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
+import DailyChallenges from '@/components/gamification/DailyChallenges';
 import {
   GraduationCap, 
   BookOpen, 
@@ -92,7 +94,21 @@ const Dashboard = () => {
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [currentAchievement, setCurrentAchievement] = useState<Achievement | null>(null);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
+  const [showWelcomeWizard, setShowWelcomeWizard] = useState(false);
 
+  // Check if user needs onboarding
+  useEffect(() => {
+    if (user) {
+      const onboardingCompleted = localStorage.getItem(`onboarding_completed_${user.id}`);
+      if (!onboardingCompleted) {
+        setShowWelcomeWizard(true);
+      }
+    }
+  }, [user]);
+
+  const handleOnboardingComplete = () => {
+    setShowWelcomeWizard(false);
+  };
   // Check achievements when XP or progress changes
   useEffect(() => {
     if (totalXP > 0) {
@@ -278,6 +294,11 @@ const Dashboard = () => {
   ];
 
 
+
+  // Show Welcome Wizard for new users
+  if (showWelcomeWizard) {
+    return <WelcomeWizard onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -485,6 +506,11 @@ const Dashboard = () => {
             );
           })}
         </div>
+
+        {/* Daily Challenges Section */}
+        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.35s' }}>
+          <DailyChallenges />
+        </section>
 
         {/* Level Progress Section */}
         <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>

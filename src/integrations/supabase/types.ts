@@ -261,6 +261,42 @@ export type Database = {
           },
         ]
       }
+      daily_challenges: {
+        Row: {
+          challenge_type: string
+          created_at: string
+          day_of_week: number | null
+          description: string
+          id: string
+          is_active: boolean | null
+          target_value: number
+          title: string
+          xp_reward: number
+        }
+        Insert: {
+          challenge_type: string
+          created_at?: string
+          day_of_week?: number | null
+          description: string
+          id?: string
+          is_active?: boolean | null
+          target_value?: number
+          title: string
+          xp_reward?: number
+        }
+        Update: {
+          challenge_type?: string
+          created_at?: string
+          day_of_week?: number | null
+          description?: string
+          id?: string
+          is_active?: boolean | null
+          target_value?: number
+          title?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       geo_blocking_config: {
         Row: {
           id: string
@@ -1177,6 +1213,53 @@ export type Database = {
           },
         ]
       }
+      user_daily_challenge_progress: {
+        Row: {
+          challenge_date: string
+          challenge_id: string
+          completed_at: string | null
+          created_at: string
+          current_progress: number
+          id: string
+          is_completed: boolean | null
+          updated_at: string
+          user_id: string
+          xp_claimed: boolean | null
+        }
+        Insert: {
+          challenge_date?: string
+          challenge_id: string
+          completed_at?: string | null
+          created_at?: string
+          current_progress?: number
+          id?: string
+          is_completed?: boolean | null
+          updated_at?: string
+          user_id: string
+          xp_claimed?: boolean | null
+        }
+        Update: {
+          challenge_date?: string
+          challenge_id?: string
+          completed_at?: string | null
+          created_at?: string
+          current_progress?: number
+          id?: string
+          is_completed?: boolean | null
+          updated_at?: string
+          user_id?: string
+          xp_claimed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_daily_challenge_progress_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "daily_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_learning_path_progress: {
         Row: {
           completed_at: string | null
@@ -1652,6 +1735,10 @@ export type Database = {
         }[]
       }
       check_streak_risk_notifications: { Args: never; Returns: undefined }
+      claim_daily_challenge_reward: {
+        Args: { p_progress_id: string; p_user_id: string }
+        Returns: Json
+      }
       cleanup_old_security_logs: { Args: never; Returns: undefined }
       complete_pomodoro_session: {
         Args: {

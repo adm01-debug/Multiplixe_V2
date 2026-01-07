@@ -19,9 +19,17 @@ import {
   LayoutDashboard,
   User,
   Award,
-  BarChart3
+  BarChart3,
+  Settings,
+  Shield,
+  Moon,
+  Sun,
+  LogOut,
+  Keyboard
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "next-themes";
+import { toast } from "sonner";
 
 interface SearchResult {
   id: string;
@@ -39,28 +47,69 @@ const CommandPalette = () => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   // Pages for quick navigation
   const pages: SearchResult[] = [
     { id: "dashboard", title: "Dashboard", type: "page", url: "/dashboard", icon: "dashboard" },
-    { id: "catalog", title: "Catálogo de Cursos", type: "page", url: "/catalog", icon: "catalog" },
-    { id: "leaderboard", title: "Ranking", type: "page", url: "/leaderboard", icon: "leaderboard" },
-    { id: "profile", title: "Meu Perfil", type: "page", url: "/profile", icon: "profile" },
+    { id: "catalog", title: "Catálogo de Cursos", type: "page", url: "/catalogo", icon: "catalog" },
+    { id: "leaderboard", title: "Ranking", type: "page", url: "/ranking", icon: "leaderboard" },
+    { id: "profile", title: "Meu Perfil", type: "page", url: "/perfil", icon: "profile" },
+    { id: "learning-paths", title: "Trilhas de Aprendizado", type: "page", url: "/trilhas", icon: "catalog" },
+    { id: "security", title: "Segurança", type: "page", url: "/seguranca", icon: "shield" },
   ];
 
-  // Keyboard shortcut listener
+  // Global keyboard shortcuts
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      // Cmd+K or Ctrl+K to open command palette
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);
+        return;
+      }
+
+      // Don't process other shortcuts if in input/textarea
+      const target = e.target as HTMLElement;
+      const isInput = target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable;
+      
+      if (isInput || open) return;
+
+      // Global shortcuts
+      switch (e.key.toLowerCase()) {
+        case "g":
+          // Wait for second key
+          const handleSecondKey = (e2: KeyboardEvent) => {
+            document.removeEventListener("keydown", handleSecondKey);
+            switch (e2.key.toLowerCase()) {
+              case "h": navigate("/dashboard"); break;
+              case "c": navigate("/catalogo"); break;
+              case "l": navigate("/ranking"); break;
+              case "p": navigate("/perfil"); break;
+              case "t": navigate("/trilhas"); break;
+              case "s": navigate("/seguranca"); break;
+            }
+          };
+          document.addEventListener("keydown", handleSecondKey, { once: true });
+          // Cancel after 1 second
+          setTimeout(() => document.removeEventListener("keydown", handleSecondKey), 1000);
+          break;
+        case "t":
+          if (!e.metaKey && !e.ctrlKey) {
+            setTheme(theme === "dark" ? "light" : "dark");
+            toast.success(`Tema alterado para ${theme === "dark" ? "claro" : "escuro"}`);
+          }
+          break;
+        case "?":
+          setOpen(true);
+          break;
       }
     };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [open, navigate, theme, setTheme]);
 
   // Search function
   const performSearch = useCallback(async (searchQuery: string) => {
@@ -181,6 +230,8 @@ const CommandPalette = () => {
         return <BarChart3 className="h-4 w-4 text-muted-foreground" />;
       case "profile":
         return <User className="h-4 w-4 text-muted-foreground" />;
+      case "shield":
+        return <Shield className="h-4 w-4 text-muted-foreground" />;
       default:
         return <Search className="h-4 w-4 text-muted-foreground" />;
     }
@@ -318,13 +369,55 @@ const CommandPalette = () => {
         )}
       </CommandList>
       
-      <div className="border-t border-border p-2 text-xs text-muted-foreground flex items-center justify-center gap-2">
-        <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↑↓</kbd>
-        <span>navegar</span>
-        <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↵</kbd>
-        <span>selecionar</span>
-        <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">esc</kbd>
-        <span>fechar</span>
+      <div className="border-t border-border p-3 space-y-2">
+        {/* Quick Actions */}
+        {user && !query && (
+          <div className="flex items-center justify-between gap-2 pb-2 border-b border-border">
+            <button
+              onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+                setOpen(false);
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-muted transition-colors text-sm"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
+              <kbd className="ml-auto px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">T</kbd>
+            </button>
+            <button
+              onClick={() => {
+                signOut();
+                setOpen(false);
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-destructive/10 text-destructive transition-colors text-sm"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Sair</span>
+            </button>
+          </div>
+        )}
+
+        {/* Shortcuts help */}
+        <div className="text-xs text-muted-foreground flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↑↓</kbd>
+            <span>navegar</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↵</kbd>
+            <span>selecionar</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">G</kbd>
+            <span>+</span>
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">H/C/L/P</kbd>
+            <span>ir para</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">?</kbd>
+            <span>atalhos</span>
+          </div>
+        </div>
       </div>
     </CommandDialog>
   );

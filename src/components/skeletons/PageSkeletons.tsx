@@ -1,8 +1,27 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 
-// Course Card Skeleton
+// Animação de shimmer para skeletons
+const shimmerVariants: Variants = {
+  initial: { opacity: 0.5 },
+  animate: { 
+    opacity: [0.5, 1, 0.5],
+    transition: { 
+      duration: 1.5, 
+      repeat: Infinity, 
+      ease: "easeInOut" as const
+    }
+  }
+};
+// Course Card Skeleton with animation
 export const CourseCardSkeleton = () => (
-  <div className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden">
+  <motion.div 
+    className="rounded-3xl bg-card/50 border border-border/50 overflow-hidden"
+    variants={shimmerVariants}
+    initial="initial"
+    animate="animate"
+  >
     <Skeleton className="aspect-[16/10] w-full" />
     <div className="p-5 space-y-4">
       <Skeleton className="h-5 w-3/4" />
@@ -11,25 +30,69 @@ export const CourseCardSkeleton = () => (
       <div className="flex gap-2">
         <Skeleton className="h-6 w-16 rounded-full" />
         <Skeleton className="h-6 w-16 rounded-full" />
+        <Skeleton className="h-6 w-20 rounded-full" />
+      </div>
+      <div className="flex items-center justify-between pt-3 border-t border-border/30">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-4 w-24" />
+        </div>
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
-// Course Grid Skeleton
+// Course Grid Skeleton with staggered animation
 export const CourseGridSkeleton = ({ count = 8 }: { count?: number }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <motion.div 
+    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+    initial="hidden"
+    animate="visible"
+    variants={{
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.08 }
+      }
+    }}
+  >
     {[...Array(count)].map((_, i) => (
-      <CourseCardSkeleton key={i} />
+      <motion.div
+        key={i}
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0 }
+        }}
+      >
+        <CourseCardSkeleton />
+      </motion.div>
     ))}
-  </div>
+  </motion.div>
 );
 
-// Dashboard Stats Skeleton
+// Dashboard Stats Skeleton with pulse animation
 export const DashboardStatsSkeleton = () => (
-  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+  <motion.div 
+    className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+    initial="hidden"
+    animate="visible"
+    variants={{
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+      }
+    }}
+  >
     {[...Array(4)].map((_, i) => (
-      <div key={i} className="p-6 rounded-2xl bg-card border border-border/50">
+      <motion.div 
+        key={i} 
+        className="p-6 rounded-2xl bg-card border border-border/50"
+        variants={{
+          hidden: { opacity: 0, scale: 0.9 },
+          visible: { opacity: 1, scale: 1 }
+        }}
+      >
         <div className="flex items-center gap-4">
           <Skeleton className="h-12 w-12 rounded-xl" />
           <div className="space-y-2">
@@ -37,14 +100,19 @@ export const DashboardStatsSkeleton = () => (
             <Skeleton className="h-4 w-24" />
           </div>
         </div>
-      </div>
+      </motion.div>
     ))}
-  </div>
+  </motion.div>
 );
 
-// Learning Path Card Skeleton
+// Learning Path Card Skeleton with animation
 export const LearningPathCardSkeleton = () => (
-  <div className="rounded-2xl bg-card border border-border/50 overflow-hidden">
+  <motion.div 
+    className="rounded-2xl bg-card border border-border/50 overflow-hidden"
+    variants={shimmerVariants}
+    initial="initial"
+    animate="animate"
+  >
     <Skeleton className="aspect-video w-full" />
     <div className="p-6 space-y-4">
       <div className="flex items-center gap-2">
@@ -59,16 +127,115 @@ export const LearningPathCardSkeleton = () => (
         <Skeleton className="h-9 w-24 rounded-lg" />
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
-// Learning Path Grid Skeleton
+// Learning Path Grid Skeleton with staggered animation
 export const LearningPathGridSkeleton = ({ count = 6 }: { count?: number }) => (
-  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <motion.div 
+    className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+    initial="hidden"
+    animate="visible"
+    variants={{
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+      }
+    }}
+  >
     {[...Array(count)].map((_, i) => (
-      <LearningPathCardSkeleton key={i} />
+      <motion.div
+        key={i}
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0 }
+        }}
+      >
+        <LearningPathCardSkeleton />
+      </motion.div>
     ))}
-  </div>
+  </motion.div>
+);
+
+// Hero Section Skeleton
+export const HeroSkeleton = () => (
+  <motion.div 
+    className="relative p-8 md:p-12 rounded-[2rem] overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5 border border-border/30"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+  >
+    <div className="space-y-6">
+      <Skeleton className="h-8 w-40 rounded-full" />
+      <Skeleton className="h-12 w-3/4" />
+      <Skeleton className="h-6 w-1/2" />
+      <div className="flex gap-4 mt-6">
+        <Skeleton className="h-16 w-40 rounded-2xl" />
+        <Skeleton className="h-16 w-40 rounded-2xl" />
+      </div>
+    </div>
+  </motion.div>
+);
+
+// Daily Challenge Skeleton
+export const DailyChallengeSkeleton = () => (
+  <motion.div 
+    className="p-4 rounded-xl bg-card border border-border/50"
+    variants={shimmerVariants}
+    initial="initial"
+    animate="animate"
+  >
+    <div className="flex items-center gap-4">
+      <Skeleton className="h-12 w-12 rounded-xl" />
+      <div className="flex-1 space-y-2">
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-3 w-48" />
+        <Skeleton className="h-2 w-full rounded-full" />
+      </div>
+      <Skeleton className="h-8 w-16 rounded-lg" />
+    </div>
+  </motion.div>
+);
+
+// Streak Display Skeleton
+export const StreakSkeleton = () => (
+  <motion.div 
+    className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border/50"
+    variants={shimmerVariants}
+    initial="initial"
+    animate="animate"
+  >
+    <Skeleton className="h-14 w-14 rounded-xl" />
+    <div className="space-y-2">
+      <Skeleton className="h-6 w-20" />
+      <Skeleton className="h-4 w-32" />
+    </div>
+  </motion.div>
+);
+
+// XP Chart Skeleton
+export const XPChartSkeleton = () => (
+  <motion.div 
+    className="p-6 rounded-2xl bg-card border border-border/50"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+  >
+    <Skeleton className="h-6 w-40 mb-4" />
+    <div className="h-64 flex items-end justify-between gap-2">
+      {[...Array(7)].map((_, i) => (
+        <Skeleton 
+          key={i} 
+          className="flex-1 rounded-t-lg" 
+          style={{ height: `${30 + Math.random() * 60}%` }}
+        />
+      ))}
+    </div>
+    <div className="flex justify-between mt-4">
+      {[...Array(7)].map((_, i) => (
+        <Skeleton key={i} className="h-3 w-8" />
+      ))}
+    </div>
+  </motion.div>
 );
 
 // Profile Skeleton

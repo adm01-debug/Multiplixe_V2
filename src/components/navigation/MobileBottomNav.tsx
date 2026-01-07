@@ -1,4 +1,5 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import PrefetchLink from '@/components/PrefetchLink';
 import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
@@ -32,9 +33,10 @@ const MobileBottomNav = () => {
           const isActive = location.pathname === item.path;
 
           return (
-            <Link
+            <PrefetchLink
               key={item.path}
               to={item.path}
+              prefetch="intent"
               className="relative flex flex-col items-center justify-center flex-1 py-2 touch-manipulation"
             >
               {/* Active indicator */}
@@ -81,7 +83,7 @@ const MobileBottomNav = () => {
               >
                 {item.label}
               </span>
-            </Link>
+            </PrefetchLink>
           );
         })}
       </div>

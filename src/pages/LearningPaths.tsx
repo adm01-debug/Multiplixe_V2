@@ -7,6 +7,7 @@ import { useLearningPaths, UserLearningPathProgress } from '@/hooks/useLearningP
 import { useAuth } from '@/hooks/useAuth';
 import { LearningPathCard } from '@/components/learning-paths/LearningPathCard';
 import { supabase } from '@/integrations/supabase/client';
+import EmptyState from '@/components/EmptyState';
 import { 
   ArrowLeft, 
   GraduationCap, 
@@ -104,13 +105,7 @@ export default function LearningPaths() {
               ))}
             </div>
           ) : learningPaths.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <Route className="mb-4 h-16 w-16 text-muted-foreground/50" />
-              <h3 className="mb-2 text-xl font-semibold">Nenhuma trilha disponível</h3>
-              <p className="text-muted-foreground">
-                Novas trilhas de aprendizado serão adicionadas em breve.
-              </p>
-            </div>
+            <EmptyState type="learning-paths" />
           ) : (
             <>
               {/* Featured Paths */}

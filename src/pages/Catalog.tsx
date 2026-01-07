@@ -13,6 +13,12 @@ import EmptyState from "@/components/EmptyState";
 import { CourseGridSkeleton } from "@/components/skeletons/PageSkeletons";
 import VirtualizedCourseGrid from "@/components/VirtualizedCourseGrid";
 import { 
+  StaggerContainer, 
+  StaggerItem,
+  scaleUpContainerVariants,
+  scaleUpItemVariants 
+} from "@/components/ui/stagger-container";
+import { 
   GraduationCap, 
   LogOut, 
   Loader2, 
@@ -341,30 +347,15 @@ const Catalog = () => {
           ) : (
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              variants={scaleUpContainerVariants}
               initial="hidden"
               animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.08
-                  }
-                }
-              }}
             >
-              {filteredCourses.map((course) => (
+              {filteredCourses.map((course, index) => (
                 <motion.div 
                   key={course.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 20, scale: 0.95 },
-                    visible: { 
-                      opacity: 1, 
-                      y: 0, 
-                      scale: 1,
-                      transition: { duration: 0.4, ease: "easeOut" }
-                    }
-                  }}
+                  variants={scaleUpItemVariants}
+                  custom={index}
                 >
                   <CourseCard
                     id={course.id}

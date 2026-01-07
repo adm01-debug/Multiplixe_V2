@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { LearningPathGridSkeleton } from '@/components/skeletons/PageSkeletons';
-import { useLearningPaths, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import { useAuth } from '@/hooks/useAuth';
 import { LearningPathCard } from '@/components/learning-paths/LearningPathCard';
 import VirtualizedLearningPathGrid from '@/components/VirtualizedLearningPathGrid';
-import { supabase } from '@/integrations/supabase/client';
+import { useLearningPathsList, useUserLearningPathProgressCached } from '@/hooks/useCachedQuery';
 import EmptyState from '@/components/EmptyState';
 import { 
   ArrowLeft, 
@@ -22,32 +21,33 @@ const VIRTUALIZATION_THRESHOLD = 12;
 
 export default function LearningPaths() {
   const { user } = useAuth();
-  const { learningPaths, loading } = useLearningPaths();
-  const [userProgress, setUserProgress] = useState<Record<string, UserLearningPathProgress>>({});
+  
+  // Usar hooks cacheados com React Query
+  const { data: learningPathsData = [], isLoading: pathsLoading } = useLearningPathsList();
+  const { data: userProgress = {}, isLoading: progressLoading } = useUserLearningPathProgressCached(user?.id || '');
 
-  useEffect(() => {
-    const fetchUserProgress = async () => {
-      if (!user) return;
+  // Transformar dados para o formato esperado pelos componentes
+  const learningPaths = useMemo(() => {
+    return learningPathsData.map((path: any) => ({
+      id: path.id,
+      title: path.title,
+      slug: path.slug,
+      description: path.description,
+      thumbnail_url: path.thumbnail_url,
+      estimated_hours: path.estimated_hours ?? 0,
+      difficulty_level: path.difficulty_level ?? 'Iniciante',
+      is_published: path.is_published ?? true,
+      is_featured: path.is_featured ?? false,
+      xp_reward: path.xp_reward ?? 0,
+      created_at: path.created_at,
+      courses_count: path.learning_path_courses?.length ?? 0,
+    }));
+  }, [learningPathsData]);
 
-      const { data } = await supabase
-        .from('user_learning_path_progress')
-        .select('*')
-        .eq('user_id', user.id);
+  const featuredPaths = useMemo(() => learningPaths.filter(p => p.is_featured), [learningPaths]);
+  const regularPaths = useMemo(() => learningPaths.filter(p => !p.is_featured), [learningPaths]);
 
-      if (data) {
-        const progressMap: Record<string, UserLearningPathProgress> = {};
-        data.forEach((p: any) => {
-          progressMap[p.learning_path_id] = p;
-        });
-        setUserProgress(progressMap);
-      }
-    };
-
-    fetchUserProgress();
-  }, [user]);
-
-  const featuredPaths = learningPaths.filter(p => p.is_featured);
-  const regularPaths = learningPaths.filter(p => !p.is_featured);
+  const loading = pathsLoading || progressLoading;
 
   return (
     <>

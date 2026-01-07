@@ -178,6 +178,29 @@ export const useUserStreakCached = (userId: string) => {
   });
 };
 
+// Hook para buscar progresso do usuário nas trilhas com cache
+export const useUserLearningPathProgressCached = (userId: string) => {
+  return useQuery({
+    queryKey: [...queryKeys.learningPaths.list(), 'progress', userId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_learning_path_progress')
+        .select('*')
+        .eq('user_id', userId);
+      
+      if (error) throw error;
+      
+      // Transforma em mapa para fácil acesso
+      const progressMap: Record<string, typeof data[0]> = {};
+      data?.forEach((p) => {
+        progressMap[p.learning_path_id] = p;
+      });
+      return progressMap;
+    },
+    enabled: !!userId,
+  });
+};
+
 // Hook para buscar leaderboard com cache
 export const useLeaderboardCached = (period?: string, limit = 50) => {
   return useQuery({

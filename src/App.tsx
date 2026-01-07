@@ -10,6 +10,7 @@ import CommandPalette from "@/components/CommandPalette";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
+import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -46,6 +47,13 @@ const ConditionalMobileNav = () => {
   return <MobileBottomNav />;
 };
 
+// Component that conditionally shows the Notification Permission Banner
+const ConditionalNotificationBanner = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  return <NotificationPermissionBanner />;
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -58,6 +66,7 @@ const App = () => (
               <CommandPalette />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />
+              <ConditionalNotificationBanner />
               <PWAInstallPrompt />
               <Routes>
                 <Route path="/" element={<Index />} />

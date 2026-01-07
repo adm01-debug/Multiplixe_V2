@@ -1,7 +1,9 @@
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   Play, 
+  Pause,
   ArrowRight, 
   Users, 
   BookOpen, 
@@ -11,10 +13,34 @@ import {
   Zap, 
   Trophy,
   Target,
-  Flame
+  Flame,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 
 const HeroSection = () => {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayVideo = () => {
+    if (videoRef.current) {
+      if (isVideoPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsVideoPlaying(!isVideoPlaying);
+    }
+  };
+
+  const handleToggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
   const stats = [
     { icon: BookOpen, value: "50+", label: "Cursos disponíveis", color: "from-primary to-accent" },
     { icon: TrendingUp, value: "12", label: "Trilhas de carreira", color: "from-accent to-warning" },
@@ -127,21 +153,64 @@ const HeroSection = () => {
             
             {/* Main Card */}
             <div className="relative bg-card/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-border/50 overflow-hidden">
-              {/* Video Preview */}
-              <div className="aspect-video bg-gradient-to-br from-primary/30 via-accent/20 to-secondary/30 flex items-center justify-center relative">
+              {/* Video Preview with Real Video */}
+              <div className="aspect-video bg-gradient-to-br from-primary/30 via-accent/20 to-secondary/30 flex items-center justify-center relative overflow-hidden">
+                {/* Background Video */}
+                <video
+                  ref={videoRef}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  poster="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"
+                  muted={isMuted}
+                  loop
+                  playsInline
+                  preload="metadata"
+                >
+                  <source 
+                    src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" 
+                    type="video/mp4" 
+                  />
+                </video>
+
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/20" />
+
                 {/* Mesh Pattern */}
-                <div className="absolute inset-0 opacity-30" style={{
+                <div className="absolute inset-0 opacity-20" style={{
                   backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.3) 1px, transparent 0)`,
                   backgroundSize: '24px 24px'
                 }} />
                 
-                <button className="relative w-24 h-24 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground flex items-center justify-center shadow-2xl shadow-primary/40 hover:scale-110 transition-all duration-300 group">
-                  <div className="absolute inset-0 rounded-full bg-primary/50 animate-ping" />
-                  <Play className="w-10 h-10 ml-1 group-hover:scale-110 transition-transform" fill="currentColor" />
+                {/* Play/Pause Button */}
+                <button 
+                  onClick={handlePlayVideo}
+                  className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground flex items-center justify-center shadow-2xl shadow-primary/40 hover:scale-110 transition-all duration-300 group"
+                  aria-label={isVideoPlaying ? "Pausar vídeo" : "Reproduzir vídeo"}
+                >
+                  {!isVideoPlaying && <div className="absolute inset-0 rounded-full bg-primary/50 animate-ping" />}
+                  {isVideoPlaying ? (
+                    <Pause className="w-10 h-10 group-hover:scale-110 transition-transform" fill="currentColor" />
+                  ) : (
+                    <Play className="w-10 h-10 ml-1 group-hover:scale-110 transition-transform" fill="currentColor" />
+                  )}
                 </button>
 
+                {/* Video Controls */}
+                {isVideoPlaying && (
+                  <button
+                    onClick={handleToggleMute}
+                    className="absolute bottom-4 right-4 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
+                    aria-label={isMuted ? "Ativar som" : "Desativar som"}
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-5 h-5 text-foreground" />
+                    ) : (
+                      <Volume2 className="w-5 h-5 text-foreground" />
+                    )}
+                  </button>
+                )}
+
                 {/* Course Badge */}
-                <div className="absolute top-4 left-4 px-4 py-2 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 flex items-center gap-2">
+                <div className="absolute top-4 left-4 z-10 px-4 py-2 rounded-xl bg-background/90 backdrop-blur-sm border border-border/50 flex items-center gap-2">
                   <Flame className="w-4 h-4 text-primary" />
                   <span className="text-sm font-semibold text-foreground">Em alta</span>
                 </div>

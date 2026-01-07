@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -339,12 +340,32 @@ const Catalog = () => {
         {loading ? (
           <CourseGridSkeleton count={8} />
         ) : filteredCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredCourses.map((course, index) => (
-              <div 
-                key={course.id} 
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 0.05}s` }}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.08
+                }
+              }
+            }}
+          >
+            {filteredCourses.map((course) => (
+              <motion.div 
+                key={course.id}
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: 0.95 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    transition: { duration: 0.4, ease: "easeOut" }
+                  }
+                }}
               >
                 <CourseCard
                   id={course.id}
@@ -360,9 +381,9 @@ const Catalog = () => {
                   categoryColor={course.categories?.color || undefined}
                   isFeatured={course.is_featured}
                 />
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
           <EmptyState
             type="search"

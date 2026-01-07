@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bell, Flame, BookOpen, Trophy, Info, Check, Trash2, X } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { motion } from 'framer-motion';
 
 const NotificationBell = () => {
   const navigate = useNavigate();
@@ -43,18 +44,32 @@ const NotificationBell = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="relative rounded-xl border-border/50 h-11 w-11 neon-border hover:bg-primary/10"
+        <motion.button
+          className="relative inline-flex items-center justify-center rounded-xl border border-border/50 h-11 w-11 bg-background hover:bg-primary/10 transition-colors"
+          whileHover={{ 
+            scale: 1.08,
+          }}
+          whileTap={{ 
+            scale: 0.92,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 17,
+          }}
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-primary to-accent text-[10px] font-bold text-white flex items-center justify-center animate-pulse">
+            <motion.span 
+              className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-primary to-accent text-[10px] font-bold text-white flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            >
               {unreadCount > 9 ? '9+' : unreadCount}
-            </span>
+            </motion.span>
           )}
-        </Button>
+        </motion.button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0 neon-border" align="end">
         <div className="flex items-center justify-between p-4 border-b border-border/50">

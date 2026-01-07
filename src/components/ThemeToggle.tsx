@@ -1,6 +1,5 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -26,19 +25,32 @@ const ThemeToggle = () => {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="rounded-xl">
+      <motion.button
+        className="inline-flex items-center justify-center rounded-xl h-11 w-11 bg-transparent hover:bg-muted/50 transition-colors"
+        aria-label="Toggle theme"
+      >
         <Sun className="h-5 w-5" />
-      </Button>
+      </motion.button>
     );
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <motion.button
       onClick={handleThemeChange}
-      className="relative rounded-xl hover:bg-muted/50 transition-all duration-300 group overflow-hidden"
+      className="relative inline-flex items-center justify-center rounded-xl h-11 w-11 bg-transparent hover:bg-muted/50 transition-colors overflow-hidden"
       aria-label="Toggle theme"
+      whileHover={{ 
+        scale: 1.08,
+        backgroundColor: "hsl(var(--muted) / 0.5)",
+      }}
+      whileTap={{ 
+        scale: 0.92,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      }}
     >
       <AnimatePresence mode="wait" initial={false}>
         {theme === "dark" ? (
@@ -47,7 +59,11 @@ const ThemeToggle = () => {
             initial={{ y: -20, opacity: 0, rotate: -90 }}
             animate={{ y: 0, opacity: 1, rotate: 0 }}
             exit={{ y: 20, opacity: 0, rotate: 90 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ 
+              duration: 0.25, 
+              ease: [0.32, 0.72, 0, 1],
+              rotate: { type: "spring", stiffness: 200, damping: 15 }
+            }}
           >
             <Sun className="h-5 w-5 text-accent" />
           </motion.div>
@@ -57,13 +73,17 @@ const ThemeToggle = () => {
             initial={{ y: -20, opacity: 0, rotate: 90 }}
             animate={{ y: 0, opacity: 1, rotate: 0 }}
             exit={{ y: 20, opacity: 0, rotate: -90 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ 
+              duration: 0.25, 
+              ease: [0.32, 0.72, 0, 1],
+              rotate: { type: "spring", stiffness: 200, damping: 15 }
+            }}
           >
             <Moon className="h-5 w-5 text-primary" />
           </motion.div>
         )}
       </AnimatePresence>
-    </Button>
+    </motion.button>
   );
 };
 

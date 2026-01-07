@@ -18,6 +18,7 @@ import StreakDisplay from '@/components/StreakDisplay';
 import NotificationBell from '@/components/NotificationBell';
 import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
+import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import {
   GraduationCap, 
   BookOpen, 
@@ -545,6 +546,11 @@ const Dashboard = () => {
             achievements={allAchievements} 
             isUnlocked={isUnlocked} 
           />
+        </section>
+
+        {/* Skill Radar Chart */}
+        <section className="mb-12 animate-fade-in" style={{ animationDelay: '0.7s' }}>
+          <SkillRadarChart />
         </section>
 
         {/* Continue Learning Section */}

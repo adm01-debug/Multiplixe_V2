@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import PushNotificationManager from '@/components/notifications/PushNotificationManager';
 import { 
   Shield, 
   Smartphone, 
@@ -22,7 +23,8 @@ import {
   Copy, 
   RefreshCw,
   AlertTriangle,
-  Lock
+  Lock,
+  Bell
 } from 'lucide-react';
 
 const SecuritySettings = () => {
@@ -129,14 +131,18 @@ const SecuritySettings = () => {
           </div>
 
           <Tabs defaultValue="mfa" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="mfa" className="gap-2">
                 <Smartphone className="h-4 w-4" />
-                Autenticação 2FA
+                2FA
+              </TabsTrigger>
+              <TabsTrigger value="notifications" className="gap-2">
+                <Bell className="h-4 w-4" />
+                Notificações
               </TabsTrigger>
               <TabsTrigger value="backup" className="gap-2">
                 <Key className="h-4 w-4" />
-                Códigos de Backup
+                Backup
               </TabsTrigger>
             </TabsList>
 
@@ -216,6 +222,11 @@ const SecuritySettings = () => {
                   )}
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Notifications Tab */}
+            <TabsContent value="notifications" className="space-y-4">
+              <PushNotificationManager />
             </TabsContent>
 
             {/* Backup Codes Tab */}

@@ -31,6 +31,7 @@ import { LessonsManager } from '@/components/admin/LessonsManager';
 import { QuizStats } from '@/components/admin/QuizStats';
 import PermissionsManager from '@/components/admin/PermissionsManager';
 import { LearningPathsManager } from '@/components/admin/LearningPathsManager';
+import PlatformAnalytics from '@/components/admin/PlatformAnalytics';
 import {
   GraduationCap,
   ArrowLeft,
@@ -338,7 +339,7 @@ const Admin = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="grid w-full max-w-3xl grid-cols-6">
+          <TabsList className="grid w-full max-w-4xl grid-cols-7">
             <TabsTrigger value="courses" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               Cursos
@@ -359,9 +360,13 @@ const Admin = () => {
               <Shield className="h-4 w-4" />
               Permissões
             </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Analytics
+            </TabsTrigger>
             <TabsTrigger value="stats" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
-              Estatísticas
+              Stats
             </TabsTrigger>
           </TabsList>
 
@@ -575,6 +580,11 @@ const Admin = () => {
           {/* Quizzes Tab */}
           <TabsContent value="quizzes">
             <QuizStats />
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics">
+            <PlatformAnalytics />
           </TabsContent>
 
           {/* Stats Tab */}

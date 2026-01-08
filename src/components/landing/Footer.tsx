@@ -4,6 +4,7 @@ import { GraduationCap, Mail, Phone, MapPin, HelpCircle, BookOpen, MessageCircle
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -15,16 +16,40 @@ const Footer = () => {
     if (!email) return;
     
     setIsSubscribing(true);
-    // Simular inscrição
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubscribing(false);
-    setIsSubscribed(true);
-    setEmail("");
-    toast.success("Inscrição realizada!", {
-      description: "Você receberá atualizações sobre novos cursos."
-    });
     
-    setTimeout(() => setIsSubscribed(false), 3000);
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscriptions')
+        .insert({ 
+          email: email.toLowerCase().trim(),
+          source: 'landing_footer'
+        });
+      
+      if (error) {
+        if (error.code === '23505') {
+          toast.info("Email já cadastrado!", {
+            description: "Você já está inscrito para receber atualizações."
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast.success("Inscrição realizada!", {
+          description: "Você receberá atualizações sobre novos cursos."
+        });
+      }
+      
+      setIsSubscribed(true);
+      setEmail("");
+      setTimeout(() => setIsSubscribed(false), 3000);
+    } catch (err) {
+      console.error('Newsletter subscription error:', err);
+      toast.error("Erro ao inscrever", {
+        description: "Tente novamente mais tarde."
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
   };
 
   const footerLinks = {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { GraduationCap, Mail, Phone, MapPin, HelpCircle, BookOpen, MessageCircle, Sparkles, ArrowUpRight, Heart, Send, CheckCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
@@ -28,28 +29,28 @@ const Footer = () => {
 
   const footerLinks = {
     plataforma: [
-      { label: "Meus Cursos", href: "#" },
-      { label: "Trilhas", href: "#trilhas" },
-      { label: "Certificados", href: "#" },
-      { label: "Ranking", href: "#" },
+      { label: "Meus Cursos", href: "/dashboard" },
+      { label: "Trilhas", href: "/learning-paths" },
+      { label: "Certificados", href: "/profile" },
+      { label: "Ranking", href: "/leaderboard" },
     ],
     ajuda: [
-      { label: "Como usar", href: "#como-funciona" },
-      { label: "Perguntas frequentes", href: "#" },
-      { label: "Suporte técnico", href: "#" },
-      { label: "Reportar problema", href: "#" },
+      { label: "Como usar", href: "/catalog" },
+      { label: "Perguntas frequentes", href: "mailto:rh@promobrindes.com.br" },
+      { label: "Suporte técnico", href: "mailto:ti@promobrindes.com.br" },
+      { label: "Reportar problema", href: "mailto:ti@promobrindes.com.br" },
     ],
     empresa: [
-      { label: "Sobre a Promo Brindes", href: "#" },
-      { label: "Portal do Colaborador", href: "#" },
-      { label: "RH Online", href: "#" },
+      { label: "Sobre a Promo Brindes", href: "https://www.promobrindes.com.br" },
+      { label: "Portal do Colaborador", href: "/dashboard" },
+      { label: "RH Online", href: "mailto:rh@promobrindes.com.br" },
     ],
   };
 
   const quickLinks = [
-    { icon: BookOpen, label: "Acessar Cursos", href: "#", gradient: "from-primary to-accent" },
-    { icon: HelpCircle, label: "Central de Ajuda", href: "#", gradient: "from-accent to-warning" },
-    { icon: MessageCircle, label: "Falar com RH", href: "#", gradient: "from-warning to-primary" },
+    { icon: BookOpen, label: "Acessar Cursos", href: "/catalog", gradient: "from-primary to-accent" },
+    { icon: HelpCircle, label: "Central de Ajuda", href: "mailto:rh@promobrindes.com.br", gradient: "from-accent to-warning" },
+    { icon: MessageCircle, label: "Falar com RH", href: "mailto:rh@promobrindes.com.br", gradient: "from-warning to-primary" },
   ];
 
   return (
@@ -61,25 +62,45 @@ const Footer = () => {
       <div className="container-app py-20 relative">
         {/* Quick Links */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 pb-16 border-b border-background/10">
-          {quickLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="group flex items-center gap-5 p-6 rounded-2xl bg-background/5 hover:bg-background/10 border border-background/10 hover:border-background/20 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${link.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                <link.icon className="w-7 h-7 text-white" />
-              </div>
-              <span className="font-semibold text-background text-lg">{link.label}</span>
-              <ArrowUpRight className="w-5 h-5 text-background/50 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-            </a>
-          ))}
+          {quickLinks.map((link) => {
+            const isExternal = link.href.startsWith("mailto:") || link.href.startsWith("http");
+            
+            if (isExternal) {
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="group flex items-center gap-5 p-6 rounded-2xl bg-background/5 hover:bg-background/10 border border-background/10 hover:border-background/20 transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${link.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                    <link.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <span className="font-semibold text-background text-lg">{link.label}</span>
+                  <ArrowUpRight className="w-5 h-5 text-background/50 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+              );
+            }
+            
+            return (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="group flex items-center gap-5 p-6 rounded-2xl bg-background/5 hover:bg-background/10 border border-background/10 hover:border-background/20 transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${link.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                  <link.icon className="w-7 h-7 text-white" />
+                </div>
+                <span className="font-semibold text-background text-lg">{link.label}</span>
+                <ArrowUpRight className="w-5 h-5 text-background/50 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+              </Link>
+            );
+          })}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
           {/* Brand Column */}
           <div className="col-span-2 space-y-8">
-            <a href="/" className="flex items-center gap-3 group">
+            <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg">
                   <GraduationCap className="w-7 h-7 text-white" />
@@ -96,7 +117,7 @@ const Footer = () => {
                   by Promo Brindes
                 </span>
               </div>
-            </a>
+            </Link>
             <p className="text-background/60 leading-relaxed max-w-sm">
               Plataforma de desenvolvimento profissional exclusiva para 
               colaboradores da Promo Brindes. Transforme sua carreira com nossos cursos.
@@ -163,42 +184,72 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-background text-lg mb-6">Plataforma</h4>
             <ul className="space-y-4">
-              {footerLinks.plataforma.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary transition-colors" />
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {footerLinks.plataforma.map((link) => {
+                const isExternal = link.href.startsWith("mailto:") || link.href.startsWith("http");
+                return (
+                  <li key={link.label}>
+                    {isExternal ? (
+                      <a href={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary transition-colors" />
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link to={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary transition-colors" />
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-background text-lg mb-6">Ajuda</h4>
             <ul className="space-y-4">
-              {footerLinks.ajuda.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors" />
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {footerLinks.ajuda.map((link) => {
+                const isExternal = link.href.startsWith("mailto:") || link.href.startsWith("http");
+                return (
+                  <li key={link.label}>
+                    {isExternal ? (
+                      <a href={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors" />
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link to={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors" />
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-background text-lg mb-6">Empresa</h4>
             <ul className="space-y-4">
-              {footerLinks.empresa.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 rounded-full bg-warning/50 group-hover:bg-warning transition-colors" />
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {footerLinks.empresa.map((link) => {
+                const isExternal = link.href.startsWith("mailto:") || link.href.startsWith("http");
+                return (
+                  <li key={link.label}>
+                    {isExternal ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-warning/50 group-hover:bg-warning transition-colors" />
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link to={link.href} className="text-background/60 hover:text-background transition-colors flex items-center gap-2 group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-warning/50 group-hover:bg-warning transition-colors" />
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

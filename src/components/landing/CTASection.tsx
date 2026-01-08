@@ -144,22 +144,26 @@ const CTASection = () => {
                 <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="border-2 border-white/30 text-white hover:bg-white/10 text-lg px-8 h-16 font-semibold transition-all duration-300 hover:-translate-y-1 group bg-transparent"
-            >
-              <Calendar className="mr-2 w-5 h-5" />
-              Agendar Demo
-            </Button>
-            <Button 
-              size="lg" 
-              variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-white/10 text-lg px-6 h-16 font-medium transition-all duration-300 group"
-            >
-              <MessageCircle className="mr-2 w-5 h-5" />
-              Falar com RH
-            </Button>
+            <Link to="/catalog">
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-2 border-white/30 text-white hover:bg-white/10 text-lg px-8 h-16 font-semibold transition-all duration-300 hover:-translate-y-1 group bg-transparent"
+              >
+                <Calendar className="mr-2 w-5 h-5" />
+                Ver Catálogo
+              </Button>
+            </Link>
+            <a href="mailto:rh@promobrindes.com.br">
+              <Button 
+                size="lg" 
+                variant="ghost"
+                className="text-white/80 hover:text-white hover:bg-white/10 text-lg px-6 h-16 font-medium transition-all duration-300 group"
+              >
+                <MessageCircle className="mr-2 w-5 h-5" />
+                Falar com RH
+              </Button>
+            </a>
           </div>
 
           {/* Trust Badges */}

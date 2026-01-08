@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { 
   PlayCircle, 
   Trophy, 
@@ -267,10 +268,12 @@ const FeaturesSection = () => {
                   ))}
                 </div>
 
-                <Button className="mt-8" size="lg">
-                  Ver cursos para {dept.title.replace("Para ", "")}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                <Link to="/catalog">
+                  <Button className="mt-8" size="lg">
+                    Ver cursos para {dept.title.replace("Para ", "")}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
               </motion.div>
             </TabsContent>
           ))}
@@ -315,10 +318,12 @@ const FeaturesSection = () => {
             </div>
           )}
 
-          <Button className="w-full mt-6" size="lg">
-            Experimentar agora
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
+          <Link to="/auth" className="w-full">
+            <Button className="w-full mt-6" size="lg">
+              Experimentar agora
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
         </DialogContent>
       </Dialog>
     </section>

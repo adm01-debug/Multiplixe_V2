@@ -729,6 +729,39 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscriptions: {
+        Row: {
+          email: string
+          id: string
+          is_active: boolean
+          metadata: Json | null
+          name: string | null
+          source: string | null
+          subscribed_at: string
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          email: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           action_url: string | null

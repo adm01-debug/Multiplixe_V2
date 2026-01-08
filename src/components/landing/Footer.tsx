@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { GraduationCap, Mail, Phone, MapPin, HelpCircle, BookOpen, MessageCircle, Sparkles, ArrowUpRight, Heart, Send, CheckCircle, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 
 const Footer = () => {
@@ -141,43 +140,21 @@ const Footer = () => {
                   className="bg-background/10 border-background/20 text-background placeholder:text-background/40 flex-1"
                   disabled={isSubscribing}
                 />
-                <Button 
-                  type="submit" 
-                  size="icon"
+                <motion.button 
+                  type="submit"
                   disabled={isSubscribing || !email}
-                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90 shrink-0"
+                  className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-gradient-to-r from-primary to-accent hover:opacity-90 shrink-0 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <AnimatePresence mode="wait">
-                    {isSubscribing ? (
-                      <motion.div
-                        key="loading"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                      >
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      </motion.div>
-                    ) : isSubscribed ? (
-                      <motion.div
-                        key="success"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="send"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                      >
-                        <Send className="w-4 h-4" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </Button>
+                  {isSubscribing ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : isSubscribed ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </motion.button>
               </form>
             </div>
           </div>

@@ -291,14 +291,16 @@ const HeroSection = () => {
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="text-lg px-8 h-16 group border-2 border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
-              >
-                <Play className="mr-2 w-5 h-5 group-hover:scale-125 transition-transform text-primary" fill="currentColor" />
-                Conhecer a Plataforma
-              </Button>
+              <Link to="/catalog">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-lg px-8 h-16 group border-2 border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                >
+                  <Play className="mr-2 w-5 h-5 group-hover:scale-125 transition-transform text-primary" fill="currentColor" />
+                  Conhecer a Plataforma
+                </Button>
+              </Link>
             </motion.div>
 
             {/* Internal message */}

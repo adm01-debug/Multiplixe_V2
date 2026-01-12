@@ -356,7 +356,7 @@ const PlatformAnalytics = () => {
                         </div>
                         <div className="text-right">
                           <Badge variant="outline" className="text-xs">
-                            {format(new Date(log.created_at), 'dd/MM HH:mm', { locale: ptBR })}
+                            {log.created_at ? format(new Date(log.created_at), 'dd/MM HH:mm', { locale: ptBR }) : 'N/A'}
                           </Badge>
                         </div>
                       </div>

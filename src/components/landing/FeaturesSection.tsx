@@ -268,7 +268,7 @@ const FeaturesSection = () => {
                   ))}
                 </div>
 
-                <Link to="/catalog">
+                <Link to="/catalogo">
                   <Button className="mt-8" size="lg">
                     Ver cursos para {dept.title.replace("Para ", "")}
                     <ArrowRight className="w-4 h-4 ml-2" />

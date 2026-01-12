@@ -5,6 +5,7 @@ import FeaturesSection from "@/components/landing/FeaturesSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import CTASection from "@/components/landing/CTASection";
 import Footer from "@/components/landing/Footer";
+import MobileStickyCTA from "@/components/landing/MobileStickyCTA";
 import DynamicSEO from "@/components/seo/DynamicSEO";
 
 const Index = () => {
@@ -23,6 +24,9 @@ const Index = () => {
         <CTASection />
       </main>
       <Footer />
+      
+      {/* Mobile Sticky CTA - appears after scrolling */}
+      <MobileStickyCTA />
     </div>
   );
 };

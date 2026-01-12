@@ -17,6 +17,8 @@ import PageTransition from "@/components/navigation/PageTransition";
 import ScrollRestoration from "@/components/navigation/ScrollRestoration";
 import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
 import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
+import SkipLinks from "@/components/accessibility/SkipLinks";
+import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
 
@@ -72,6 +74,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <AuthProvider>
+              <SkipLinks />
               <NavigationProgress />
               <ScrollRestoration />
               <CommandPalette />
@@ -79,6 +82,7 @@ const App = () => (
               <ConditionalMobileNav />
               <ConditionalNotificationBanner />
               <PWAInstallPrompt />
+              <ScrollToTop />
               <Suspense fallback={<PageLoader />}>
                 <PageTransition>
                   <Routes>

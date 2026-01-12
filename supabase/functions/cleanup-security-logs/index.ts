@@ -17,17 +17,12 @@ Deno.serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    console.log('Starting security logs cleanup...');
-
     // Call the cleanup function
     const { error } = await supabase.rpc('cleanup_old_security_logs');
 
     if (error) {
-      console.error('Cleanup error:', error);
       throw error;
     }
-
-    console.log('Security logs cleanup completed successfully');
 
     return new Response(
       JSON.stringify({ 
@@ -42,8 +37,6 @@ Deno.serve(async (req) => {
     );
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error in cleanup-security-logs:', error);
-    
     return new Response(
       JSON.stringify({ 
         success: false, 

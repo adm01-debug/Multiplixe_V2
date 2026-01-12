@@ -29,8 +29,6 @@ Deno.serve(async (req) => {
 
     const payload: AlertPayload = await req.json();
 
-    console.log('Creating security alert:', payload);
-
     // Validate required fields
     if (!payload.alert_type || !payload.title) {
       throw new Error('alert_type and title are required');
@@ -52,11 +50,8 @@ Deno.serve(async (req) => {
       .single();
 
     if (insertError) {
-      console.error('Insert error:', insertError);
       throw insertError;
     }
-
-    console.log('Security alert created:', alert.id);
 
     // If high/critical severity, notify all admins
     if (payload.severity === 'high' || payload.severity === 'critical') {
@@ -77,7 +72,6 @@ Deno.serve(async (req) => {
         }));
 
         await supabase.from('notifications').insert(notifications);
-        console.log(`Notified ${admins.length} admins about security alert`);
       }
     }
 
@@ -94,8 +88,6 @@ Deno.serve(async (req) => {
     );
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error in send-security-alert:', error);
-    
     return new Response(
       JSON.stringify({ 
         success: false, 

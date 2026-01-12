@@ -155,7 +155,7 @@ const CommandPalette = () => {
         .limit(5);
 
       if (lessons) {
-        lessons.forEach((lesson: any) => {
+        lessons.forEach((lesson: { id: string; title: string; description: string | null; course_id: string; courses: { slug: string; is_published: boolean } }) => {
           searchResults.push({
             id: lesson.id,
             title: lesson.title,
@@ -189,8 +189,8 @@ const CommandPalette = () => {
       }
 
       setResults(searchResults);
-    } catch (error) {
-      console.error("Search error:", error);
+    } catch {
+      // Silent fail
     } finally {
       setIsLoading(false);
     }

@@ -125,10 +125,11 @@ export const useRateLimitLogs = () => {
 
       await fetchData();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao bloquear IP',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return false;
@@ -147,10 +148,11 @@ export const useRateLimitLogs = () => {
 
       await fetchData();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao desbloquear IP',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return false;
@@ -176,10 +178,11 @@ export const useRateLimitLogs = () => {
 
       await fetchData();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao adicionar IP',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return false;
@@ -198,10 +201,11 @@ export const useRateLimitLogs = () => {
 
       await fetchData();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao remover IP',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return false;
@@ -224,10 +228,11 @@ export const useRateLimitLogs = () => {
 
       await fetchData();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao atualizar',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return false;

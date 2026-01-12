@@ -34,7 +34,7 @@ const XPEvolutionChart = () => {
     );
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: { dateFull: string; daily_xp: number; cumulative_xp: number } }> }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (

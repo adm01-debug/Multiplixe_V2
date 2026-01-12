@@ -227,7 +227,7 @@ export default function LearningPathDetail() {
 
         if (courseProgressData) {
           const progressMap: Record<string, number> = {};
-          courseProgressData.forEach((p: any) => {
+          courseProgressData.forEach((p: { course_id: string; progress_percentage: number }) => {
             progressMap[p.course_id] = p.progress_percentage;
           });
           setCourseProgress(progressMap);

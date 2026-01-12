@@ -59,8 +59,8 @@ const SmartReminders = () => {
     if (saved) {
       try {
         setSettings(JSON.parse(saved));
-      } catch (e) {
-        console.error("Error parsing reminder settings:", e);
+      } catch {
+        // Silent fail - use default settings
       }
     }
   }, [user]);

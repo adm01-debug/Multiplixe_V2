@@ -63,8 +63,7 @@ const PasswordStrengthIndicator = ({ password, onBreachCheck }: PasswordStrength
         
         setBreachStatus(isBreached ? 'breached' : 'safe');
         onBreachCheck?.(isBreached);
-      } catch (error) {
-        console.error('Error checking password breach:', error);
+      } catch {
         setBreachStatus('idle');
         onBreachCheck?.(null);
       }

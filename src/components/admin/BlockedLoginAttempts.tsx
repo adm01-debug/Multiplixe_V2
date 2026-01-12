@@ -42,8 +42,7 @@ const BlockedLoginAttempts = () => {
       }));
       
       setAttempts(typedData);
-    } catch (err) {
-      console.error('Error fetching login attempts:', err);
+    } catch {
       toast.error('Erro ao carregar tentativas de login');
     } finally {
       setLoading(false);
@@ -63,8 +62,7 @@ const BlockedLoginAttempts = () => {
       
       toast.success(`Conta ${email} desbloqueada com sucesso`);
       fetchAttempts();
-    } catch (err) {
-      console.error('Error unlocking account:', err);
+    } catch {
       toast.error('Erro ao desbloquear conta');
     } finally {
       setUnlocking(null);

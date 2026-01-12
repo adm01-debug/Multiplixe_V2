@@ -52,7 +52,7 @@ const ActivityTimeline = ({ limit = 10 }: ActivityTimelineProps) => {
         .limit(limit);
 
       if (lessons) {
-        lessons.forEach((l: any) => {
+        lessons.forEach((l: { id: string; completed_at: string | null; lessons: { title: string } | null }) => {
           if (l.completed_at && l.lessons) {
             activities.push({
               id: `lesson-${l.id}`,
@@ -83,7 +83,7 @@ const ActivityTimeline = ({ limit = 10 }: ActivityTimelineProps) => {
         .limit(limit);
 
       if (courses) {
-        courses.forEach((c: any) => {
+        courses.forEach((c: { id: string; completed_at: string | null; courses: { title: string } | null }) => {
           if (c.completed_at && c.courses) {
             activities.push({
               id: `course-${c.id}`,
@@ -112,7 +112,7 @@ const ActivityTimeline = ({ limit = 10 }: ActivityTimelineProps) => {
         .limit(limit);
 
       if (achievements) {
-        achievements.forEach((a: any) => {
+        achievements.forEach((a: { id: string; unlocked_at: string; achievements: { name: string; xp_reward: number } | null }) => {
           if (a.achievements) {
             activities.push({
               id: `achievement-${a.id}`,

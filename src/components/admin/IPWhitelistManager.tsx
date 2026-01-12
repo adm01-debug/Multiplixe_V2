@@ -84,8 +84,7 @@ const IPWhitelistManager = () => {
         ip_address: String(item.ip_address),
       }));
       setWhitelistedIPs(mappedData);
-    } catch (error) {
-      console.error('Error fetching whitelisted IPs:', error);
+    } catch {
       toast.error('Erro ao carregar IPs da whitelist');
     } finally {
       setLoading(false);
@@ -138,9 +137,9 @@ const IPWhitelistManager = () => {
       setDialogOpen(false);
       setFormData({ ip_address: '', description: '' });
       await fetchWhitelistedIPs();
-    } catch (error: any) {
-      console.error('Error adding IP:', error);
-      if (error.code === '23505') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === '23505') {
         toast.error('Este IP já está na whitelist');
       } else {
         toast.error('Erro ao adicionar IP');
@@ -165,8 +164,7 @@ const IPWhitelistManager = () => {
       setDeleteDialogOpen(false);
       setSelectedIP(null);
       await fetchWhitelistedIPs();
-    } catch (error) {
-      console.error('Error deleting IP:', error);
+    } catch {
       toast.error('Erro ao remover IP');
     }
   };

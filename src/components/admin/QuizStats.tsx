@@ -315,8 +315,8 @@ export const QuizStats = () => {
           averageScore,
           overallPassingRate
         });
-      } catch (error) {
-        console.error('Error fetching quiz stats:', error);
+      } catch {
+        // Silent fail
       } finally {
         setLoading(false);
       }
@@ -344,15 +344,15 @@ export const QuizStats = () => {
           .limit(50);
 
         if (alerts) {
-          const mappedAlerts: PerformanceAlert[] = alerts.map((alert: any) => ({
+          const mappedAlerts: PerformanceAlert[] = alerts.map((alert: { id: string; quiz_id: string; threshold: number; passing_rate: number; total_attempts: number; passed_attempts: number; alert_type: string; is_resolved: boolean; created_at: string; resolved_at: string | null; notes: string | null; quizzes: { title: string; courses: { title: string } | null } | null }) => ({
             ...alert,
             quizTitle: alert.quizzes?.title || 'Quiz desconhecido',
             courseTitle: alert.quizzes?.courses?.title || 'Curso desconhecido'
           }));
           setAlertHistory(mappedAlerts);
         }
-      } catch (error) {
-        console.error('Error fetching alert history:', error);
+      } catch {
+        // Silent fail
       }
     };
 
@@ -406,15 +406,14 @@ export const QuizStats = () => {
         .limit(50);
 
       if (alerts) {
-        const mappedAlerts: PerformanceAlert[] = alerts.map((alert: any) => ({
+        const mappedAlerts: PerformanceAlert[] = alerts.map((alert: { id: string; quiz_id: string; threshold: number; passing_rate: number; total_attempts: number; passed_attempts: number; alert_type: string; is_resolved: boolean; created_at: string; resolved_at: string | null; notes: string | null; quizzes: { title: string; courses: { title: string } | null } | null }) => ({
           ...alert,
           quizTitle: alert.quizzes?.title || 'Quiz desconhecido',
           courseTitle: alert.quizzes?.courses?.title || 'Curso desconhecido'
         }));
         setAlertHistory(mappedAlerts);
       }
-    } catch (error) {
-      console.error('Error registering alert:', error);
+    } catch {
       toast.error('Erro ao registrar alerta');
     }
   };
@@ -439,8 +438,7 @@ export const QuizStats = () => {
           ? { ...alert, is_resolved: true, resolved_at: new Date().toISOString() }
           : alert
       ));
-    } catch (error) {
-      console.error('Error resolving alert:', error);
+    } catch {
       toast.error('Erro ao resolver alerta');
     }
   };
@@ -492,8 +490,7 @@ export const QuizStats = () => {
       URL.revokeObjectURL(url);
       
       toast.success('CSV exportado com sucesso!');
-    } catch (error) {
-      console.error('Error exporting CSV:', error);
+    } catch {
       toast.error('Erro ao exportar CSV');
     }
   };
@@ -581,8 +578,7 @@ export const QuizStats = () => {
       // Save PDF
       doc.save(`estatisticas-quizzes-${new Date().toISOString().split('T')[0]}.pdf`);
       toast.success('PDF exportado com sucesso!');
-    } catch (error) {
-      console.error('Error exporting PDF:', error);
+    } catch {
       toast.error('Erro ao exportar PDF');
     }
   };

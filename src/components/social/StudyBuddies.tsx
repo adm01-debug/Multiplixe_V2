@@ -125,8 +125,8 @@ const StudyBuddies = () => {
 
           setBuddies(buddiesData);
         }
-      } catch (error) {
-        console.error("Error fetching study buddies:", error);
+      } catch {
+        // Silent fail
       } finally {
         setLoading(false);
       }

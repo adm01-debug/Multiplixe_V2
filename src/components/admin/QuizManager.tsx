@@ -94,15 +94,15 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
           time_limit_seconds: data.time_limit_seconds,
           cooldown_hours: data.cooldown_hours || 24,
           questions: data.quiz_questions
-            .sort((a: any, b: any) => a.order_index - b.order_index)
-            .map((q: any) => ({
+            .sort((a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index)
+            .map((q: { id: string; question_text: string; explanation: string | null; order_index: number; quiz_options: Array<{ id: string; option_text: string; is_correct: boolean; order_index: number }> }) => ({
               id: q.id,
               question_text: q.question_text,
               explanation: q.explanation || '',
               order_index: q.order_index,
               options: q.quiz_options
-                .sort((a: any, b: any) => a.order_index - b.order_index)
-                .map((o: any) => ({
+                .sort((a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index)
+                .map((o: { id: string; option_text: string; is_correct: boolean; order_index: number }) => ({
                   id: o.id,
                   option_text: o.option_text,
                   is_correct: o.is_correct,

@@ -89,7 +89,7 @@ const SkillRadarChart = () => {
         const categoryStats: Record<string, { completed: number; total: number; quizScores: number[] }> = {};
 
         // Process course progress
-        (progressData || []).forEach((progress: any) => {
+        (progressData || []).forEach((progress: { completed_at: string | null; courses: { categories: { name: string } | null } | null }) => {
           const categoryName = progress.courses?.categories?.name || 'Outros';
           if (!categoryStats[categoryName]) {
             categoryStats[categoryName] = { completed: 0, total: 0, quizScores: [] };
@@ -101,7 +101,7 @@ const SkillRadarChart = () => {
         });
 
         // Process quiz scores
-        (quizData || []).forEach((attempt: any) => {
+        (quizData || []).forEach((attempt: { score: number; quizzes: { courses: { categories: { name: string } | null } | null } | null }) => {
           const categoryName = attempt.quizzes?.courses?.categories?.name || 'Outros';
           if (!categoryStats[categoryName]) {
             categoryStats[categoryName] = { completed: 0, total: 0, quizScores: [] };

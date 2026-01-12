@@ -185,8 +185,7 @@ const GeoBlockingManager = () => {
           is_enabled: configRes.data.is_enabled,
         });
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
       toast.error('Erro ao carregar configurações');
     } finally {
       setLoading(false);
@@ -212,8 +211,7 @@ const GeoBlockingManager = () => {
 
       setConfig({ ...config, is_enabled: !config.is_enabled } as GeoConfig);
       toast.success(config.is_enabled ? 'Bloqueio geográfico desativado' : 'Bloqueio geográfico ativado');
-    } catch (error) {
-      console.error('Error toggling geo blocking:', error);
+    } catch {
       toast.error('Erro ao atualizar configuração');
     }
   };
@@ -250,9 +248,9 @@ const GeoBlockingManager = () => {
       setDialogOpen(false);
       setFormData({ country_code: '', reason: '' });
       await fetchData();
-    } catch (error: any) {
-      console.error('Error adding country:', error);
-      if (error.code === '23505') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === '23505') {
         toast.error('Este país já está na lista');
       } else {
         toast.error('Erro ao adicionar país');
@@ -277,8 +275,7 @@ const GeoBlockingManager = () => {
           : `${country.country_name} ativado`
       );
       await fetchData();
-    } catch (error) {
-      console.error('Error toggling country status:', error);
+    } catch {
       toast.error('Erro ao atualizar status');
     }
   };
@@ -298,8 +295,7 @@ const GeoBlockingManager = () => {
       setDeleteDialogOpen(false);
       setSelectedCountry(null);
       await fetchData();
-    } catch (error) {
-      console.error('Error deleting country:', error);
+    } catch {
       toast.error('Erro ao remover país');
     }
   };

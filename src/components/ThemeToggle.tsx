@@ -1,44 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState, useCallback, forwardRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// ForwardRef icon components to fix AnimatePresence warning
-const SunIcon = forwardRef<HTMLDivElement>((_, ref) => (
-  <motion.div
-    ref={ref}
-    key="sun"
-    initial={{ y: -20, opacity: 0, rotate: -90 }}
-    animate={{ y: 0, opacity: 1, rotate: 0 }}
-    exit={{ y: 20, opacity: 0, rotate: 90 }}
-    transition={{ 
-      duration: 0.25, 
-      ease: [0.32, 0.72, 0, 1],
-      rotate: { type: "spring", stiffness: 200, damping: 15 }
-    }}
-  >
-    <Sun className="h-5 w-5 text-accent" />
-  </motion.div>
-));
-SunIcon.displayName = "SunIcon";
-
-const MoonIcon = forwardRef<HTMLDivElement>((_, ref) => (
-  <motion.div
-    ref={ref}
-    key="moon"
-    initial={{ y: -20, opacity: 0, rotate: 90 }}
-    animate={{ y: 0, opacity: 1, rotate: 0 }}
-    exit={{ y: 20, opacity: 0, rotate: -90 }}
-    transition={{ 
-      duration: 0.25, 
-      ease: [0.32, 0.72, 0, 1],
-      rotate: { type: "spring", stiffness: 200, damping: 15 }
-    }}
-  >
-    <Moon className="h-5 w-5 text-primary" />
-  </motion.div>
-));
-MoonIcon.displayName = "MoonIcon";
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
@@ -90,7 +53,35 @@ const ThemeToggle = () => {
       }}
     >
       <AnimatePresence mode="wait" initial={false}>
-        {theme === "dark" ? <SunIcon key="sun" /> : <MoonIcon key="moon" />}
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ y: -20, opacity: 0, rotate: -90 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            exit={{ y: 20, opacity: 0, rotate: 90 }}
+            transition={{ 
+              duration: 0.25, 
+              ease: [0.32, 0.72, 0, 1],
+              rotate: { type: "spring", stiffness: 200, damping: 15 }
+            }}
+          >
+            <Sun className="h-5 w-5 text-accent" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ y: -20, opacity: 0, rotate: 90 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            exit={{ y: 20, opacity: 0, rotate: -90 }}
+            transition={{ 
+              duration: 0.25, 
+              ease: [0.32, 0.72, 0, 1],
+              rotate: { type: "spring", stiffness: 200, damping: 15 }
+            }}
+          >
+            <Moon className="h-5 w-5 text-primary" />
+          </motion.div>
+        )}
       </AnimatePresence>
     </motion.button>
   );

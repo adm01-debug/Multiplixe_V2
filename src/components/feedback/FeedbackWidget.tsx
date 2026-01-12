@@ -12,13 +12,11 @@ import {
   HelpCircle,
   Loader2,
   Check,
-  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 
 type FeedbackType = "bug" | "idea" | "question" | "general";
 type Rating = "happy" | "neutral" | "sad";
@@ -58,13 +56,7 @@ const FeedbackWidget = () => {
       // For now, we'll just simulate success
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log("Feedback submitted:", {
-        user_id: user?.id,
-        type: selectedType,
-        rating: selectedRating,
-        message,
-      });
-
+      // Feedback submitted successfully
       setStep("success");
       toast.success("Feedback enviado! Obrigado!");
 

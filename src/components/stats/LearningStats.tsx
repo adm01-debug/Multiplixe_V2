@@ -158,8 +158,8 @@ const LearningStats = () => {
         ];
 
         setStats(statCards);
-      } catch (error) {
-        console.error("Error fetching learning stats:", error);
+      } catch {
+        // Silent fail - stats will show empty/default values
       } finally {
         setLoading(false);
       }

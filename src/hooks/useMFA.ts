@@ -41,8 +41,8 @@ export const useMFA = () => {
         phone_verified: false,
         backup_codes: null,
       });
-    } catch (err) {
-      console.error('Error fetching MFA settings:', err);
+    } catch {
+      // Silent fail - default settings used
     } finally {
       setLoading(false);
     }

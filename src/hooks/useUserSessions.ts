@@ -42,8 +42,8 @@ export const useUserSessions = () => {
         ip_address: session.ip_address as string | null,
         device_info: session.device_info as Record<string, unknown> | null
       })));
-    } catch (error) {
-      console.error('Error fetching sessions:', error);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }
@@ -65,8 +65,8 @@ export const useUserSessions = () => {
       
       setSessions(prev => prev.filter(s => s.id !== sessionId));
       return true;
-    } catch (error) {
-      console.error('Error revoking session:', error);
+    } catch {
+      return false;
       return false;
     }
   };
@@ -83,8 +83,8 @@ export const useUserSessions = () => {
       
       setSessions(prev => prev.filter(s => s.session_token === currentSessionToken));
       return true;
-    } catch (error) {
-      console.error('Error revoking sessions:', error);
+    } catch {
+      return false;
       return false;
     }
   };

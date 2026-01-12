@@ -34,14 +34,13 @@ export const useLeaderboard = (limit: number = 50, period: LeaderboardPeriod = '
         .rpc('get_leaderboard', { p_limit: limit, p_period: period });
 
       if (fetchError) {
-        console.error('Error fetching leaderboard:', fetchError);
         setError(fetchError.message);
         return;
       }
 
       setLeaderboard(data || []);
-    } catch (err) {
-      console.error('Error in fetchLeaderboard:', err);
+    } catch {
+      setError('Failed to fetch leaderboard');
       setError('Failed to fetch leaderboard');
     } finally {
       setLoading(false);
@@ -59,7 +58,6 @@ export const useLeaderboard = (limit: number = 50, period: LeaderboardPeriod = '
         .rpc('get_user_rank', { p_user_id: user.id });
 
       if (fetchError) {
-        console.error('Error fetching user rank:', fetchError);
         return;
       }
 
@@ -69,8 +67,8 @@ export const useLeaderboard = (limit: number = 50, period: LeaderboardPeriod = '
           total_users: data[0].total_users
         });
       }
-    } catch (err) {
-      console.error('Error in fetchUserRank:', err);
+    } catch {
+      // Silent fail
     }
   }, [user]);
 

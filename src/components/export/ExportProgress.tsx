@@ -183,8 +183,7 @@ const ExportProgress = ({ trigger }: ExportProgressProps) => {
       doc.save(`progresso-${userName.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.pdf`);
       toast.success("Relatório exportado com sucesso!");
       setOpen(false);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
+    } catch {
       toast.error("Erro ao gerar relatório");
     } finally {
       setLoading(false);

@@ -41,8 +41,8 @@ export const useSecurityAlerts = () => {
       if (error) throw error;
       setAlerts(data || []);
       setUnreadCount(data?.filter(a => !a.is_resolved).length || 0);
-    } catch (err) {
-      console.error('Error fetching security alerts:', err);
+    } catch {
+      // Silent fail - alerts will be empty
     } finally {
       setLoading(false);
     }
@@ -98,8 +98,8 @@ export const useSecurityAlerts = () => {
       setUnreadCount(prev => Math.max(0, prev - 1));
 
       return true;
-    } catch (err) {
-      console.error('Error resolving alert:', err);
+    } catch {
+      return false;
       return false;
     }
   };

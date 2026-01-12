@@ -68,8 +68,8 @@ export const useRateLimitLogs = () => {
       setBlockedIPs(blockedRes.data || []);
       setWhitelistedIPs(whitelistRes.data || []);
       setConfig(configRes.data || []);
-    } catch (err) {
-      console.error('Error fetching rate limit data:', err);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }

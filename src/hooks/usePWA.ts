@@ -58,8 +58,8 @@ export const usePWA = () => {
       
       setDeferredPrompt(null);
       return outcome === 'accepted';
-    } catch (error) {
-      console.error('Error installing PWA:', error);
+    } catch {
+      return false;
       return false;
     }
   }, [deferredPrompt]);

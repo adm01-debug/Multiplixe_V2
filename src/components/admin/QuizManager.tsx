@@ -80,7 +80,6 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
       const { data, error } = await query.maybeSingle();
 
       if (error) {
-        console.error('Error loading quiz:', error);
         return;
       }
 
@@ -112,8 +111,8 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
             }))
         });
       }
-    } catch (err) {
-      console.error('Error in loadExistingQuiz:', err);
+    } catch {
+      // Silent fail - quiz will show as new
     }
   };
 
@@ -278,8 +277,7 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
 
       toast.success('Quiz salvo com sucesso!');
       onClose();
-    } catch (err) {
-      console.error('Error saving quiz:', err);
+    } catch {
       toast.error('Erro ao salvar quiz');
     } finally {
       setLoading(false);
@@ -298,8 +296,7 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
       
       toast.success('Quiz excluído');
       onClose();
-    } catch (err) {
-      console.error('Error deleting quiz:', err);
+    } catch {
       toast.error('Erro ao excluir quiz');
     } finally {
       setLoading(false);

@@ -2,17 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { format, formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
-  BookOpen,
   Trophy,
   Award,
   Zap,
-  CheckCircle,
   Clock,
-  Flame,
   Play,
+  type LucideIcon,
 } from "lucide-react";
 
 interface Activity {
@@ -22,7 +20,7 @@ interface Activity {
   description: string;
   timestamp: string;
   xp?: number;
-  icon: typeof BookOpen;
+  icon: LucideIcon;
   gradient: string;
 }
 

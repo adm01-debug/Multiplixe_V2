@@ -23,6 +23,7 @@ import OnboardingTutorial, { useOnboardingTutorial } from '@/components/onboardi
 import ProfileCompletionBar from '@/components/onboarding/ProfileCompletionBar';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
+import GoalsWidget from '@/components/goals/GoalsWidget';
 import EmptyState from '@/components/EmptyState';
 import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidget';
 import { DashboardStatsSkeleton, CourseGridSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
@@ -699,6 +700,17 @@ const Dashboard = () => {
           viewport={{ once: true, margin: "-50px" }}
         >
           <DailyChallenges />
+        </motion.section>
+
+        {/* Goals Widget Section */}
+        <motion.section 
+          className="mb-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <GoalsWidget />
         </motion.section>
 
         {/* Level Progress Section */}

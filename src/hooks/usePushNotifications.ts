@@ -45,8 +45,7 @@ export const usePushNotifications = () => {
         return false;
       }
       return false;
-    } catch (error) {
-      console.error('Error requesting notification permission:', error);
+    } catch {
       toast.error('Erro ao solicitar permissão de notificações');
       return false;
     }
@@ -75,8 +74,8 @@ export const usePushNotifications = () => {
 
       // Auto close after 10 seconds
       setTimeout(() => notification.close(), 10000);
-    } catch (error) {
-      console.error('Error showing notification:', error);
+    } catch {
+      // Silent fail for notification display
     }
   }, [isSupported, permission]);
 

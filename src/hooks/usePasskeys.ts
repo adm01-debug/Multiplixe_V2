@@ -103,8 +103,8 @@ export const usePasskeys = () => {
 
       if (error) throw error;
       setCredentials(data || []);
-    } catch (error) {
-      console.error('Error fetching passkeys:', error);
+    } catch {
+      // Silent fail - credentials will be empty
     } finally {
       setLoading(false);
     }
@@ -182,8 +182,8 @@ export const usePasskeys = () => {
 
       await fetchCredentials();
       return true;
-    } catch (error) {
-      console.error('Error registering passkey:', error);
+    } catch {
+      return false;
       return false;
     } finally {
       setIsRegistering(false);
@@ -203,8 +203,8 @@ export const usePasskeys = () => {
 
       setCredentials(prev => prev.filter(c => c.id !== credentialId));
       return true;
-    } catch (error) {
-      console.error('Error removing passkey:', error);
+    } catch {
+      return false;
       return false;
     }
   };
@@ -245,8 +245,8 @@ export const usePasskeys = () => {
         .eq('credential_id', usedCredentialId);
 
       return true;
-    } catch (error) {
-      console.error('Error authenticating with passkey:', error);
+    } catch {
+      return false;
       return false;
     }
   };

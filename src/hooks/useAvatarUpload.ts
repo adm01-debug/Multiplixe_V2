@@ -83,8 +83,7 @@ export function useAvatarUpload() {
 
       toast.success("Avatar atualizado com sucesso! 📸");
       return publicUrl;
-    } catch (error) {
-      console.error("Error uploading avatar:", error);
+    } catch {
       toast.error("Erro ao fazer upload do avatar");
       return null;
     } finally {
@@ -117,8 +116,7 @@ export function useAvatarUpload() {
 
       toast.success("Avatar removido");
       return true;
-    } catch (error) {
-      console.error("Error deleting avatar:", error);
+    } catch {
       toast.error("Erro ao remover avatar");
       return false;
     }

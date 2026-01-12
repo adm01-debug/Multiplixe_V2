@@ -36,7 +36,7 @@ export function useRecommendations(limit: number = 6) {
       });
 
       if (error) {
-        console.error("Error fetching recommendations:", error);
+        // Fallback: fetch popular courses
         // Fallback: fetch popular courses
         const { data: fallbackData } = await supabase
           .from("courses")

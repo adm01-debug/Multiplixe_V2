@@ -92,8 +92,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
       } else {
         setDiscussions([]);
       }
-    } catch (error) {
-      console.error('Error fetching discussions:', error);
+    } catch {
       toast.error('Erro ao carregar discussões');
     } finally {
       setLoading(false);
@@ -125,8 +124,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
       toast.success('Pergunta criada com sucesso!');
       fetchDiscussions();
       return data;
-    } catch (error) {
-      console.error('Error creating discussion:', error);
+    } catch {
       toast.error('Erro ao criar pergunta');
       return null;
     }
@@ -164,8 +162,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
       }
 
       return [];
-    } catch (error) {
-      console.error('Error fetching replies:', error);
+    } catch {
       return [];
     }
   };
@@ -188,8 +185,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
 
       toast.success('Resposta enviada!');
       return data;
-    } catch (error) {
-      console.error('Error creating reply:', error);
+    } catch {
       toast.error('Erro ao enviar resposta');
       return null;
     }
@@ -219,8 +215,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
 
       toast.success('Marcado como resposta!');
       fetchDiscussions();
-    } catch (error) {
-      console.error('Error marking as answer:', error);
+    } catch {
       toast.error('Erro ao marcar como resposta');
     }
   };
@@ -244,8 +239,8 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
       if (type === 'discussion') {
         fetchDiscussions();
       }
-    } catch (error) {
-      console.error('Error voting:', error);
+    } catch {
+      // Silent fail for voting
     }
   };
 

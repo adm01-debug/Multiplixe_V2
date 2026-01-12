@@ -42,9 +42,9 @@ export function useCertificates() {
       }
 
       return data.certificate as CertificateWithPDF;
-    } catch (err: any) {
-      console.error('Error generating certificate:', err);
-      setError(err.message || 'Erro ao gerar certificado');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao gerar certificado';
+      setError(errorMessage);
       return null;
     } finally {
       setLoading(false);
@@ -64,8 +64,7 @@ export function useCertificates() {
       }
 
       return data || [];
-    } catch (err: any) {
-      console.error('Error fetching certificates:', err);
+    } catch {
       return [];
     }
   }, []);
@@ -83,8 +82,7 @@ export function useCertificates() {
       }
 
       return data;
-    } catch (err) {
-      console.error('Error verifying certificate:', err);
+    } catch {
       return null;
     }
   }, []);

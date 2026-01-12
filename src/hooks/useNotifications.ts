@@ -36,15 +36,14 @@ export const useNotifications = () => {
         .limit(20);
 
       if (error) {
-        console.error('Error fetching notifications:', error);
         return;
       }
 
       const typedData = (data || []) as Notification[];
       setNotifications(typedData);
       setUnreadCount(typedData.filter(n => !n.is_read).length);
-    } catch (err) {
-      console.error('Error in fetchNotifications:', err);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }
@@ -61,7 +60,6 @@ export const useNotifications = () => {
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Error marking notification as read:', error);
         return;
       }
 
@@ -69,8 +67,8 @@ export const useNotifications = () => {
         prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
-    } catch (err) {
-      console.error('Error in markAsRead:', err);
+    } catch {
+      // Silent fail
     }
   }, [user]);
 
@@ -85,14 +83,13 @@ export const useNotifications = () => {
         .eq('is_read', false);
 
       if (error) {
-        console.error('Error marking all as read:', error);
         return;
       }
 
       setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
       setUnreadCount(0);
-    } catch (err) {
-      console.error('Error in markAllAsRead:', err);
+    } catch {
+      // Silent fail
     }
   }, [user]);
 
@@ -109,7 +106,6 @@ export const useNotifications = () => {
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Error deleting notification:', error);
         return;
       }
 
@@ -117,8 +113,8 @@ export const useNotifications = () => {
       if (notification && !notification.is_read) {
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
-    } catch (err) {
-      console.error('Error in deleteNotification:', err);
+    } catch {
+      // Silent fail
     }
   }, [user, notifications]);
 

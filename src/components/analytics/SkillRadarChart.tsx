@@ -139,9 +139,8 @@ const SkillRadarChart = () => {
         } else {
           setSkillData(skills);
         }
-      } catch (error) {
-        console.error('Error fetching skill data:', error);
-        // Fallback data
+      } catch {
+        // Fallback data on error
         setSkillData([
           { skill: 'Vendas', value: 0, fullMark: 100 },
           { skill: 'Marketing', value: 0, fullMark: 100 },

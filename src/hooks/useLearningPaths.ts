@@ -83,9 +83,9 @@ export function useLearningPaths() {
       );
 
       setLearningPaths(pathsWithCounts);
-    } catch (err: any) {
-      console.error('Error fetching learning paths:', err);
-      setError(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -101,8 +101,7 @@ export function useLearningPaths() {
 
       if (error) throw error;
       return data;
-    } catch (err) {
-      console.error('Error fetching learning path:', err);
+    } catch {
       return null;
     }
   }, []);
@@ -136,8 +135,7 @@ export function useLearningPaths() {
         order_index: item.order_index,
         course: item.course
       }));
-    } catch (err) {
-      console.error('Error fetching learning path courses:', err);
+    } catch {
       return [];
     }
   }, []);
@@ -155,8 +153,7 @@ export function useLearningPaths() {
 
       if (error && error.code !== 'PGRST116') throw error;
       return data;
-    } catch (err) {
-      console.error('Error fetching user progress:', err);
+    } catch {
       return null;
     }
   }, [user]);
@@ -179,8 +176,7 @@ export function useLearningPaths() {
 
       if (error) throw error;
       return data;
-    } catch (err) {
-      console.error('Error starting learning path:', err);
+    } catch {
       return null;
     }
   }, [user]);
@@ -206,8 +202,7 @@ export function useLearningPaths() {
 
       if (error) throw error;
       return data;
-    } catch (err) {
-      console.error('Error updating progress:', err);
+    } catch {
       return null;
     }
   }, [user]);
@@ -230,8 +225,7 @@ export function useLearningPaths() {
 
       if (error) throw error;
       return data;
-    } catch (err) {
-      console.error('Error issuing certificate:', err);
+    } catch {
       return null;
     }
   }, [user]);
@@ -248,8 +242,7 @@ export function useLearningPaths() {
 
       if (error) throw error;
       return data || [];
-    } catch (err) {
-      console.error('Error fetching certificates:', err);
+    } catch {
       return [];
     }
   }, [user]);

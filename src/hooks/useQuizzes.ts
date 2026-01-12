@@ -62,7 +62,6 @@ export const useQuizzes = () => {
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching quiz:', error);
         return null;
       }
 
@@ -78,8 +77,7 @@ export const useQuizzes = () => {
         }));
 
       return quiz;
-    } catch (err) {
-      console.error('Error in fetchQuizForLesson:', err);
+    } catch {
       return null;
     }
   }, []);
@@ -100,7 +98,6 @@ export const useQuizzes = () => {
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching course quiz:', error);
         return null;
       }
 
@@ -115,8 +112,7 @@ export const useQuizzes = () => {
         }));
 
       return quiz;
-    } catch (err) {
-      console.error('Error in fetchQuizForCourse:', err);
+    } catch {
       return null;
     }
   }, []);
@@ -133,13 +129,11 @@ export const useQuizzes = () => {
         .order('completed_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching attempts:', error);
         return [];
       }
 
       return data || [];
-    } catch (err) {
-      console.error('Error in fetchUserAttempts:', err);
+    } catch {
       return [];
     }
   }, [user]);
@@ -196,14 +190,12 @@ export const useQuizzes = () => {
         });
 
       if (error) {
-        console.error('Error saving attempt:', error);
         toast.error('Erro ao salvar tentativa');
         return null;
       }
 
       return { score: scorePercentage, passed, xpEarned };
-    } catch (err) {
-      console.error('Error in submitQuizAttempt:', err);
+    } catch {
       toast.error('Erro ao processar quiz');
       return null;
     } finally {

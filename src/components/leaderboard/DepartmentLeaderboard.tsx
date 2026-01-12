@@ -2,7 +2,7 @@ import { useDepartmentLeaderboard, DepartmentRanking } from '@/hooks/useDepartme
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import RankBadge from '@/components/RankBadge';
-import { Building2, Users, TrendingUp, Loader2, Trophy } from 'lucide-react';
+import { Building2, Users, TrendingUp, Loader2 } from 'lucide-react';
 
 interface DepartmentLeaderboardProps {
   limit?: number;

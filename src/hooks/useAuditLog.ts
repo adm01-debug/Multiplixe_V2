@@ -52,8 +52,8 @@ export const useAuditLog = () => {
         p_new_values: newValues || null,
         p_metadata: metadata || null,
       });
-    } catch (err) {
-      console.error('Failed to create audit log:', err);
+    } catch {
+      // Silent fail - audit log should not interrupt flow
     }
   }, [user]);
 

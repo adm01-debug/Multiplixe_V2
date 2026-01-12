@@ -52,9 +52,9 @@ import {
   Play,
   Route,
   Shield,
+  Target,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Target } from 'lucide-react';
 
 interface Course {
   id: string;

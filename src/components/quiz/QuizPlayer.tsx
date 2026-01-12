@@ -79,14 +79,6 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [hasStartedQuiz, showResult]);
 
-  const handleCloseAttempt = () => {
-    if (hasStartedQuiz && !showResult) {
-      setShowExitConfirm(true);
-    } else {
-      onClose();
-    }
-  };
-
   const handleConfirmExit = () => {
     setShowExitConfirm(false);
     onClose();

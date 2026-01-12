@@ -29,14 +29,12 @@ import CacheIndicator from '@/components/ui/CacheIndicator';
 import { useCourses } from '@/hooks/useCachedQuery';
 import {
   GraduationCap, 
-  BookOpen, 
   Trophy, 
   LogOut, 
   ArrowRight, 
   Loader2,
   Sparkles,
   Flame,
-  Target,
   Zap,
   TrendingUp,
   Star,
@@ -44,7 +42,6 @@ import {
   ChevronRight,
   Rocket,
   Crown,
-  Medal,
   ShieldAlert,
   Route
 } from 'lucide-react';

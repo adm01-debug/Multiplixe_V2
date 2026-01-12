@@ -123,6 +123,7 @@ const LazyImage = ({
             onError={() => setHasError(true)}
             loading="lazy"
             decoding="async"
+            {...props}
           />
         </motion.div>
       )}

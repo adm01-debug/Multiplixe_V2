@@ -76,7 +76,6 @@ const sendNewDeviceEmail = async (
   const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
   
   if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY not configured');
     return false;
   }
 
@@ -146,16 +145,8 @@ const sendNewDeviceEmail = async (
       }),
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error('Failed to send email:', error);
-      return false;
-    }
-
-    console.log('New device alert email sent successfully to:', email);
-    return true;
-  } catch (error: unknown) {
-    console.error('Error sending email:', error);
+    return response.ok;
+  } catch {
     return false;
   }
 };
@@ -174,9 +165,6 @@ serve(async (req) => {
 
     const { user_id, user_email, ip_address, user_agent }: DeviceCheckRequest = await req.json();
 
-    console.log('Checking device for user:', user_id);
-    console.log('IP:', ip_address, 'User-Agent:', user_agent);
-
     const deviceFingerprint = generateDeviceFingerprint(user_agent);
     const deviceName = getDeviceName(user_agent);
 
@@ -188,15 +176,12 @@ serve(async (req) => {
       .or(`device_fingerprint.eq.${deviceFingerprint},ip_address.eq.${ip_address}`);
 
     if (fetchError) {
-      console.error('Error fetching known devices:', fetchError);
       throw fetchError;
     }
 
     const isNewDevice = !knownDevices || knownDevices.length === 0;
     const isNewIP = knownDevices && knownDevices.length > 0 && 
       !knownDevices.some((d: KnownDevice) => d.ip_address === ip_address);
-
-    console.log('Is new device:', isNewDevice, 'Is new IP:', isNewIP);
 
     if (isNewDevice || isNewIP) {
       // This is a new device or new IP - send alert
@@ -270,7 +255,6 @@ serve(async (req) => {
       );
     }
   } catch (error: unknown) {
-    console.error('Error in detect-new-device function:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
       JSON.stringify({ error: errorMessage }),

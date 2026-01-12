@@ -65,7 +65,6 @@ serve(async (req: Request): Promise<Response> => {
       .limit(1);
 
     if (quizError) {
-      console.error("Quiz check error:", quizError);
       throw new Error("Failed to check quiz status");
     }
 
@@ -92,7 +91,6 @@ serve(async (req: Request): Promise<Response> => {
       });
 
     if (certError) {
-      console.error("Certificate error:", certError);
       throw new Error("Failed to issue certificate");
     }
 
@@ -124,7 +122,6 @@ serve(async (req: Request): Promise<Response> => {
     );
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error("Error generating certificate:", error);
     return new Response(
       JSON.stringify({ error: errorMessage }),
       {

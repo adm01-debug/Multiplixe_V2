@@ -55,7 +55,7 @@ serve(async (req: Request) => {
 
     const { requestId, action, notes }: ApproveResetRequest = await req.json();
 
-    console.log(`Processing ${action} for request ${requestId}`);
+    // Processing action for request
 
     // Get the reset request
     const { data: resetRequest, error: fetchError } = await supabase
@@ -91,7 +91,6 @@ serve(async (req: Request) => {
       });
 
       if (resetError) {
-        console.error("Error generating reset link:", resetError);
         throw new Error("Failed to generate reset link");
       }
 
@@ -147,9 +146,6 @@ serve(async (req: Request) => {
         });
 
         updateData.reset_token_sent_at = new Date().toISOString();
-        console.log("Reset email sent successfully");
-      } else {
-        console.log("Resend API key not configured, skipping email");
       }
     }
 
@@ -196,8 +192,6 @@ serve(async (req: Request) => {
     );
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    console.error("Error in approve-password-reset:", errorMessage);
-    
     return new Response(
       JSON.stringify({ error: errorMessage }),
       {

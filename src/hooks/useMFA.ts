@@ -113,8 +113,7 @@ export const useMFA = () => {
 
       await fetchSettings();
       return true;
-    } catch (err: unknown) {
-      void err; // Unused variable
+    } catch {
       toast({
         title: 'Código inválido',
         description: 'Verifique o código e tente novamente.',
@@ -225,8 +224,7 @@ export const useMFA = () => {
       if (verifyError) throw verifyError;
 
       return true;
-    } catch (err: unknown) {
-      void err; // Unused variable
+    } catch {
       toast({
         title: 'Código inválido',
         description: 'Verifique o código e tente novamente.',

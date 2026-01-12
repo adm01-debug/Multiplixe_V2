@@ -16,6 +16,7 @@ import StreakCelebration from "@/components/StreakCelebration";
 import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import PomodoroTimer from "@/components/pomodoro/PomodoroTimer";
+import NotesPanel from "@/components/notes/NotesPanel";
 import { toast } from "sonner";
 import {
   GraduationCap,
@@ -254,7 +255,7 @@ const LessonPlayer = () => {
         console.error("Error saving progress:", error);
       }
     },
-    [user, currentLesson, course]
+    [user, currentLesson, course, lessonsProgress, lessons.length, fireCourseComplete, fireLessonComplete, addXP, checkAchievements, hasStudiedToday, updateStreak]
   );
 
   const updateCourseProgress = async () => {
@@ -482,6 +483,13 @@ const LessonPlayer = () => {
                     <span className="text-sm font-semibold text-emerald-600">Concluída</span>
                   </div>
                 )}
+                
+                {/* Notes Panel */}
+                <NotesPanel 
+                  lessonId={currentLesson.id}
+                  courseId={course.id}
+                  currentTime={0}
+                />
               </div>
               
               <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground">

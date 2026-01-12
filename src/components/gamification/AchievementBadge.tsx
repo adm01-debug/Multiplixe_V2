@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Trophy, Star, Lock, Sparkles, CheckCircle } from "lucide-react";
+import { Star, Lock, Sparkles, CheckCircle } from "lucide-react";
 
 interface AchievementBadgeProps {
   name: string;

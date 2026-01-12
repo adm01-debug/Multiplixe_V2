@@ -1,6 +1,5 @@
 import { useSecurityAlerts } from '@/hooks/useSecurityAlerts';
-import { Badge } from '@/components/ui/badge';
-import { Shield, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const SecurityAlertsBadge = () => {

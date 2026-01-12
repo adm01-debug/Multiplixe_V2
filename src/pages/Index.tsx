@@ -7,6 +7,7 @@ import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import CTASection from "@/components/landing/CTASection";
 import Footer from "@/components/landing/Footer";
 import MobileStickyCTA from "@/components/landing/MobileStickyCTA";
+import SocialProofCounter from "@/components/landing/SocialProofCounter";
 import DynamicSEO from "@/components/seo/DynamicSEO";
 
 const Index = () => {
@@ -19,6 +20,7 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
+        <SocialProofCounter />
         <DynamicStats />
         <FeaturedCoursesPreview />
         <FeaturesSection />

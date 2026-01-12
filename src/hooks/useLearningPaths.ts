@@ -129,7 +129,15 @@ export function useLearningPaths() {
         .order('order_index', { ascending: true });
 
       if (error) throw error;
-      return (data || []).map((item: any) => ({
+      
+      interface PathCourseItem {
+        id: string;
+        course_id: string;
+        order_index: number;
+        course: LearningPathCourse['course'];
+      }
+      
+      return (data || []).map((item: PathCourseItem) => ({
         id: item.id,
         course_id: item.course_id,
         order_index: item.order_index,

@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import type { Json } from '@/integrations/supabase/types';
 
 type AuditAction = 
   | 'login'
@@ -24,9 +25,9 @@ interface AuditLogParams {
   action: AuditAction;
   resourceType?: string;
   resourceId?: string;
-  oldValues?: Record<string, any>;
-  newValues?: Record<string, any>;
-  metadata?: Record<string, any>;
+  oldValues?: Json;
+  newValues?: Json;
+  metadata?: Json;
 }
 
 export const useAuditLog = () => {

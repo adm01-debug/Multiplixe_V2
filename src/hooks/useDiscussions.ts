@@ -76,10 +76,16 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
           return acc;
         }, {} as Record<string, number>);
 
+        interface ProfileInfo {
+          user_id: string;
+          full_name: string | null;
+          avatar_url: string | null;
+        }
+        
         const profileMap = (profiles || []).reduce((acc, p) => {
           acc[p.user_id] = p;
           return acc;
-        }, {} as Record<string, any>);
+        }, {} as Record<string, ProfileInfo>);
 
         const enrichedData = data.map(d => ({
           ...d,
@@ -149,10 +155,16 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
           .select('user_id, full_name, avatar_url')
           .in('user_id', userIds);
 
+        interface ProfileInfo {
+          user_id: string;
+          full_name: string | null;
+          avatar_url: string | null;
+        }
+        
         const profileMap = (profiles || []).reduce((acc, p) => {
           acc[p.user_id] = p;
           return acc;
-        }, {} as Record<string, any>);
+        }, {} as Record<string, ProfileInfo>);
 
         return data.map(r => ({
           ...r,

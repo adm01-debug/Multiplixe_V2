@@ -1,6 +1,7 @@
 import Header from "@/components/landing/Header";
 import HeroSection from "@/components/landing/HeroSection";
-import SocialProofCounter from "@/components/landing/SocialProofCounter";
+import DynamicStats from "@/components/landing/DynamicStats";
+import FeaturedCoursesPreview from "@/components/landing/FeaturedCoursesPreview";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import CTASection from "@/components/landing/CTASection";
@@ -18,7 +19,8 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
-        <SocialProofCounter />
+        <DynamicStats />
+        <FeaturedCoursesPreview />
         <FeaturesSection />
         <TestimonialsSection />
         <CTASection />

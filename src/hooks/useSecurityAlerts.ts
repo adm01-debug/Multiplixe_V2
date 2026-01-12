@@ -100,7 +100,6 @@ export const useSecurityAlerts = () => {
       return true;
     } catch {
       return false;
-      return false;
     }
   };
 

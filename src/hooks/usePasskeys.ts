@@ -184,7 +184,6 @@ export const usePasskeys = () => {
       return true;
     } catch {
       return false;
-      return false;
     } finally {
       setIsRegistering(false);
     }
@@ -204,7 +203,6 @@ export const usePasskeys = () => {
       setCredentials(prev => prev.filter(c => c.id !== credentialId));
       return true;
     } catch {
-      return false;
       return false;
     }
   };
@@ -246,7 +244,6 @@ export const usePasskeys = () => {
 
       return true;
     } catch {
-      return false;
       return false;
     }
   };

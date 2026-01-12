@@ -154,7 +154,7 @@ const sendNewDeviceEmail = async (
 
     console.log('New device alert email sent successfully to:', email);
     return true;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error sending email:', error);
     return false;
   }
@@ -269,7 +269,7 @@ serve(async (req) => {
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error in detect-new-device function:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(

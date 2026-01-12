@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdminRole } from '@/hooks/useAdminRole';
+import type { Json } from '@/integrations/supabase/types';
 
 interface SecurityAlert {
   id: string;
@@ -11,7 +12,7 @@ interface SecurityAlert {
   description: string | null;
   ip_address: unknown;
   user_id: string | null;
-  metadata: any;
+  metadata: Json | null;
   is_resolved: boolean;
   created_at: string;
 }

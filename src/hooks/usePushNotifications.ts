@@ -54,7 +54,6 @@ export const usePushNotifications = () => {
 
   const showNotification = useCallback((title: string, options?: NotificationOptions) => {
     if (!isSupported || permission !== 'granted') {
-      console.log('Notifications not available or not permitted');
       return;
     }
 
@@ -85,8 +84,6 @@ export const usePushNotifications = () => {
   useEffect(() => {
     if (!user || permission !== 'granted') return;
 
-    console.log('Setting up real-time security alerts subscription');
-
     const channel = supabase
       .channel('security-alerts-realtime')
       .on(
@@ -98,7 +95,6 @@ export const usePushNotifications = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('New security alert received:', payload);
           const alert = payload.new as SecurityAlert;
           
           // Show browser notification
@@ -118,12 +114,9 @@ export const usePushNotifications = () => {
           });
         }
       )
-      .subscribe((status) => {
-        console.log('Security alerts subscription status:', status);
-      });
+      .subscribe();
 
     return () => {
-      console.log('Cleaning up security alerts subscription');
       supabase.removeChannel(channel);
     };
   }, [user, permission, showNotification]);

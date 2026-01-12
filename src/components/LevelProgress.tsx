@@ -1,4 +1,3 @@
-import { Progress } from "@/components/ui/progress";
 import { calculateUserLevel, UserLevel } from "@/lib/levelSystem";
 import { Sparkles, ChevronRight } from "lucide-react";
 

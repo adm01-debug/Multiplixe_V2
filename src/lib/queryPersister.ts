@@ -90,8 +90,6 @@ export const restoreQueryCache = (queryClient: QueryClient): void => {
         updatedAt: state.dataUpdatedAt,
       });
     });
-
-    console.log(`[Cache] Restored ${queries.length} queries from localStorage`);
   } catch (error) {
     console.warn("Failed to restore query cache:", error);
     localStorage.removeItem(CACHE_KEY);

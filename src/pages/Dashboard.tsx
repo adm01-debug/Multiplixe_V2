@@ -687,7 +687,7 @@ const Dashboard = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
           >
-            <ContinueLearningWidget userProgress={userProgress as any} />
+            <ContinueLearningWidget userProgress={userProgress} />
           </motion.section>
         )}
 

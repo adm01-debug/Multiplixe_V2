@@ -1,4 +1,4 @@
-import { Flame, Zap, Trophy, Calendar } from 'lucide-react';
+import { Flame, Zap, Trophy } from 'lucide-react';
 
 interface StreakDisplayProps {
   currentStreak: number;

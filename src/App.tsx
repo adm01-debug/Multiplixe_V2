@@ -21,7 +21,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
 
 // Setup cache persistence
-const cleanupPersistence = setupCachePersistence(queryClient);
+setupCachePersistence(queryClient);
 
 // Lazy loaded pages for code splitting
 const Index = lazy(() => import("./pages/Index"));

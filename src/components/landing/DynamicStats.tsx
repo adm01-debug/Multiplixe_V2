@@ -133,7 +133,7 @@ const DynamicStats = () => {
             value: Math.max(lessonsCompletedResponse.count || 0, 15000),
           },
         ]);
-      } catch (error) {
+      } catch {
         // Keep default values on error
       }
     };

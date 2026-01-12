@@ -57,8 +57,8 @@ const ShareAchievement = ({
         });
         toast.success("Compartilhado com sucesso!");
         setOpen(false);
-      } catch (err) {
-        if ((err as Error).name !== "AbortError") {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name !== "AbortError") {
           toast.error("Erro ao compartilhar");
         }
       }

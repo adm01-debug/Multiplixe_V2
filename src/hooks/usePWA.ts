@@ -5,6 +5,10 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+interface NavigatorWithStandalone extends Navigator {
+  standalone?: boolean;
+}
+
 export const usePWA = () => {
   const [isInstallable, setIsInstallable] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -18,7 +22,7 @@ export const usePWA = () => {
     }
 
     // Check if running in standalone mode (iOS)
-    if ((window.navigator as any).standalone === true) {
+    if ((window.navigator as NavigatorWithStandalone).standalone === true) {
       setIsInstalled(true);
       return;
     }
@@ -59,7 +63,6 @@ export const usePWA = () => {
       setDeferredPrompt(null);
       return outcome === 'accepted';
     } catch {
-      return false;
       return false;
     }
   }, [deferredPrompt]);

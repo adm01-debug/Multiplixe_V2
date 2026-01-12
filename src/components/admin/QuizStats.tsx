@@ -60,6 +60,19 @@ interface QuizRanking {
   }[];
 }
 
+interface QuizCourseJoin {
+  id: string;
+  title: string;
+  category_id: string | null;
+}
+
+interface QuizWithCourse {
+  id: string;
+  title: string;
+  course_id: string | null;
+  courses: QuizCourseJoin | null;
+}
+
 interface PerformanceAlert {
   id: string;
   quiz_id: string;
@@ -130,13 +143,14 @@ export const QuizStats = () => {
         }
 
         // Build quiz options for filter
-        const options: QuizOption[] = quizzes
+        const typedQuizzes = quizzes as QuizWithCourse[];
+        const options: QuizOption[] = typedQuizzes
           .filter(q => q.courses)
           .map(q => ({
             id: q.id,
             title: q.title,
-            courseTitle: (q.courses as any)?.title || 'Curso desconhecido',
-            categoryId: (q.courses as any)?.category_id || null
+            courseTitle: q.courses?.title || 'Curso desconhecido',
+            categoryId: q.courses?.category_id || null
           }));
         setQuizOptions(options);
 
@@ -153,9 +167,9 @@ export const QuizStats = () => {
 
         // Get quiz IDs that match category filter
         const quizIdsInCategory = selectedCategoryId === 'all'
-          ? quizzes.map(q => q.id)
-          : quizzes
-              .filter(q => (q.courses as any)?.category_id === selectedCategoryId)
+          ? typedQuizzes.map(q => q.id)
+          : typedQuizzes
+              .filter(q => q.courses?.category_id === selectedCategoryId)
               .map(q => q.id);
 
         // Filter attempts based on selected quiz and category
@@ -216,10 +230,10 @@ export const QuizStats = () => {
         );
 
         // Filter quizzes based on selection and category
-        const filteredQuizzes = quizzes.filter(q => {
+        const filteredQuizzes = typedQuizzes.filter(q => {
           if (!q.courses) return false;
           const matchesQuiz = selectedQuizId === 'all' || q.id === selectedQuizId;
-          const matchesCategory = selectedCategoryId === 'all' || (q.courses as any)?.category_id === selectedCategoryId;
+          const matchesCategory = selectedCategoryId === 'all' || q.courses?.category_id === selectedCategoryId;
           return matchesQuiz && matchesCategory;
         });
 
@@ -238,7 +252,7 @@ export const QuizStats = () => {
 
             return {
               courseId: quiz.course_id!,
-              courseTitle: (quiz.courses as any)?.title || 'Curso desconhecido',
+              courseTitle: quiz.courses?.title || 'Curso desconhecido',
               quizTitle: quiz.title,
               quizId: quiz.id,
               totalAttempts: quizAttempts.length,
@@ -290,7 +304,7 @@ export const QuizStats = () => {
             return {
               quizId: quiz.id,
               quizTitle: quiz.title,
-              courseTitle: (quiz.courses as any)?.title || 'Curso desconhecido',
+              courseTitle: quiz.courses?.title || 'Curso desconhecido',
               topUsers
             };
           })

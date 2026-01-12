@@ -4,18 +4,27 @@ import { Play, Clock, ChevronRight, Flame, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
+interface CourseData {
+  id: string;
+  title: string;
+  slug: string;
+  thumbnail_url: string | null;
+  duration_minutes: number | null;
+  total_lessons: number | null;
+  instructor_name: string | null;
+  description?: string | null;
+  level?: string | null;
+  is_featured?: boolean | null;
+  categories?: {
+    name: string;
+    color: string | null;
+  } | null;
+}
+
 interface CourseProgress {
   course_id: string;
-  progress_percentage: number;
-  courses: {
-    id: string;
-    title: string;
-    slug: string;
-    thumbnail_url: string | null;
-    duration_minutes: number;
-    total_lessons: number;
-    instructor_name: string | null;
-  };
+  progress_percentage: number | null;
+  courses: CourseData | null;
 }
 
 interface ContinueLearningWidgetProps {
@@ -26,13 +35,13 @@ interface ContinueLearningWidgetProps {
 const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearningWidgetProps) => {
   // Get the most recent in-progress course
   const inProgressCourse = userProgress.find(
-    (p) => p.progress_percentage > 0 && p.progress_percentage < 100
+    (p) => (p.progress_percentage ?? 0) > 0 && (p.progress_percentage ?? 0) < 100
   );
 
-  if (!inProgressCourse) return null;
+  if (!inProgressCourse || !inProgressCourse.courses) return null;
 
   const course = inProgressCourse.courses;
-  const progress = inProgressCourse.progress_percentage;
+  const progress = inProgressCourse.progress_percentage ?? 0;
   const remainingPercent = 100 - progress;
   const estimatedMinutes = Math.ceil((remainingPercent / 100) * (course.duration_minutes || 30));
 

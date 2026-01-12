@@ -1430,6 +1430,77 @@ export type Database = {
           },
         ]
       }
+      user_favorites: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_goals: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          current_value: number | null
+          end_date: string
+          goal_type: string
+          id: string
+          start_date: string
+          target_value: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          current_value?: number | null
+          end_date: string
+          goal_type: string
+          id?: string
+          start_date: string
+          target_value: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          current_value?: number | null
+          end_date?: string
+          goal_type?: string
+          id?: string
+          start_date?: string
+          target_value?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_learning_path_progress: {
         Row: {
           completed_at: string | null
@@ -1569,6 +1640,54 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_notes: {
+        Row: {
+          content: string
+          course_id: string
+          created_at: string | null
+          id: string
+          lesson_id: string
+          timestamp_seconds: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          course_id: string
+          created_at?: string | null
+          id?: string
+          lesson_id: string
+          timestamp_seconds?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          course_id?: string
+          created_at?: string | null
+          id?: string
+          lesson_id?: string
+          timestamp_seconds?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_notes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_notes_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_quiz_attempts: {
         Row: {
@@ -1963,6 +2082,23 @@ export type Database = {
           rank: number
           total_xp: number
           user_id: string
+        }[]
+      }
+      get_recommended_courses: {
+        Args: { p_limit?: number; p_user_id: string }
+        Returns: {
+          category_id: string
+          description: string
+          duration_minutes: number
+          id: string
+          instructor_name: string
+          is_featured: boolean
+          level: string
+          recommendation_reason: string
+          slug: string
+          thumbnail_url: string
+          title: string
+          total_lessons: number
         }[]
       }
       get_user_permissions: {

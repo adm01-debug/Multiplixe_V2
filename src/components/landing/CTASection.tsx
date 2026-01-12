@@ -144,7 +144,7 @@ const CTASection = () => {
                 <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link to="/catalog">
+            <Link to="/catalogo">
               <Button 
                 size="lg" 
                 variant="outline"

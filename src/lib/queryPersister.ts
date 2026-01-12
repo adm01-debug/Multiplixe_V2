@@ -54,8 +54,8 @@ export const persistQueryCache = (queryClient: QueryClient): void => {
     };
 
     localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-  } catch (error) {
-    console.warn("Failed to persist query cache:", error);
+  } catch {
+    // Silent fail - localStorage may be full or unavailable
   }
 };
 
@@ -90,8 +90,8 @@ export const restoreQueryCache = (queryClient: QueryClient): void => {
         updatedAt: state.dataUpdatedAt,
       });
     });
-  } catch (error) {
-    console.warn("Failed to restore query cache:", error);
+  } catch {
+    // Silent fail - cache corrupted, clean it up
     localStorage.removeItem(CACHE_KEY);
   }
 };
@@ -100,8 +100,8 @@ export const restoreQueryCache = (queryClient: QueryClient): void => {
 export const clearPersistedCache = (): void => {
   try {
     localStorage.removeItem(CACHE_KEY);
-  } catch (error) {
-    console.warn("Failed to clear persisted cache:", error);
+  } catch {
+    // Silent fail - localStorage unavailable
   }
 };
 

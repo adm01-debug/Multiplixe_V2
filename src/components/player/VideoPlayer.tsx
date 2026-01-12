@@ -98,7 +98,7 @@ const VideoPlayer = ({
         video.currentTime = initialPosition;
       }
       if (autoPlay) {
-        video.play().catch(console.error);
+        video.play().catch(() => {/* Autoplay blocked - user interaction required */});
       }
     };
 
@@ -161,7 +161,7 @@ const VideoPlayer = ({
     if (!video) return;
 
     if (video.paused) {
-      video.play().catch(console.error);
+      video.play().catch(() => {/* Play blocked */});
     } else {
       video.pause();
     }
@@ -225,9 +225,9 @@ const VideoPlayer = ({
     if (!containerRef.current) return;
 
     if (document.fullscreenElement) {
-      document.exitFullscreen().catch(console.error);
+      document.exitFullscreen().catch(() => {/* Exit fullscreen failed */});
     } else {
-      containerRef.current.requestFullscreen().catch(console.error);
+      containerRef.current.requestFullscreen().catch(() => {/* Fullscreen not supported */});
     }
   }, []);
 

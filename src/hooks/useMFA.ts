@@ -65,10 +65,11 @@ export const useMFA = () => {
 
       if (error) throw error;
       return data;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao configurar MFA',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return null;
@@ -112,7 +113,8 @@ export const useMFA = () => {
 
       await fetchSettings();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      void err; // Unused variable
       toast({
         title: 'Código inválido',
         description: 'Verifique o código e tente novamente.',
@@ -149,10 +151,11 @@ export const useMFA = () => {
 
       await fetchSettings();
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao desativar MFA',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return false;
@@ -178,10 +181,11 @@ export const useMFA = () => {
 
       await fetchSettings();
       return codes;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       toast({
         title: 'Erro ao gerar códigos',
-        description: err.message,
+        description: errorMessage,
         variant: 'destructive',
       });
       return null;
@@ -221,7 +225,8 @@ export const useMFA = () => {
       if (verifyError) throw verifyError;
 
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      void err; // Unused variable
       toast({
         title: 'Código inválido',
         description: 'Verifique o código e tente novamente.',

@@ -83,10 +83,11 @@ const ResetPassword = () => {
       });
 
       navigate('/auth');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Tente novamente.';
       toast({
         title: 'Erro ao alterar senha',
-        description: err.message || 'Tente novamente.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {

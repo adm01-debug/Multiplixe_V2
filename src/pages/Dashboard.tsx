@@ -24,6 +24,7 @@ import ProfileCompletionBar from '@/components/onboarding/ProfileCompletionBar';
 import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import EmptyState from '@/components/EmptyState';
+import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidget';
 import { DashboardStatsSkeleton, CourseGridSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
 import CacheIndicator from '@/components/ui/CacheIndicator';
 import { useCourses } from '@/hooks/useCachedQuery';
@@ -675,6 +676,19 @@ const Dashboard = () => {
             );
           })}
         </motion.div>
+
+        {/* Continue Learning Widget - Prominent position */}
+        {userProgress.some(p => p.progress_percentage > 0 && p.progress_percentage < 100) && (
+          <motion.section 
+            className="mb-12"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <ContinueLearningWidget userProgress={userProgress as any} />
+          </motion.section>
+        )}
 
         {/* Daily Challenges Section */}
         <motion.section 

@@ -156,26 +156,26 @@ const VideoPlayer = ({
     };
   }, []);
 
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isPlaying) {
-      video.pause();
-    } else {
+    if (video.paused) {
       video.play().catch(console.error);
+    } else {
+      video.pause();
     }
-  };
+  }, []);
 
-  const toggleMute = () => {
+  const toggleMute = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.muted = !isMuted;
-    setIsMuted(!isMuted);
-  };
+    video.muted = !video.muted;
+    setIsMuted(!video.muted);
+  }, []);
 
-  const handleVolumeChange = (value: number[]) => {
+  const handleVolumeChange = useCallback((value: number[]) => {
     const video = videoRef.current;
     if (!video) return;
 
@@ -183,17 +183,17 @@ const VideoPlayer = ({
     video.volume = newVolume;
     setVolume(newVolume);
     setIsMuted(newVolume === 0);
-  };
+  }, []);
 
-  const handleSeek = (value: number[]) => {
+  const handleSeek = useCallback((value: number[]) => {
     const video = videoRef.current;
     if (!video) return;
 
     video.currentTime = value[0];
     setCurrentTime(value[0]);
-  };
+  }, []);
 
-  const handleSkip = (seconds: number) => {
+  const handleSkip = useCallback((seconds: number) => {
     const video = videoRef.current;
     if (!video) return;
 
@@ -202,9 +202,9 @@ const VideoPlayer = ({
     // Show skip indicator
     setShowSkipIndicator({ direction: seconds > 0 ? 'forward' : 'backward', seconds: Math.abs(seconds) });
     setTimeout(() => setShowSkipIndicator(null), 800);
-  };
+  }, []);
 
-  const handlePlaybackRateChange = (rate: number) => {
+  const handlePlaybackRateChange = useCallback((rate: number) => {
     const video = videoRef.current;
     if (!video) return;
 
@@ -219,9 +219,9 @@ const VideoPlayer = ({
     speedIndicatorTimeout.current = setTimeout(() => {
       setShowSpeedIndicator(false);
     }, 1500);
-  };
+  }, []);
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
 
     if (document.fullscreenElement) {
@@ -229,7 +229,7 @@ const VideoPlayer = ({
     } else {
       containerRef.current.requestFullscreen().catch(console.error);
     }
-  };
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -310,7 +310,7 @@ const VideoPlayer = ({
           break;
       }
     },
-    [isPlaying, isMuted, volume, duration, playbackRate]
+    [togglePlay, toggleMute, toggleFullscreen, handleSkip, handleVolumeChange, handlePlaybackRateChange, volume, duration, playbackRate]
   );
 
   useEffect(() => {

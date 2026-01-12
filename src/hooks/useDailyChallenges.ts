@@ -63,8 +63,8 @@ export const useDailyChallenges = () => {
       });
 
       setChallenges(challengesWithProgress);
-    } catch (error) {
-      console.error('Error fetching daily challenges:', error);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }
@@ -114,8 +114,8 @@ export const useDailyChallenges = () => {
             description: `Clique para coletar ${challengeProgress.challenge.xp_reward} XP`,
           });
         }
-      } catch (error) {
-        console.error('Error updating challenge progress:', error);
+      } catch {
+        // Silent fail
       }
     }
 
@@ -147,8 +147,7 @@ export const useDailyChallenges = () => {
       } else {
         toast.error(result.error || 'Erro ao coletar recompensa');
       }
-    } catch (error) {
-      console.error('Error claiming reward:', error);
+    } catch {
       toast.error('Erro ao coletar recompensa');
     } finally {
       setClaiming(null);

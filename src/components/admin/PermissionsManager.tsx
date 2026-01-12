@@ -72,8 +72,7 @@ const PermissionsManager = () => {
 
       setPermissions(permissionsRes.data || []);
       setRolePermissions(rolePermissionsRes.data || []);
-    } catch (error) {
-      console.error('Error fetching permissions:', error);
+    } catch {
       toast.error('Erro ao carregar permissões');
     } finally {
       setLoading(false);
@@ -139,8 +138,7 @@ const PermissionsManager = () => {
       toast.success('Permissões atualizadas com sucesso!');
       setPendingChanges(new Map());
       await fetchData();
-    } catch (error) {
-      console.error('Error saving permissions:', error);
+    } catch {
       toast.error('Erro ao salvar permissões');
     } finally {
       setSaving(false);

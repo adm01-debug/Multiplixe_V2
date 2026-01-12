@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           user_agent: navigator.userAgent
         }
       });
-    } catch (error) {
-      console.error('Error checking device:', error);
+    } catch {
+      // Silent fail - device detection is non-critical
     }
   };
 

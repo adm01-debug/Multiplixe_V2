@@ -145,9 +145,9 @@ export function LearningPathForm({ open, onOpenChange, learningPath, onSuccess }
       }
 
       onSuccess();
-    } catch (error: any) {
-      console.error('Error saving learning path:', error);
-      if (error.code === '23505') {
+    } catch (error: unknown) {
+      const isUniqueViolation = error && typeof error === 'object' && 'code' in error && error.code === '23505';
+      if (isUniqueViolation) {
         toast.error('Já existe uma trilha com este slug');
       } else {
         toast.error('Erro ao salvar trilha');

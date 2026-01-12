@@ -190,8 +190,7 @@ const Admin = () => {
         totalLessonsCompleted: lessonProgressData?.filter(l => l.is_completed).length || 0,
         totalCoursesCompleted: courseProgressData?.filter(c => c.progress_percentage === 100).length || 0,
       });
-    } catch (error) {
-      console.error('Error fetching admin data:', error);
+    } catch {
       toast.error('Erro ao carregar dados');
     } finally {
       setLoadingData(false);

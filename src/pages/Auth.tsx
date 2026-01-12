@@ -102,8 +102,8 @@ const Auth = () => {
           setAttemptCount(result.attempt_count);
         }
       }
-    } catch (err) {
-      console.error('Error checking lockout status:', err);
+    } catch {
+      // Silent fail
     }
   }, [isSignUp]);
 
@@ -188,16 +188,15 @@ const Auth = () => {
             toast.error('Erro ao fazer login. Tente novamente.');
           }
         }
-      } catch (err) {
-        console.error('Error recording failed login:', err);
+      } catch {
         toast.error('Erro ao fazer login. Tente novamente.');
       }
     } else {
       // Reset attempts on successful login
       try {
         await supabase.rpc('reset_login_attempts', { p_email: email });
-      } catch (err) {
-        console.error('Error resetting login attempts:', err);
+      } catch {
+        // Silent fail
       }
       toast.success('Bem-vindo(a) de volta!');
     }

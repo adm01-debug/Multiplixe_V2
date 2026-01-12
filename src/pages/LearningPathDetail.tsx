@@ -233,8 +233,8 @@ export default function LearningPathDetail() {
           setCourseProgress(progressMap);
         }
       }
-    } catch (err) {
-      console.error('Error fetching learning path:', err);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }
@@ -280,8 +280,7 @@ export default function LearningPathDetail() {
           description: 'Parabéns por completar a trilha!',
         });
       }
-    } catch (err) {
-      console.error('Error generating certificate:', err);
+    } catch {
       toast({
         title: 'Erro',
         description: 'Não foi possível gerar o certificado.',

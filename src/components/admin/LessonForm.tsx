@@ -138,9 +138,9 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
 
       onSuccess();
       onOpenChange(false);
-    } catch (error: any) {
-      console.error('Error saving lesson:', error);
-      toast.error(error.message || 'Erro ao salvar aula');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Erro ao salvar aula';
+      toast.error(message);
     } finally {
       setLoading(false);
     }

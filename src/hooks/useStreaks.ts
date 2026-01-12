@@ -41,14 +41,12 @@ export const useStreaks = () => {
         .maybeSingle();
 
       if (fetchError) {
-        console.error('Error fetching streak:', fetchError);
         setError(fetchError.message);
         return;
       }
 
       setUserStreak(data);
-    } catch (err) {
-      console.error('Error in fetchStreak:', err);
+    } catch {
       setError('Failed to fetch streak data');
     } finally {
       setLoading(false);
@@ -64,7 +62,6 @@ export const useStreaks = () => {
       });
 
       if (rpcError) {
-        console.error('Error updating streak:', rpcError);
         return null;
       }
 
@@ -77,8 +74,7 @@ export const useStreaks = () => {
       }
 
       return null;
-    } catch (err) {
-      console.error('Error in updateStreak:', err);
+    } catch {
       return null;
     }
   }, [user, fetchStreak]);

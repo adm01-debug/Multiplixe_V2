@@ -251,8 +251,8 @@ const LessonPlayer = () => {
 
           await updateCourseProgress();
         }
-      } catch (error) {
-        console.error("Error saving progress:", error);
+      } catch {
+        // Silent fail - progress save error
       }
     },
     [user, currentLesson, course, lessonsProgress, lessons.length, fireCourseComplete, fireLessonComplete, addXP, checkAchievements, hasStudiedToday, updateStreak]

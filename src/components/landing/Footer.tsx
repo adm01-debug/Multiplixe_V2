@@ -42,8 +42,7 @@ const Footer = () => {
       setIsSubscribed(true);
       setEmail("");
       setTimeout(() => setIsSubscribed(false), 3000);
-    } catch (err) {
-      console.error('Newsletter subscription error:', err);
+    } catch {
       toast.error("Erro ao inscrever", {
         description: "Tente novamente mais tarde."
       });

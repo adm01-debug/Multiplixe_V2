@@ -60,8 +60,8 @@ export const useUserPreferences = () => {
           // Server preferences would be stored in a jsonb column
           // For now, we'll use localStorage
         }
-      } catch (error) {
-        console.error("Failed to load preferences:", error);
+      } catch {
+        // Silent fail
       } finally {
         setIsLoading(false);
       }
@@ -87,8 +87,8 @@ export const useUserPreferences = () => {
         setIsSaving(true);
         try {
           // Save to server if needed
-        } catch (error) {
-          console.error("Failed to save preference:", error);
+        } catch {
+          // Silent fail
         } finally {
           setIsSaving(false);
         }

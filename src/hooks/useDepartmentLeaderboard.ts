@@ -24,8 +24,7 @@ export const useDepartmentLeaderboard = (limit: number = 10) => {
         if (error) throw error;
 
         setRankings((data || []) as DepartmentRanking[]);
-      } catch (error) {
-        console.error('Error fetching department leaderboard:', error);
+      } catch {
         setRankings([]);
       } finally {
         setLoading(false);

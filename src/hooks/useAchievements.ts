@@ -67,8 +67,8 @@ export const useAchievements = () => {
       if (userAchievementsRes.data) {
         setUserAchievements(userAchievementsRes.data as unknown as UserAchievement[]);
       }
-    } catch (error) {
-      console.error('Error fetching achievements:', error);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,6 @@ export const useAchievements = () => {
       });
 
       if (error) {
-        console.error('Error checking achievements:', error);
         return [];
       }
 
@@ -115,8 +114,7 @@ export const useAchievements = () => {
       }
 
       return [];
-    } catch (error) {
-      console.error('Error in checkAchievements:', error);
+    } catch {
       return [];
     }
   }, [user, fetchAchievements]);

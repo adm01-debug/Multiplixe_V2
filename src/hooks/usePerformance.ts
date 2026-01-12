@@ -15,7 +15,7 @@ export const useMemoizedSelector = <T, R>(
 /**
  * Debounce a callback function
  */
-export const useDebouncedCallback = <T extends (...args: any[]) => any>(
+export const useDebouncedCallback = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
@@ -45,7 +45,7 @@ export const useDebouncedCallback = <T extends (...args: any[]) => any>(
 /**
  * Throttle a callback function
  */
-export const useThrottledCallback = <T extends (...args: any[]) => any>(
+export const useThrottledCallback = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
@@ -93,7 +93,7 @@ export const useStableMemo = <T>(factory: () => T, deps: React.DependencyList): 
 /**
  * Create a stable callback that doesn't change between renders
  */
-export const useStableCallback = <T extends (...args: any[]) => any>(callback: T): T => {
+export const useStableCallback = <T extends (...args: unknown[]) => unknown>(callback: T): T => {
   const callbackRef = useRef(callback);
   
   useEffect(() => {

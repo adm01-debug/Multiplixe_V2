@@ -108,8 +108,8 @@ const Profile = () => {
         });
         
         setCertificates(userCertificates);
-      } catch (error) {
-        console.error('Error fetching stats:', error);
+      } catch {
+        // Silent fail
       } finally {
         setLoadingStats(false);
       }

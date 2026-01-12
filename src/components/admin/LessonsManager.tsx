@@ -74,7 +74,6 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
       .order('order_index');
 
     if (error) {
-      console.error('Error fetching lessons:', error);
       toast.error('Erro ao carregar aulas');
     } else {
       setLessons(data || []);

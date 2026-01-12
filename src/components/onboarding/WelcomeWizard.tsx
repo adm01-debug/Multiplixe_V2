@@ -133,8 +133,7 @@ const WelcomeWizard = ({ onComplete }: WelcomeWizardProps) => {
 
       toast.success('Bem-vindo ao MULTIPLIXE! 🎉');
       onComplete();
-    } catch (error) {
-      console.error('Error completing onboarding:', error);
+    } catch {
       toast.error('Erro ao salvar configurações');
     } finally {
       setIsSubmitting(false);

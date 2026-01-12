@@ -40,7 +40,6 @@ export const useUserXP = () => {
         .maybeSingle();
 
       if (fetchError) {
-        console.error('Error fetching user XP:', fetchError);
         setError(fetchError.message);
         return;
       }
@@ -58,7 +57,6 @@ export const useUserXP = () => {
           .single();
 
         if (insertError) {
-          console.error('Error creating user XP record:', insertError);
           setError(insertError.message);
           return;
         }
@@ -67,8 +65,7 @@ export const useUserXP = () => {
       } else {
         setUserXP(data);
       }
-    } catch (err) {
-      console.error('Error in fetchUserXP:', err);
+    } catch {
       setError('Failed to fetch XP data');
     } finally {
       setLoading(false);
@@ -87,15 +84,13 @@ export const useUserXP = () => {
         });
 
       if (rpcError) {
-        console.error('Error adding XP:', rpcError);
         return null;
       }
 
       // Refresh user XP after adding
       await fetchUserXP();
       return data;
-    } catch (err) {
-      console.error('Error in addXP:', err);
+    } catch {
       return null;
     }
   }, [user, fetchUserXP]);

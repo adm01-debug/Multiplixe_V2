@@ -38,7 +38,7 @@ export const useStudyCalendar = () => {
         .gte("completed_at", start.toISOString())
         .lte("completed_at", end.toISOString());
 
-      lessonProgress?.forEach((lp: any) => {
+      lessonProgress?.forEach((lp: { id: string; completed_at: string | null; is_completed: boolean | null; lessons: { title: string } | null }) => {
         if (lp.completed_at) {
           items.push({
             id: lp.id,
@@ -63,7 +63,7 @@ export const useStudyCalendar = () => {
         .gte("completed_at", start.toISOString())
         .lte("completed_at", end.toISOString());
 
-      quizAttempts?.forEach((qa: any) => {
+      quizAttempts?.forEach((qa: { id: string; completed_at: string; passed: boolean; quizzes: { title: string } | null }) => {
         items.push({
           id: qa.id,
           date: qa.completed_at,
@@ -85,7 +85,7 @@ export const useStudyCalendar = () => {
         .gte("unlocked_at", start.toISOString())
         .lte("unlocked_at", end.toISOString());
 
-      achievements?.forEach((ua: any) => {
+      achievements?.forEach((ua: { id: string; unlocked_at: string; achievements: { name: string } | null }) => {
         items.push({
           id: ua.id,
           date: ua.unlocked_at,

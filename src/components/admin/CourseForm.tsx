@@ -172,9 +172,9 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
 
       onSuccess();
       onOpenChange(false);
-    } catch (error: any) {
-      console.error('Error saving course:', error);
-      toast.error(error.message || 'Erro ao salvar curso');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Erro ao salvar curso';
+      toast.error(message);
     } finally {
       setLoading(false);
     }

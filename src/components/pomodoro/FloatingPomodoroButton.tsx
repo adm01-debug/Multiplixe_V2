@@ -98,15 +98,6 @@ const FloatingPomodoroButton = () => {
                 "0 0 0 12px rgba(239, 68, 68, 0)",
               ],
             } : {}}
-            // @ts-ignore - framer-motion types issue
-            transition={state === 'work' ? {
-              repeat: Infinity,
-              duration: 1.5,
-            } : {
-              type: "spring",
-              stiffness: 400,
-              damping: 17,
-            }}
           >
             {getStateIcon(state)}
             {state !== 'idle' && (

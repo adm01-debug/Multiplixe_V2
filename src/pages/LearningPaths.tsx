@@ -43,7 +43,7 @@ export default function LearningPaths() {
 
   // Transformar dados para o formato esperado pelos componentes
   const learningPaths = useMemo(() => {
-    return learningPathsData.map((path: any) => ({
+    return learningPathsData.map((path: { id: string; title: string; slug: string; description: string | null; thumbnail_url: string | null; estimated_hours: number | null; difficulty_level: string | null; is_published: boolean | null; is_featured: boolean | null; xp_reward: number | null; created_at: string; learning_path_courses?: unknown[] }) => ({
       id: path.id,
       title: path.title,
       slug: path.slug,

@@ -85,8 +85,7 @@ export function LearningPathsManager() {
       );
 
       setLearningPaths(pathsWithCounts);
-    } catch (error) {
-      console.error('Error fetching learning paths:', error);
+    } catch {
       toast.error('Erro ao carregar trilhas');
     } finally {
       setLoading(false);

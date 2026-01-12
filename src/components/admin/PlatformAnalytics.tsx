@@ -125,8 +125,8 @@ const PlatformAnalytics = () => {
 
       setAuditLogs(auditResult.data || []);
       setActivityData(last7Days);
-    } catch (error) {
-      console.error('Error fetching analytics:', error);
+    } catch {
+      // Silent fail
     } finally {
       setLoading(false);
     }

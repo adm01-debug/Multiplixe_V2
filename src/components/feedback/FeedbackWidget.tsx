@@ -70,8 +70,7 @@ const FeedbackWidget = () => {
           setMessage("");
         }, 300);
       }, 2000);
-    } catch (error) {
-      console.error("Error submitting feedback:", error);
+    } catch {
       toast.error("Erro ao enviar feedback");
     } finally {
       setIsSubmitting(false);

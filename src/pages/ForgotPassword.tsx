@@ -61,11 +61,11 @@ const ForgotPassword = () => {
         title: 'Solicitação enviada!',
         description: 'Aguarde a aprovação do administrador.',
       });
-    } catch (err: any) {
-      console.error('Error submitting reset request:', err);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Tente novamente mais tarde.';
       toast({
         title: 'Erro ao enviar solicitação',
-        description: err.message || 'Tente novamente mais tarde.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {

@@ -89,7 +89,7 @@ export function LearningPathCoursesManager({
 
       if (pathError) throw pathError;
 
-      const formattedCourses = (pathCoursesData || []).map((pc: any) => ({
+      const formattedCourses = (pathCoursesData || []).map((pc: { id: string; course_id: string; order_index: number; course: Course }) => ({
         id: pc.id,
         course_id: pc.course_id,
         order_index: pc.order_index,
@@ -110,8 +110,7 @@ export function LearningPathCoursesManager({
       const pathCourseIds = formattedCourses.map((pc: PathCourse) => pc.course_id);
       const available = (allCourses || []).filter(c => !pathCourseIds.includes(c.id));
       setAvailableCourses(available);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
       toast.error('Erro ao carregar cursos');
     } finally {
       setLoading(false);
@@ -148,9 +147,9 @@ export function LearningPathCoursesManager({
       setSelectedCourseId('');
       fetchData();
       onSuccess();
-    } catch (error: any) {
-      console.error('Error adding course:', error);
-      if (error.code === '23505') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === '23505') {
         toast.error('Este curso já está na trilha');
       } else {
         toast.error('Erro ao adicionar curso');
@@ -173,8 +172,7 @@ export function LearningPathCoursesManager({
       toast.success('Curso removido da trilha');
       fetchData();
       onSuccess();
-    } catch (error) {
-      console.error('Error removing course:', error);
+    } catch {
       toast.error('Erro ao remover curso');
     } finally {
       setSaving(false);
@@ -203,8 +201,7 @@ export function LearningPathCoursesManager({
       ]);
 
       fetchData();
-    } catch (error) {
-      console.error('Error reordering courses:', error);
+    } catch {
       toast.error('Erro ao reordenar cursos');
     } finally {
       setSaving(false);

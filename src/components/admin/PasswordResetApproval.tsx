@@ -79,8 +79,7 @@ const PasswordResetApproval = () => {
 
       if (error) throw error;
       setRequests((data as ResetRequest[]) || []);
-    } catch (error) {
-      console.error('Error fetching requests:', error);
+    } catch {
       toast.error('Erro ao carregar solicitações');
     } finally {
       setLoading(false);
@@ -114,9 +113,9 @@ const PasswordResetApproval = () => {
       setReviewNotes('');
       setSelectedRequest(null);
       await fetchRequests();
-    } catch (error: any) {
-      console.error('Error processing request:', error);
-      toast.error(error.message || 'Erro ao processar solicitação');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao processar solicitação';
+      toast.error(errorMessage);
     } finally {
       setProcessing(null);
     }

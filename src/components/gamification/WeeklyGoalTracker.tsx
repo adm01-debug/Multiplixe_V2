@@ -115,8 +115,8 @@ const WeeklyGoalTracker = () => {
           }, 0) / weeklyGoals.length;
 
         setWeekProgress(Math.round(totalProgress));
-      } catch (error) {
-        console.error("Error fetching weekly progress:", error);
+      } catch {
+        // Silent fail
       } finally {
         setLoading(false);
       }
@@ -161,8 +161,7 @@ const WeeklyGoalTracker = () => {
           g.id === goal.id ? { ...g, claimed: true } : g
         )
       );
-    } catch (error) {
-      console.error("Error claiming reward:", error);
+    } catch {
       toast.error("Erro ao resgatar recompensa");
     }
   };

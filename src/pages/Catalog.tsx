@@ -108,7 +108,7 @@ const Catalog = () => {
       
       return true;
     });
-  }, [courses, searchQuery, selectedCategory, selectedLevel]);
+  }, [courses, debouncedSearch, selectedCategory, selectedLevel]);
 
   const handleSignOut = async () => {
     await signOut();

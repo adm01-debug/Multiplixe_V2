@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, ArrowLeft, Loader2, CheckCircle, Shield, Clock } from 'lucide-react';
+import { Mail, ArrowLeft, Loader2, Shield, Clock } from 'lucide-react';
 import { z } from 'zod';
 
 const emailSchema = z.string().email('Email inválido').endsWith('@promobrindes.com.br', 'Use seu email corporativo @promobrindes.com.br');

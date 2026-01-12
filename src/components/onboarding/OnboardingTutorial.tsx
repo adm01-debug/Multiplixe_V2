@@ -108,29 +108,15 @@ const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => 
   const isLastStep = currentStep === tutorialSteps.length - 1;
   const isFirstStep = currentStep === 0;
 
-  const handleNext = useCallback(() => {
-    if (isLastStep) {
-      handleComplete();
-    } else {
-      setCurrentStep((prev) => prev + 1);
-    }
-  }, [isLastStep]);
-
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
-    }
-  };
-
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     if (user) {
       localStorage.setItem(`tutorial_completed_${user.id}`, "true");
     }
     setIsVisible(false);
     setTimeout(onComplete, 300);
-  };
+  }, [user, onComplete]);
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     if (user) {
       localStorage.setItem(`tutorial_skipped_${user.id}`, "true");
     }
@@ -139,7 +125,21 @@ const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => 
       onSkip?.();
       onComplete();
     }, 300);
-  };
+  }, [user, onSkip, onComplete]);
+
+  const handleNext = useCallback(() => {
+    if (isLastStep) {
+      handleComplete();
+    } else {
+      setCurrentStep((prev) => prev + 1);
+    }
+  }, [isLastStep, handleComplete]);
+
+  const handleBack = useCallback(() => {
+    if (currentStep > 0) {
+      setCurrentStep((prev) => prev - 1);
+    }
+  }, [currentStep]);
 
   // Keyboard navigation
   useEffect(() => {

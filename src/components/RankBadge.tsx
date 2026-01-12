@@ -1,4 +1,4 @@
-import { Crown, Medal, Award } from 'lucide-react';
+import { Crown, Medal } from 'lucide-react';
 
 interface RankBadgeProps {
   rank: number;

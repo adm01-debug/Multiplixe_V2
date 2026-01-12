@@ -18,14 +18,11 @@ import {
   GraduationCap,
   LayoutDashboard,
   User,
-  Award,
   BarChart3,
-  Settings,
   Shield,
   Moon,
   Sun,
-  LogOut,
-  Keyboard
+  LogOut
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";

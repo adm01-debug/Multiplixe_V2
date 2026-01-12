@@ -5,8 +5,6 @@ import {
   Clock,
   Flame,
   BookOpen,
-  X,
-  Calendar,
   Target,
   Sparkles,
 } from "lucide-react";

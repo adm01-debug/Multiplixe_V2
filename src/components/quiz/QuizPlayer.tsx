@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -84,7 +84,17 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
     onClose();
   };
 
-  // Timer effect
+  // Timer effect - uses ref to avoid stale closure
+  const handleSubmitRef = useRef<() => void>(() => {});
+  handleSubmitRef.current = async () => {
+    const finalAnswers = { ...answers };
+    const res = await onComplete(finalAnswers);
+    if (res) {
+      setResult(res);
+      setShowResult(true);
+    }
+  };
+
   useEffect(() => {
     if (timeLeft === null || timeLeft <= 0 || showResult) return;
 
@@ -92,7 +102,7 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
       setTimeLeft(prev => {
         if (prev === null || prev <= 1) {
           clearInterval(timer);
-          handleSubmit();
+          handleSubmitRef.current();
           return 0;
         }
         return prev - 1;
@@ -118,19 +128,10 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
 
   const handleNext = () => {
     if (isLastQuestion) {
-      handleSubmit();
+      handleSubmitRef.current();
     } else {
       setCurrentQuestionIndex(prev => prev + 1);
       setShowExplanation(false);
-    }
-  };
-
-  const handleSubmit = async () => {
-    const finalAnswers = { ...answers };
-    const res = await onComplete(finalAnswers);
-    if (res) {
-      setResult(res);
-      setShowResult(true);
     }
   };
 

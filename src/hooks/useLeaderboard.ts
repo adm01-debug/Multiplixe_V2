@@ -41,7 +41,6 @@ export const useLeaderboard = (limit: number = 50, period: LeaderboardPeriod = '
       setLeaderboard(data || []);
     } catch {
       setError('Failed to fetch leaderboard');
-      setError('Failed to fetch leaderboard');
     } finally {
       setLoading(false);
     }

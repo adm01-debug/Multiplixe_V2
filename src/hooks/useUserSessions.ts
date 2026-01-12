@@ -67,7 +67,6 @@ export const useUserSessions = () => {
       return true;
     } catch {
       return false;
-      return false;
     }
   };
 
@@ -84,7 +83,6 @@ export const useUserSessions = () => {
       setSessions(prev => prev.filter(s => s.session_token === currentSessionToken));
       return true;
     } catch {
-      return false;
       return false;
     }
   };

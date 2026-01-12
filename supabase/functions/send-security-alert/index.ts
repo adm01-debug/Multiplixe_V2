@@ -12,7 +12,7 @@ interface AlertPayload {
   description?: string;
   ip_address?: string;
   user_id?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 Deno.serve(async (req) => {

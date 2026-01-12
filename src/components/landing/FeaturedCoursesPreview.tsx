@@ -55,7 +55,7 @@ const FeaturedCoursesPreview = () => {
         } else {
           setCourses(data);
         }
-      } catch (error) {
+      } catch {
         // Keep empty on error
       } finally {
         setLoading(false);

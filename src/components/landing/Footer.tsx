@@ -55,12 +55,12 @@ const Footer = () => {
   const footerLinks = {
     plataforma: [
       { label: "Meus Cursos", href: "/dashboard" },
-      { label: "Trilhas", href: "/learning-paths" },
-      { label: "Certificados", href: "/profile" },
-      { label: "Ranking", href: "/leaderboard" },
+      { label: "Trilhas", href: "/trilhas" },
+      { label: "Certificados", href: "/perfil" },
+      { label: "Ranking", href: "/ranking" },
     ],
     ajuda: [
-      { label: "Como usar", href: "/catalog" },
+      { label: "Como usar", href: "/catalogo" },
       { label: "Perguntas frequentes", href: "mailto:rh@promobrindes.com.br" },
       { label: "Suporte técnico", href: "mailto:ti@promobrindes.com.br" },
       { label: "Reportar problema", href: "mailto:ti@promobrindes.com.br" },
@@ -73,7 +73,7 @@ const Footer = () => {
   };
 
   const quickLinks = [
-    { icon: BookOpen, label: "Acessar Cursos", href: "/catalog", gradient: "from-primary to-accent" },
+    { icon: BookOpen, label: "Acessar Cursos", href: "/catalogo", gradient: "from-primary to-accent" },
     { icon: HelpCircle, label: "Central de Ajuda", href: "mailto:rh@promobrindes.com.br", gradient: "from-accent to-warning" },
     { icon: MessageCircle, label: "Falar com RH", href: "mailto:rh@promobrindes.com.br", gradient: "from-warning to-primary" },
   ];

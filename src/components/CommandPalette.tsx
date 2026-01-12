@@ -137,7 +137,7 @@ const CommandPalette = () => {
             title: course.title,
             description: course.description || undefined,
             type: "course",
-            url: `/course/${course.slug}`,
+            url: `/curso/${course.slug}`,
             icon: "course",
           });
         });
@@ -164,7 +164,7 @@ const CommandPalette = () => {
             title: lesson.title,
             description: lesson.description || undefined,
             type: "lesson",
-            url: `/course/${lesson.courses.slug}/lesson/${lesson.id}`,
+            url: `/curso/${lesson.courses.slug}/aula/${lesson.id}`,
             icon: "lesson",
             courseSlug: lesson.courses.slug,
           });
@@ -185,7 +185,7 @@ const CommandPalette = () => {
             title: achievement.name,
             description: achievement.description || undefined,
             type: "achievement",
-            url: "/profile#conquistas",
+            url: "/perfil#conquistas",
             icon: "achievement",
           });
         });

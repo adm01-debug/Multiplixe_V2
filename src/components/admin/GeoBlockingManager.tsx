@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -300,9 +301,11 @@ const GeoBlockingManager = () => {
     }
   };
 
-  const filteredCountries = countries.filter(country =>
-    country.country_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    country.country_code.toLowerCase().includes(searchQuery.toLowerCase())
+  // Fuzzy search com Fuse.js
+  const filteredCountries = useFuzzySearch(
+    countries,
+    ["country_name", "country_code", "reason"],
+    searchQuery
   );
 
   const availableCountries = COUNTRIES.filter(

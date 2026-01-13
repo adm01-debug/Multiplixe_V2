@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import Fuse from "fuse.js";
 import {
   CommandDialog,
   CommandEmpty,
@@ -108,8 +109,62 @@ const CommandPalette = () => {
     return () => document.removeEventListener("keydown", down);
   }, [open, navigate, theme, setTheme]);
 
-  // Search function
-  const performSearch = useCallback(async (searchQuery: string) => {
+  // Cached data for fuzzy search
+  const [cachedData, setCachedData] = useState<{
+    courses: { id: string; title: string; description: string | null; slug: string }[];
+    lessons: { id: string; title: string; description: string | null; course_id: string; courses: { slug: string } }[];
+    achievements: { id: string; name: string; description: string; slug: string }[];
+  }>({ courses: [], lessons: [], achievements: [] });
+
+  // Load data for search
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [coursesRes, lessonsRes, achievementsRes] = await Promise.all([
+          supabase.from("courses").select("id, title, description, slug").eq("is_published", true),
+          supabase.from("lessons").select("id, title, description, course_id, courses!inner(slug, is_published)").eq("courses.is_published", true),
+          supabase.from("achievements").select("id, name, description, slug"),
+        ]);
+
+        setCachedData({
+          courses: coursesRes.data || [],
+          lessons: (lessonsRes.data || []) as { id: string; title: string; description: string | null; course_id: string; courses: { slug: string } }[],
+          achievements: achievementsRes.data || [],
+        });
+      } catch {
+        // Silent fail
+      }
+    };
+
+    if (user) {
+      loadData();
+    }
+  }, [user]);
+
+  // Fuse.js instances for fuzzy search
+  const fuseInstances = useMemo(() => ({
+    courses: new Fuse(cachedData.courses, {
+      keys: ["title", "description"],
+      threshold: 0.4,
+      distance: 100,
+      ignoreLocation: true,
+    }),
+    lessons: new Fuse(cachedData.lessons, {
+      keys: ["title", "description"],
+      threshold: 0.4,
+      distance: 100,
+      ignoreLocation: true,
+    }),
+    achievements: new Fuse(cachedData.achievements, {
+      keys: ["name", "description"],
+      threshold: 0.4,
+      distance: 100,
+      ignoreLocation: true,
+    }),
+  }), [cachedData]);
+
+  // Search function with Fuse.js
+  const performSearch = useCallback((searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([]);
       return;
@@ -119,74 +174,45 @@ const CommandPalette = () => {
     const searchResults: SearchResult[] = [];
 
     try {
-      // Search courses
-      const { data: courses } = await supabase
-        .from("courses")
-        .select("id, title, description, slug")
-        .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
-        .eq("is_published", true)
-        .limit(5);
-
-      if (courses) {
-        courses.forEach((course) => {
-          searchResults.push({
-            id: course.id,
-            title: course.title,
-            description: course.description || undefined,
-            type: "course",
-            url: `/curso/${course.slug}`,
-            icon: "course",
-          });
+      // Fuzzy search courses
+      const courseResults = fuseInstances.courses.search(searchQuery, { limit: 5 });
+      courseResults.forEach(({ item }) => {
+        searchResults.push({
+          id: item.id,
+          title: item.title,
+          description: item.description || undefined,
+          type: "course",
+          url: `/curso/${item.slug}`,
+          icon: "course",
         });
-      }
+      });
 
-      // Search lessons
-      const { data: lessons } = await supabase
-        .from("lessons")
-        .select(`
-          id, 
-          title, 
-          description,
-          course_id,
-          courses!inner(slug, is_published)
-        `)
-        .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
-        .eq("courses.is_published", true)
-        .limit(5);
-
-      if (lessons) {
-        lessons.forEach((lesson: { id: string; title: string; description: string | null; course_id: string; courses: { slug: string; is_published: boolean } }) => {
-          searchResults.push({
-            id: lesson.id,
-            title: lesson.title,
-            description: lesson.description || undefined,
-            type: "lesson",
-            url: `/curso/${lesson.courses.slug}/aula/${lesson.id}`,
-            icon: "lesson",
-            courseSlug: lesson.courses.slug,
-          });
+      // Fuzzy search lessons
+      const lessonResults = fuseInstances.lessons.search(searchQuery, { limit: 5 });
+      lessonResults.forEach(({ item }) => {
+        searchResults.push({
+          id: item.id,
+          title: item.title,
+          description: item.description || undefined,
+          type: "lesson",
+          url: `/curso/${item.courses.slug}/aula/${item.id}`,
+          icon: "lesson",
+          courseSlug: item.courses.slug,
         });
-      }
+      });
 
-      // Search achievements
-      const { data: achievements } = await supabase
-        .from("achievements")
-        .select("id, name, description, slug")
-        .or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
-        .limit(5);
-
-      if (achievements) {
-        achievements.forEach((achievement) => {
-          searchResults.push({
-            id: achievement.id,
-            title: achievement.name,
-            description: achievement.description || undefined,
-            type: "achievement",
-            url: "/perfil#conquistas",
-            icon: "achievement",
-          });
+      // Fuzzy search achievements
+      const achievementResults = fuseInstances.achievements.search(searchQuery, { limit: 5 });
+      achievementResults.forEach(({ item }) => {
+        searchResults.push({
+          id: item.id,
+          title: item.name,
+          description: item.description || undefined,
+          type: "achievement",
+          url: "/perfil#conquistas",
+          icon: "achievement",
         });
-      }
+      });
 
       setResults(searchResults);
     } catch {
@@ -194,7 +220,7 @@ const CommandPalette = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [fuseInstances]);
 
   // Debounced search
   useEffect(() => {

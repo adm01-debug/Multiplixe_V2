@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -144,14 +145,17 @@ const PasswordResetApproval = () => {
   const pendingRequests = requests.filter(r => r.status === 'pending');
   const processedRequests = requests.filter(r => r.status !== 'pending');
 
-  const filteredPending = pendingRequests.filter(r =>
-    r.user_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    r.user_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  // Fuzzy search com Fuse.js
+  const filteredPending = useFuzzySearch(
+    pendingRequests,
+    ["user_email", "user_name", "reason"],
+    searchQuery
   );
 
-  const filteredProcessed = processedRequests.filter(r =>
-    r.user_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    r.user_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProcessed = useFuzzySearch(
+    processedRequests,
+    ["user_email", "user_name", "reviewer_notes"],
+    searchQuery
   );
 
   if (loading) {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -152,8 +153,11 @@ export function LearningPathsManager() {
     fetchLearningPaths();
   };
 
-  const filteredPaths = learningPaths.filter(p =>
-    p.title.toLowerCase().includes(search.toLowerCase())
+  // Fuzzy search com Fuse.js
+  const filteredPaths = useFuzzySearch(
+    learningPaths,
+    ["title", "description", "difficulty_level"],
+    search
   );
 
   const levelLabels: Record<string, string> = {

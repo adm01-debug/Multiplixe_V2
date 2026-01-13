@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
 import { useCallback, useState } from "react";
+import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
+import type { FuseResultMatch } from "fuse.js";
 
 interface CourseCardProps {
   id: string;
@@ -19,6 +21,7 @@ interface CourseCardProps {
   categoryColor?: string;
   progress?: number;
   isFeatured?: boolean;
+  searchMatches?: readonly FuseResultMatch[];
 }
 
 const levelLabels: Record<string, string> = {
@@ -46,6 +49,7 @@ const CourseCard = ({
   categoryColor,
   progress,
   isFeatured,
+  searchMatches,
 }: CourseCardProps) => {
   const hours = Math.floor(durationMinutes / 60);
   const minutes = durationMinutes % 60;
@@ -189,10 +193,18 @@ const CourseCard = ({
         <div className="p-5 space-y-4">
           <div>
             <h3 className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
-              {title}
+              <FuzzyHighlight 
+                text={title} 
+                matches={searchMatches} 
+                fieldKey="title" 
+              />
             </h3>
             <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-              {description}
+              <FuzzyHighlight 
+                text={description || ""} 
+                matches={searchMatches} 
+                fieldKey="description" 
+              />
             </p>
           </div>
 
@@ -220,7 +232,13 @@ const CourseCard = ({
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
                   <User className="h-4 w-4 text-primary" />
                 </div>
-                <span className="text-sm text-muted-foreground font-medium">{instructorName}</span>
+                <span className="text-sm text-muted-foreground font-medium">
+                  <FuzzyHighlight 
+                    text={instructorName} 
+                    matches={searchMatches} 
+                    fieldKey="instructor_name" 
+                  />
+                </span>
               </div>
             )}
 

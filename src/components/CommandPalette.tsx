@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Fuse from "fuse.js";
+import Fuse, { FuseResultMatch } from "fuse.js";
 import {
   CommandDialog,
   CommandEmpty,
@@ -28,6 +28,8 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
+import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
+
 
 interface SearchResult {
   id: string;
@@ -37,6 +39,7 @@ interface SearchResult {
   url: string;
   icon: string;
   courseSlug?: string;
+  matches?: readonly FuseResultMatch[];
 }
 
 const CommandPalette = () => {
@@ -141,25 +144,28 @@ const CommandPalette = () => {
     }
   }, [user]);
 
-  // Fuse.js instances for fuzzy search
+  // Fuse.js instances for fuzzy search with matches
   const fuseInstances = useMemo(() => ({
     courses: new Fuse(cachedData.courses, {
       keys: ["title", "description"],
       threshold: 0.4,
       distance: 100,
       ignoreLocation: true,
+      includeMatches: true,
     }),
     lessons: new Fuse(cachedData.lessons, {
       keys: ["title", "description"],
       threshold: 0.4,
       distance: 100,
       ignoreLocation: true,
+      includeMatches: true,
     }),
     achievements: new Fuse(cachedData.achievements, {
       keys: ["name", "description"],
       threshold: 0.4,
       distance: 100,
       ignoreLocation: true,
+      includeMatches: true,
     }),
   }), [cachedData]);
 
@@ -176,7 +182,7 @@ const CommandPalette = () => {
     try {
       // Fuzzy search courses
       const courseResults = fuseInstances.courses.search(searchQuery, { limit: 5 });
-      courseResults.forEach(({ item }) => {
+      courseResults.forEach(({ item, matches }) => {
         searchResults.push({
           id: item.id,
           title: item.title,
@@ -184,12 +190,13 @@ const CommandPalette = () => {
           type: "course",
           url: `/curso/${item.slug}`,
           icon: "course",
+          matches,
         });
       });
 
       // Fuzzy search lessons
       const lessonResults = fuseInstances.lessons.search(searchQuery, { limit: 5 });
-      lessonResults.forEach(({ item }) => {
+      lessonResults.forEach(({ item, matches }) => {
         searchResults.push({
           id: item.id,
           title: item.title,
@@ -198,12 +205,13 @@ const CommandPalette = () => {
           url: `/curso/${item.courses.slug}/aula/${item.id}`,
           icon: "lesson",
           courseSlug: item.courses.slug,
+          matches,
         });
       });
 
       // Fuzzy search achievements
       const achievementResults = fuseInstances.achievements.search(searchQuery, { limit: 5 });
-      achievementResults.forEach(({ item }) => {
+      achievementResults.forEach(({ item, matches }) => {
         searchResults.push({
           id: item.id,
           title: item.name,
@@ -211,6 +219,7 @@ const CommandPalette = () => {
           type: "achievement",
           url: "/perfil#conquistas",
           icon: "achievement",
+          matches,
         });
       });
 
@@ -319,10 +328,20 @@ const CommandPalette = () => {
                     >
                       {getIcon(result.type)}
                       <div className="ml-2 flex flex-col">
-                        <span>{result.title}</span>
+                        <span>
+                          <FuzzyHighlight 
+                            text={result.title} 
+                            matches={result.matches} 
+                            fieldKey="title" 
+                          />
+                        </span>
                         {result.description && (
                           <span className="text-xs text-muted-foreground line-clamp-1">
-                            {result.description}
+                            <FuzzyHighlight 
+                              text={result.description} 
+                              matches={result.matches} 
+                              fieldKey="description" 
+                            />
                           </span>
                         )}
                       </div>
@@ -347,10 +366,20 @@ const CommandPalette = () => {
                       >
                         {getIcon(result.type)}
                         <div className="ml-2 flex flex-col">
-                          <span>{result.title}</span>
+                          <span>
+                            <FuzzyHighlight 
+                              text={result.title} 
+                              matches={result.matches} 
+                              fieldKey="title" 
+                            />
+                          </span>
                           {result.description && (
                             <span className="text-xs text-muted-foreground line-clamp-1">
-                              {result.description}
+                              <FuzzyHighlight 
+                                text={result.description} 
+                                matches={result.matches} 
+                                fieldKey="description" 
+                              />
                             </span>
                           )}
                         </div>
@@ -376,10 +405,20 @@ const CommandPalette = () => {
                       >
                         {getIcon(result.type)}
                         <div className="ml-2 flex flex-col">
-                          <span>{result.title}</span>
+                          <span>
+                            <FuzzyHighlight 
+                              text={result.title} 
+                              matches={result.matches} 
+                              fieldKey="name" 
+                            />
+                          </span>
                           {result.description && (
                             <span className="text-xs text-muted-foreground line-clamp-1">
-                              {result.description}
+                              <FuzzyHighlight 
+                                text={result.description} 
+                                matches={result.matches} 
+                                fieldKey="description" 
+                              />
                             </span>
                           )}
                         </div>

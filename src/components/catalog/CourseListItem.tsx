@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, TrendingUp, ChevronRight } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
 import FavoriteButton from "@/components/favorites/FavoriteButton";
+import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
+import type { FuseResultMatch } from "fuse.js";
 
 interface CourseListItemProps {
   id: string;
@@ -20,6 +22,7 @@ interface CourseListItemProps {
   categoryColor?: string;
   progress?: number;
   isFeatured?: boolean;
+  searchMatches?: readonly FuseResultMatch[];
 }
 
 const levelConfig: Record<string, { bg: string; text: string; icon: string }> = {
@@ -48,6 +51,7 @@ const CourseListItem = memo(({
   categoryColor,
   progress,
   isFeatured,
+  searchMatches,
 }: CourseListItemProps) => {
   const hours = Math.floor(durationMinutes / 60);
   const minutes = durationMinutes % 60;
@@ -105,12 +109,20 @@ const CourseListItem = memo(({
           <div>
             <div className="flex items-start justify-between gap-2">
               <h3 className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                {title}
+                <FuzzyHighlight 
+                  text={title} 
+                  matches={searchMatches} 
+                  fieldKey="title" 
+                />
               </h3>
               <FavoriteButton courseId={id} size="sm" />
             </div>
             <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-              {description}
+              <FuzzyHighlight 
+                text={description || ""} 
+                matches={searchMatches} 
+                fieldKey="description" 
+              />
             </p>
           </div>
 
@@ -149,12 +161,18 @@ const CourseListItem = memo(({
                   <TrendingUp className="h-4 w-4" />
                   <span className="text-sm font-bold">{progress}%</span>
                 </div>
-              ) : instructorName && (
+              ) : instructorName ? (
                 <div className="hidden md:flex items-center gap-2 text-muted-foreground">
                   <User className="h-4 w-4" />
-                  <span className="text-sm">{instructorName}</span>
+                  <span className="text-sm">
+                    <FuzzyHighlight 
+                      text={instructorName} 
+                      matches={searchMatches} 
+                      fieldKey="instructor_name" 
+                    />
+                  </span>
                 </div>
-              )}
+              ) : null}
               <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </div>
           </div>

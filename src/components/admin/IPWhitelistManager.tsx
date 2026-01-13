@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -169,9 +170,11 @@ const IPWhitelistManager = () => {
     }
   };
 
-  const filteredIPs = whitelistedIPs.filter(ip =>
-    ip.ip_address.includes(searchQuery) ||
-    ip.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  // Fuzzy search com Fuse.js
+  const filteredIPs = useFuzzySearch(
+    whitelistedIPs,
+    ["ip_address", "description"],
+    searchQuery
   );
 
   if (loading) {

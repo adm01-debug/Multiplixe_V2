@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdminRole } from '@/hooks/useAdminRole';
+import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -270,12 +271,17 @@ const Admin = () => {
     );
   }
 
-  const filteredCourses = courses.filter(c =>
-    c.title.toLowerCase().includes(searchCourses.toLowerCase())
+  // Fuzzy search com Fuse.js
+  const filteredCourses = useFuzzySearch(
+    courses,
+    ["title", "description", "instructor_name"],
+    searchCourses
   );
 
-  const filteredUsers = users.filter(u =>
-    u.full_name.toLowerCase().includes(searchUsers.toLowerCase())
+  const filteredUsers = useFuzzySearch(
+    users,
+    ["full_name", "department"],
+    searchUsers
   );
 
   const statCards = [

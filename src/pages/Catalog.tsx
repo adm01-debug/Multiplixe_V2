@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { useFuzzySearch } from "@/hooks/useFuzzySearch";
 import CacheIndicator from "@/components/ui/CacheIndicator";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/catalog/CourseCard";
@@ -86,18 +87,15 @@ const Catalog = () => {
     return null;
   }
 
+  // Busca fuzzy com Fuse.js
+  const fuzzySearchResults = useFuzzySearch(
+    courses as Course[],
+    ["title", "description", "instructor_name", "categories.name"],
+    debouncedSearch
+  );
+
   const filteredCourses = useMemo(() => {
-    return (courses as Course[]).filter((course) => {
-      if (debouncedSearch) {
-        const query = debouncedSearch.toLowerCase();
-        const matchesTitle = course.title.toLowerCase().includes(query);
-        const matchesDescription = course.description?.toLowerCase().includes(query);
-        const matchesInstructor = course.instructor_name?.toLowerCase().includes(query);
-        if (!matchesTitle && !matchesDescription && !matchesInstructor) {
-          return false;
-        }
-      }
-      
+    return fuzzySearchResults.filter((course) => {
       if (selectedCategory && course.categories?.slug !== selectedCategory) {
         return false;
       }
@@ -108,7 +106,7 @@ const Catalog = () => {
       
       return true;
     });
-  }, [courses, debouncedSearch, selectedCategory, selectedLevel]);
+  }, [fuzzySearchResults, selectedCategory, selectedLevel]);
 
   const handleSignOut = async () => {
     await signOut();

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import { useFuzzySearch } from "@/hooks/useFuzzySearch";
+import { useFuzzySearchWithMatches, FuzzySearchResult } from "@/hooks/useFuzzySearch";
 import CacheIndicator from "@/components/ui/CacheIndicator";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/catalog/CourseCard";
@@ -31,6 +31,7 @@ import {
   ChevronDown,
   LayoutGrid
 } from "lucide-react";
+import type { FuseResultMatch } from "fuse.js";
 
 // Threshold para ativar virtualização (número de cursos)
 const VIRTUALIZATION_THRESHOLD = 20;
@@ -87,25 +88,37 @@ const Catalog = () => {
     return null;
   }
 
-  // Busca fuzzy com Fuse.js
-  const fuzzySearchResults = useFuzzySearch(
+  // Busca fuzzy com Fuse.js - agora retorna matches para highlighting
+  const fuzzySearchResults = useFuzzySearchWithMatches(
     courses as Course[],
     ["title", "description", "instructor_name", "categories.name"],
     debouncedSearch
   );
 
-  const filteredCourses = useMemo(() => {
-    return fuzzySearchResults.filter((course) => {
-      if (selectedCategory && course.categories?.slug !== selectedCategory) {
-        return false;
-      }
-      
-      if (selectedLevel && course.level !== selectedLevel) {
-        return false;
-      }
-      
-      return true;
+  // Cria um mapa de matches para acesso rápido
+  const matchesMap = useMemo(() => {
+    const map = new Map<string, readonly FuseResultMatch[] | undefined>();
+    fuzzySearchResults.forEach((result) => {
+      map.set(result.item.id, result.matches);
     });
+    return map;
+  }, [fuzzySearchResults]);
+
+  const filteredCourses = useMemo(() => {
+    return fuzzySearchResults
+      .filter((result) => {
+        const course = result.item;
+        if (selectedCategory && course.categories?.slug !== selectedCategory) {
+          return false;
+        }
+        
+        if (selectedLevel && course.level !== selectedLevel) {
+          return false;
+        }
+        
+        return true;
+      })
+      .map((result) => result.item);
   }, [fuzzySearchResults, selectedCategory, selectedLevel]);
 
   const handleSignOut = async () => {
@@ -370,6 +383,7 @@ const Catalog = () => {
                     categoryName={course.categories?.name}
                     categoryColor={course.categories?.color || undefined}
                     isFeatured={course.is_featured ?? false}
+                    searchMatches={debouncedSearch ? matchesMap.get(course.id) : undefined}
                   />
                 </motion.div>
               ))}

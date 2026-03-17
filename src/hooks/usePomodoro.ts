@@ -19,7 +19,7 @@ export const usePomodoro = () => {
   const [stats, setStats] = useState<PomodoroStats>({ todaySessions: 0, totalSessions: 0, totalXpEarned: 0 });
   const [isFocusMode, setIsFocusMode] = useState(false);
   
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const previousState = useRef<PomodoroState>('idle');
 
   const WORK_DURATION = 25 * 60; // 25 minutes

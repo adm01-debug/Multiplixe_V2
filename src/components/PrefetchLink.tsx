@@ -42,7 +42,7 @@ const PrefetchLink = ({
   children,
   ...props 
 }: PrefetchLinkProps) => {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const dataPrefetchedRef = useRef(false);
   
   const prefetchRoute = useCallback(() => {

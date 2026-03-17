@@ -60,7 +60,7 @@ const VideoPlayer = ({
 }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const progressInterval = useRef<NodeJS.Timeout | null>(null);
+  const progressInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -73,8 +73,8 @@ const VideoPlayer = ({
   const [showSpeedIndicator, setShowSpeedIndicator] = useState(false);
   const [showSkipIndicator, setShowSkipIndicator] = useState<{ direction: 'forward' | 'backward'; seconds: number } | null>(null);
 
-  const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
-  const speedIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
+  const hideControlsTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const speedIndicatorTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMouseMove = useCallback(() => {
     setShowControls(true);

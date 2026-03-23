@@ -254,6 +254,8 @@ const CourseCard = memo(({
       </motion.div>
     </PrefetchLink>
   );
-};
+});
+
+CourseCard.displayName = "CourseCard";
 
 export default CourseCard;

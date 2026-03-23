@@ -178,4 +178,4 @@ export const LearningPathCard = memo(function LearningPathCard({ learningPath, p
       </MotionCard>
     </PrefetchLink>
   );
-}
+});

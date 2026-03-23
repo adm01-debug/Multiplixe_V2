@@ -66,7 +66,7 @@ describe("Security & Data Validation", () => {
     });
   });
 
-  describe("XSS prevention", () => {
+  describe("XSS prevention via textContent", () => {
     const sanitize = (input: string) => {
       const div = document.createElement("div");
       div.textContent = input;
@@ -74,17 +74,18 @@ describe("Security & Data Validation", () => {
     };
 
     it("should escape HTML tags", () => {
-      expect(sanitize("<script>alert('xss')</script>")).not.toContain("<script>");
-    });
-
-    it("should escape attribute injection via textContent", () => {
-      const result = sanitize('" onmouseover="alert(1)"');
-      // textContent escapes the content, making it safe text not executable attributes
-      expect(result).toContain("&quot;");
+      const result = sanitize("<script>alert('xss')</script>");
+      expect(result).not.toContain("<script>");
+      expect(result).toContain("&lt;script&gt;");
     });
 
     it("should handle normal text unchanged", () => {
       expect(sanitize("Hello World")).toBe("Hello World");
+    });
+
+    it("should escape angle brackets in attributes", () => {
+      const result = sanitize('<img src=x onerror="alert(1)">');
+      expect(result).toContain("&lt;img");
     });
   });
 

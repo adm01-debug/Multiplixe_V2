@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
 import type { FuseResultMatch } from "fuse.js";
 

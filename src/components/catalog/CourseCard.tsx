@@ -36,7 +36,7 @@ const levelConfig: Record<string, { bg: string; text: string; icon: string }> = 
   avancado: { bg: "bg-rose-500/15", text: "text-rose-600 dark:text-rose-400", icon: "⚡" },
 };
 
-const CourseCard = ({
+const CourseCard = memo(({
   slug,
   title,
   description,

@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Clock, BookOpen, Trophy, ChevronRight } from 'lucide-react';
 import { LearningPath, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import LazyImage from '@/components/LazyImage';
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 interface LearningPathCardProps {
   learningPath: LearningPath;
@@ -21,7 +21,7 @@ const levelConfig: Record<string, { label: string; color: string }> = {
 
 const MotionCard = motion.create(Card);
 
-export function LearningPathCard({ learningPath, progress }: LearningPathCardProps) {
+export const LearningPathCard = memo(function LearningPathCard({ learningPath, progress }: LearningPathCardProps) {
   const levelInfo = levelConfig[learningPath.difficulty_level] || levelConfig.iniciante;
   const isCompleted = progress?.progress_percentage === 100;
   const isStarted = !!progress && progress.progress_percentage > 0;
@@ -178,4 +178,4 @@ export function LearningPathCard({ learningPath, progress }: LearningPathCardPro
       </MotionCard>
     </PrefetchLink>
   );
-}
+});

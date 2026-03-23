@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
 import type { FuseResultMatch } from "fuse.js";
 
@@ -36,7 +36,7 @@ const levelConfig: Record<string, { bg: string; text: string; icon: string }> = 
   avancado: { bg: "bg-rose-500/15", text: "text-rose-600 dark:text-rose-400", icon: "⚡" },
 };
 
-const CourseCard = ({
+const CourseCard = memo(({
   slug,
   title,
   description,
@@ -254,6 +254,8 @@ const CourseCard = ({
       </motion.div>
     </PrefetchLink>
   );
-};
+});
+
+CourseCard.displayName = "CourseCard";
 
 export default CourseCard;

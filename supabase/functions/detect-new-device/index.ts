@@ -1,17 +1,10 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
-
-interface DeviceCheckRequest {
-  user_id: string;
-  user_email: string;
-  ip_address: string;
-  user_agent: string;
-}
 
 interface KnownDevice {
   id: string;
@@ -25,19 +18,39 @@ interface KnownDevice {
   last_seen_at: string;
 }
 
+// Input validation
+function validateInput(body: unknown): { user_id: string; user_email: string; ip_address: string; user_agent: string } {
+  if (!body || typeof body !== "object") {
+    throw new Error("Invalid request body");
+  }
+  const { user_id, user_email, ip_address, user_agent } = body as Record<string, unknown>;
+
+  if (typeof user_id !== "string" || !user_id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+    throw new Error("Invalid user_id");
+  }
+  if (typeof user_email !== "string" || !user_email.includes("@")) {
+    throw new Error("Invalid user_email");
+  }
+  if (typeof ip_address !== "string" || ip_address.length > 45) {
+    throw new Error("Invalid ip_address");
+  }
+  if (typeof user_agent !== "string" || user_agent.length > 1000) {
+    throw new Error("Invalid user_agent");
+  }
+
+  return { user_id, user_email, ip_address, user_agent };
+}
+
 const generateDeviceFingerprint = (userAgent: string): string => {
-  // Simple fingerprint based on user agent characteristics
   const ua = userAgent.toLowerCase();
   let fingerprint = '';
   
-  // Browser
   if (ua.includes('chrome')) fingerprint += 'chrome-';
   else if (ua.includes('firefox')) fingerprint += 'firefox-';
   else if (ua.includes('safari')) fingerprint += 'safari-';
   else if (ua.includes('edge')) fingerprint += 'edge-';
   else fingerprint += 'other-';
   
-  // OS
   if (ua.includes('windows')) fingerprint += 'windows';
   else if (ua.includes('mac')) fingerprint += 'mac';
   else if (ua.includes('linux')) fingerprint += 'linux';
@@ -104,7 +117,6 @@ const sendNewDeviceEmail = async (
               .device-info p { margin: 8px 0; }
               .device-info strong { color: #374151; }
               .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
-              .button { display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px; }
             </style>
           </head>
           <body>
@@ -115,13 +127,11 @@ const sendNewDeviceEmail = async (
               <div class="content">
                 <h2>Novo login detectado</h2>
                 <p>Detectamos um acesso à sua conta de um novo dispositivo ou localização.</p>
-                
                 <div class="device-info">
                   <p><strong>📱 Dispositivo:</strong> ${deviceName}</p>
                   <p><strong>🌐 Endereço IP:</strong> ${ipAddress}</p>
                   <p><strong>🕐 Data/Hora:</strong> ${loginTime}</p>
                 </div>
-
                 <div class="alert-box">
                   <strong>⚠️ Não foi você?</strong>
                   <p style="margin: 10px 0 0 0;">Se você não reconhece esta atividade, recomendamos que:</p>
@@ -131,12 +141,10 @@ const sendNewDeviceEmail = async (
                     <li>Revise as sessões ativas na sua conta</li>
                   </ul>
                 </div>
-
-                <p>Se foi você, pode ignorar este email. Enviamos esta notificação para manter sua conta segura.</p>
+                <p>Se foi você, pode ignorar este email.</p>
               </div>
               <div class="footer">
                 <p>Este é um email automático de segurança. Por favor, não responda.</p>
-                <p>© 2024 Plataforma de Cursos. Todos os direitos reservados.</p>
               </div>
             </div>
           </body>
@@ -152,7 +160,6 @@ const sendNewDeviceEmail = async (
 };
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -163,12 +170,12 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { user_id, user_email, ip_address, user_agent }: DeviceCheckRequest = await req.json();
+    const rawBody = await req.json();
+    const { user_id, user_email, ip_address, user_agent } = validateInput(rawBody);
 
     const deviceFingerprint = generateDeviceFingerprint(user_agent);
     const deviceName = getDeviceName(user_agent);
 
-    // Check if this device/IP combination is known
     const { data: knownDevices, error: fetchError } = await supabaseClient
       .from('known_devices')
       .select('*')
@@ -184,17 +191,14 @@ serve(async (req) => {
       !knownDevices.some((d: KnownDevice) => d.ip_address === ip_address);
 
     if (isNewDevice || isNewIP) {
-      // This is a new device or new IP - send alert
       const loginTime = new Date().toLocaleString('pt-BR', { 
         timeZone: 'America/Sao_Paulo',
         dateStyle: 'full',
         timeStyle: 'short'
       });
 
-      // Send email notification
       await sendNewDeviceEmail(user_email, deviceName, ip_address, loginTime);
 
-      // Create security alert
       await supabaseClient.from('security_alerts').insert({
         user_id,
         alert_type: isNewDevice ? 'new_device' : 'new_ip',
@@ -205,7 +209,6 @@ serve(async (req) => {
         metadata: { user_agent, device_fingerprint: deviceFingerprint }
       });
 
-      // Add device to known devices
       if (isNewDevice) {
         await supabaseClient.from('known_devices').insert({
           user_id,
@@ -216,7 +219,6 @@ serve(async (req) => {
           is_trusted: false
         });
       } else if (isNewIP) {
-        // Update the existing device with new IP
         await supabaseClient
           .from('known_devices')
           .update({ 
@@ -237,7 +239,6 @@ serve(async (req) => {
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     } else {
-      // Known device - update last seen
       await supabaseClient
         .from('known_devices')
         .update({ last_seen_at: new Date().toISOString() })

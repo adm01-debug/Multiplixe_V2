@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Clock, BookOpen, Trophy, ChevronRight } from 'lucide-react';
 import { LearningPath, UserLearningPathProgress } from '@/hooks/useLearningPaths';
 import LazyImage from '@/components/LazyImage';
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 interface LearningPathCardProps {
   learningPath: LearningPath;

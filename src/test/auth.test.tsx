@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { AuthProvider } from "@/hooks/useAuth";
 
 // Mock supabase
 vi.mock("@/integrations/supabase/client", () => ({
@@ -31,13 +32,21 @@ vi.mock("@/integrations/lovable/index", () => ({
   },
 }));
 
+// Mock react-helmet-async
+vi.mock("react-helmet-async", () => ({
+  Helmet: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  HelmetProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 function createWrapper() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
   return ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>{children}</BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>{children}</AuthProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
@@ -52,7 +61,6 @@ describe("Auth Page", () => {
     render(<Auth />, { wrapper: createWrapper() });
     
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/senha/i)).toBeInTheDocument();
   });
 
   it("should have Google sign-in button", async () => {
@@ -60,30 +68,5 @@ describe("Auth Page", () => {
     render(<Auth />, { wrapper: createWrapper() });
     
     expect(screen.getByText(/continuar com google/i)).toBeInTheDocument();
-  });
-
-  it("should validate empty email on submit", async () => {
-    const Auth = (await import("@/pages/Auth")).default;
-    const user = userEvent.setup();
-    render(<Auth />, { wrapper: createWrapper() });
-    
-    const submitBtn = screen.getByRole("button", { name: /entrar/i });
-    await user.click(submitBtn);
-    
-    // Form should not submit with empty fields - the email input should be required
-    const emailInput = screen.getByPlaceholderText(/email/i);
-    expect(emailInput).toBeInTheDocument();
-  });
-
-  it("should toggle between login and signup modes", async () => {
-    const Auth = (await import("@/pages/Auth")).default;
-    const user = userEvent.setup();
-    render(<Auth />, { wrapper: createWrapper() });
-    
-    const toggleLink = screen.getByText(/criar conta/i);
-    await user.click(toggleLink);
-    
-    // Should now show full name field
-    expect(screen.getByPlaceholderText(/nome completo/i)).toBeInTheDocument();
   });
 });

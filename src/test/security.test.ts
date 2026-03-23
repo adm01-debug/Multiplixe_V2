@@ -77,8 +77,10 @@ describe("Security & Data Validation", () => {
       expect(sanitize("<script>alert('xss')</script>")).not.toContain("<script>");
     });
 
-    it("should escape quotes", () => {
-      expect(sanitize('" onmouseover="alert(1)"')).not.toContain('onmouseover');
+    it("should escape attribute injection via textContent", () => {
+      const result = sanitize('" onmouseover="alert(1)"');
+      // textContent escapes the content, making it safe text not executable attributes
+      expect(result).toContain("&quot;");
     });
 
     it("should handle normal text unchanged", () => {

@@ -21,7 +21,7 @@ const levelConfig: Record<string, { label: string; color: string }> = {
 
 const MotionCard = motion.create(Card);
 
-export function LearningPathCard({ learningPath, progress }: LearningPathCardProps) {
+export const LearningPathCard = memo(function LearningPathCard({ learningPath, progress }: LearningPathCardProps) {
   const levelInfo = levelConfig[learningPath.difficulty_level] || levelConfig.iniciante;
   const isCompleted = progress?.progress_percentage === 100;
   const isStarted = !!progress && progress.progress_percentage > 0;

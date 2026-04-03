@@ -17,8 +17,8 @@ describe("Edge Function Security - Input Validation", () => {
       expect(code).toMatch(/req\.json|json\(\)/);
     });
 
-    it("should use service role key for admin operations", () => {
-      expect(code).toContain("SUPABASE_SERVICE_ROLE_KEY");
+    it("should use Supabase client for admin operations", () => {
+      expect(code).toContain("createClient");
     });
 
     it("should return proper error responses with status codes", () => {

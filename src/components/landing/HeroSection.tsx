@@ -84,20 +84,33 @@ const HeroSection = () => {
   const cardY = useTransform(smoothProgress, [0, 1], [0, -30]);
   const gridOpacity = useTransform(smoothProgress, [0, 0.5], [0.02, 0]);
 
-  // Mouse parallax effect
+  // Mouse parallax effect with throttle for performance
   useEffect(() => {
+    let rafId: number | null = null;
+    let lastX = 0;
+    let lastY = 0;
+
     const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      setMousePosition({
-        x: (clientX - centerX) / centerX,
-        y: (clientY - centerY) / centerY,
+      lastX = e.clientX;
+      lastY = e.clientY;
+      
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        setMousePosition({
+          x: (lastX - centerX) / centerX,
+          y: (lastY - centerY) / centerY,
+        });
+        rafId = null;
       });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const handlePlayVideo = () => {

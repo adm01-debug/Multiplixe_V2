@@ -200,14 +200,23 @@ const FeaturesSection = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => setSelectedFeature(feature)}
-                  className="group relative bg-card/50 backdrop-blur-sm rounded-3xl p-7 border border-border/50 hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedFeature(feature);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Ver detalhes de ${feature.title}`}
+                  className="group relative bg-card/50 backdrop-blur-sm rounded-3xl p-7 border border-border/50 hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   {/* Hover Glow */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} aria-hidden="true" />
                   
                   {/* Icon */}
-                  <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                    <feature.icon className="w-8 h-8 text-white" />
+                  <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`} aria-hidden="true">
+                    <feature.icon className="w-8 h-8 text-primary-foreground" />
                   </div>
 
                   {/* Content */}
@@ -219,7 +228,7 @@ const FeaturesSection = () => {
                   </p>
 
                   {/* Arrow indicator */}
-                  <div className="flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-[-10px] group-hover:translate-x-0">
+                  <div className="flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-[-10px] group-hover:translate-x-0" aria-hidden="true">
                     <span className="text-sm font-semibold">Ver mais</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>

@@ -123,8 +123,8 @@ const Header = () => {
       <div className="container-app">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <motion.a 
-            href="/" 
+          <Link 
+            to="/" 
             className="flex items-center gap-3 group"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

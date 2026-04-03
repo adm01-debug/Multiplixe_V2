@@ -281,7 +281,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-10 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-background/50 text-sm">
-            © 2024 MULTIPLIXE by Promo Brindes. Uso interno.
+            © {new Date().getFullYear()} MULTIPLIXE by Promo Brindes. Uso interno.
           </p>
           <p className="text-background/40 text-sm flex items-center gap-2">
             Desenvolvido com <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" /> para nossos colaboradores

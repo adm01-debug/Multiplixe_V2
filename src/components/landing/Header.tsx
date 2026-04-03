@@ -353,6 +353,9 @@ const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Buscar cursos"
             onClick={() => setIsSearchOpen(false)}
           >
             <motion.div

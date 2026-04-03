@@ -254,13 +254,13 @@ const HeroSection = () => {
 
             {/* Heading with Typing Effect */}
             <motion.h1 
-              className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-foreground leading-[1.1] tracking-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-foreground leading-[1.1] tracking-tight"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               Invista no seu{" "}
-              <span className="relative inline-block min-w-[280px] md:min-w-[360px]">
+              <span className="relative inline-block min-w-[200px] sm:min-w-[280px] md:min-w-[360px]">
                 <AnimatePresence mode="wait">
                   <motion.span 
                     key={currentWordIndex}

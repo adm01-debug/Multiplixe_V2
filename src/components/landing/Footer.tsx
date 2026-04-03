@@ -121,7 +121,7 @@ const Footer = () => {
           })}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 mb-16">
           {/* Brand Column */}
           <div className="col-span-2 space-y-8">
             <Link to="/" className="flex items-center gap-3 group">

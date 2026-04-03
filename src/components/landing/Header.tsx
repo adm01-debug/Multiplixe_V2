@@ -125,10 +125,7 @@ const Header = () => {
           {/* Logo */}
           <Link 
             to="/" 
-            className="flex items-center gap-3 group"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="flex items-center gap-3 group hover:scale-[1.02] active:scale-[0.98] transition-transform"
           >
             <div className="relative">
               <motion.div 
@@ -138,7 +135,7 @@ const Header = () => {
               >
                 <GraduationCap className="w-6 h-6 text-primary-foreground" />
               </motion.div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent flex items-center justify-center animate-pulse">
+              <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent flex items-center justify-center animate-pulse" aria-hidden="true">
                 <Sparkles className="w-2.5 h-2.5 text-accent-foreground" />
               </div>
             </div>
@@ -150,7 +147,7 @@ const Header = () => {
                 by Promo Brindes
               </span>
             </div>
-          </motion.a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">

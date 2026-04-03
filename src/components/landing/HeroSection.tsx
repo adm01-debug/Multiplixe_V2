@@ -161,6 +161,7 @@ const HeroSection = () => {
       {/* Floating Elements with Parallax */}
       <motion.div 
         className="absolute top-32 left-10 opacity-60"
+        aria-hidden="true"
         style={{ y: floatingY1 }}
         animate={{
           x: mousePosition.x * 15,

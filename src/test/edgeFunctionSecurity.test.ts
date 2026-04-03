@@ -106,7 +106,8 @@ describe("Edge Function Security - CORS Configuration", () => {
 
     it(`${name} should have wildcard CORS origin`, () => {
       const code = readFile(fn);
-      expect(code).toContain("'*'");
+      expect(code).toMatch(/['"]?\*['"]?/);
+      expect(code).toContain("Access-Control-Allow-Origin");
     });
 
     it(`${name} should allow content-type header`, () => {

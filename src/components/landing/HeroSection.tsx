@@ -179,6 +179,7 @@ const HeroSection = () => {
       </motion.div>
       <motion.div 
         className="absolute top-48 right-20 opacity-60"
+        aria-hidden="true"
         style={{ y: floatingY2 }}
         animate={{
           x: mousePosition.x * -10,

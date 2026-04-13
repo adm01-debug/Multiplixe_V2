@@ -5,7 +5,7 @@ import { useSecurityAlerts } from '@/hooks/useSecurityAlerts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Ban, CheckCircle, AlertTriangle, Settings, Activity, Loader2 } from 'lucide-react';
 import RateLimitHeader from '@/components/rate-limit/RateLimitHeader';
-import { RateLimitStatsCards } from '@/components/rate-limit/RateLimitStatsCards';
+import RateLimitStatsCards from '@/components/rate-limit/RateLimitStatsCards';
 import BlockedIPsTab from '@/components/rate-limit/BlockedIPsTab';
 import WhitelistTab from '@/components/rate-limit/WhitelistTab';
 import AlertsTab from '@/components/rate-limit/AlertsTab';

@@ -18,7 +18,7 @@ interface WhitelistedIP {
 
 interface WhitelistTabProps {
   whitelistedIPs: WhitelistedIP[];
-  onWhitelistIP: (ip: string, description: string) => Promise<void>;
+  onWhitelistIP: (ip: string, description: string) => Promise<boolean>;
   onRemoveFromWhitelist: (id: string) => void;
 }
 

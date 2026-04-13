@@ -23,7 +23,7 @@ interface BlockedIP {
 
 interface BlockedIPsTabProps {
   blockedIPs: BlockedIP[];
-  onBlockIP: (ip: string, reason: string, isPermanent: boolean, duration: number) => Promise<void>;
+  onBlockIP: (ip: string, reason: string, isPermanent: boolean, duration: number) => Promise<boolean>;
   onUnblockIP: (id: string) => void;
 }
 

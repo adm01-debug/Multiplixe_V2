@@ -179,11 +179,21 @@ export const useQuizStatsData = () => {
           .order('created_at', { ascending: false })
           .limit(50);
         if (alerts) {
-          setAlertHistory(alerts.map((alert: Record<string, unknown>) => ({
-            ...(alert as PerformanceAlert),
-            quizTitle: (alert.quizzes as Record<string, unknown>)?.title as string || 'Quiz desconhecido',
-            courseTitle: ((alert.quizzes as Record<string, unknown>)?.courses as Record<string, unknown>)?.title as string || 'Curso desconhecido'
-          })));
+          const mapped: PerformanceAlert[] = alerts.map((alert: unknown) => {
+            const a = alert as Record<string, unknown>;
+            const quizzes = a.quizzes as Record<string, unknown> | null;
+            const courses = quizzes?.courses as Record<string, unknown> | null;
+            return {
+              id: a.id as string, quiz_id: a.quiz_id as string, alert_type: a.alert_type as string,
+              passing_rate: a.passing_rate as number, total_attempts: a.total_attempts as number,
+              passed_attempts: a.passed_attempts as number, threshold: a.threshold as number,
+              is_resolved: a.is_resolved as boolean, resolved_at: a.resolved_at as string | null,
+              notes: a.notes as string | null, created_at: a.created_at as string,
+              quizTitle: (quizzes?.title as string) || 'Quiz desconhecido',
+              courseTitle: (courses?.title as string) || 'Curso desconhecido',
+            };
+          });
+          setAlertHistory(mapped);
         }
       } catch { /* Silent fail */ }
     };

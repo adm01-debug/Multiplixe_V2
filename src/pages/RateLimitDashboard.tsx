@@ -56,8 +56,8 @@ const RateLimitDashboard = () => {
 
           <RateLimitStatsCards
             blockedCount={blockedIPs.length}
-            whitelistedCount={whitelistedIPs.length}
-            alertsCount={unreadCount}
+            whitelistCount={whitelistedIPs.length}
+            unreadCount={unreadCount}
             logsCount={logs.length}
           />
 

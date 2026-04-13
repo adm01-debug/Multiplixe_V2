@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { SpeedIndicator, SkipIndicator, PlayOverlay, TitleOverlay } from "./VideoOverlays";
 import VideoControls, { getSpeedLabel } from "./VideoControls";
-import { useVideoShortcuts } from "@/hooks/useVideoShortcuts";
 
 interface VideoPlayerProps {
   src: string;

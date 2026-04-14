@@ -30,7 +30,7 @@ describe("Component Architecture - Hero Refactoring", () => {
     expect(heroCode).toContain("import HeroBackground");
     expect(heroCode).toContain("import HeroFloatingElements");
     expect(heroCode).toContain("import HeroStats");
-    expect(heroCode).toContain("import CountUp");
+    expect(heroCode).toContain("import HeroCard");
   });
 
   it("HeroSection should NOT contain inline HeroBackground code", () => {

@@ -26,6 +26,10 @@ const CommandPalette = () => {
     { id: "leaderboard", title: "Ranking", type: "page", url: "/ranking", icon: "leaderboard" },
     { id: "profile", title: "Meu Perfil", type: "page", url: "/perfil", icon: "profile" },
     { id: "learning-paths", title: "Trilhas de Aprendizado", type: "page", url: "/trilhas", icon: "catalog" },
+    { id: "playbooks", title: "Sales Playbooks", type: "page", url: "/playbooks", icon: "catalog" },
+    { id: "video-library", title: "Biblioteca de Vídeos", type: "page", url: "/biblioteca-videos", icon: "catalog" },
+    { id: "onboarding", title: "Onboarding de Vendas", type: "page", url: "/onboarding", icon: "dashboard" },
+    { id: "assessments", title: "Avaliações de Competência", type: "page", url: "/avaliacoes", icon: "achievement" },
     { id: "security", title: "Segurança", type: "page", url: "/seguranca", icon: "shield" },
   ];
 

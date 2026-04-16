@@ -795,6 +795,42 @@ export type Database = {
         }
         Relationships: []
       }
+      onboarding_workflows: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          is_default: boolean
+          name: string
+          role_target: string
+          steps: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name: string
+          role_target?: string
+          steps?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name?: string
+          role_target?: string
+          steps?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       password_reset_requests: {
         Row: {
           created_at: string | null
@@ -900,6 +936,80 @@ export type Database = {
           id?: string
           name?: string
           resource?: string
+        }
+        Relationships: []
+      }
+      playbook_views: {
+        Row: {
+          id: string
+          playbook_id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          playbook_id: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          playbook_id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playbook_views_playbook_id_fkey"
+            columns: ["playbook_id"]
+            isOneToOne: false
+            referencedRelation: "playbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      playbooks: {
+        Row: {
+          author_id: string | null
+          category: string
+          content: string
+          created_at: string
+          id: string
+          is_published: boolean
+          slug: string
+          summary: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          view_count: number
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string
+          content: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          slug: string
+          summary?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          view_count?: number
+        }
+        Update: {
+          author_id?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          slug?: string
+          summary?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          view_count?: number
         }
         Relationships: []
       }
@@ -1313,6 +1423,136 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_assessments: {
+        Row: {
+          created_at: string
+          description: string | null
+          frequency_days: number
+          id: string
+          is_active: boolean
+          passing_score: number
+          quiz_id: string | null
+          skill_area: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          frequency_days?: number
+          id?: string
+          is_active?: boolean
+          passing_score?: number
+          quiz_id?: string | null
+          skill_area: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          frequency_days?: number
+          id?: string
+          is_active?: boolean
+          passing_score?: number
+          quiz_id?: string | null
+          skill_area?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_assessments_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_video_views: {
+        Row: {
+          completed: boolean
+          id: string
+          updated_at: string
+          user_id: string
+          video_id: string
+          viewed_at: string
+          watched_seconds: number
+        }
+        Insert: {
+          completed?: boolean
+          id?: string
+          updated_at?: string
+          user_id: string
+          video_id: string
+          viewed_at?: string
+          watched_seconds?: number
+        }
+        Update: {
+          completed?: boolean
+          id?: string
+          updated_at?: string
+          user_id?: string
+          video_id?: string
+          viewed_at?: string
+          watched_seconds?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_video_views_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "training_videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_videos: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          duration_seconds: number | null
+          id: string
+          is_published: boolean
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string
+          view_count: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_published?: boolean
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url: string
+          view_count?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_published?: boolean
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string
+          view_count?: number
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string
@@ -1341,6 +1581,47 @@ export type Database = {
             columns: ["achievement_id"]
             isOneToOne: false
             referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_assessment_results: {
+        Row: {
+          assessment_id: string
+          completed_at: string
+          gaps: Json | null
+          id: string
+          next_due_at: string | null
+          passed: boolean
+          score: number
+          user_id: string
+        }
+        Insert: {
+          assessment_id: string
+          completed_at?: string
+          gaps?: Json | null
+          id?: string
+          next_due_at?: string | null
+          passed?: boolean
+          score: number
+          user_id: string
+        }
+        Update: {
+          assessment_id?: string
+          completed_at?: string
+          gaps?: Json | null
+          id?: string
+          next_due_at?: string | null
+          passed?: boolean
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_assessment_results_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "skill_assessments"
             referencedColumns: ["id"]
           },
         ]
@@ -1685,6 +1966,47 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: false
             referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_onboarding_progress: {
+        Row: {
+          completed_at: string | null
+          completed_steps: Json
+          current_step: number
+          id: string
+          started_at: string
+          updated_at: string
+          user_id: string
+          workflow_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_steps?: Json
+          current_step?: number
+          id?: string
+          started_at?: string
+          updated_at?: string
+          user_id: string
+          workflow_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          completed_steps?: Json
+          current_step?: number
+          id?: string
+          started_at?: string
+          updated_at?: string
+          user_id?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_onboarding_progress_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "onboarding_workflows"
             referencedColumns: ["id"]
           },
         ]
@@ -2073,6 +2395,20 @@ export type Database = {
           total_xp: number
         }[]
       }
+      get_due_assessments: {
+        Args: { p_user_id: string }
+        Returns: {
+          assessment_id: string
+          frequency_days: number
+          last_completed_at: string
+          next_due_at: string
+          passing_score: number
+          quiz_id: string
+          skill_area: string
+          status: string
+          title: string
+        }[]
+      }
       get_leaderboard: {
         Args: { p_limit?: number; p_period?: string }
         Returns: {
@@ -2188,6 +2524,10 @@ export type Database = {
           lockout_seconds: number
           total_attempts: number
         }[]
+      }
+      register_playbook_view: {
+        Args: { p_playbook_id: string }
+        Returns: undefined
       }
       reset_login_attempts: { Args: { p_email: string }; Returns: undefined }
       update_user_streak: {

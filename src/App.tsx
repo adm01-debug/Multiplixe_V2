@@ -42,6 +42,12 @@ const LearningPaths = lazy(() => import("./pages/LearningPaths"));
 const LearningPathDetail = lazy(() => import("./pages/LearningPathDetail"));
 const RateLimitDashboard = lazy(() => import("./pages/RateLimitDashboard"));
 const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
+const Playbooks = lazy(() => import("./pages/Playbooks"));
+const PlaybookDetail = lazy(() => import("./pages/PlaybookDetail"));
+const VideoLibrary = lazy(() => import("./pages/VideoLibrary"));
+const SalesOnboarding = lazy(() => import("./pages/SalesOnboarding"));
+const SkillAssessments = lazy(() => import("./pages/SkillAssessments"));
+const AssessmentRunner = lazy(() => import("./pages/AssessmentRunner"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Component that conditionally shows the Pomodoro button
@@ -102,6 +108,12 @@ const App = () => (
                     <Route path="/admin/security" element={<ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute>} />
                     <Route path="/seguranca" element={<ProtectedRoute><SecurityDashboard /></ProtectedRoute>} />
                     <Route path="/verificar-certificado" element={<VerifyCertificate />} />
+                    <Route path="/playbooks" element={<ProtectedRoute><Playbooks /></ProtectedRoute>} />
+                    <Route path="/playbook/:slug" element={<ProtectedRoute><PlaybookDetail /></ProtectedRoute>} />
+                    <Route path="/biblioteca-videos" element={<ProtectedRoute><VideoLibrary /></ProtectedRoute>} />
+                    <Route path="/onboarding" element={<ProtectedRoute><SalesOnboarding /></ProtectedRoute>} />
+                    <Route path="/avaliacoes" element={<ProtectedRoute><SkillAssessments /></ProtectedRoute>} />
+                    <Route path="/avaliacao/:id" element={<ProtectedRoute><AssessmentRunner /></ProtectedRoute>} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>

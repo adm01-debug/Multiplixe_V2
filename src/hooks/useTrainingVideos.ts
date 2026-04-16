@@ -46,10 +46,6 @@ export const useUpdateVideoProgress = () => {
         watched_seconds: watchedSeconds,
         completed,
       }, { onConflict: 'video_id,user_id' });
-      // bump view count once per session start
-      if (watchedSeconds < 5) {
-        await supabase.rpc('register_playbook_view' as never, {} as never).catch(() => {});
-      }
     },
   });
 };

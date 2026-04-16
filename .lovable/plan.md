@@ -1,108 +1,55 @@
 
-O usuário pediu funcionalidades de "Treinamento & Enablement" para vendas. Analisando o projeto atual, ele JÁ É um LMS completo com cursos, certificações, gamificação, quizzes, badges, vídeo player e onboarding. Vou mapear o que existe vs. o que falta:
+O usuário quer que eu continue executando as melhorias pendentes da entrega anterior do Sales Enablement Suite, sem pausas, até atingir 10/10. Vou listar exatamente o que falta e propor o plano enxuto.
 
-**Já existe:**
-- 🎓 LMS (cursos, certificações) ✅
-- 🎮 Gamified learning (quizzes, badges, XP, níveis) ✅
-- 🎬 Video library (player com VideoPlayer) ✅
-- 📋 Onboarding (WelcomeWizard) ✅
+# Plano: Finalizar Sales Enablement Suite (rumo ao 10/10)
 
-**Falta implementar:**
-- 📚 **Sales Playbook Hub** searchable (novo módulo de playbooks/artigos)
-- 📋 **Onboarding workflows** específicos para novos vendedores (diferente do tutorial)
-- 🏆 **Skill Assessments** periódicas (avaliações recorrentes diferentes dos quizzes de curso)
-- Video library standalone (galeria de vídeos para training/demos fora de cursos)
+## Pendências identificadas da entrega anterior
 
-Vou propor um plano enxuto focado no que falta.
-
-# Plano: Sales Enablement Suite
-
-## O que já existe (reaproveitar)
-LMS, certificações, quizzes gamificados, badges, XP, player de vídeo, onboarding wizard — não precisam ser refeitos.
+1. **Tab admin "Workflows de Onboarding"** (CRUD com editor de passos JSON)
+2. **Tab admin "Skill Assessments"** (CRUD vinculando a quizzes existentes)
+3. **Integrar `OnboardingWidget` no Dashboard** (já criado, falta montar)
+4. **Widget "Avaliações pendentes" no Dashboard** (usando `useDueAssessments`)
+5. **Atualizar `CommandPalette`** com 4 novos comandos (Playbooks, Vídeos, Onboarding, Avaliações)
+6. **Atualizar `MobileBottomNav`** se houver espaço, ou adicionar links no header
+7. **Corrigir tabs admin**: já adicionei Playbooks/Vídeos mas faltam ícones distintos (Video, FileText) e os 2 novos tabs acima
+8. **Testes Vitest** para os novos hooks (`usePlaybooks`, `useTrainingVideos`, `useOnboardingWorkflow`, `useSkillAssessments`)
+9. **Rodar suíte completa** (deve manter 238+ passando)
+10. **Validar no preview** que as 6 rotas novas carregam sem erro
 
 ## O que vou construir
 
-### 1. Sales Playbook Hub (novo)
-Biblioteca pesquisável de playbooks de vendas (artigos estruturados: scripts, objeções, processos).
+### Admin
+- `AdminWorkflowsTab.tsx` — lista workflows + dialog com editor visual de passos (adicionar/remover/reordenar steps tipados: video/playbook/quiz/course/task)
+- `AdminAssessmentsTab.tsx` — lista assessments + dialog com seletor de quiz existente (dropdown carregando `quizzes`), campos skill_area, frequency_days, passing_score
+- Atualizar `Admin.tsx`: 11 tabs com ícones corretos (FileText p/ Playbooks, Video p/ Vídeos, Sparkles p/ Workflows, Target p/ Assessments)
 
-**Backend:**
-- Tabela `playbooks` (id, title, slug, category, content markdown, tags[], author_id, is_published, view_count, created_at)
-- Tabela `playbook_views` (rastreio de leitura)
-- RLS: leitura para autenticados, escrita só admin
-- Índice GIN para full-text search em title+content+tags
+### Dashboard
+- Adicionar `<OnboardingWidget />` no `Dashboard.tsx`
+- Criar `DueAssessmentsWidget.tsx` mostrando avaliações vencidas/próximas com CTA
 
-**Frontend:**
-- `/playbooks` — lista + busca fuzzy (Fuse.js, padrão do projeto) + filtro por categoria/tag
-- `/playbook/:slug` — visualização markdown com TOC
-- Admin tab "Playbooks" no painel admin (CRUD)
+### Navegação
+- Adicionar entradas no `CommandPalette` (Playbooks, Vídeos, Onboarding, Avaliações)
+- Adicionar links no header do Dashboard ou em menu dropdown
 
-### 2. Video Library (novo, standalone)
-Galeria de vídeos curtos (demos, training rápido) separada dos cursos.
+### Testes
+- `src/test/salesEnablement.test.ts` — valida tipos exportados, shape de hooks, presença de páginas/rotas
 
-**Backend:**
-- Tabela `training_videos` (id, title, description, video_url, thumbnail_url, category, duration_seconds, tags[], view_count, is_published)
-- Tabela `video_views` (user_id, video_id, watched_seconds, completed)
-- RLS padrão
+### Validação final
+- Rodar suíte completa Vitest
+- Abrir preview nas rotas /playbooks, /biblioteca-videos, /onboarding, /avaliacoes para garantir que renderizam (mesmo vazias)
 
-**Frontend:**
-- `/biblioteca-videos` — grid com filtros, busca, preview hover
-- Modal player reaproveitando `VideoPlayer` existente
-- Tab admin "Vídeos"
+## Padrões mantidos
+- Modularização ≤400 linhas
+- Zero `any`, zero `console.*`
+- Toasts sonner para feedback
+- TanStack Query + invalidação correta
+- RLS já configurado nas migrations anteriores
+- shadcn/ui + tokens semânticos do design system
 
-### 3. Sales Onboarding Workflow (novo)
-Fluxo guiado multi-etapas para novos vendedores (diferente do tutorial geral): checklist com tarefas obrigatórias (assistir vídeo X, ler playbook Y, passar no quiz Z).
-
-**Backend:**
-- Tabela `onboarding_workflows` (id, name, role_target, steps jsonb [{type, resource_id, title, required}])
-- Tabela `user_onboarding_progress` (user_id, workflow_id, current_step, completed_steps[], started_at, completed_at)
-- Função `assign_onboarding_workflow(user_id, role)` ao signup
-
-**Frontend:**
-- Widget no Dashboard mostrando progresso do workflow
-- `/onboarding` página dedicada com checklist visual
-- Admin: criar/editar workflows com seletor de recursos
-
-### 4. Skill Assessments periódicas (novo)
-Avaliações recorrentes (mensais/trimestrais) que medem competência por área, geram relatório de gaps e recomendam treinamentos.
-
-**Backend:**
-- Tabela `skill_assessments` (id, title, skill_area, frequency_days, question_count, passing_score)
-- Tabela `assessment_questions` (vincula a quiz_questions reutilizadas)
-- Tabela `user_assessment_results` (user_id, assessment_id, score, completed_at, gaps jsonb, next_due_at)
-- Função `get_due_assessments(user_id)` retorna avaliações pendentes
-
-**Frontend:**
-- `/avaliacoes` — lista com status (pendente/em dia/vencida)
-- Player reutilizando `QuizPlayer` existente
-- Tela de resultado: gráfico radar de competências (reaproveitar `SkillRadarChart`) + recomendações
-- Notificação automática quando avaliação vence
-
-## Detalhes técnicos
-
-**Padrões a seguir (já no projeto):**
-- Modularização ≤400 linhas por arquivo
-- Hooks dedicados (`usePlaybooks`, `useTrainingVideos`, `useOnboardingWorkflow`, `useSkillAssessments`)
-- TanStack Query com cache
-- Validação Zod em todos os forms
-- Busca fuzzy via `useFuzzySearch`
-- shadcn/ui components
-- RLS com `has_role(auth.uid(), 'admin'::app_role)` para escrita admin
-- Toasts (sonner) para feedback, sem console.log
-- Tipos específicos, sem `any`
-
-**Navegação:**
-- Adicionar entradas no `CommandPalette`
-- Links no header/sidebar
-- Mobile bottom nav atualizado
-
-**Testes:**
-- Adicionar suítes Vitest para hooks novos e validações
-- Rodar suite completa (deve continuar 238+ passando)
-
-## Ordem de execução
-1. Migrations (4 conjuntos de tabelas + funções + RLS)
-2. Hooks + tipos
-3. Páginas públicas (Playbooks, Vídeos, Avaliações, Onboarding)
-4. Telas admin (CRUD em tabs do painel admin)
-5. Integração no Dashboard (widget onboarding + avaliações pendentes)
-6. Testes + validação preview
+## Ordem de execução (sequencial, sem pausas)
+1. AdminWorkflowsTab + AdminAssessmentsTab
+2. Atualizar Admin.tsx (tabs + ícones)
+3. DueAssessmentsWidget + integrar widgets no Dashboard
+4. Atualizar CommandPalette
+5. Suíte de testes nova
+6. Rodar testes + validar preview

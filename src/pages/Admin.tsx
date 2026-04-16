@@ -21,6 +21,8 @@ const QuizStats = lazy(() => import('@/components/admin/QuizStats').then(m => ({
 const PermissionsManager = lazy(() => import('@/components/admin/PermissionsManager'));
 const LearningPathsManager = lazy(() => import('@/components/admin/LearningPathsManager').then(m => ({ default: m.LearningPathsManager })));
 const PlatformAnalytics = lazy(() => import('@/components/admin/PlatformAnalytics'));
+const AdminPlaybooksTab = lazy(() => import('@/components/admin/AdminPlaybooksTab'));
+const AdminVideosTab = lazy(() => import('@/components/admin/AdminVideosTab'));
 
 interface PlatformStats {
   totalUsers: number;
@@ -181,9 +183,11 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="grid w-full max-w-4xl grid-cols-7">
+          <TabsList className="grid w-full max-w-5xl grid-cols-9">
             <TabsTrigger value="courses" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Cursos</TabsTrigger>
             <TabsTrigger value="paths" className="flex items-center gap-2"><Route className="h-4 w-4" /> Trilhas</TabsTrigger>
+            <TabsTrigger value="playbooks" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Playbooks</TabsTrigger>
+            <TabsTrigger value="videos" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Vídeos</TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2"><Users className="h-4 w-4" /> Usuários</TabsTrigger>
             <TabsTrigger value="quizzes" className="flex items-center gap-2"><Target className="h-4 w-4" /> Quizzes</TabsTrigger>
             <TabsTrigger value="permissions" className="flex items-center gap-2"><Shield className="h-4 w-4" /> Permissões</TabsTrigger>
@@ -196,6 +200,8 @@ const Admin = () => {
               <AdminCoursesTab courses={courses} setCourses={setCourses} loadingData={loadingData} onRefresh={fetchData} />
             </TabsContent>
             <TabsContent value="paths"><LearningPathsManager /></TabsContent>
+            <TabsContent value="playbooks"><AdminPlaybooksTab /></TabsContent>
+            <TabsContent value="videos"><AdminVideosTab /></TabsContent>
             <TabsContent value="users"><AdminUsersTab users={users} loadingData={loadingData} /></TabsContent>
             <TabsContent value="quizzes"><QuizStats /></TabsContent>
             <TabsContent value="permissions"><PermissionsManager /></TabsContent>

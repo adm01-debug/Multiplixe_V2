@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useTrainingVideos, useUpdateVideoProgress, type TrainingVideo } from '@/hooks/useTrainingVideos';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
-import EmptyState from '@/components/EmptyState';
+import EmptyState from '@/components/SimpleEmptyState';
 
 const formatDuration = (s: number) => {
   const m = Math.floor(s / 60);
@@ -34,7 +34,7 @@ const VideoLibrary = () => {
     return category === 'all' ? videos : videos.filter(v => v.category === category);
   }, [videos, category]);
 
-  const results = useFuzzySearch(filtered, search, ['title', 'description', 'tags', 'category']);
+  const results = useFuzzySearch(filtered, ['title', 'description', 'tags', 'category'], search);
 
   const handlePlay = (v: TrainingVideo) => {
     setActive(v);

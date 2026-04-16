@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDefaultWorkflowProgress, useUpdateOnboardingProgress, type OnboardingStepType } from '@/hooks/useOnboardingWorkflow';
-import EmptyState from '@/components/EmptyState';
+import EmptyState from '@/components/SimpleEmptyState';
 
 const stepIcon: Record<OnboardingStepType, typeof Video> = {
   video: Video,

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDueAssessments, useUserAssessmentResults, type DueAssessment } from '@/hooks/useSkillAssessments';
-import EmptyState from '@/components/EmptyState';
+import EmptyState from '@/components/SimpleEmptyState';
 
 const statusMap: Record<DueAssessment['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: typeof Target }> = {
   pending: { label: 'Nunca realizada', variant: 'secondary', icon: Target },

@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePlaybooks } from '@/hooks/usePlaybooks';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
-import EmptyState from '@/components/EmptyState';
+import EmptyState from '@/components/SimpleEmptyState';
 
 const Playbooks = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Playbooks = () => {
     return category === 'all' ? playbooks : playbooks.filter(p => p.category === category);
   }, [playbooks, category]);
 
-  const results = useFuzzySearch(filtered, search, ['title', 'summary', 'tags', 'category']);
+  const results = useFuzzySearch(filtered, ['title', 'summary', 'tags', 'category'], search);
 
   return (
     <div className="min-h-screen bg-background">

@@ -14,11 +14,11 @@ const DueAssessmentsWidget = () => {
   const overdueCount = due.filter(d => d.status === 'overdue').length;
 
   return (
-    <Card className="border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-orange-500/5">
+    <Card className="border-warning/30 bg-gradient-to-br from-warning/5 to-warning/10">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-amber-500" />
+            <Target className="h-5 w-5 text-warning" />
             <CardTitle className="text-base">Avaliações Pendentes</CardTitle>
           </div>
           {overdueCount > 0 && (

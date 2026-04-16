@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   GraduationCap, ArrowLeft, Loader2, BookOpen, Users, BarChart3,
   ShieldAlert, TrendingUp, Zap, Trophy, Route, Shield, Target,
+  FileText, Video, Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
@@ -23,6 +24,8 @@ const LearningPathsManager = lazy(() => import('@/components/admin/LearningPaths
 const PlatformAnalytics = lazy(() => import('@/components/admin/PlatformAnalytics'));
 const AdminPlaybooksTab = lazy(() => import('@/components/admin/AdminPlaybooksTab'));
 const AdminVideosTab = lazy(() => import('@/components/admin/AdminVideosTab'));
+const AdminWorkflowsTab = lazy(() => import('@/components/admin/AdminWorkflowsTab'));
+const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmentsTab'));
 
 interface PlatformStats {
   totalUsers: number;
@@ -183,11 +186,13 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="grid w-full max-w-5xl grid-cols-9">
+          <TabsList className="flex flex-wrap w-full h-auto gap-1">
             <TabsTrigger value="courses" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Cursos</TabsTrigger>
             <TabsTrigger value="paths" className="flex items-center gap-2"><Route className="h-4 w-4" /> Trilhas</TabsTrigger>
-            <TabsTrigger value="playbooks" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Playbooks</TabsTrigger>
-            <TabsTrigger value="videos" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Vídeos</TabsTrigger>
+            <TabsTrigger value="playbooks" className="flex items-center gap-2"><FileText className="h-4 w-4" /> Playbooks</TabsTrigger>
+            <TabsTrigger value="videos" className="flex items-center gap-2"><Video className="h-4 w-4" /> Vídeos</TabsTrigger>
+            <TabsTrigger value="workflows" className="flex items-center gap-2"><Sparkles className="h-4 w-4" /> Workflows</TabsTrigger>
+            <TabsTrigger value="assessments" className="flex items-center gap-2"><Target className="h-4 w-4" /> Avaliações</TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2"><Users className="h-4 w-4" /> Usuários</TabsTrigger>
             <TabsTrigger value="quizzes" className="flex items-center gap-2"><Target className="h-4 w-4" /> Quizzes</TabsTrigger>
             <TabsTrigger value="permissions" className="flex items-center gap-2"><Shield className="h-4 w-4" /> Permissões</TabsTrigger>
@@ -202,6 +207,8 @@ const Admin = () => {
             <TabsContent value="paths"><LearningPathsManager /></TabsContent>
             <TabsContent value="playbooks"><AdminPlaybooksTab /></TabsContent>
             <TabsContent value="videos"><AdminVideosTab /></TabsContent>
+            <TabsContent value="workflows"><AdminWorkflowsTab /></TabsContent>
+            <TabsContent value="assessments"><AdminAssessmentsTab /></TabsContent>
             <TabsContent value="users"><AdminUsersTab users={users} loadingData={loadingData} /></TabsContent>
             <TabsContent value="quizzes"><QuizStats /></TabsContent>
             <TabsContent value="permissions"><PermissionsManager /></TabsContent>

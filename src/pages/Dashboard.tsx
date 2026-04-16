@@ -23,6 +23,8 @@ import DailyChallenges from '@/components/gamification/DailyChallenges';
 import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import GoalsWidget from '@/components/goals/GoalsWidget';
 import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidget';
+import OnboardingWidget from '@/components/dashboard/OnboardingWidget';
+import DueAssessmentsWidget from '@/components/dashboard/DueAssessmentsWidget';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardHero from '@/components/dashboard/DashboardHero';
 import DashboardStatsGrid, { StatItem } from '@/components/dashboard/DashboardStatsGrid';
@@ -165,6 +167,11 @@ const Dashboard = () => {
         <ProfileCompletionBar />
         <DashboardHero userName={userName} />
         <DashboardStatsGrid stats={stats} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <OnboardingWidget />
+          <DueAssessmentsWidget />
+        </div>
 
         {userProgress.some(p => p.progress_percentage > 0 && p.progress_percentage < 100) && (
           <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>

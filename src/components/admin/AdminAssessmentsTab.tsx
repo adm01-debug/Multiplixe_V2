@@ -52,7 +52,7 @@ const AdminAssessmentsTab = () => {
       {isLoading ? (
         <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
       ) : assessments.length === 0 ? (
-        <SimpleEmptyState title="Nenhuma avaliação criada" description="Crie avaliações periódicas para medir competências." />
+        <SimpleEmptyState icon={Target} title="Nenhuma avaliação criada" description="Crie avaliações periódicas para medir competências." />
       ) : (
         <div className="grid gap-3">
           {assessments.map(a => (

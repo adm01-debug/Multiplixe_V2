@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, GripVertical, X, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, GripVertical, X, Loader2, Sparkles } from 'lucide-react';
 import { useOnboardingWorkflows, useSaveWorkflow, useDeleteWorkflow, type OnboardingWorkflow, type OnboardingStep, type OnboardingStepType } from '@/hooks/useOnboardingWorkflow';
 import SimpleEmptyState from '@/components/SimpleEmptyState';
 
@@ -70,7 +70,7 @@ const AdminWorkflowsTab = () => {
       {isLoading ? (
         <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
       ) : workflows.length === 0 ? (
-        <SimpleEmptyState title="Nenhum workflow criado" description="Crie um workflow para guiar novos vendedores." />
+        <SimpleEmptyState icon={Sparkles} title="Nenhum workflow criado" description="Crie um workflow para guiar novos vendedores." />
       ) : (
         <div className="grid gap-3">
           {workflows.map(w => (

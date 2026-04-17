@@ -28,6 +28,7 @@ const AdminWorkflowsTab = lazy(() => import('@/components/admin/AdminWorkflowsTa
 const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmentsTab'));
 const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap'));
 const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention'));
+const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget'));
 
 interface PlatformStats {
   totalUsers: number;
@@ -217,6 +218,7 @@ const Admin = () => {
             <TabsContent value="analytics">
               <div className="space-y-6">
                 <PlatformAnalytics />
+                <AdminTelemetryWidget />
                 <div className="grid lg:grid-cols-2 gap-4">
                   <AdminEngagementHeatmap />
                   <AdminCohortRetention />

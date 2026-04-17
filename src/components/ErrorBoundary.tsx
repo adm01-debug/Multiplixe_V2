@@ -1,6 +1,7 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { trackRenderError } from '@/lib/telemetry';
 
 interface Props {
   children: ReactNode;
@@ -20,9 +21,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    // Reportar para um serviço de observabilidade aqui se necessário
-    void error;
-    void info;
+    trackRenderError(error, info.componentStack ?? undefined);
   }
 
   handleRetry = () => {
@@ -33,7 +32,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback;
       return (
-        <div className="min-h-[60vh] flex items-center justify-center p-8">
+        <div className="min-h-[60vh] flex items-center justify-center p-8" role="alert">
           <div className="max-w-md text-center space-y-4">
             <div className="mx-auto w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center">
               <AlertTriangle className="h-8 w-8 text-destructive" aria-hidden="true" />

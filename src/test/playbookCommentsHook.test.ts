@@ -3,24 +3,39 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
-const insert = vi.fn();
-const update = vi.fn();
+const insert = vi.fn((_payload: unknown) => Promise.resolve({ error: null }));
+const update = vi.fn((_payload: unknown) => undefined);
 const del = vi.fn();
-const eqUpdate = vi.fn();
-const eqUpdateUser = vi.fn();
-const eqDelete = vi.fn();
+const eqUpdate = vi.fn((_col: string, _val: unknown) => undefined);
+const eqUpdateUser = vi.fn((_col: string, _val: unknown) => undefined);
+const eqDelete = vi.fn((_col: string, _val: unknown) => undefined);
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: () => ({
-      insert: (...a: unknown[]) => insert(...a),
-      update: (...a: unknown[]) => {
-        update(...a);
-        return { eq: (...e: unknown[]) => { eqUpdate(...e); return { eq: (...e2: unknown[]) => { eqUpdateUser(...e2); return Promise.resolve({ error: null }); } }; } };
+      insert: (payload: unknown) => insert(payload),
+      update: (payload: unknown) => {
+        update(payload);
+        return {
+          eq: (col: string, val: unknown) => {
+            eqUpdate(col, val);
+            return {
+              eq: (col2: string, val2: unknown) => {
+                eqUpdateUser(col2, val2);
+                return Promise.resolve({ error: null });
+              },
+            };
+          },
+        };
       },
       delete: () => {
         del();
-        return { eq: (...e: unknown[]) => { eqDelete(...e); return Promise.resolve({ error: null }); } };
+        return {
+          eq: (col: string, val: unknown) => {
+            eqDelete(col, val);
+            return Promise.resolve({ error: null });
+          },
+        };
       },
     }),
   },

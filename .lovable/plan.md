@@ -1,68 +1,56 @@
 
-Já entregamos: Sales Enablement Suite + Sprint Excelência + Sprint Perfeição (292 testes, 10/10 técnico). Agora foco em frentes que elevam o produto além do técnico: experiência premium, internacionalização, IA aplicada e operações.
+Mantendo o foco no Sprint Apoteose já apresentado. Plano consolidado e enxuto:
 
-# Sprint Transcendência — 10 frentes
+# Sprint Apoteose — execução final rumo ao 10/10
 
-## 1. IA aplicada (Lovable AI Gateway)
-- Edge function `ai-playbook-summarize`: gera resumo executivo de playbooks longos (gemini-2.5-flash)
-- Edge function `ai-quiz-generator`: admin gera questões a partir de transcrição/conteúdo
-- Botão "Resumir com IA" no `PlaybookDetail`, "Gerar quiz com IA" no `QuizManager`
+## 1. IA no admin (QuizManager)
+- Modal "Gerar quiz com IA" chamando `ai-quiz-generator` com preview/edição antes de salvar
 
-## 2. Busca global unificada
-- `useGlobalSearch` hook: busca cross-entity (cursos, playbooks, vídeos, trilhas) via single query
-- Integrar no `CommandPalette` substituindo navegação estática por resultados reais com debounce
+## 2. CommandPalette com busca global real
+- Substituir lista estática pelo `useGlobalSearch` (debounce, agrupado por tipo, navegação por teclado)
 
-## 3. Internacionalização (i18n leve)
-- `src/lib/i18n.ts`: dicionário pt-BR/en com hook `useT()`
-- Aplicar em `Header`, `MobileBottomNav`, `Dashboard` (strings críticas)
-- Toggle no `Profile`
+## 3. i18n na navegação
+- Aplicar `useT()` em `Header` (landing), `MobileBottomNav`, `DashboardHeader`
+- LanguageToggle no Header
 
-## 4. Onboarding workflow runtime
-- Página `/onboarding/:workflowId` que executa passos sequencialmente
-- Marca progresso por step, dispara notificação ao concluir
-- Integra com hook `useOnboardingWorkflow` existente
+## 4. Edição inline de comentários
+- Botão lápis no `PlaybookComments`, mostra `updated_at`, hook `useUpdatePlaybookComment`
 
-## 5. Comentários em playbooks
-- Tabela `playbook_comments` (user_id, playbook_id, content, created_at)
-- RLS: leitura authenticated, escrita own + admin delete
-- UI no final do `PlaybookDetail`
+## 5. Métricas admin avançadas
+- `AdminEngagementHeatmap` (dia × hora dos últimos 30 dias via audit_logs)
+- `AdminCohortRetention` (retenção semanal de novos usuários)
 
-## 6. Recomendações personalizadas (regra)
-- View SQL `user_recommendations` baseada em: cursos da mesma categoria já iniciados, playbooks populares não vistos
-- Widget `SmartRecommendations` no Dashboard
+## 6. Performance percebida
+- Skeleton dedicado para `PlaybookDetail`
+- Optimistic update em favoritar playbook/vídeo
+- Blur placeholder no `LazyImage`
 
-## 7. Exportação de dados
-- Botão "Exportar meus dados" no `Profile` → JSON com cursos, certificados, XP, notas (LGPD compliance)
-- Edge function `export-user-data` consolidando
+## 7. Notificação de novo comentário
+- Trigger SQL: ao inserir comment, notifica autores anteriores do thread
 
-## 8. Métricas de admin avançadas
-- `AdminEngagementHeatmap`: heatmap dia × hora de acessos (últimos 30 dias)
-- `AdminCohortRetention`: retenção semanal de novos usuários
+## 8. Atalhos expandidos
+- `g r` (recomendações), `g s` (busca), `n` (novo comentário em PlaybookDetail)
+- Atualizar `KeyboardShortcutsModal`
 
-## 9. Performance percebida
-- Skeleton específico para `PlaybookDetail` e `VideoLibrary`
-- Optimistic updates em favoritar playbook/vídeo
-- Image lazy loading com blur placeholder em `LazyImage`
+## 9. Sitemap completo
+- Estender `generate-sitemap` com vídeos públicos e trilhas publicadas
 
-## 10. Testes + docs finais
-- +25 testes (i18n, busca global, comentários, IA mock)
-- Atualizar `DOCUMENTACAO.md` e `README.md` com tudo
-- Meta: 317+ testes passando
+## 10. Testes + docs
+- +25 testes (i18n, busca global, comentários CRUD, recommendations, IA mocks, command palette)
+- Atualizar `DOCUMENTACAO.md` e `README.md` (rotas, atalhos, edge functions)
+- Meta: **340+ testes**
 
 ## Padrões mantidos
-- ≤400 linhas/arquivo, zero `any`, zero `console.*`
-- Lovable AI Gateway (sem API key do usuário)
-- RLS com `has_role`
-- Tokens semânticos do design system
+≤400 linhas/arquivo, zero `any`/`console.*`, tokens semânticos, RLS com `has_role`, TanStack Query + invalidação, Lovable AI Gateway.
 
 ## Ordem de execução
-1. Migration: `playbook_comments` + view recommendations + índices
-2. Edge functions IA (summarize + quiz-gen) + secrets check
-3. i18n base + aplicação em nav
-4. Busca global + integração CommandPalette
-5. Comentários playbook (UI + hook)
-6. SmartRecommendations widget
-7. Onboarding runtime page
-8. Exportação dados (edge fn + UI)
-9. AdminEngagementHeatmap + Cohort
-10. Skeletons + optimistic + +25 testes + docs
+1. Migration: trigger notify_new_playbook_comment + updated_at em comments
+2. Modal IA no QuizManager
+3. CommandPalette + useGlobalSearch
+4. i18n em Header/MobileBottomNav/DashboardHeader + LanguageToggle no Header
+5. Edição inline + hook update comment
+6. AdminEngagementHeatmap + AdminCohortRetention + integração no Admin.tsx
+7. Skeleton PlaybookDetail + optimistic favorites + blur LazyImage
+8. Atalhos expandidos + KeyboardShortcutsModal atualizado
+9. generate-sitemap estendido
+10. +25 testes + docs atualizadas

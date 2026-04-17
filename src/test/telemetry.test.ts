@@ -13,9 +13,9 @@ import { supabase } from "@/integrations/supabase/client";
 describe("telemetry", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    Object.defineProperty(window, "location", {
-      value: { hostname: "app.example.com" },
-      writable: true,
+    vi.stubGlobal("window", {
+      ...window,
+      location: { ...window.location, hostname: "app.example.com" },
     });
   });
 
@@ -37,9 +37,9 @@ describe("telemetry", () => {
   });
 
   it("trackTelemetry skips in localhost", async () => {
-    Object.defineProperty(window, "location", {
-      value: { hostname: "localhost" },
-      writable: true,
+    vi.stubGlobal("window", {
+      ...window,
+      location: { ...window.location, hostname: "localhost" },
     });
     vi.clearAllMocks();
     await trackTelemetry({ event: "page_view" });

@@ -12,14 +12,15 @@ interface TelemetryPayload {
   metadata?: Record<string, unknown>;
 }
 
-const isProd = typeof window !== "undefined" && !window.location.hostname.includes("localhost");
+const isProd = (): boolean =>
+  typeof window !== "undefined" && !window.location.hostname.includes("localhost");
 
 /**
  * Telemetry wrapper — registra eventos críticos em audit_logs sem bloquear UI.
  * Falhas silenciosas (best-effort).
  */
 export async function trackTelemetry({ event, message, metadata }: TelemetryPayload): Promise<void> {
-  if (!isProd) return;
+  if (!isProd()) return;
   try {
     const { data: { user } } = await supabase.auth.getUser();
     await supabase.from("audit_logs").insert({

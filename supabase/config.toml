@@ -17,3 +17,12 @@ verify_jwt = true
 
 [functions.generate-sitemap]
 verify_jwt = false
+
+[functions.ai-playbook-summarize]
+verify_jwt = true
+
+[functions.ai-quiz-generator]
+verify_jwt = true
+
+[functions.export-user-data]
+verify_jwt = true

@@ -37,12 +37,15 @@ beforeEach(() => {
 });
 
 describe("useFavorites optimistic updates", () => {
-  it("adiciona favorito otimisticamente antes da resposta", async () => {
+  it("aplica update otimista imediato no cache", async () => {
     const { useFavorites } = await import("@/hooks/useFavorites");
     const { result } = renderHook(() => useFavorites(), { wrapper });
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     act(() => result.current.addFavorite("course-1"));
-    await waitFor(() => expect(result.current.isFavorite("course-1")).toBe(true));
+    await waitFor(() => {
+      const cached = client.getQueryData<Array<{ course_id: string }>>(["favorites", "u"]) ?? [];
+      expect(cached.some((f) => f.course_id === "course-1")).toBe(true);
+    }, { timeout: 200 });
   });
 
   it("faz rollback em erro ao adicionar", async () => {

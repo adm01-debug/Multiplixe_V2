@@ -46,12 +46,6 @@ export const useQuizzes = () => {
   const { addXP } = useUserXP();
   const [loading, setLoading] = useState(false);
 
-  const fetchQuizWithFilter = useCallback(async (
-    filter: (q: ReturnType<typeof supabase.from<'quizzes'>>['select']) => unknown
-  ): Promise<Quiz | null> => {
-    return null;
-  }, []);
-
   const loadQuizBy = async (column: 'lesson_id' | 'course_id', value: string, courseOnly = false): Promise<Quiz | null> => {
     let query = supabase.from('quizzes').select('*').eq(column, value);
     if (courseOnly) query = query.is('lesson_id', null);

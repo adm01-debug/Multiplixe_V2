@@ -19,7 +19,7 @@ import {
 interface QuizOption {
   id: string;
   option_text: string;
-  is_correct: boolean;
+  is_correct?: boolean;
   order_index: number;
 }
 

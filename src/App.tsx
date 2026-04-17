@@ -96,6 +96,7 @@ const App = () => (
               <ScrollRestoration />
               <CommandPalette />
               <KeyboardShortcutsModal />
+              <SessionRotationGuard />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />
               <ConditionalNotificationBanner />

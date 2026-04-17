@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle, Circle, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -110,4 +111,4 @@ const LessonList = ({ lessons, progress, currentLessonId, courseSlug }: LessonLi
   );
 };
 
-export default LessonList;
+export default memo(LessonList);

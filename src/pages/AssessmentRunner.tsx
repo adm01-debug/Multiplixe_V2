@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSubmitAssessment } from '@/hooks/useSkillAssessments';
 import { toast } from 'sonner';
 
-interface QOption { id: string; option_text: string; is_correct: boolean; order_index: number; }
+interface QOption { id: string; option_text: string; order_index: number; }
 interface QQuestion { id: string; question_text: string; order_index: number; quiz_options: QOption[]; }
 
 const AssessmentRunner = () => {
@@ -29,13 +29,36 @@ const AssessmentRunner = () => {
         .from('skill_assessments').select('*').eq('id', id).maybeSingle();
       if (e1) throw e1;
       if (!assessment?.quiz_id) return { assessment, questions: [] as QQuestion[] };
+
       const { data: questions, error: e2 } = await supabase
         .from('quiz_questions')
-        .select('id, question_text, order_index, quiz_options(id, option_text, is_correct, order_index)')
+        .select('id, question_text, order_index')
         .eq('quiz_id', assessment.quiz_id)
         .order('order_index');
       if (e2) throw e2;
-      return { assessment, questions: (questions || []) as QQuestion[] };
+
+      const qIds = (questions || []).map(q => q.id);
+      const { data: opts } = qIds.length > 0
+        ? await supabase
+            .from('quiz_options_public' as never)
+            .select('id, question_id, option_text, order_index')
+            .in('question_id', qIds)
+        : { data: [] as Array<{ id: string; question_id: string; option_text: string; order_index: number }> };
+
+      const optsByQ = (opts || []).reduce<Record<string, QOption[]>>((acc, o) => {
+        const opt = o as { id: string; question_id: string; option_text: string; order_index: number };
+        (acc[opt.question_id] ||= []).push({ id: opt.id, option_text: opt.option_text, order_index: opt.order_index });
+        return acc;
+      }, {});
+
+      const merged: QQuestion[] = (questions || []).map(q => ({
+        id: q.id,
+        question_text: q.question_text,
+        order_index: q.order_index,
+        quiz_options: optsByQ[q.id] || [],
+      }));
+
+      return { assessment, questions: merged };
     },
     enabled: !!id,
   });
@@ -49,17 +72,25 @@ const AssessmentRunner = () => {
   const total = questions.length;
   const answered = Object.keys(answers).length;
 
-  const handleSubmit = () => {
-    let correct = 0;
-    const gaps: string[] = [];
-    for (const q of questions) {
-      const sel = answers[q.id];
-      const correctOpt = q.quiz_options.find(o => o.is_correct);
-      if (sel && correctOpt && sel === correctOpt.id) correct++;
-      else gaps.push(q.question_text);
+  const handleSubmit = async () => {
+    if (!assessment.quiz_id) return;
+
+    const answersPayload = Object.entries(answers).map(([question_id, option_id]) => ({ question_id, option_id }));
+    const { data: rpcData, error } = await supabase.rpc('submit_quiz_attempt', {
+      p_quiz_id: assessment.quiz_id,
+      p_answers: answersPayload,
+    });
+
+    if (error || !rpcData || rpcData.length === 0) {
+      toast.error('Erro ao validar avaliação');
+      return;
     }
-    const score = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+    const result = rpcData[0];
+    const score = result.score;
     const passed = score >= assessment.passing_score;
+    const gaps = questions.filter(q => !answers[q.id]).map(q => q.question_text);
+
     submit.mutate({
       assessmentId: assessment.id,
       score,

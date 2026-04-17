@@ -7,7 +7,7 @@ const select = vi.fn(() => ({ eq }));
 const from = vi.fn(() => ({ select }));
 
 vi.mock("@/integrations/supabase/client", () => ({
-  supabase: { from: (...args: unknown[]) => from(...args) },
+  supabase: { from: (table: string) => from(table) },
 }));
 
 const limit = vi.fn();

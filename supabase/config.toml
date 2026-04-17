@@ -1,5 +1,3 @@
-project_id = "gyqtndkjvwvtkfeaxtlv"
-
 [functions.generate-certificate]
 verify_jwt = true
 
@@ -14,3 +12,6 @@ verify_jwt = true
 
 [functions.send-security-alert]
 verify_jwt = true
+
+[functions.generate-sitemap]
+verify_jwt = false

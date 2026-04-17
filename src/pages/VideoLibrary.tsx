@@ -137,9 +137,11 @@ const VideoLibrary = () => {
           {active && (
             <div className="aspect-video bg-black rounded-lg overflow-hidden">
               <video
+                ref={videoRef}
                 src={active.video_url}
                 controls
                 autoPlay
+                aria-label={`Reprodutor: ${active.title}`}
                 className="w-full h-full"
                 onEnded={() => updateProgress.mutate({ videoId: active.id, watchedSeconds: active.duration_seconds, completed: true })}
               />

@@ -8,8 +8,9 @@ export const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5,
       // Cache mantido por 30 minutos após não ser mais usado
       gcTime: 1000 * 60 * 30,
-      // Retry apenas 1 vez em caso de erro
-      retry: 1,
+      // Retry com backoff exponencial (até 2 tentativas)
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 8000),
       // Não refetch ao focar a janela (evita requisições desnecessárias)
       refetchOnWindowFocus: false,
       // Não refetch ao reconectar

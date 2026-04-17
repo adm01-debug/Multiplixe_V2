@@ -14,3 +14,6 @@ verify_jwt = true
 
 [functions.send-security-alert]
 verify_jwt = true
+
+[functions.generate-sitemap]
+verify_jwt = false

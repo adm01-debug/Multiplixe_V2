@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +22,7 @@ interface CertificateCardProps {
   certificate: Certificate;
 }
 
-export function CertificateCard({ certificate }: CertificateCardProps) {
+function CertificateCardImpl({ certificate }: CertificateCardProps) {
   const [showPreview, setShowPreview] = useState(false);
   const [loading, setLoading] = useState(false);
   const [svgContent, setSvgContent] = useState<string | null>(null);
@@ -189,3 +189,5 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
     </>
   );
 }
+
+export const CertificateCard = memo(CertificateCardImpl);

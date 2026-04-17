@@ -53,6 +53,14 @@ const AssessmentRunner = lazy(() => import("./pages/AssessmentRunner"));
 const OnboardingRuntime = lazy(() => import("./pages/OnboardingRuntime"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+import { useSessionRotation } from "@/hooks/useSessionRotation";
+
+// Activates auto-rotation of session tokens for authenticated users
+const SessionRotationGuard = () => {
+  useSessionRotation();
+  return null;
+};
+
 // Component that conditionally shows the Pomodoro button
 const ConditionalPomodoroButton = () => {
   const { user } = useAuth();

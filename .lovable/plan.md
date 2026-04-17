@@ -1,36 +1,66 @@
 
-Sprints anteriores entregues: Sales Enablement + Excelência + Perfeição + Transcendência + Apoteose. Falta consolidar a última milha: testes da apoteose, atualizar atalhos no modal de ajuda, KeyboardShortcutsModal com `n`/`g r`, e docs.
+Já entregamos 6 sprints (Sales Enablement + Excelência + Perfeição + Transcendência + Apoteose + Coroação) com 318+ testes, IA aplicada, i18n, comentários, recomendações, métricas avançadas, sitemap dinâmico e LGPD compliance. O projeto já está em 10/10 técnico.
 
-# Sprint Coroação — fechamento final 10/10
+Para elevar ainda mais — rumo a um 11/10 de excelência operacional — proponho a Sprint Imortalidade focando em qualidade contínua, observabilidade e polimento final.
 
-## 1. KeyboardShortcutsModal atualizado
-- Renderizar todos os atalhos de `SHORTCUTS_LIST` (já inclui `g r`, `g t`, `n`)
-- Garantir invocação via `?` (já feito em `useGlobalShortcuts`)
+# Sprint Imortalidade — excelência operacional
 
-## 2. Testes da Sprint Apoteose (+25 testes alvo)
-- `commandPalette.test.tsx` — render + busca global mockada
-- `playbookComments.test.tsx` — add / edit / delete (hooks + UI)
-- `aiQuizGeneratorModal.test.tsx` — render + invoke mock
-- `globalSearch.test.ts` — debounce + agrupamento por tipo
-- `i18n.test.ts` — `useT()` + troca de locale + persistência
-- `optimisticFavorites.test.tsx` — rollback em erro
-- `engagementHeatmap.test.tsx` — render com dados mock
-- `cohortRetention.test.tsx` — render com dados mock
-- `shortcutsExpanded.test.ts` — `g r`, `g t`, `n` presentes em SHORTCUTS_LIST
+## 1. Observabilidade real
+- Hook `useTelemetry` para enviar eventos críticos (login, conclusão de curso, erro) para `audit_logs`
+- Dashboard `AdminTelemetryWidget` mostrando funil: visita → cadastro → primeira aula → certificado
 
-## 3. Documentação final
-- `DOCUMENTACAO.md`: seções IA aplicada, comentários, recomendações, i18n, atalhos, sitemap dinâmico, métricas avançadas
-- `README.md`: rotas (`/onboarding/executar`), atalhos (`g r`, `g t`, `n`, `?`), edge functions (`ai-playbook-summarize`, `ai-quiz-generator`, `export-user-data`, `generate-sitemap`)
+## 2. Notificações de comentário no UI
+- `NotificationBell` exibe badge quando há novo comentário em playbook que o usuário comentou
+- Click leva direto ao `/playbook/:slug#comments`
 
-## 4. Sanidade final
-- Rodar suíte (alvo 340+ testes verdes)
-- Verificar zero `console.*` e zero `any` nos arquivos novos
+## 3. i18n expandido
+- Aplicar `useT()` em `Footer`, `LessonPlayerHeader`, `EmptyState`, `ProtectedRoute` (mensagens críticas)
+- Adicionar locale `es` (espanhol) ao dicionário
+
+## 4. Acessibilidade auditada
+- Rodar checklist WCAG AA em PlaybookDetail/CommandPalette/QuizPlayer
+- Adicionar `aria-live` em toasts de IA, `aria-current` em nav ativa, focus trap em modais
+
+## 5. Performance — Lighthouse 95+
+- Code-split rotas admin com `React.lazy`
+- Preload de fontes Inter/Plus Jakarta
+- Imagens com `loading="lazy"` + `decoding="async"` em catálogo
+
+## 6. Resiliência IA
+- Retry exponencial nas edge functions de IA (max 2 tentativas)
+- Fallback gracioso: se IA falha, sugere ação manual
+
+## 7. Testes E2E críticos (+15 testes alvo)
+- `lessonCompletion.test.ts` — fluxo de completar aula → ganhar XP → atualizar streak
+- `certificateFlow.test.ts` — quiz final 90%+ → certificado emitido
+- `commandPaletteNavigation.test.ts` — busca → seleção → navegação
+- `notificationsRealtime.test.ts` — insert na tabela → bell atualiza
+
+## 8. Documentação interativa
+- `/docs` (rota interna admin) com índice navegável das funcionalidades
+- Link no menu admin
+
+## 9. Relatórios exportáveis
+- `AdminPlatformAnalytics` ganha botão "Exportar PDF" (jspdf) e "Exportar CSV"
+
+## 10. Polimento visual final
+- Microinterações em botões CTA principais (scale + glow no hover)
+- Empty states ilustrados em Catálogo/Playbooks/Vídeos quando filtro retorna vazio
+- Dark mode polish: revisar contraste de badges/borders
 
 ## Padrões mantidos
-≤400 linhas/arquivo, zero `any`/`console.*`, tokens semânticos, RLS com `has_role`, TanStack Query + invalidação correta, Lovable AI Gateway.
+≤400 linhas/arquivo · zero `any`/`console.*` · tokens HSL semânticos · RLS com `has_role` · TanStack Query · Lovable AI Gateway
 
 ## Ordem de execução
-1. Atualizar `KeyboardShortcutsModal` para listar `SHORTCUTS_LIST` completo
-2. Criar 9 arquivos de teste cobrindo Sprint Apoteose
-3. Atualizar `DOCUMENTACAO.md` e `README.md`
-4. Conferir suíte completa e fechar 10/10
+1. Migration: índices para audit_logs (telemetria)
+2. Hook `useTelemetry` + AdminTelemetryWidget
+3. Notificações de comentário (trigger já existe — falta UI no NotificationBell)
+4. i18n expandido + locale `es`
+5. Auditoria a11y (PlaybookDetail/CommandPalette/QuizPlayer)
+6. Code-split admin + preload fontes + lazy images
+7. Retry/fallback nas edge functions IA
+8. +15 testes E2E críticos
+9. Página `/docs` admin + exportação PDF/CSV em analytics
+10. Polimento visual + dark mode review + atualizar `DOCUMENTACAO.md` final
+
+**Meta:** 333+ testes verdes · Lighthouse 95+ · zero regressões · projeto em estado de imortalidade operacional.

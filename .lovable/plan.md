@@ -1,55 +1,70 @@
 
-O usuário quer que eu continue executando as melhorias pendentes da entrega anterior do Sales Enablement Suite, sem pausas, até atingir 10/10. Vou listar exatamente o que falta e propor o plano enxuto.
+O usuário quer continuar evoluindo o projeto rumo ao 10/10. Já entregamos Sales Enablement Suite completo (254 testes). Vou consultar o roadmap pendente e definir o próximo lote de melhorias com maior impacto.
 
-# Plano: Finalizar Sales Enablement Suite (rumo ao 10/10)
+Pelo PLANO_IMPLEMENTACAO_PENDENTES.md (56 melhorias em 4 fases) e considerando o que já está pronto, vou focar em **Performance + Acessibilidade + Resiliência + UX Mobile** — itens que movem o ponteiro de 9/10 para 10/10.
 
-## Pendências identificadas da entrega anterior
+# Plano: Sprint Excelência — 10 melhorias críticas
 
-1. **Tab admin "Workflows de Onboarding"** (CRUD com editor de passos JSON)
-2. **Tab admin "Skill Assessments"** (CRUD vinculando a quizzes existentes)
-3. **Integrar `OnboardingWidget` no Dashboard** (já criado, falta montar)
-4. **Widget "Avaliações pendentes" no Dashboard** (usando `useDueAssessments`)
-5. **Atualizar `CommandPalette`** com 4 novos comandos (Playbooks, Vídeos, Onboarding, Avaliações)
-6. **Atualizar `MobileBottomNav`** se houver espaço, ou adicionar links no header
-7. **Corrigir tabs admin**: já adicionei Playbooks/Vídeos mas faltam ícones distintos (Video, FileText) e os 2 novos tabs acima
-8. **Testes Vitest** para os novos hooks (`usePlaybooks`, `useTrainingVideos`, `useOnboardingWorkflow`, `useSkillAssessments`)
-9. **Rodar suíte completa** (deve manter 238+ passando)
-10. **Validar no preview** que as 6 rotas novas carregam sem erro
+## 1. Performance & Memoização
+- **React.memo + useMemo** em listas pesadas: `LessonList`, `LearningPathCourseItem`, `QuizQuestionCard`, `CertificateCard`
+- **Code splitting agressivo**: lazy load de `Admin.tsx` por tab (já parcial, completar para PlatformAnalytics, QuizStats)
+- **Prefetch inteligente**: `PrefetchLink` nas rotas mais acessadas do header
 
-## O que vou construir
+## 2. Acessibilidade WCAG AA+
+- **ARIA labels** em todos botões icon-only do projeto (varredura)
+- **Focus visible** consistente com ring tokens semânticos
+- **Skip link** funcional na nova página `/playbooks`, `/biblioteca-videos`, `/onboarding`, `/avaliacoes`
+- **Keyboard navigation** no modal de vídeo da biblioteca (Esc fecha, setas controlam)
 
-### Admin
-- `AdminWorkflowsTab.tsx` — lista workflows + dialog com editor visual de passos (adicionar/remover/reordenar steps tipados: video/playbook/quiz/course/task)
-- `AdminAssessmentsTab.tsx` — lista assessments + dialog com seletor de quiz existente (dropdown carregando `quizzes`), campos skill_area, frequency_days, passing_score
-- Atualizar `Admin.tsx`: 11 tabs com ícones corretos (FileText p/ Playbooks, Video p/ Vídeos, Sparkles p/ Workflows, Target p/ Assessments)
+## 3. Resiliência & Error Handling
+- **ErrorBoundary** por rota lazy-loaded (envolve Suspense)
+- **Retry automático** TanStack Query com backoff exponencial (já parcial, padronizar `retry: 2`)
+- **Toast de erro padronizado** em todas mutations (varrer hooks novos)
+- **Estados vazios consistentes** com `SimpleEmptyState` em todas listas
 
-### Dashboard
-- Adicionar `<OnboardingWidget />` no `Dashboard.tsx`
-- Criar `DueAssessmentsWidget.tsx` mostrando avaliações vencidas/próximas com CTA
+## 4. UX Mobile
+- **MobileBottomNav**: adicionar atalho para Playbooks ou Onboarding (escolher 1 dos 5 slots)
+- **Touch targets ≥44px** em controles do player de vídeo
+- **Sheet drawer** para filtros do `VideoLibrary` em mobile
 
-### Navegação
-- Adicionar entradas no `CommandPalette` (Playbooks, Vídeos, Onboarding, Avaliações)
-- Adicionar links no header do Dashboard ou em menu dropdown
+## 5. SEO & Metadata
+- **DynamicSEO** nas 6 novas páginas (title, description, og:image)
+- **Sitemap dinâmico** incluindo playbooks publicados
 
-### Testes
-- `src/test/salesEnablement.test.ts` — valida tipos exportados, shape de hooks, presença de páginas/rotas
+## 6. Validação Zod expandida
+- Schemas em `AdminWorkflowsTab` e `AdminAssessmentsTab` (faltou validação client-side)
+- Validação de URL de vídeo no `AdminVideosTab`
 
-### Validação final
-- Rodar suíte completa Vitest
-- Abrir preview nas rotas /playbooks, /biblioteca-videos, /onboarding, /avaliacoes para garantir que renderizam (mesmo vazias)
+## 7. Notificações inteligentes
+- Trigger de notificação quando avaliação vence em 7 dias
+- Notificação ao completar workflow de onboarding
+
+## 8. Analytics & Insights
+- Widget "Top Playbooks" no dashboard admin (mais lidos)
+- Widget "Engajamento de Vídeos" (taxa de conclusão)
+
+## 9. Testes
+- +20 testes cobrindo: ErrorBoundary, validações Zod novas, memoização, ARIA
+
+## 10. Documentação
+- Atualizar `DOCUMENTACAO.md` com Sales Enablement Suite
+- README com novas rotas
 
 ## Padrões mantidos
 - Modularização ≤400 linhas
 - Zero `any`, zero `console.*`
-- Toasts sonner para feedback
+- Tokens semânticos do design system
 - TanStack Query + invalidação correta
-- RLS já configurado nas migrations anteriores
-- shadcn/ui + tokens semânticos do design system
+- Toasts sonner
 
 ## Ordem de execução (sequencial, sem pausas)
-1. AdminWorkflowsTab + AdminAssessmentsTab
-2. Atualizar Admin.tsx (tabs + ícones)
-3. DueAssessmentsWidget + integrar widgets no Dashboard
-4. Atualizar CommandPalette
-5. Suíte de testes nova
-6. Rodar testes + validar preview
+1. Validações Zod nos forms admin novos
+2. Memoização + ErrorBoundary por rota lazy
+3. ARIA labels + skip links + keyboard nav
+4. DynamicSEO nas 6 novas páginas
+5. MobileBottomNav + touch targets
+6. Notificações automáticas (trigger SQL)
+7. Widgets analytics admin
+8. +20 testes
+9. Documentação atualizada
+10. Rodar suíte completa (alvo 274+ testes)

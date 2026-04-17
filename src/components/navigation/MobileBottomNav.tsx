@@ -58,6 +58,8 @@ const MobileBottomNav = () => {
               to={item.path}
               prefetch="intent"
               onPrefetchData={prefetchHandler}
+              aria-label={item.label}
+              aria-current={isActive ? 'page' : undefined}
               className="relative flex flex-col items-center justify-center flex-1 py-2 touch-manipulation"
             >
               <motion.div

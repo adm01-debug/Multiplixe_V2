@@ -10,6 +10,7 @@ import { ThemeProvider } from "next-themes";
 import { queryClient } from "@/lib/queryClient";
 import { setupCachePersistence } from "@/lib/queryPersister";
 import CommandPalette from "@/components/CommandPalette";
+import KeyboardShortcutsModal from "@/components/KeyboardShortcutsModal";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import NavigationProgress from "@/components/navigation/NavigationProgress";
@@ -85,6 +86,7 @@ const App = () => (
               <NavigationProgress />
               <ScrollRestoration />
               <CommandPalette />
+              <KeyboardShortcutsModal />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />
               <ConditionalNotificationBanner />

@@ -95,8 +95,12 @@ const VideoLibrary = () => {
           ))}
         </div>
 
+        <p className="sr-only" aria-live="polite" role="status">
+          {isLoading ? 'Carregando vídeos' : `${results.length} vídeo(s) encontrado(s)`}
+        </p>
+
         {isLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" role="status" aria-label="Carregando">
             {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-64 rounded-xl" />)}
           </div>
         ) : results.length === 0 ? (

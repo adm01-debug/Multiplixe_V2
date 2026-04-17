@@ -1,66 +1,42 @@
 
-Já entregamos 6 sprints (Sales Enablement + Excelência + Perfeição + Transcendência + Apoteose + Coroação) com 318+ testes, IA aplicada, i18n, comentários, recomendações, métricas avançadas, sitemap dinâmico e LGPD compliance. O projeto já está em 10/10 técnico.
+Vou executar a auditoria técnica exaustiva do sistema. Primeiro, preciso coletar contexto real do código antes de apresentar o relatório completo. Como esta é uma análise extensa, apresento o plano de entrega da auditoria.
 
-Para elevar ainda mais — rumo a um 11/10 de excelência operacional — proponho a Sprint Imortalidade focando em qualidade contínua, observabilidade e polimento final.
+# Auditoria Técnica Exaustiva — Plataforma Promo Brindes Learning
 
-# Sprint Imortalidade — excelência operacional
+## Escopo
+Análise completa das 20 dimensões aplicáveis (excluo CI/CD e Infraestrutura/DevOps por estarem fora do controle direto da plataforma Lovable — registrarei como "NÃO AUDITÁVEL"), com scorecard, roadmap em 3 ondas e Top 10 ações por ROI.
 
-## 1. Observabilidade real
-- Hook `useTelemetry` para enviar eventos críticos (login, conclusão de curso, erro) para `audit_logs`
-- Dashboard `AdminTelemetryWidget` mostrando funil: visita → cadastro → primeira aula → certificado
+## Método
+1. **Coleta de contexto real** (Fase 0):
+   - Inventário: arquivos `src/`, hooks, edge functions, migrations, testes
+   - Schema DB via `supabase--read_query` (tabelas, RLS, índices)
+   - Linter Supabase (`supabase--linter`) para issues automatizadas
+   - Scan de segurança (`security--run_security_scan`)
+   - Análise de `package.json`, `tsconfig`, `vite.config.ts`
+   - Grep por anti-padrões: `any`, `console.`, `dangerouslySetInnerHTML`, secrets
 
-## 2. Notificações de comentário no UI
-- `NotificationBell` exibe badge quando há novo comentário em playbook que o usuário comentou
-- Click leva direto ao `/playbook/:slug#comments`
+2. **Avaliação por dimensão** com:
+   - Nota 0–10 baseada em evidência concreta (arquivo:linha)
+   - Gaps específicos para 10/10
+   - Ações corretivas (código/migration/config)
 
-## 3. i18n expandido
-- Aplicar `useT()` em `Footer`, `LessonPlayerHeader`, `EmptyState`, `ProtectedRoute` (mensagens críticas)
-- Adicionar locale `es` (espanhol) ao dicionário
+3. **Scorecard ponderado**:
+   - Peso ×3: Segurança, Auth, Authz, Data Integrity
+   - Peso ×2: DB, Tipagem, Validação, Testes, Arquitetura
+   - Peso ×1: demais
 
-## 4. Acessibilidade auditada
-- Rodar checklist WCAG AA em PlaybookDetail/CommandPalette/QuizPlayer
-- Adicionar `aria-live` em toasts de IA, `aria-current` em nav ativa, focus trap em modais
+4. **Plano de ação**:
+   - Top 10 por ROI (impacto ÷ esforço)
+   - 3 ondas: Quick Wins (1-3d) · Sprint 1 (1-2sem) · Sprint 2 (2-4sem)
 
-## 5. Performance — Lighthouse 95+
-- Code-split rotas admin com `React.lazy`
-- Preload de fontes Inter/Plus Jakarta
-- Imagens com `loading="lazy"` + `decoding="async"` em catálogo
+## Entrega
+Relatório único estruturado em:
+- Inventário do Sistema
+- 20 Dimensões analisadas (cada uma: nota, evidências citadas, gaps, ações)
+- Scorecard visual ASCII
+- Top 10 ações
+- Roadmap 3 ondas
+- Nota final ponderada + comentário de maturidade
 
-## 6. Resiliência IA
-- Retry exponencial nas edge functions de IA (max 2 tentativas)
-- Fallback gracioso: se IA falha, sugere ação manual
-
-## 7. Testes E2E críticos (+15 testes alvo)
-- `lessonCompletion.test.ts` — fluxo de completar aula → ganhar XP → atualizar streak
-- `certificateFlow.test.ts` — quiz final 90%+ → certificado emitido
-- `commandPaletteNavigation.test.ts` — busca → seleção → navegação
-- `notificationsRealtime.test.ts` — insert na tabela → bell atualiza
-
-## 8. Documentação interativa
-- `/docs` (rota interna admin) com índice navegável das funcionalidades
-- Link no menu admin
-
-## 9. Relatórios exportáveis
-- `AdminPlatformAnalytics` ganha botão "Exportar PDF" (jspdf) e "Exportar CSV"
-
-## 10. Polimento visual final
-- Microinterações em botões CTA principais (scale + glow no hover)
-- Empty states ilustrados em Catálogo/Playbooks/Vídeos quando filtro retorna vazio
-- Dark mode polish: revisar contraste de badges/borders
-
-## Padrões mantidos
-≤400 linhas/arquivo · zero `any`/`console.*` · tokens HSL semânticos · RLS com `has_role` · TanStack Query · Lovable AI Gateway
-
-## Ordem de execução
-1. Migration: índices para audit_logs (telemetria)
-2. Hook `useTelemetry` + AdminTelemetryWidget
-3. Notificações de comentário (trigger já existe — falta UI no NotificationBell)
-4. i18n expandido + locale `es`
-5. Auditoria a11y (PlaybookDetail/CommandPalette/QuizPlayer)
-6. Code-split admin + preload fontes + lazy images
-7. Retry/fallback nas edge functions IA
-8. +15 testes E2E críticos
-9. Página `/docs` admin + exportação PDF/CSV em analytics
-10. Polimento visual + dark mode review + atualizar `DOCUMENTACAO.md` final
-
-**Meta:** 333+ testes verdes · Lighthouse 95+ · zero regressões · projeto em estado de imortalidade operacional.
+## Após aprovação
+Executo a auditoria completa em uma única resposta extensa e estruturada (sem implementar correções nesta etapa — o objetivo é o diagnóstico). Em seguida, aguardo seu OK para iniciar a execução das ações priorizadas em sprints (mantendo o padrão "1 melhoria por vez até 10/10").

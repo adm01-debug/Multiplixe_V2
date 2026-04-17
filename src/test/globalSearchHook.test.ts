@@ -4,7 +4,7 @@ import { renderHook, waitFor, act } from "@testing-library/react";
 const ilike = vi.fn();
 const eq = vi.fn(() => ({ ilike }));
 const select = vi.fn(() => ({ eq }));
-const from = vi.fn(() => ({ select }));
+const from = vi.fn((_table: string) => ({ select }));
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: (table: string) => from(table) },

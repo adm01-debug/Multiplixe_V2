@@ -9,15 +9,17 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "next-themes";
 import { queryClient } from "@/lib/queryClient";
 import { setupCachePersistence } from "@/lib/queryPersister";
-import CommandPalette from "@/components/CommandPalette";
-import KeyboardShortcutsModal from "@/components/KeyboardShortcutsModal";
 import FloatingPomodoroButton from "@/components/pomodoro/FloatingPomodoroButton";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import NavigationProgress from "@/components/navigation/NavigationProgress";
 import PageTransition from "@/components/navigation/PageTransition";
 import ScrollRestoration from "@/components/navigation/ScrollRestoration";
-import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt";
-import NotificationPermissionBanner from "@/components/security/NotificationPermissionBanner";
+
+// Lazy load non-critical overlays to reduce initial bundle
+const CommandPalette = lazy(() => import("@/components/CommandPalette"));
+const KeyboardShortcutsModal = lazy(() => import("@/components/KeyboardShortcutsModal"));
+const PWAInstallPrompt = lazy(() => import("@/components/pwa/PWAInstallPrompt"));
+const NotificationPermissionBanner = lazy(() => import("@/components/security/NotificationPermissionBanner"));
 import SkipLinks from "@/components/accessibility/SkipLinks";
 import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -94,13 +96,17 @@ const App = () => (
               <SkipLinks />
               <NavigationProgress />
               <ScrollRestoration />
-              <CommandPalette />
-              <KeyboardShortcutsModal />
+              <Suspense fallback={null}>
+                <CommandPalette />
+                <KeyboardShortcutsModal />
+              </Suspense>
               <SessionRotationGuard />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />
-              <ConditionalNotificationBanner />
-              <PWAInstallPrompt />
+              <Suspense fallback={null}>
+                <ConditionalNotificationBanner />
+                <PWAInstallPrompt />
+              </Suspense>
               <ScrollToTop />
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>

@@ -3,10 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Trash2, Save, FileQuestion } from 'lucide-react';
+import { Plus, Trash2, Save, FileQuestion, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import QuizQuestionCard from './QuizQuestionCard';
+import AIQuizGeneratorModal, { type GeneratedQuestion } from './AIQuizGeneratorModal';
 
 interface QuizOption {
   id?: string;
@@ -47,6 +48,25 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
   });
   const [loading, setLoading] = useState(false);
   const [existingQuizId, setExistingQuizId] = useState<string | null>(null);
+  const [aiOpen, setAiOpen] = useState(false);
+
+  const handleAIQuestions = (generated: GeneratedQuestion[]) => {
+    setQuiz((prev) => {
+      const baseIndex = prev.questions.length;
+      const mapped: QuizQuestion[] = generated.map((g, i) => ({
+        question_text: g.question_text,
+        explanation: g.explanation ?? '',
+        order_index: baseIndex + i,
+        options: g.options.map((o, oi) => ({
+          option_text: o.option_text,
+          is_correct: o.is_correct,
+          order_index: oi,
+        })),
+      }));
+      return { ...prev, questions: [...prev.questions, ...mapped] };
+    });
+    toast.success(`${generated.length} questões adicionadas`);
+  };
 
   useEffect(() => { loadExistingQuiz(); }, [lessonId, courseId]);
 
@@ -219,10 +239,16 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
       <div><Label htmlFor="description">Descrição (opcional)</Label><Textarea id="description" value={quiz.description} onChange={(e) => setQuiz(prev => ({ ...prev, description: e.target.value }))} /></div>
 
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <h3 className="font-semibold">Questões ({quiz.questions.length})</h3>
-          <Button onClick={addQuestion} size="sm"><Plus className="w-4 h-4 mr-2" />Adicionar Questão</Button>
+          <div className="flex gap-2">
+            <Button onClick={() => setAiOpen(true)} size="sm" variant="secondary">
+              <Sparkles className="w-4 h-4 mr-2" />Gerar com IA
+            </Button>
+            <Button onClick={addQuestion} size="sm"><Plus className="w-4 h-4 mr-2" />Adicionar Questão</Button>
+          </div>
         </div>
+        <AIQuizGeneratorModal open={aiOpen} onOpenChange={setAiOpen} onAccept={handleAIQuestions} />
 
         {quiz.questions.map((question, qIndex) => (
           <QuizQuestionCard

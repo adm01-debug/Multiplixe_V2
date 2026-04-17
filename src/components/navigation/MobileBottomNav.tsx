@@ -10,19 +10,22 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserXP } from '@/hooks/useUserXP';
-
-const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/catalogo', label: 'Cursos', icon: BookOpen },
-  { path: '/onboarding', label: 'Onboarding', icon: Sparkles },
-  { path: '/ranking', label: 'Ranking', icon: Trophy },
-  { path: '/perfil', label: 'Perfil', icon: User },
-];
+import { useT } from '@/lib/i18n';
 
 const MobileBottomNav = () => {
   const location = useLocation();
   const { prefetchCatalog, prefetchLearningPaths, prefetchLeaderboard } = usePrefetchQuery();
   const { currentLevel } = useUserXP();
+  const { t } = useT();
+
+  const navItems = [
+    { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { path: '/catalogo', label: t('nav.catalog'), icon: BookOpen },
+    { path: '/onboarding', label: t('nav.onboarding'), icon: Sparkles },
+    { path: '/ranking', label: t('nav.ranking'), icon: Trophy },
+    { path: '/perfil', label: t('nav.profile'), icon: User },
+  ];
+
 
   const getPrefetchHandler = (path: string) => {
     switch (path) {

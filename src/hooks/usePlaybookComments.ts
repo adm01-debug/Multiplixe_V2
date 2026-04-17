@@ -65,6 +65,30 @@ export function useAddPlaybookComment(playbookId: string | undefined) {
   });
 }
 
+export function useUpdatePlaybookComment(playbookId: string | undefined) {
+  const qc = useQueryClient();
+  const { user } = useAuth();
+  return useMutation({
+    mutationFn: async ({ id, content }: { id: string; content: string }) => {
+      if (!user) throw new Error("Não autenticado");
+      const trimmed = content.trim();
+      if (trimmed.length < 1) throw new Error("Comentário vazio");
+      if (trimmed.length > 2000) throw new Error("Comentário muito longo (máx. 2000)");
+      const { error } = await supabase
+        .from("playbook_comments")
+        .update({ content: trimmed })
+        .eq("id", id)
+        .eq("user_id", user.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["playbook-comments", playbookId] });
+      toast.success("Comentário atualizado");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+}
+
 export function useDeletePlaybookComment(playbookId: string | undefined) {
   const qc = useQueryClient();
   return useMutation({

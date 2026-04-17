@@ -1,145 +1,130 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Fuse, { FuseResultMatch } from "fuse.js";
 import {
-  CommandDialog, CommandEmpty, CommandInput, CommandList,
+  CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator,
 } from "@/components/ui/command";
-import { supabase } from "@/integrations/supabase/client";
-import { Moon, Sun, LogOut } from "lucide-react";
+import { Moon, Sun, LogOut, BookOpen, FileText, Video, Route, LayoutDashboard, Trophy, User, Sparkles, Target, ShieldAlert } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
-import { SearchResultGroup, QuickNavGroup, type SearchResult } from "@/components/command/SearchResultGroup";
+import { useGlobalSearch, type GlobalSearchHit } from "@/hooks/useGlobalSearch";
+
+interface QuickPage {
+  id: string;
+  title: string;
+  url: string;
+  icon: typeof BookOpen;
+}
+
+const QUICK_PAGES: QuickPage[] = [
+  { id: "dashboard", title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { id: "catalog", title: "Catálogo de Cursos", url: "/catalogo", icon: BookOpen },
+  { id: "leaderboard", title: "Ranking", url: "/ranking", icon: Trophy },
+  { id: "profile", title: "Meu Perfil", url: "/perfil", icon: User },
+  { id: "learning-paths", title: "Trilhas", url: "/trilhas", icon: Route },
+  { id: "playbooks", title: "Playbooks", url: "/playbooks", icon: FileText },
+  { id: "video-library", title: "Biblioteca de Vídeos", url: "/biblioteca-videos", icon: Video },
+  { id: "onboarding", title: "Onboarding", url: "/onboarding", icon: Sparkles },
+  { id: "assessments", title: "Avaliações", url: "/avaliacoes", icon: Target },
+  { id: "security", title: "Segurança", url: "/seguranca", icon: ShieldAlert },
+];
+
+const ICON_BY_TYPE: Record<GlobalSearchHit["type"], typeof BookOpen> = {
+  course: BookOpen,
+  playbook: FileText,
+  video: Video,
+  path: Route,
+};
+
+const HEADING_BY_TYPE: Record<GlobalSearchHit["type"], string> = {
+  course: "Cursos",
+  playbook: "Playbooks",
+  video: "Vídeos",
+  path: "Trilhas",
+};
 
 const CommandPalette = () => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
-
-  const pages: SearchResult[] = [
-    { id: "dashboard", title: "Dashboard", type: "page", url: "/dashboard", icon: "dashboard" },
-    { id: "catalog", title: "Catálogo de Cursos", type: "page", url: "/catalogo", icon: "catalog" },
-    { id: "leaderboard", title: "Ranking", type: "page", url: "/ranking", icon: "leaderboard" },
-    { id: "profile", title: "Meu Perfil", type: "page", url: "/perfil", icon: "profile" },
-    { id: "learning-paths", title: "Trilhas de Aprendizado", type: "page", url: "/trilhas", icon: "catalog" },
-    { id: "playbooks", title: "Sales Playbooks", type: "page", url: "/playbooks", icon: "catalog" },
-    { id: "video-library", title: "Biblioteca de Vídeos", type: "page", url: "/biblioteca-videos", icon: "catalog" },
-    { id: "onboarding", title: "Onboarding de Vendas", type: "page", url: "/onboarding", icon: "dashboard" },
-    { id: "assessments", title: "Avaliações de Competência", type: "page", url: "/avaliacoes", icon: "achievement" },
-    { id: "security", title: "Segurança", type: "page", url: "/seguranca", icon: "shield" },
-  ];
+  const { results, isLoading } = useGlobalSearch(query);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); setOpen(o => !o); return; }
-      const target = e.target as HTMLElement;
-      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable || open) return;
-
-      switch (e.key.toLowerCase()) {
-        case "g": {
-          const handleSecondKey = (e2: KeyboardEvent) => {
-            document.removeEventListener("keydown", handleSecondKey);
-            switch (e2.key.toLowerCase()) {
-              case "h": navigate("/dashboard"); break;
-              case "c": navigate("/catalogo"); break;
-              case "l": navigate("/ranking"); break;
-              case "p": navigate("/perfil"); break;
-              case "t": navigate("/trilhas"); break;
-              case "s": navigate("/seguranca"); break;
-            }
-          };
-          document.addEventListener("keydown", handleSecondKey, { once: true });
-          setTimeout(() => document.removeEventListener("keydown", handleSecondKey), 1000);
-          break;
-        }
-        case "t":
-          if (!e.metaKey && !e.ctrlKey) {
-            setTheme(theme === "dark" ? "light" : "dark");
-            toast.success(`Tema alterado para ${theme === "dark" ? "claro" : "escuro"}`);
-          }
-          break;
-        case "?": setOpen(true); break;
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((o) => !o);
       }
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [open, navigate, theme, setTheme]);
+  }, []);
 
-  const [cachedData, setCachedData] = useState<{
-    courses: { id: string; title: string; description: string | null; slug: string }[];
-    lessons: { id: string; title: string; description: string | null; course_id: string; courses: { slug: string } }[];
-    achievements: { id: string; name: string; description: string; slug: string }[];
-  }>({ courses: [], lessons: [], achievements: [] });
+  const handleSelect = (url: string) => {
+    setOpen(false);
+    setQuery("");
+    navigate(url);
+  };
 
-  useEffect(() => {
-    if (!user) return;
-    const loadData = async () => {
-      try {
-        const [coursesRes, lessonsRes, achievementsRes] = await Promise.all([
-          supabase.from("courses").select("id, title, description, slug").eq("is_published", true),
-          supabase.from("lessons").select("id, title, description, course_id, courses!inner(slug, is_published)").eq("courses.is_published", true),
-          supabase.from("achievements").select("id, name, description, slug"),
-        ]);
-        setCachedData({
-          courses: coursesRes.data || [],
-          lessons: (lessonsRes.data || []) as typeof cachedData.lessons,
-          achievements: achievementsRes.data || [],
-        });
-      } catch { /* Silent */ }
-    };
-    loadData();
-  }, [user]);
-
-  const fuseInstances = useMemo(() => ({
-    courses: new Fuse(cachedData.courses, { keys: ["title", "description"], threshold: 0.4, distance: 100, ignoreLocation: true, includeMatches: true }),
-    lessons: new Fuse(cachedData.lessons, { keys: ["title", "description"], threshold: 0.4, distance: 100, ignoreLocation: true, includeMatches: true }),
-    achievements: new Fuse(cachedData.achievements, { keys: ["name", "description"], threshold: 0.4, distance: 100, ignoreLocation: true, includeMatches: true }),
-  }), [cachedData]);
-
-  const performSearch = useCallback((searchQuery: string) => {
-    if (!searchQuery.trim()) { setResults([]); return; }
-    setIsLoading(true);
-    try {
-      const searchResults: SearchResult[] = [];
-      fuseInstances.courses.search(searchQuery, { limit: 5 }).forEach(({ item, matches }) => {
-        searchResults.push({ id: item.id, title: item.title, description: item.description || undefined, type: "course", url: `/curso/${item.slug}`, icon: "course", matches });
-      });
-      fuseInstances.lessons.search(searchQuery, { limit: 5 }).forEach(({ item, matches }) => {
-        searchResults.push({ id: item.id, title: item.title, description: item.description || undefined, type: "lesson", url: `/curso/${item.courses.slug}/aula/${item.id}`, icon: "lesson", courseSlug: item.courses.slug, matches });
-      });
-      fuseInstances.achievements.search(searchQuery, { limit: 5 }).forEach(({ item, matches }) => {
-        searchResults.push({ id: item.id, title: item.name, description: item.description || undefined, type: "achievement", url: "/perfil#conquistas", icon: "achievement", matches });
-      });
-      setResults(searchResults);
-    } catch { /* Silent */ } finally { setIsLoading(false); }
-  }, [fuseInstances]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => performSearch(query), 300);
-    return () => clearTimeout(timer);
-  }, [query, performSearch]);
-
-  const handleSelect = (url: string) => { setOpen(false); setQuery(""); navigate(url); };
-
-  const courseResults = results.filter(r => r.type === "course");
-  const lessonResults = results.filter(r => r.type === "lesson");
-  const achievementResults = results.filter(r => r.type === "achievement");
+  const grouped = results.reduce<Record<GlobalSearchHit["type"], GlobalSearchHit[]>>(
+    (acc, r) => {
+      acc[r.type].push(r);
+      return acc;
+    },
+    { course: [], playbook: [], video: [], path: [] },
+  );
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Buscar cursos, aulas, conquistas..." value={query} onValueChange={setQuery} />
+      <CommandInput
+        placeholder="Buscar cursos, playbooks, vídeos, trilhas..."
+        value={query}
+        onValueChange={setQuery}
+      />
       <CommandList>
         <CommandEmpty>{isLoading ? "Buscando..." : "Nenhum resultado encontrado."}</CommandEmpty>
-        {!query && user && <QuickNavGroup pages={pages} onSelect={handleSelect} />}
-        {query && results.length > 0 && (
+
+        {!query && user && (
+          <CommandGroup heading="Ir para">
+            {QUICK_PAGES.map((p) => {
+              const Icon = p.icon;
+              return (
+                <CommandItem key={p.id} value={p.title} onSelect={() => handleSelect(p.url)}>
+                  <Icon className="h-4 w-4 mr-2" />
+                  {p.title}
+                </CommandItem>
+              );
+            })}
+          </CommandGroup>
+        )}
+
+        {query && (
           <>
-            <SearchResultGroup heading="Cursos" results={courseResults} fieldKey="title" onSelect={handleSelect} />
-            <SearchResultGroup heading="Aulas" results={lessonResults} fieldKey="title" onSelect={handleSelect} showSeparator={courseResults.length > 0} />
-            <SearchResultGroup heading="Conquistas" results={achievementResults} fieldKey="auto" onSelect={handleSelect} showSeparator={courseResults.length > 0 || lessonResults.length > 0} />
+            {(Object.keys(grouped) as GlobalSearchHit["type"][]).map((type, idx) => {
+              const items = grouped[type];
+              if (items.length === 0) return null;
+              const Icon = ICON_BY_TYPE[type];
+              return (
+                <div key={type}>
+                  {idx > 0 && <CommandSeparator />}
+                  <CommandGroup heading={HEADING_BY_TYPE[type]}>
+                    {items.map((r) => (
+                      <CommandItem key={r.id} value={`${type}-${r.id}-${r.title}`} onSelect={() => handleSelect(r.url)}>
+                        <Icon className="h-4 w-4 mr-2 shrink-0" />
+                        <div className="flex flex-col min-w-0">
+                          <span className="truncate">{r.title}</span>
+                          {r.subtitle && (
+                            <span className="text-xs text-muted-foreground truncate">{r.subtitle}</span>
+                          )}
+                        </div>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </div>
+              );
+            })}
           </>
         )}
       </CommandList>
@@ -147,21 +132,36 @@ const CommandPalette = () => {
       <div className="border-t border-border p-3 space-y-2">
         {user && !query && (
           <div className="flex items-center justify-between gap-2 pb-2 border-b border-border">
-            <button onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); setOpen(false); }} className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-muted transition-colors text-sm">
+            <button
+              onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+                setOpen(false);
+                toast.success(`Tema ${theme === "dark" ? "claro" : "escuro"} ativado`);
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-muted transition-colors text-sm"
+            >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
-              <kbd className="ml-auto px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">T</kbd>
             </button>
-            <button onClick={() => { signOut(); setOpen(false); }} className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-destructive/10 text-destructive transition-colors text-sm">
-              <LogOut className="h-4 w-4" /><span>Sair</span>
+            <button
+              onClick={() => { signOut(); setOpen(false); }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-destructive/10 text-destructive transition-colors text-sm"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Sair</span>
             </button>
           </div>
         )}
         <div className="text-xs text-muted-foreground flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-          <div className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↑↓</kbd><span>navegar</span></div>
-          <div className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↵</kbd><span>selecionar</span></div>
-          <div className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">G</kbd><span>+</span><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">H/C/L/P</kbd><span>ir para</span></div>
-          <div className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">?</kbd><span>atalhos</span></div>
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↑↓</kbd><span>navegar</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">↵</kbd><span>selecionar</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">?</kbd><span>atalhos</span>
+          </div>
         </div>
       </div>
     </CommandDialog>

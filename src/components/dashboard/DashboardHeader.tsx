@@ -5,6 +5,8 @@ import CacheIndicator from '@/components/ui/CacheIndicator';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route } from 'lucide-react';
+import LanguageToggle from '@/components/LanguageToggle';
+import { useT } from '@/lib/i18n';
 
 interface Props {
   userName: string;
@@ -18,6 +20,7 @@ interface Props {
 
 const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetching, onRefreshCourses, onSignOut }: Props) => {
   const { prefetchCatalog, prefetchLearningPaths, prefetchLeaderboard } = usePrefetchQuery();
+  const { t } = useT();
 
   return (
     <header className="sticky top-0 z-50 glass neon-border">
@@ -43,16 +46,16 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
 
           <nav className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
             <PrefetchLink to="/dashboard" prefetch="intent" className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white rounded-xl shadow-lg neon-button">
-              Dashboard
+              {t('nav.dashboard')}
             </PrefetchLink>
             <PrefetchLink to="/catalogo" prefetch="intent" onPrefetchData={prefetchCatalog} className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors">
-              Catálogo
+              {t('nav.catalog')}
             </PrefetchLink>
             <PrefetchLink to="/ranking" prefetch="intent" onPrefetchData={prefetchLeaderboard} className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
-              <Trophy className="h-4 w-4" />Ranking
+              <Trophy className="h-4 w-4" />{t('nav.ranking')}
             </PrefetchLink>
             <PrefetchLink to="/trilhas" prefetch="intent" onPrefetchData={prefetchLearningPaths} className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
-              <Route className="h-4 w-4" />Trilhas
+              <Route className="h-4 w-4" />{t('nav.paths')}
             </PrefetchLink>
             {isAdmin && (
               <PrefetchLink to="/admin" prefetch="intent" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
@@ -62,6 +65,7 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
           </nav>
 
           <div className="flex items-center gap-3">
+            <LanguageToggle />
             <TooltipProvider>
               <Tooltip><TooltipTrigger asChild><div><NotificationBell /></div></TooltipTrigger><TooltipContent><p>Notificações</p></TooltipContent></Tooltip>
             </TooltipProvider>

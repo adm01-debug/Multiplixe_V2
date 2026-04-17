@@ -46,12 +46,28 @@ export function useFavorites() {
       if (error) throw error;
       return data;
     },
+    onMutate: async (courseId: string) => {
+      const key = ["favorites", user?.id];
+      await queryClient.cancelQueries({ queryKey: key });
+      const previous = queryClient.getQueryData<Favorite[]>(key) ?? [];
+      const optimistic: Favorite = {
+        id: `optimistic-${courseId}`,
+        user_id: user?.id ?? "",
+        course_id: courseId,
+        created_at: new Date().toISOString(),
+      };
+      queryClient.setQueryData<Favorite[]>(key, [optimistic, ...previous]);
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous) queryClient.setQueryData(["favorites", user?.id], ctx.previous);
+      toast.error("Erro ao adicionar aos favoritos");
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
       toast.success("Curso adicionado aos favoritos! ⭐");
     },
-    onError: () => {
-      toast.error("Erro ao adicionar aos favoritos");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
     },
   });
 
@@ -66,12 +82,22 @@ export function useFavorites() {
 
       if (error) throw error;
     },
+    onMutate: async (courseId: string) => {
+      const key = ["favorites", user?.id];
+      await queryClient.cancelQueries({ queryKey: key });
+      const previous = queryClient.getQueryData<Favorite[]>(key) ?? [];
+      queryClient.setQueryData<Favorite[]>(key, previous.filter((f) => f.course_id !== courseId));
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous) queryClient.setQueryData(["favorites", user?.id], ctx.previous);
+      toast.error("Erro ao remover dos favoritos");
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
       toast.success("Curso removido dos favoritos");
     },
-    onError: () => {
-      toast.error("Erro ao remover dos favoritos");
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
     },
   });
 

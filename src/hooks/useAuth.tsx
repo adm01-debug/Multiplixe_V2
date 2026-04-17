@@ -66,18 +66,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const recordAudit = async (userId: string, action: string, metadata?: Record<string, unknown>) => {
+    try {
+      await supabase.rpc('create_audit_log', {
+        p_user_id: userId,
+        p_action: action,
+        p_resource_type: 'auth',
+        p_resource_id: null,
+        p_old_values: null,
+        p_new_values: null,
+        p_metadata: metadata ? (metadata as never) : null,
+      });
+    } catch {
+      // Silent fail - audit log must never block auth flow
+    }
+  };
+
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    if (!error && data.user) {
+      void recordAudit(data.user.id, 'login', { email, user_agent: navigator.userAgent });
+    }
     return { error: error as Error | null };
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -87,10 +106,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
       },
     });
+    if (!error && data.user) {
+      void recordAudit(data.user.id, 'signup', { email });
+    }
     return { error: error as Error | null };
   };
 
   const signOut = async () => {
+    const currentUserId = user?.id;
+    if (currentUserId) {
+      await recordAudit(currentUserId, 'logout');
+    }
     await supabase.auth.signOut();
   };
 

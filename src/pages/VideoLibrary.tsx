@@ -40,6 +40,8 @@ const VideoLibrary = () => {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [active]);
+
+  const categories = useMemo(() => {
     const set = new Set(videos.map(v => v.category));
     return ['all', ...Array.from(set)];
   }, [videos]);
@@ -57,6 +59,11 @@ const VideoLibrary = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <DynamicSEO
+        title="Biblioteca de Vídeos"
+        description="Demos de produto e treinamentos rápidos para o time de vendas."
+        url="https://multiplixe.lovable.app/biblioteca-videos"
+      />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')} className="rounded-xl">

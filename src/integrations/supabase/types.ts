@@ -2323,7 +2323,35 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      quiz_options_public: {
+        Row: {
+          id: string | null
+          option_text: string | null
+          order_index: number | null
+          question_id: string | null
+        }
+        Insert: {
+          id?: string | null
+          option_text?: string | null
+          order_index?: number | null
+          question_id?: string | null
+        }
+        Update: {
+          id?: string | null
+          option_text?: string | null
+          order_index?: number | null
+          question_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       add_user_xp: {
@@ -2583,6 +2611,16 @@ export type Database = {
         Returns: undefined
       }
       reset_login_attempts: { Args: { p_email: string }; Returns: undefined }
+      submit_quiz_attempt: {
+        Args: { p_answers: Json; p_quiz_id: string }
+        Returns: {
+          correct_count: number
+          passed: boolean
+          passing_score: number
+          score: number
+          total_questions: number
+        }[]
+      }
       update_user_streak: {
         Args: { p_user_id: string }
         Returns: {
@@ -2590,6 +2628,24 @@ export type Database = {
           new_streak: number
           streak_updated: boolean
           xp_awarded: number
+        }[]
+      }
+      verify_certificate_by_code: {
+        Args: { p_code: string }
+        Returns: {
+          course_title: string
+          issued_at: string
+          user_name: string
+          verification_code: string
+        }[]
+      }
+      verify_path_certificate_by_code: {
+        Args: { p_code: string }
+        Returns: {
+          issued_at: string
+          path_title: string
+          user_name: string
+          verification_code: string
         }[]
       }
     }

@@ -72,16 +72,22 @@ export function useCertificates() {
   const verifyCertificate = useCallback(async (code: string): Promise<Certificate | null> => {
     try {
       const { data, error: fetchError } = await supabase
-        .from('certificates')
-        .select('*')
-        .eq('verification_code', code.toUpperCase())
-        .single();
+        .rpc('verify_certificate_by_code', { p_code: code });
 
-      if (fetchError) {
+      if (fetchError || !data || data.length === 0) {
         return null;
       }
 
-      return data;
+      const row = data[0];
+      return {
+        id: row.verification_code,
+        user_id: '',
+        course_id: '',
+        verification_code: row.verification_code,
+        issued_at: row.issued_at,
+        user_name: row.user_name,
+        course_title: row.course_title,
+      };
     } catch {
       return null;
     }

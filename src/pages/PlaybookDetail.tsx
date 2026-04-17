@@ -128,6 +128,8 @@ const PlaybookDetail = () => {
         <article className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-a:text-primary">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{playbook.content}</ReactMarkdown>
         </article>
+
+        <PlaybookComments playbookId={playbook.id} />
       </main>
     </div>
   );

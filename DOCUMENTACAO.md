@@ -499,3 +499,54 @@ Consulte o arquivo `PLANO_MELHORIAS.md` para a lista completa de melhorias plane
 
 > **Última atualização:** Dezembro 2024
 > **Versão:** 1.0.0
+
+---
+
+# Sprint Coroação — Fechamento 10/10
+
+## IA aplicada (Lovable AI Gateway, sem API key do usuário)
+- `ai-playbook-summarize` — resumo executivo de playbooks longos (botão Sparkles em PlaybookDetail)
+- `ai-quiz-generator` — admin gera questões de quiz a partir de transcrição/conteúdo (modal em QuizManager)
+
+## Comentários em Playbooks
+- CRUD completo via `usePlaybookComments` / `useAddPlaybookComment` / `useUpdatePlaybookComment` / `useDeletePlaybookComment`
+- Edição inline com botão de lápis · exibe `updated_at` quando editado
+- Trigger SQL `notify_new_playbook_comment` cria notificação para autores anteriores do thread
+- Atalho `n` foca o textarea (via `data-comment-input`)
+
+## Recomendações
+- `useSmartRecommendations` — sugestões baseadas em progresso/categoria/nível
+- Widget `SmartRecommendations` integrado no Dashboard
+- Atalho `g r` navega para área de recomendações
+
+## Internacionalização (i18n)
+- `src/lib/i18n.ts` — store leve com PT-BR e EN, persistência em `localStorage` (`app.locale`)
+- Hook `useT()` reativo · função `t(path)` para uso fora de componentes
+- `LanguageToggle` no Header da landing · aplicado em Header / DashboardHeader / MobileBottomNav
+
+## Métricas avançadas (Admin)
+- `AdminEngagementHeatmap` — heatmap dia × hora dos últimos 30 dias (audit_logs)
+- `AdminCohortRetention` — retenção semanal de novos usuários (4 coortes)
+- `PlatformAnalytics` continua como visão geral de KPIs
+
+## Sitemap dinâmico
+- `generate-sitemap` agora inclui:
+  - rotas estáticas públicas
+  - cursos publicados (`/curso/:slug`)
+  - trilhas publicadas (`/trilhas/:slug`)
+  - vídeos publicados (`/biblioteca-videos`)
+  - playbooks publicados (`/playbook/:slug`)
+
+## Atalhos globais
+- `g d/c/t/p/v/o/a/r` navegação · `n` comentário · `?` ajuda · `⌘K` Command Palette
+- `KeyboardShortcutsModal` lista todos via `SHORTCUTS_LIST`
+
+## Performance percebida
+- `PlaybookDetailSkeleton` durante carregamento
+- Optimistic updates em favoritos (rollback automático em erro)
+- `LazyImage` com placeholder · prefetch de rotas
+
+## Qualidade
+- **318+ testes** (Vitest) · zero `any` · zero `console.*`
+- Arquivos ≤ 400 linhas · tokens HSL semânticos · WCAG AA
+- RLS com `has_role(auth.uid(), 'admin')` em todas as tabelas sensíveis

@@ -10,8 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Pencil, Trash2, Target, Loader2 } from 'lucide-react';
 import { useSkillAssessments, useSaveAssessment, useDeleteAssessment, type SkillAssessment } from '@/hooks/useSkillAssessments';
+import { skillAssessmentSchema } from '@/lib/salesEnablementSchemas';
 import SimpleEmptyState from '@/components/SimpleEmptyState';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface QuizOption { id: string; title: string }
 
@@ -37,8 +39,20 @@ const AdminAssessmentsTab = () => {
   const openEdit = (a: SkillAssessment) => { setForm(a); setOpen(true); };
 
   const handleSave = async () => {
-    if (!form.title?.trim() || !form.skill_area?.trim()) return;
-    await save.mutateAsync(form);
+    const parsed = skillAssessmentSchema.safeParse({
+      title: form.title || '',
+      description: form.description || null,
+      skill_area: form.skill_area || '',
+      frequency_days: Number(form.frequency_days) || 90,
+      passing_score: Number(form.passing_score) || 70,
+      quiz_id: form.quiz_id || null,
+      is_active: form.is_active ?? true,
+    });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message || 'Dados inválidos');
+      return;
+    }
+    await save.mutateAsync({ ...form, ...parsed.data });
     setOpen(false);
   };
 

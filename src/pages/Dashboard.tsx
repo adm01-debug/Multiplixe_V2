@@ -25,6 +25,7 @@ import GoalsWidget from '@/components/goals/GoalsWidget';
 import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidget';
 import OnboardingWidget from '@/components/dashboard/OnboardingWidget';
 import DueAssessmentsWidget from '@/components/dashboard/DueAssessmentsWidget';
+import SmartRecommendations from '@/components/dashboard/SmartRecommendations';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardHero from '@/components/dashboard/DashboardHero';
 import DashboardStatsGrid, { StatItem } from '@/components/dashboard/DashboardStatsGrid';
@@ -178,6 +179,10 @@ const Dashboard = () => {
             <ContinueLearningWidget userProgress={userProgress} />
           </motion.section>
         )}
+
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+          <SmartRecommendations />
+        </motion.section>
 
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><DailyChallenges /></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><GoalsWidget /></motion.section>

@@ -1,24 +1,48 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ArrowLeft, Eye, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Eye, Calendar, Tag, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
 import { usePlaybook, useRegisterPlaybookView } from '@/hooks/usePlaybooks';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import DynamicSEO from '@/components/seo/DynamicSEO';
+import PlaybookComments from '@/components/playbooks/PlaybookComments';
 
 const PlaybookDetail = () => {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
   const { data: playbook, isLoading } = usePlaybook(slug);
   const registerView = useRegisterPlaybookView();
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summarizing, setSummarizing] = useState(false);
 
   useEffect(() => {
     if (playbook?.id) registerView.mutate(playbook.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playbook?.id]);
+
+  const handleSummarize = async () => {
+    if (!playbook) return;
+    setSummarizing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('ai-playbook-summarize', {
+        body: { content: playbook.content, title: playbook.title },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setSummary(data?.summary ?? '');
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Falha ao gerar resumo';
+      toast.error(msg);
+    } finally {
+      setSummarizing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -78,11 +102,34 @@ const PlaybookDetail = () => {
               ))}
             </div>
           )}
+          <div className="pt-2">
+            <Button onClick={handleSummarize} disabled={summarizing} variant="secondary" size="sm">
+              {summarizing ? (
+                <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Resumindo...</>
+              ) : (
+                <><Sparkles className="h-4 w-4 mr-2" /> Resumir com IA</>
+              )}
+            </Button>
+          </div>
+          {summary && (
+            <Card className="border-primary/40 bg-primary/5">
+              <CardContent className="p-4">
+                <h2 className="font-semibold mb-2 flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" /> Resumo executivo
+                </h2>
+                <div className="prose prose-sm prose-invert max-w-none">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{summary}</ReactMarkdown>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         <article className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-a:text-primary">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{playbook.content}</ReactMarkdown>
         </article>
+
+        <PlaybookComments playbookId={playbook.id} />
       </main>
     </div>
   );

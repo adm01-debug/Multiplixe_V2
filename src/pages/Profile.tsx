@@ -15,8 +15,9 @@ import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, CertificateCardSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
-import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3 } from 'lucide-react';
+import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download } from 'lucide-react';
 import { toast } from 'sonner';
+import LanguageToggle from '@/components/LanguageToggle';
 
 interface UserStats { totalLessonsCompleted: number; totalCoursesCompleted: number; totalCoursesInProgress: number; totalWatchedMinutes: number; memberSince: string; }
 interface Certificate { id: string; user_id: string; course_id: string; verification_code: string; issued_at: string; user_name: string; course_title: string; }
@@ -58,6 +59,24 @@ const Profile = () => {
   }, [user, getUserCertificates]);
 
   const handleSignOut = async () => { await signOut(); toast.success('Até logo!'); navigate('/'); };
+
+  const handleExport = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('export-user-data');
+      if (error) throw error;
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `meus-dados-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Dados exportados com sucesso');
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Falha ao exportar';
+      toast.error(msg);
+    }
+  };
 
   if (loading || loadingXP) {
     return (
@@ -101,7 +120,15 @@ const Profile = () => {
                 <div><h1 className="font-display font-bold text-xl text-foreground tracking-tight">MULTIPLI<span className="text-gradient neon-text">XE</span></h1><p className="text-[10px] text-muted-foreground uppercase tracking-wide">by Promo Brindes</p></div>
               </Link>
             </div>
-            <Button variant="outline" size="icon" onClick={handleSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive h-11 w-11"><LogOut className="h-4 w-4" /></Button>
+            <div className="flex items-center gap-2">
+              <LanguageToggle />
+              <Button variant="outline" size="sm" onClick={handleExport} className="rounded-xl">
+                <Download className="h-4 w-4 mr-2" /> Exportar dados
+              </Button>
+              <Button variant="outline" size="icon" onClick={handleSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive h-11 w-11" aria-label="Sair">
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>

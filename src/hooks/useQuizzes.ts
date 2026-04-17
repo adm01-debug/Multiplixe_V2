@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 interface QuizOption {
   id: string;
   option_text: string;
-  is_correct: boolean;
   order_index: number;
 }
 
@@ -47,74 +46,61 @@ export const useQuizzes = () => {
   const { addXP } = useUserXP();
   const [loading, setLoading] = useState(false);
 
+  const fetchQuizWithFilter = useCallback(async (
+    filter: (q: ReturnType<typeof supabase.from<'quizzes'>>['select']) => unknown
+  ): Promise<Quiz | null> => {
+    return null;
+  }, []);
+
+  const loadQuizBy = async (column: 'lesson_id' | 'course_id', value: string, courseOnly = false): Promise<Quiz | null> => {
+    let query = supabase.from('quizzes').select('*').eq(column, value);
+    if (courseOnly) query = query.is('lesson_id', null);
+    const { data: quizRow, error } = await query.maybeSingle();
+    if (error || !quizRow) return null;
+
+    const { data: questions } = await supabase
+      .from('quiz_questions')
+      .select('id, quiz_id, question_text, explanation, order_index, created_at')
+      .eq('quiz_id', quizRow.id)
+      .order('order_index');
+
+    const questionIds = (questions || []).map(q => q.id);
+    const { data: options } = questionIds.length > 0
+      ? await supabase
+          .from('quiz_options_public' as never)
+          .select('id, question_id, option_text, order_index')
+          .in('question_id', questionIds)
+          .order('order_index')
+      : { data: [] as Array<{ id: string; question_id: string; option_text: string; order_index: number }> };
+
+    const optsByQ = (options || []).reduce<Record<string, QuizOption[]>>((acc, o) => {
+      const opt = o as { id: string; question_id: string; option_text: string; order_index: number };
+      (acc[opt.question_id] ||= []).push({
+        id: opt.id,
+        option_text: opt.option_text,
+        order_index: opt.order_index,
+      });
+      return acc;
+    }, {});
+
+    return {
+      ...quizRow,
+      quiz_questions: (questions || []).map(q => ({
+        id: q.id,
+        question_text: q.question_text,
+        explanation: q.explanation,
+        order_index: q.order_index,
+        quiz_options: (optsByQ[q.id] || []).sort((a, b) => a.order_index - b.order_index),
+      })),
+    } as Quiz;
+  };
+
   const fetchQuizForLesson = useCallback(async (lessonId: string): Promise<Quiz | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('quizzes')
-        .select(`
-          *,
-          quiz_questions (
-            *,
-            quiz_options (*)
-          )
-        `)
-        .eq('lesson_id', lessonId)
-        .maybeSingle();
-
-      if (error) {
-        return null;
-      }
-
-      if (!data) return null;
-
-      // Sort questions and options by order_index
-      const quiz = data as Quiz;
-      quiz.quiz_questions = quiz.quiz_questions
-        .sort((a, b) => a.order_index - b.order_index)
-        .map(q => ({
-          ...q,
-          quiz_options: q.quiz_options.sort((a, b) => a.order_index - b.order_index)
-        }));
-
-      return quiz;
-    } catch {
-      return null;
-    }
+    return loadQuizBy('lesson_id', lessonId);
   }, []);
 
   const fetchQuizForCourse = useCallback(async (courseId: string): Promise<Quiz | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('quizzes')
-        .select(`
-          *,
-          quiz_questions (
-            *,
-            quiz_options (*)
-          )
-        `)
-        .eq('course_id', courseId)
-        .is('lesson_id', null)
-        .maybeSingle();
-
-      if (error) {
-        return null;
-      }
-
-      if (!data) return null;
-
-      const quiz = data as Quiz;
-      quiz.quiz_questions = quiz.quiz_questions
-        .sort((a, b) => a.order_index - b.order_index)
-        .map(q => ({
-          ...q,
-          quiz_options: q.quiz_options.sort((a, b) => a.order_index - b.order_index)
-        }));
-
-      return quiz;
-    } catch {
-      return null;
-    }
+    return loadQuizBy('course_id', courseId, true);
   }, []);
 
   const fetchUserAttempts = useCallback(async (quizId: string): Promise<QuizAttempt[]> => {
@@ -149,34 +135,37 @@ export const useQuizzes = () => {
 
     setLoading(true);
     try {
-      // Calculate score
-      let correctAnswers = 0;
-      const totalQuestions = quiz.quiz_questions.length;
+      // Server-side validation via RPC (no gabarito on client)
+      const answersPayload = Object.entries(answers).map(([question_id, option_id]) => ({
+        question_id,
+        option_id,
+      }));
 
-      quiz.quiz_questions.forEach(question => {
-        const selectedOptionId = answers[question.id];
-        const correctOption = question.quiz_options.find(opt => opt.is_correct);
-        if (correctOption && selectedOptionId === correctOption.id) {
-          correctAnswers++;
-        }
+      const { data: rpcData, error: rpcError } = await supabase.rpc('submit_quiz_attempt', {
+        p_quiz_id: quiz.id,
+        p_answers: answersPayload,
       });
 
-      const scorePercentage = Math.round((correctAnswers / totalQuestions) * 100);
-      const passed = scorePercentage >= quiz.passing_score;
-      
-      // Only award XP if passed and it's the first time passing
+      if (rpcError || !rpcData || rpcData.length === 0) {
+        toast.error('Erro ao validar quiz');
+        return null;
+      }
+
+      const result = rpcData[0];
+      const scorePercentage = result.score;
+      const passed = result.passed;
+      const totalQuestions = result.total_questions;
+
       let xpEarned = 0;
       if (passed) {
         const previousAttempts = await fetchUserAttempts(quiz.id);
         const hasPreviouslyPassed = previousAttempts.some(a => a.passed);
-        
         if (!hasPreviouslyPassed) {
           xpEarned = quiz.xp_reward;
           await addXP(xpEarned, 'achievement');
         }
       }
 
-      // Save attempt
       const { error } = await supabase
         .from('user_quiz_attempts')
         .insert({
@@ -186,7 +175,7 @@ export const useQuizzes = () => {
           total_questions: totalQuestions,
           passed,
           xp_earned: xpEarned,
-          answers
+          answers,
         });
 
       if (error) {

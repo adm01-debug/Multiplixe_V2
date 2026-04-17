@@ -1,70 +1,71 @@
 
-O usuário quer continuar evoluindo o projeto rumo ao 10/10. Já entregamos Sales Enablement Suite completo (254 testes). Vou consultar o roadmap pendente e definir o próximo lote de melhorias com maior impacto.
+Já entregamos: Sales Enablement Suite completo + Sprint Excelência (280 testes). Agora vou focar em fechar os gaps que ainda separam o projeto de 10/10: observabilidade real, segurança avançada, performance percebida, i18n leve, e cobertura de testes E2E.
 
-Pelo PLANO_IMPLEMENTACAO_PENDENTES.md (56 melhorias em 4 fases) e considerando o que já está pronto, vou focar em **Performance + Acessibilidade + Resiliência + UX Mobile** — itens que movem o ponteiro de 9/10 para 10/10.
+# Sprint Perfeição — 10 frentes finais
 
-# Plano: Sprint Excelência — 10 melhorias críticas
+## 1. Observabilidade & Telemetria
+- `src/lib/telemetry.ts`: wrapper para registrar erros e eventos críticos (page view, mutation failure) na tabela `audit_logs` existente
+- Integrar no `ErrorBoundary` (capturar stack) e em `queryClient` (onError global de mutations)
 
-## 1. Performance & Memoização
-- **React.memo + useMemo** em listas pesadas: `LessonList`, `LearningPathCourseItem`, `QuizQuestionCard`, `CertificateCard`
-- **Code splitting agressivo**: lazy load de `Admin.tsx` por tab (já parcial, completar para PlatformAnalytics, QuizStats)
-- **Prefetch inteligente**: `PrefetchLink` nas rotas mais acessadas do header
+## 2. Memoização de listas pesadas
+- `React.memo` em: `LessonList`, `LearningPathCourseItem`, `QuizQuestionCard`, `CertificateCard`, `CourseCard`
+- `useMemo` para filtros derivados em `Catalog`, `Playbooks`, `VideoLibrary`
 
-## 2. Acessibilidade WCAG AA+
-- **ARIA labels** em todos botões icon-only do projeto (varredura)
-- **Focus visible** consistente com ring tokens semânticos
-- **Skip link** funcional na nova página `/playbooks`, `/biblioteca-videos`, `/onboarding`, `/avaliacoes`
-- **Keyboard navigation** no modal de vídeo da biblioteca (Esc fecha, setas controlam)
+## 3. Prefetch inteligente
+- `usePrefetchRoute` hook usando `queryClient.prefetchQuery` em hover/focus de links principais (Dashboard → Catálogo, Trilhas, Playbooks)
+- Aplicar em `DashboardHeader` e `MobileBottomNav`
 
-## 3. Resiliência & Error Handling
-- **ErrorBoundary** por rota lazy-loaded (envolve Suspense)
-- **Retry automático** TanStack Query com backoff exponencial (já parcial, padronizar `retry: 2`)
-- **Toast de erro padronizado** em todas mutations (varrer hooks novos)
-- **Estados vazios consistentes** com `SimpleEmptyState` em todas listas
+## 4. Acessibilidade WCAG AA+ (varredura final)
+- ARIA labels em todos botões icon-only sem label das novas páginas
+- `aria-current="page"` no `MobileBottomNav` ativo
+- `aria-live="polite"` no contador de resultados das buscas (Playbooks, VideoLibrary)
+- `role="status"` em todos loaders
 
-## 4. UX Mobile
-- **MobileBottomNav**: adicionar atalho para Playbooks ou Onboarding (escolher 1 dos 5 slots)
-- **Touch targets ≥44px** em controles do player de vídeo
-- **Sheet drawer** para filtros do `VideoLibrary` em mobile
+## 5. Estados vazios & loading consistentes
+- Substituir Skeleton solto por `<PageSkeletons.List />` ou variants já existentes
+- `SimpleEmptyState` em todas listas com 0 items
 
-## 5. SEO & Metadata
-- **DynamicSEO** nas 6 novas páginas (title, description, og:image)
-- **Sitemap dinâmico** incluindo playbooks publicados
+## 6. Segurança backend
+- Migration: criar índices ausentes para queries quentes (`playbooks(is_published, view_count)`, `training_videos(is_published, category)`, `user_assessment_results(user_id, next_due_at)`)
+- Auditoria: trigger `audit_logs` em INSERT/UPDATE/DELETE de `playbooks`, `training_videos`, `onboarding_workflows`, `skill_assessments`
+- Rate limit por IP em `/playbook/:slug` view counter (função `register_playbook_view` com check de janela de 1 min)
 
-## 6. Validação Zod expandida
-- Schemas em `AdminWorkflowsTab` e `AdminAssessmentsTab` (faltou validação client-side)
-- Validação de URL de vídeo no `AdminVideosTab`
+## 7. Atalhos de teclado globais
+- `useGlobalShortcuts`: `g d` → Dashboard, `g c` → Catálogo, `g p` → Playbooks, `g v` → Vídeos, `?` → exibir lista
+- Componente `KeyboardShortcutsModal` invocado pelo `?`
 
-## 7. Notificações inteligentes
-- Trigger de notificação quando avaliação vence em 7 dias
-- Notificação ao completar workflow de onboarding
+## 8. Sitemap & robots dinâmicos
+- Edge function `generate-sitemap`: lê playbooks publicados + rotas estáticas, retorna XML
+- Atualizar `public/robots.txt` para referenciar sitemap
 
-## 8. Analytics & Insights
-- Widget "Top Playbooks" no dashboard admin (mais lidos)
-- Widget "Engajamento de Vídeos" (taxa de conclusão)
+## 9. PWA polish
+- Adicionar shortcuts no `manifest.json` (Dashboard, Playbooks, Onboarding)
+- Cache strategy no `sw.js` para rotas estáticas dos novos módulos
 
-## 9. Testes
-- +20 testes cobrindo: ErrorBoundary, validações Zod novas, memoização, ARIA
-
-## 10. Documentação
-- Atualizar `DOCUMENTACAO.md` com Sales Enablement Suite
-- README com novas rotas
+## 10. Testes E2E críticos + documentação
+- `src/test/e2e/criticalFlows.test.tsx`: smoke renderiza Playbooks/VideoLibrary/SkillAssessments/SalesOnboarding com mocks
+- `src/test/memoization.test.tsx`: garante que componentes memoizados não re-renderizam com props iguais
+- `src/test/telemetry.test.ts`: valida wrapper
+- Atualizar `DOCUMENTACAO.md` com Sales Enablement Suite + Sprint Perfeição
+- Atualizar `README.md` com novas rotas e atalhos
 
 ## Padrões mantidos
-- Modularização ≤400 linhas
-- Zero `any`, zero `console.*`
+- ≤400 linhas por arquivo, zero `any`, zero `console.*`
 - Tokens semânticos do design system
 - TanStack Query + invalidação correta
+- RLS com `has_role(auth.uid(), 'admin'::app_role)`
 - Toasts sonner
 
 ## Ordem de execução (sequencial, sem pausas)
-1. Validações Zod nos forms admin novos
-2. Memoização + ErrorBoundary por rota lazy
-3. ARIA labels + skip links + keyboard nav
-4. DynamicSEO nas 6 novas páginas
-5. MobileBottomNav + touch targets
-6. Notificações automáticas (trigger SQL)
-7. Widgets analytics admin
-8. +20 testes
-9. Documentação atualizada
-10. Rodar suíte completa (alvo 274+ testes)
+1. Migration: índices + triggers de auditoria + função view counter com rate limit
+2. `telemetry.ts` + integração ErrorBoundary/queryClient
+3. Memoização nos 5 componentes de lista
+4. Hook `usePrefetchRoute` + integração nav
+5. Varredura ARIA + aria-current/live/status
+6. `useGlobalShortcuts` + `KeyboardShortcutsModal`
+7. Edge function `generate-sitemap` + `robots.txt`
+8. PWA: manifest shortcuts + sw.js cache
+9. +30 testes (E2E smoke, memoização, telemetria)
+10. Rodar suíte completa (alvo 310+ testes) + atualizar docs
+
+**Meta:** 310+ testes passando, zero regressões, projeto cravado em 10/10.

@@ -939,6 +939,41 @@ export type Database = {
         }
         Relationships: []
       }
+      playbook_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          playbook_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          playbook_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          playbook_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playbook_comments_playbook_id_fkey"
+            columns: ["playbook_id"]
+            isOneToOne: false
+            referencedRelation: "playbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       playbook_views: {
         Row: {
           id: string
@@ -2422,6 +2457,23 @@ export type Database = {
         }[]
       }
       get_recommended_courses: {
+        Args: { p_limit?: number; p_user_id: string }
+        Returns: {
+          category_id: string
+          description: string
+          duration_minutes: number
+          id: string
+          instructor_name: string
+          is_featured: boolean
+          level: string
+          recommendation_reason: string
+          slug: string
+          thumbnail_url: string
+          title: string
+          total_lessons: number
+        }[]
+      }
+      get_smart_recommendations: {
         Args: { p_limit?: number; p_user_id: string }
         Returns: {
           category_id: string

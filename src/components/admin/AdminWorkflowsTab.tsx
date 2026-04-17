@@ -10,7 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Pencil, Trash2, GripVertical, X, Loader2, Sparkles } from 'lucide-react';
 import { useOnboardingWorkflows, useSaveWorkflow, useDeleteWorkflow, type OnboardingWorkflow, type OnboardingStep, type OnboardingStepType } from '@/hooks/useOnboardingWorkflow';
+import { onboardingWorkflowSchema } from '@/lib/salesEnablementSchemas';
 import SimpleEmptyState from '@/components/SimpleEmptyState';
+import { toast } from 'sonner';
 
 const STEP_TYPES: { value: OnboardingStepType; label: string }[] = [
   { value: 'video', label: 'Vídeo' },
@@ -55,8 +57,19 @@ const AdminWorkflowsTab = () => {
   };
 
   const handleSave = async () => {
-    if (!form.name?.trim()) return;
-    await save.mutateAsync(form);
+    const parsed = onboardingWorkflowSchema.safeParse({
+      name: form.name || '',
+      description: form.description || null,
+      role_target: form.role_target || 'sales',
+      steps: form.steps || [],
+      is_active: form.is_active ?? true,
+      is_default: form.is_default ?? false,
+    });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message || 'Dados inválidos');
+      return;
+    }
+    await save.mutateAsync({ ...form, ...parsed.data } as Partial<OnboardingWorkflow>);
     setOpen(false);
   };
 

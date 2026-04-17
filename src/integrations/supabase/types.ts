@@ -2329,6 +2329,7 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      check_due_assessment_notifications: { Args: never; Returns: undefined }
       check_login_allowed: {
         Args: { p_email: string }
         Returns: {

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Video, Search, Play, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useTrainingVideos, useUpdateVideoProgress, type TrainingVideo } from '@/hooks/useTrainingVideos';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import EmptyState from '@/components/SimpleEmptyState';
+import DynamicSEO from '@/components/seo/DynamicSEO';
 
 const formatDuration = (s: number) => {
   const m = Math.floor(s / 60);
@@ -24,6 +25,21 @@ const VideoLibrary = () => {
   const [category, setCategory] = useState<string>('all');
   const [active, setActive] = useState<TrainingVideo | null>(null);
   const updateProgress = useUpdateVideoProgress();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Keyboard nav no modal: setas controlam tempo, espaço pausa
+  useEffect(() => {
+    if (!active) return;
+    const handler = (e: KeyboardEvent) => {
+      const v = videoRef.current;
+      if (!v) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); v.currentTime = Math.min(v.currentTime + 5, v.duration || v.currentTime + 5); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); v.currentTime = Math.max(v.currentTime - 5, 0); }
+      else if (e.key === ' ') { e.preventDefault(); if (v.paused) void v.play(); else v.pause(); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [active]);
 
   const categories = useMemo(() => {
     const set = new Set(videos.map(v => v.category));
@@ -43,6 +59,11 @@ const VideoLibrary = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <DynamicSEO
+        title="Biblioteca de Vídeos"
+        description="Demos de produto e treinamentos rápidos para o time de vendas."
+        url="https://multiplixe.lovable.app/biblioteca-videos"
+      />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')} className="rounded-xl">
@@ -116,9 +137,11 @@ const VideoLibrary = () => {
           {active && (
             <div className="aspect-video bg-black rounded-lg overflow-hidden">
               <video
+                ref={videoRef}
                 src={active.video_url}
                 controls
                 autoPlay
+                aria-label={`Reprodutor: ${active.title}`}
                 className="w-full h-full"
                 onEnded={() => updateProgress.mutate({ videoId: active.id, watchedSeconds: active.duration_seconds, completed: true })}
               />

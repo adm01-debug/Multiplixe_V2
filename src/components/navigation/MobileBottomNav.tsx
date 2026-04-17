@@ -6,7 +6,6 @@ import {
   BookOpen, 
   Trophy, 
   User,
-  Route,
   Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -15,7 +14,7 @@ import { useUserXP } from '@/hooks/useUserXP';
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/catalogo', label: 'Cursos', icon: BookOpen },
-  { path: '/trilhas', label: 'Trilhas', icon: Route },
+  { path: '/onboarding', label: 'Onboarding', icon: Sparkles },
   { path: '/ranking', label: 'Ranking', icon: Trophy },
   { path: '/perfil', label: 'Perfil', icon: User },
 ];

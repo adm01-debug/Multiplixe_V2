@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePlaybook, useRegisterPlaybookView } from '@/hooks/usePlaybooks';
+import DynamicSEO from '@/components/seo/DynamicSEO';
 
 const PlaybookDetail = () => {
   const { slug = '' } = useParams();
@@ -40,6 +41,12 @@ const PlaybookDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <DynamicSEO
+        title={playbook.title}
+        description={playbook.summary || `Playbook de vendas: ${playbook.title}`}
+        url={`https://multiplixe.lovable.app/playbook/${playbook.slug}`}
+        type="article"
+      />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate('/playbooks')} className="rounded-xl">

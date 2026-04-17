@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDefaultWorkflowProgress, useUpdateOnboardingProgress, type OnboardingStepType } from '@/hooks/useOnboardingWorkflow';
 import EmptyState from '@/components/SimpleEmptyState';
+import DynamicSEO from '@/components/seo/DynamicSEO';
 
 const stepIcon: Record<OnboardingStepType, typeof Video> = {
   video: Video,
@@ -47,6 +48,11 @@ const SalesOnboarding = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <DynamicSEO
+        title={`Onboarding: ${workflow.name}`}
+        description={workflow.description || 'Plano de onboarding para novos vendedores.'}
+        url="https://multiplixe.lovable.app/onboarding"
+      />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')} className="rounded-xl">

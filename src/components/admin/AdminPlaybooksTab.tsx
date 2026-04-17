@@ -8,6 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { usePlaybooks, useSavePlaybook, useDeletePlaybook, type Playbook } from '@/hooks/usePlaybooks';
+import { playbookSchema } from '@/lib/salesEnablementSchemas';
+import { toast } from 'sonner';
 
 const AdminPlaybooksTab = () => {
   const { data: list = [], isLoading } = usePlaybooks(true);
@@ -16,11 +18,24 @@ const AdminPlaybooksTab = () => {
   const [editing, setEditing] = useState<Partial<Playbook> | null>(null);
 
   const handleSave = () => {
-    if (!editing?.title || !editing?.slug || !editing?.content) return;
-    save.mutate({
-      ...editing,
-      tags: typeof editing.tags === 'string' ? (editing.tags as unknown as string).split(',').map(t => t.trim()).filter(Boolean) : (editing.tags || []),
-    }, { onSuccess: () => setEditing(null) });
+    if (!editing) return;
+    const tags = typeof editing.tags === 'string'
+      ? (editing.tags as unknown as string).split(',').map(t => t.trim()).filter(Boolean)
+      : (editing.tags || []);
+    const parsed = playbookSchema.safeParse({
+      title: editing.title || '',
+      slug: editing.slug || '',
+      category: editing.category || '',
+      summary: editing.summary || null,
+      content: editing.content || '',
+      tags,
+      is_published: !!editing.is_published,
+    });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message || 'Dados inválidos');
+      return;
+    }
+    save.mutate({ ...editing, ...parsed.data }, { onSuccess: () => setEditing(null) });
   };
 
   return (

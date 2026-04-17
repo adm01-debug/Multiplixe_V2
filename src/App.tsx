@@ -21,6 +21,7 @@ import SkipLinks from "@/components/accessibility/SkipLinks";
 import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Setup cache persistence
 setupCachePersistence(queryClient);
@@ -89,9 +90,10 @@ const App = () => (
               <ConditionalNotificationBanner />
               <PWAInstallPrompt />
               <ScrollToTop />
-              <Suspense fallback={<PageLoader />}>
-                <PageTransition>
-                  <Routes>
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <PageTransition>
+                    <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -116,9 +118,10 @@ const App = () => (
                     <Route path="/avaliacao/:id" element={<ProtectedRoute><AssessmentRunner /></ProtectedRoute>} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </PageTransition>
-              </Suspense>
+                    </Routes>
+                  </PageTransition>
+                </Suspense>
+              </ErrorBoundary>
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>

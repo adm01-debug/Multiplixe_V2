@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDueAssessments, useUserAssessmentResults, type DueAssessment } from '@/hooks/useSkillAssessments';
 import EmptyState from '@/components/SimpleEmptyState';
+import DynamicSEO from '@/components/seo/DynamicSEO';
 
 const statusMap: Record<DueAssessment['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: typeof Target }> = {
   pending: { label: 'Nunca realizada', variant: 'secondary', icon: Target },
@@ -21,6 +22,11 @@ const SkillAssessments = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <DynamicSEO
+        title="Avaliações de Competência"
+        description="Mantenha suas habilidades de vendas em dia com avaliações periódicas."
+        url="https://multiplixe.lovable.app/avaliacoes"
+      />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')} className="rounded-xl">

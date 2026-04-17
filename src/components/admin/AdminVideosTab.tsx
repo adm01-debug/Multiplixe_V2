@@ -8,6 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { useTrainingVideos, useSaveTrainingVideo, useDeleteTrainingVideo, type TrainingVideo } from '@/hooks/useTrainingVideos';
+import { trainingVideoSchema } from '@/lib/salesEnablementSchemas';
+import { toast } from 'sonner';
 
 const AdminVideosTab = () => {
   const { data: list = [], isLoading } = useTrainingVideos(true);
@@ -16,8 +18,22 @@ const AdminVideosTab = () => {
   const [editing, setEditing] = useState<Partial<TrainingVideo> | null>(null);
 
   const handleSave = () => {
-    if (!editing?.title || !editing?.video_url) return;
-    save.mutate(editing, { onSuccess: () => setEditing(null) });
+    if (!editing) return;
+    const parsed = trainingVideoSchema.safeParse({
+      title: editing.title || '',
+      description: editing.description || null,
+      video_url: editing.video_url || '',
+      thumbnail_url: editing.thumbnail_url || '',
+      category: editing.category || '',
+      duration_seconds: Number(editing.duration_seconds) || 0,
+      tags: editing.tags || [],
+      is_published: !!editing.is_published,
+    });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message || 'Dados inválidos');
+      return;
+    }
+    save.mutate({ ...editing, ...parsed.data }, { onSuccess: () => setEditing(null) });
   };
 
   return (

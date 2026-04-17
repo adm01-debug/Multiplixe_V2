@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
@@ -8,9 +8,11 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import LevelProgress from '@/components/LevelProgress';
-import AchievementsGrid from '@/components/AchievementsGrid';
-import XPEvolutionChart from '@/components/XPEvolutionChart';
 import { CertificateCard } from '@/components/CertificateCard';
+
+// Lazy load heavy widgets
+const AchievementsGrid = lazy(() => import('@/components/AchievementsGrid'));
+const XPEvolutionChart = lazy(() => import('@/components/XPEvolutionChart'));
 import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
@@ -150,7 +152,7 @@ const Profile = () => {
           </div>
         </section>
 
-        <section className="mb-12"><XPEvolutionChart /></section>
+        <section className="mb-12"><Suspense fallback={<ChartSkeleton height={300} />}><XPEvolutionChart /></Suspense></section>
 
         <section className="mb-12">
           <div className="flex items-center gap-4 mb-6"><div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20"><Target className="h-6 w-6 text-blue-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Estatísticas</h3><p className="text-sm text-muted-foreground">Seu progresso de aprendizado</p></div></div>
@@ -174,7 +176,9 @@ const Profile = () => {
             <div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20"><Trophy className="h-6 w-6 text-amber-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Conquistas</h3><p className="text-sm text-muted-foreground">{unlockedCount} de {totalCount} desbloqueadas</p></div></div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20"><Star className="h-4 w-4 text-amber-500" /><span className="text-sm font-semibold text-amber-500">{Math.round((unlockedCount / totalCount) * 100) || 0}%</span></div>
           </div>
-          <AchievementsGrid achievements={achievements} isUnlocked={isUnlocked} />
+          <Suspense fallback={<AchievementsGridSkeleton count={8} />}>
+            <AchievementsGrid achievements={achievements} isUnlocked={isUnlocked} />
+          </Suspense>
         </section>
       </main>
     </div>

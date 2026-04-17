@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +9,7 @@ import { useStreaks } from '@/hooks/useStreaks';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import CourseCard from '@/components/catalog/CourseCard';
 import AchievementCelebration from '@/components/AchievementCelebration';
 import LevelUpCelebration from '@/components/LevelUpCelebration';
@@ -19,14 +20,17 @@ import StreakDisplay from '@/components/StreakDisplay';
 import WelcomeWizard from '@/components/onboarding/WelcomeWizard';
 import OnboardingTutorial, { useOnboardingTutorial } from '@/components/onboarding/OnboardingTutorial';
 import ProfileCompletionBar from '@/components/onboarding/ProfileCompletionBar';
-import DailyChallenges from '@/components/gamification/DailyChallenges';
-import SkillRadarChart from '@/components/analytics/SkillRadarChart';
 import GoalsWidget from '@/components/goals/GoalsWidget';
 import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidget';
 import OnboardingWidget from '@/components/dashboard/OnboardingWidget';
 import DueAssessmentsWidget from '@/components/dashboard/DueAssessmentsWidget';
-import SmartRecommendations from '@/components/dashboard/SmartRecommendations';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
+
+// Lazy load heavy widgets (recharts/framer)
+const SmartRecommendations = lazy(() => import('@/components/dashboard/SmartRecommendations'));
+const DailyChallenges = lazy(() => import('@/components/gamification/DailyChallenges'));
+const SkillRadarChart = lazy(() => import('@/components/analytics/SkillRadarChart'));
+const WidgetFallback = () => <Skeleton className="h-48 w-full rounded-2xl" />;
 import DashboardHero from '@/components/dashboard/DashboardHero';
 import DashboardStatsGrid, { StatItem } from '@/components/dashboard/DashboardStatsGrid';
 import { DashboardStatsSkeleton } from '@/components/skeletons/PageSkeletons';
@@ -181,10 +185,10 @@ const Dashboard = () => {
         )}
 
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
-          <SmartRecommendations />
+          <Suspense fallback={<WidgetFallback />}><SmartRecommendations /></Suspense>
         </motion.section>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><DailyChallenges /></motion.section>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><Suspense fallback={<WidgetFallback />}><DailyChallenges /></Suspense></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><GoalsWidget /></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><LevelProgress totalXP={totalXP} /></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
@@ -206,7 +210,7 @@ const Dashboard = () => {
           <AchievementsGrid achievements={allAchievements} isUnlocked={isUnlocked} />
         </motion.section>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><SkillRadarChart /></motion.section>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><Suspense fallback={<WidgetFallback />}><SkillRadarChart /></Suspense></motion.section>
 
         {userProgress.length > 0 && (
           <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>

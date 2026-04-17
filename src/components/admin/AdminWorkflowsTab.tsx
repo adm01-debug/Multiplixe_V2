@@ -69,7 +69,7 @@ const AdminWorkflowsTab = () => {
       toast.error(parsed.error.issues[0]?.message || 'Dados inválidos');
       return;
     }
-    await save.mutateAsync({ ...form, ...parsed.data });
+    await save.mutateAsync({ ...form, ...parsed.data } as Partial<OnboardingWorkflow>);
     setOpen(false);
   };
 

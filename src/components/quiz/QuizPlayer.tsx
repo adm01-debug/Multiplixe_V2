@@ -219,8 +219,6 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
         <div className="space-y-3">
           {currentQuestion.quiz_options.map((option) => {
             const isSelected = answers[currentQuestion.id] === option.id;
-            const showCorrect = showExplanation && option.is_correct;
-            const showIncorrect = showExplanation && isSelected && !option.is_correct;
 
             return (
               <button
@@ -230,22 +228,16 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
                 className={cn(
                   "w-full p-4 rounded-lg border text-left transition-all",
                   "hover:border-primary hover:bg-primary/5",
-                  isSelected && !showExplanation && "border-primary bg-primary/10",
-                  showCorrect && "border-green-500 bg-green-500/10",
-                  showIncorrect && "border-red-500 bg-red-500/10",
+                  isSelected && "border-primary bg-primary/10",
                   showExplanation && "cursor-default"
                 )}
               >
                 <div className="flex items-center gap-3">
                   <div className={cn(
                     "w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0",
-                    isSelected && !showExplanation && "border-primary bg-primary",
-                    showCorrect && "border-green-500 bg-green-500",
-                    showIncorrect && "border-red-500 bg-red-500"
+                    isSelected && "border-primary bg-primary"
                   )}>
-                    {showCorrect && <CheckCircle className="w-4 h-4 text-white" />}
-                    {showIncorrect && <XCircle className="w-4 h-4 text-white" />}
-                    {isSelected && !showExplanation && <div className="w-2 h-2 rounded-full bg-white" />}
+                    {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                   </div>
                   <span className="flex-1">{option.option_text}</span>
                 </div>

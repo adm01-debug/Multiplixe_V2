@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
@@ -45,12 +45,6 @@ export const useQuizzes = () => {
   const { user } = useAuth();
   const { addXP } = useUserXP();
   const [loading, setLoading] = useState(false);
-
-  const fetchQuizWithFilter = useCallback(async (
-    filter: (q: ReturnType<typeof supabase.from<'quizzes'>>['select']) => unknown
-  ): Promise<Quiz | null> => {
-    return null;
-  }, []);
 
   const loadQuizBy = async (column: 'lesson_id' | 'course_id', value: string, courseOnly = false): Promise<Quiz | null> => {
     let query = supabase.from('quizzes').select('*').eq(column, value);

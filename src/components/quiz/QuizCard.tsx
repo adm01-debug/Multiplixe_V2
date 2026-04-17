@@ -25,7 +25,6 @@ interface Quiz {
     quiz_options: Array<{
       id: string;
       option_text: string;
-      is_correct: boolean;
       order_index: number;
     }>;
   }>;

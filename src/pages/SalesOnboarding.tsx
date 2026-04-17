@@ -78,9 +78,12 @@ const SalesOnboarding = () => {
               <Badge variant={pct === 100 ? 'default' : 'secondary'}>{completed.size}/{total} concluídos</Badge>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
             <Progress value={pct} className="h-3" />
-            <p className="text-sm text-muted-foreground mt-2">{pct}% completo</p>
+            <p className="text-sm text-muted-foreground">{pct}% completo</p>
+            <Button onClick={() => navigate('/onboarding/executar')} size="sm">
+              <Sparkles className="h-4 w-4 mr-2" /> Executar onboarding guiado
+            </Button>
           </CardContent>
         </Card>
 

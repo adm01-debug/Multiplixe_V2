@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export type Locale = "pt-BR" | "en";
+export type Locale = "pt-BR" | "en" | "es";
 
 const STORAGE_KEY = "app.locale";
 
@@ -61,6 +61,35 @@ const dict = {
       delete: "Delete",
       confirm: "Confirm",
       language: "Language",
+    },
+  },
+  es: {
+    nav: {
+      dashboard: "Panel",
+      catalog: "Catálogo",
+      paths: "Rutas",
+      playbooks: "Playbooks",
+      videos: "Vídeos",
+      ranking: "Ranking",
+      profile: "Perfil",
+      onboarding: "Onboarding",
+      assessments: "Evaluaciones",
+      logout: "Salir",
+    },
+    dashboard: {
+      welcome: "Bienvenido",
+      keepGoing: "Continúa donde lo dejaste",
+      recommendedForYou: "Recomendado para ti",
+    },
+    common: {
+      search: "Buscar",
+      loading: "Cargando...",
+      empty: "Nada por aquí todavía",
+      save: "Guardar",
+      cancel: "Cancelar",
+      delete: "Eliminar",
+      confirm: "Confirmar",
+      language: "Idioma",
     },
   },
 } as const;

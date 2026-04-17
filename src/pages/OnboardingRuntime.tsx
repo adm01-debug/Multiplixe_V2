@@ -12,6 +12,7 @@ import {
   type OnboardingStep,
 } from "@/hooks/useOnboardingWorkflow";
 import { useConfetti } from "@/hooks/useConfetti";
+const noop = () => {};
 import DynamicSEO from "@/components/seo/DynamicSEO";
 
 const OnboardingRuntime = () => {
@@ -19,7 +20,7 @@ const OnboardingRuntime = () => {
   const { workflowId } = useParams();
   const { data, isLoading } = useDefaultWorkflowProgress();
   const update = useUpdateOnboardingProgress();
-  const fire = useConfetti();
+  const confetti = useConfetti();
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const OnboardingRuntime = () => {
       totalSteps,
     });
     setActive(null);
-    if (completedCount + 1 >= totalSteps) fire();
+    if (completedCount + 1 >= totalSteps) (confetti.fireCourseComplete ?? noop)();
   };
 
   return (

@@ -1,15 +1,22 @@
 
-Item 5/23 — MFA TOTP funcional.
+Item 11/23 — Índices DB para performance.
 
-## Backend
-Migration: `public.user_mfa_settings` (user_id PK→auth.users, totp_enabled bool, sms_enabled bool, phone_number text, phone_verified bool, backup_codes text[], created_at, updated_at). RLS: usuário acessa só própria linha. Trigger updated_at.
+## Migration
+Criar índices em colunas de alto tráfego de leitura:
+- `user_lesson_progress(user_id, is_completed)` — dashboard/stats
+- `user_course_progress(user_id, progress_percentage)` — recommendations/dashboard
+- `user_xp_history(user_id, created_at DESC)` — XP evolution chart
+- `notifications(user_id, is_read, created_at DESC)` — bell
+- `audit_logs(user_id, created_at DESC)` e `audit_logs(resource_type, resource_id)` — auditoria
+- `user_streaks(last_activity_date)` — cron streak risk
+- `playbook_views(playbook_id, viewed_at DESC)` — register_playbook_view
+- `user_assessment_results(user_id, assessment_id, completed_at DESC)` — get_due_assessments
+- `lessons(course_id, order_index)` — player sidebar
+- `quiz_questions(quiz_id)` e `quiz_options(question_id)` — submit_quiz_attempt
 
-## Frontend
-1. **`src/components/security/MFAEnrollmentDialog.tsx`** (~180 linhas) — Dialog: enroll → QR + secret → InputOTP 6 dígitos → verify → backup codes com download .txt.
-2. **`src/components/security/MFASettingsCard.tsx`** (~120 linhas) — Card status, botão Ativar/Desativar, regenerar backup codes.
-3. **`src/components/security/SecurityOverviewTab.tsx`** — substituir card "2FA" inline por `<MFASettingsCard />`.
+Todos com `CREATE INDEX IF NOT EXISTS`.
 
 ## Aceite
-Tabela com RLS · enrollment completo · disable funciona · ≤400 linhas/arquivo · zero `any` · build OK.
+Migration aplicada · zero impacto em código · queries críticas aceleradas.
 
-Depois: Item 6 (HIBP via configure_auth).
+Depois: Item 12 (Lazy load + code splitting agressivo nas rotas restantes).

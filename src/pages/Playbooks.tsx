@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { usePlaybooks } from '@/hooks/usePlaybooks';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import EmptyState from '@/components/SimpleEmptyState';
+import DynamicSEO from '@/components/seo/DynamicSEO';
 
 const Playbooks = () => {
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ const Playbooks = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <DynamicSEO
+        title="Sales Playbooks"
+        description="Biblioteca de scripts, objeções e processos de vendas para vendedores Promo Brindes."
+        url="https://multiplixe.lovable.app/playbooks"
+      />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')} className="rounded-xl">

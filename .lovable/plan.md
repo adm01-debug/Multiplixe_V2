@@ -1,71 +1,68 @@
 
-Já entregamos: Sales Enablement Suite completo + Sprint Excelência (280 testes). Agora vou focar em fechar os gaps que ainda separam o projeto de 10/10: observabilidade real, segurança avançada, performance percebida, i18n leve, e cobertura de testes E2E.
+Já entregamos: Sales Enablement Suite + Sprint Excelência + Sprint Perfeição (292 testes, 10/10 técnico). Agora foco em frentes que elevam o produto além do técnico: experiência premium, internacionalização, IA aplicada e operações.
 
-# Sprint Perfeição — 10 frentes finais
+# Sprint Transcendência — 10 frentes
 
-## 1. Observabilidade & Telemetria
-- `src/lib/telemetry.ts`: wrapper para registrar erros e eventos críticos (page view, mutation failure) na tabela `audit_logs` existente
-- Integrar no `ErrorBoundary` (capturar stack) e em `queryClient` (onError global de mutations)
+## 1. IA aplicada (Lovable AI Gateway)
+- Edge function `ai-playbook-summarize`: gera resumo executivo de playbooks longos (gemini-2.5-flash)
+- Edge function `ai-quiz-generator`: admin gera questões a partir de transcrição/conteúdo
+- Botão "Resumir com IA" no `PlaybookDetail`, "Gerar quiz com IA" no `QuizManager`
 
-## 2. Memoização de listas pesadas
-- `React.memo` em: `LessonList`, `LearningPathCourseItem`, `QuizQuestionCard`, `CertificateCard`, `CourseCard`
-- `useMemo` para filtros derivados em `Catalog`, `Playbooks`, `VideoLibrary`
+## 2. Busca global unificada
+- `useGlobalSearch` hook: busca cross-entity (cursos, playbooks, vídeos, trilhas) via single query
+- Integrar no `CommandPalette` substituindo navegação estática por resultados reais com debounce
 
-## 3. Prefetch inteligente
-- `usePrefetchRoute` hook usando `queryClient.prefetchQuery` em hover/focus de links principais (Dashboard → Catálogo, Trilhas, Playbooks)
-- Aplicar em `DashboardHeader` e `MobileBottomNav`
+## 3. Internacionalização (i18n leve)
+- `src/lib/i18n.ts`: dicionário pt-BR/en com hook `useT()`
+- Aplicar em `Header`, `MobileBottomNav`, `Dashboard` (strings críticas)
+- Toggle no `Profile`
 
-## 4. Acessibilidade WCAG AA+ (varredura final)
-- ARIA labels em todos botões icon-only sem label das novas páginas
-- `aria-current="page"` no `MobileBottomNav` ativo
-- `aria-live="polite"` no contador de resultados das buscas (Playbooks, VideoLibrary)
-- `role="status"` em todos loaders
+## 4. Onboarding workflow runtime
+- Página `/onboarding/:workflowId` que executa passos sequencialmente
+- Marca progresso por step, dispara notificação ao concluir
+- Integra com hook `useOnboardingWorkflow` existente
 
-## 5. Estados vazios & loading consistentes
-- Substituir Skeleton solto por `<PageSkeletons.List />` ou variants já existentes
-- `SimpleEmptyState` em todas listas com 0 items
+## 5. Comentários em playbooks
+- Tabela `playbook_comments` (user_id, playbook_id, content, created_at)
+- RLS: leitura authenticated, escrita own + admin delete
+- UI no final do `PlaybookDetail`
 
-## 6. Segurança backend
-- Migration: criar índices ausentes para queries quentes (`playbooks(is_published, view_count)`, `training_videos(is_published, category)`, `user_assessment_results(user_id, next_due_at)`)
-- Auditoria: trigger `audit_logs` em INSERT/UPDATE/DELETE de `playbooks`, `training_videos`, `onboarding_workflows`, `skill_assessments`
-- Rate limit por IP em `/playbook/:slug` view counter (função `register_playbook_view` com check de janela de 1 min)
+## 6. Recomendações personalizadas (regra)
+- View SQL `user_recommendations` baseada em: cursos da mesma categoria já iniciados, playbooks populares não vistos
+- Widget `SmartRecommendations` no Dashboard
 
-## 7. Atalhos de teclado globais
-- `useGlobalShortcuts`: `g d` → Dashboard, `g c` → Catálogo, `g p` → Playbooks, `g v` → Vídeos, `?` → exibir lista
-- Componente `KeyboardShortcutsModal` invocado pelo `?`
+## 7. Exportação de dados
+- Botão "Exportar meus dados" no `Profile` → JSON com cursos, certificados, XP, notas (LGPD compliance)
+- Edge function `export-user-data` consolidando
 
-## 8. Sitemap & robots dinâmicos
-- Edge function `generate-sitemap`: lê playbooks publicados + rotas estáticas, retorna XML
-- Atualizar `public/robots.txt` para referenciar sitemap
+## 8. Métricas de admin avançadas
+- `AdminEngagementHeatmap`: heatmap dia × hora de acessos (últimos 30 dias)
+- `AdminCohortRetention`: retenção semanal de novos usuários
 
-## 9. PWA polish
-- Adicionar shortcuts no `manifest.json` (Dashboard, Playbooks, Onboarding)
-- Cache strategy no `sw.js` para rotas estáticas dos novos módulos
+## 9. Performance percebida
+- Skeleton específico para `PlaybookDetail` e `VideoLibrary`
+- Optimistic updates em favoritar playbook/vídeo
+- Image lazy loading com blur placeholder em `LazyImage`
 
-## 10. Testes E2E críticos + documentação
-- `src/test/e2e/criticalFlows.test.tsx`: smoke renderiza Playbooks/VideoLibrary/SkillAssessments/SalesOnboarding com mocks
-- `src/test/memoization.test.tsx`: garante que componentes memoizados não re-renderizam com props iguais
-- `src/test/telemetry.test.ts`: valida wrapper
-- Atualizar `DOCUMENTACAO.md` com Sales Enablement Suite + Sprint Perfeição
-- Atualizar `README.md` com novas rotas e atalhos
+## 10. Testes + docs finais
+- +25 testes (i18n, busca global, comentários, IA mock)
+- Atualizar `DOCUMENTACAO.md` e `README.md` com tudo
+- Meta: 317+ testes passando
 
 ## Padrões mantidos
-- ≤400 linhas por arquivo, zero `any`, zero `console.*`
+- ≤400 linhas/arquivo, zero `any`, zero `console.*`
+- Lovable AI Gateway (sem API key do usuário)
+- RLS com `has_role`
 - Tokens semânticos do design system
-- TanStack Query + invalidação correta
-- RLS com `has_role(auth.uid(), 'admin'::app_role)`
-- Toasts sonner
 
-## Ordem de execução (sequencial, sem pausas)
-1. Migration: índices + triggers de auditoria + função view counter com rate limit
-2. `telemetry.ts` + integração ErrorBoundary/queryClient
-3. Memoização nos 5 componentes de lista
-4. Hook `usePrefetchRoute` + integração nav
-5. Varredura ARIA + aria-current/live/status
-6. `useGlobalShortcuts` + `KeyboardShortcutsModal`
-7. Edge function `generate-sitemap` + `robots.txt`
-8. PWA: manifest shortcuts + sw.js cache
-9. +30 testes (E2E smoke, memoização, telemetria)
-10. Rodar suíte completa (alvo 310+ testes) + atualizar docs
-
-**Meta:** 310+ testes passando, zero regressões, projeto cravado em 10/10.
+## Ordem de execução
+1. Migration: `playbook_comments` + view recommendations + índices
+2. Edge functions IA (summarize + quiz-gen) + secrets check
+3. i18n base + aplicação em nav
+4. Busca global + integração CommandPalette
+5. Comentários playbook (UI + hook)
+6. SmartRecommendations widget
+7. Onboarding runtime page
+8. Exportação dados (edge fn + UI)
+9. AdminEngagementHeatmap + Cohort
+10. Skeletons + optimistic + +25 testes + docs

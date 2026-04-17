@@ -5,13 +5,13 @@ import remarkGfm from 'remark-gfm';
 import { ArrowLeft, Eye, Calendar, Tag, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 import { usePlaybook, useRegisterPlaybookView } from '@/hooks/usePlaybooks';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import DynamicSEO from '@/components/seo/DynamicSEO';
 import PlaybookComments from '@/components/playbooks/PlaybookComments';
+import PlaybookDetailSkeleton from '@/components/skeletons/PlaybookDetailSkeleton';
 
 const PlaybookDetail = () => {
   const { slug = '' } = useParams();
@@ -45,13 +45,7 @@ const PlaybookDetail = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl space-y-4">
-        <Skeleton className="h-10 w-32" />
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-96 w-full" />
-      </div>
-    );
+    return <PlaybookDetailSkeleton />;
   }
 
   if (!playbook) {

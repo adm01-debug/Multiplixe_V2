@@ -30,9 +30,11 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
     );
 
-    const [{ data: playbooks }, { data: courses }] = await Promise.all([
+    const [{ data: playbooks }, { data: courses }, { data: paths }, { data: videos }] = await Promise.all([
       supabase.from("playbooks").select("slug, updated_at").eq("is_published", true),
       supabase.from("courses").select("slug, updated_at").eq("is_published", true),
+      supabase.from("learning_paths").select("slug, updated_at").eq("is_published", true),
+      supabase.from("training_videos").select("id, updated_at").eq("is_published", true),
     ]);
 
     const now = new Date().toISOString();
@@ -46,6 +48,12 @@ Deno.serve(async (req) => {
     }
     for (const c of courses ?? []) {
       urls.push(`<url><loc>${SITE_URL}/curso/${c.slug}</loc><lastmod>${c.updated_at}</lastmod><changefreq>monthly</changefreq></url>`);
+    }
+    for (const lp of paths ?? []) {
+      urls.push(`<url><loc>${SITE_URL}/trilhas/${lp.slug}</loc><lastmod>${lp.updated_at}</lastmod><changefreq>monthly</changefreq></url>`);
+    }
+    for (const v of videos ?? []) {
+      urls.push(`<url><loc>${SITE_URL}/biblioteca-videos#${v.id}</loc><lastmod>${v.updated_at}</lastmod><changefreq>monthly</changefreq></url>`);
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>`;

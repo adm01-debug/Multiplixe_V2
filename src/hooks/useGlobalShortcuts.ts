@@ -13,8 +13,10 @@ const ROUTE_MAP: Record<string, string> = {
 };
 
 /**
- * Atalhos globais estilo Linear/GitHub: pressione `g` seguido por uma letra para navegar.
- * `?` abre/fecha o modal de ajuda.
+ * Atalhos globais estilo Linear/GitHub:
+ * - `g` seguido por uma letra para navegar
+ * - `?` abre/fecha o modal de ajuda
+ * - `n` foca o input de novo comentário (se houver `[data-comment-input]` na página)
  */
 export function useGlobalShortcuts(): { isHelpOpen: boolean; setHelpOpen: (open: boolean) => void } {
   const navigate = useNavigate();
@@ -38,6 +40,15 @@ export function useGlobalShortcuts(): { isHelpOpen: boolean; setHelpOpen: (open:
         e.preventDefault();
         setHelpOpen((open) => !open);
         return;
+      }
+
+      if (e.key === "n") {
+        const input = document.querySelector<HTMLTextAreaElement>("[data-comment-input]");
+        if (input) {
+          e.preventDefault();
+          input.focus();
+          return;
+        }
       }
 
       if (e.key === "g") {
@@ -77,5 +88,6 @@ export const SHORTCUTS_LIST: ReadonlyArray<{ keys: string; label: string }> = [
   { keys: "g o", label: "Ir para Onboarding" },
   { keys: "g a", label: "Ir para Avaliações" },
   { keys: "g r", label: "Ir para Ranking" },
+  { keys: "n", label: "Novo comentário (na página)" },
   { keys: "?", label: "Mostrar atalhos" },
 ];

@@ -26,6 +26,8 @@ const AdminPlaybooksTab = lazy(() => import('@/components/admin/AdminPlaybooksTa
 const AdminVideosTab = lazy(() => import('@/components/admin/AdminVideosTab'));
 const AdminWorkflowsTab = lazy(() => import('@/components/admin/AdminWorkflowsTab'));
 const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmentsTab'));
+const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap'));
+const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention'));
 
 interface PlatformStats {
   totalUsers: number;
@@ -212,7 +214,15 @@ const Admin = () => {
             <TabsContent value="users"><AdminUsersTab users={users} loadingData={loadingData} /></TabsContent>
             <TabsContent value="quizzes"><QuizStats /></TabsContent>
             <TabsContent value="permissions"><PermissionsManager /></TabsContent>
-            <TabsContent value="analytics"><PlatformAnalytics /></TabsContent>
+            <TabsContent value="analytics">
+              <div className="space-y-6">
+                <PlatformAnalytics />
+                <div className="grid lg:grid-cols-2 gap-4">
+                  <AdminEngagementHeatmap />
+                  <AdminCohortRetention />
+                </div>
+              </div>
+            </TabsContent>
             <TabsContent value="stats"><AdminStatsTab stats={stats} courses={courses} users={users} /></TabsContent>
           </Suspense>
         </Tabs>

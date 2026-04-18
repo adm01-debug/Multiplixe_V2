@@ -1,19 +1,21 @@
 
-P2 — Toast helpers com action buttons (Desfazer / Ver).
+P3 — Prefetch inteligente de rotas no hover.
 
 ## Mudanças
 
-**1. `src/lib/toastHelpers.ts`** — interface `ToastAction` já existe e é repassada. Sem mudanças estruturais; apenas garantir tipagem exportada (`export type ToastAction`) para reuso.
+**1. `src/components/catalog/CourseCard.tsx`** — verificar se já usa `PrefetchLink`. Se ainda usa `Link` do react-router, trocar por `PrefetchLink` com `onPrefetchData={() => prefetchCourseDetail(slug)}` via `usePrefetchQuery`.
 
-**2. `src/hooks/useFavorites.ts`** — ao remover favorito, exibir toast com ação "Desfazer" que chama `addFavorite.mutate(courseId)`. Ao adicionar, manter toast simples (ação inversa via botão de favorito já é trivial).
+**2. `src/components/learning-paths/LearningPathCard.tsx`** — mesmo tratamento, prefetch de `/trilha/:slug` via `routePrefetch.ts`. Adicionar entrada de prefetch de dados se houver query dedicada (`useLearningPathDetail`).
 
-**3. `src/hooks/useAchievements.ts`** — ao desbloquear conquista (em `checkAchievements`), além do modal de celebração, disparar `toastSuccess` com action "Ver conquistas" → navega para `/perfil?tab=conquistas` (ou rota equivalente). Garantir que não duplique com o modal: só mostra toast se modal não estiver visível ou como reforço passivo.
+**3. `src/components/dashboard/SmartRecommendations.tsx`** — cards de recomendação devem usar `PrefetchLink` para warm-up do chunk de CourseDetail.
 
-**4. `src/components/share/ShareAchievement.tsx`** — após share bem-sucedido, toast com action "Compartilhar outra" abrindo o seletor novamente (opcional, baixo custo).
+**4. `src/components/recommendations/RecommendationsWidget.tsx`** — idem.
 
-**5. Teste** — estender `src/test/toastHelpers.test.ts` (já cobre `action`). Adicionar caso em `useFavorites` test (se existir) validando callback de undo.
+**5. `src/lib/routePrefetch.ts`** — já cobre `/curso` e `/trilha`. Sem alteração necessária.
+
+**6. Validação** — confirmar que `PrefetchLink` aceita `onPrefetchData` opcional e não quebra quando ausente. Cards sem slug específico apenas warm-up do chunk.
 
 ## Aceite
-Undo funciona em remoção de favorito · toast de conquista navega para perfil · zero regressão · acessível (botão de ação focável).
+Hover em qualquer card de curso/trilha pré-carrega chunk + dados · navegação subsequente instantânea · zero regressão visual · sem novas dependências.
 
-Depois: P3 — Prefetch nos cards.
+Depois: P4 — Empty states ilustrados.

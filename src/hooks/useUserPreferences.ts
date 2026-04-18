@@ -12,6 +12,7 @@ interface UserPreferences {
   pushNotifications: boolean;
   soundEffects: boolean;
   language: string;
+  focusMode: boolean;
 }
 
 const DEFAULT_PREFERENCES: UserPreferences = {
@@ -24,6 +25,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   pushNotifications: true,
   soundEffects: true,
   language: "pt-BR",
+  focusMode: false,
 };
 
 export const useUserPreferences = () => {

@@ -94,7 +94,9 @@ const ShareAchievement = ({
       if (canShareFiles && navigator.share) {
         try {
           await navigator.share({ title, text, url: shareUrl, files: [file!] });
-          toast.success("Compartilhado com sucesso!");
+          toast.success("Compartilhado com sucesso!", {
+            action: { label: "Compartilhar outra", onClick: () => setOpen(true) },
+          });
           trackFeature("share_success", { type, mode: "native_files" });
           setOpen(false);
           return;
@@ -107,7 +109,9 @@ const ShareAchievement = ({
       if (typeof navigator !== "undefined" && navigator.share) {
         try {
           await navigator.share({ title, text, url: shareUrl });
-          toast.success("Compartilhado com sucesso!");
+          toast.success("Compartilhado com sucesso!", {
+            action: { label: "Compartilhar outra", onClick: () => setOpen(true) },
+          });
           trackFeature("share_success", { type, mode: "native_text" });
           setOpen(false);
           return;

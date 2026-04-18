@@ -30,7 +30,10 @@ interface EmptyStateProps {
     | "streaks"
     | "challenges"
     | "learning-paths"
-    | "analytics";
+    | "analytics"
+    | "favorites"
+    | "notes"
+    | "goals";
   title?: string;
   description?: string;
   actionLabel?: string;

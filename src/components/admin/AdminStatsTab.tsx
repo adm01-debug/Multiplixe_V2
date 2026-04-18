@@ -1,4 +1,8 @@
-import { BookOpen, TrendingUp, Trophy, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { BookOpen, TrendingUp, Trophy, Zap, Mail, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import type { AdminCourse } from './AdminCoursesTab';
 import type { UserStat } from './AdminUsersTab';
 
@@ -18,8 +22,38 @@ interface Props {
 }
 
 const AdminStatsTab = ({ stats, courses, users }: Props) => {
+  const [sending, setSending] = useState(false);
+
+  const handleSendDigest = async () => {
+    setSending(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('weekly-admin-digest', {
+        body: { dryRun: false },
+      });
+      if (error) throw error;
+      const sent = (data as { sent?: number })?.sent ?? 0;
+      toast.success(`Digest enviado para ${sent} admin(s).`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Falha ao enviar digest.');
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
+      <div className="flex justify-end">
+        <Button
+          onClick={handleSendDigest}
+          disabled={sending}
+          variant="outline"
+          className="gap-2"
+          aria-label="Enviar digest semanal por e-mail agora"
+        >
+          {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
+          Enviar digest semanal agora
+        </Button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="p-6 rounded-2xl bg-card/80 border border-border/50 neon-card">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">

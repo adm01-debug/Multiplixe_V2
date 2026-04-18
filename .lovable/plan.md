@@ -1,23 +1,28 @@
 
-Item 18/23 — Loading states & skeletons consistentes em todas listas/páginas.
+Item 19/23 — Otimização de queries Supabase.
 
 ## Mudanças
 
-**1. `src/components/skeletons/PageSkeletons.tsx`** — auditar/expandir presets reutilizáveis:
-- `CardGridSkeleton` (n cards), `ListSkeleton` (n linhas), `DetailHeroSkeleton`, `TableSkeleton`, `StatsGridSkeleton`.
-- Garantir uso de `<Skeleton />` shadcn (semantic `bg-muted animate-pulse`).
+**1. Auditar `select('*')` em hooks de listagem** e trocar por colunas específicas:
+- `src/hooks/usePlaybooks.ts` — listar apenas `id, title, slug, summary, category, cover_url, created_at` (não buscar `content` pesado em listagem).
+- `src/hooks/useTrainingVideos.ts` — selecionar campos do card.
+- `src/hooks/useLearningPaths.ts` — colunas mínimas para grid.
+- `src/hooks/useNotifications.ts` — `id, title, message, type, read, created_at`.
 
-**2. Aplicar skeletons em loading states que ainda mostram texto/spinner cru ou nada:**
-- `src/pages/Catalog.tsx` — `CardGridSkeleton` enquanto `isLoading`.
-- `src/pages/LearningPaths.tsx` — `CardGridSkeleton`.
-- `src/pages/Playbooks.tsx` — `ListSkeleton`.
-- `src/pages/VideoLibrary.tsx` — `CardGridSkeleton`.
-- `src/pages/Leaderboard.tsx` — `TableSkeleton`.
-- `src/pages/Dashboard.tsx` — `StatsGridSkeleton` no topo enquanto stats carregam.
+**2. Paginação/limit em queries que podem crescer:**
+- `useNotifications` — `.limit(50)` (mais antigas via "carregar mais").
+- `useLeaderboard` / `useDepartmentLeaderboard` — confirmar `.limit(100)`.
+- `useXPHistory` — `.limit(30)` para o gráfico (últimos 30 dias).
 
-**3. Empty states** — confirmar `EmptyState`/`SimpleEmptyState` quando lista vazia (não confundir com loading).
+**3. `.order()` explícito** em todas listagens para resultado determinístico (evita reordenação no client).
+
+**4. Detalhe vs listagem** — em hooks de detalhe (`usePlaybook(slug)`, `useCourse(slug)`) manter `select('*')` ou expandir relações com `select('*, lessons(*)')` apenas onde necessário.
+
+**5. Migration sugerida (índices)** — criar índices para colunas frequentemente filtradas/ordenadas que ainda não tenham:
+- `playbooks(created_at desc)`, `notifications(user_id, read, created_at desc)`, `user_xp_history(user_id, created_at desc)`.
+- Aplicar via tool de migração (índices `IF NOT EXISTS`, sem locks longos).
 
 ## Aceite
-Zero regressão · loading states visualmente consistentes · sem flashes de "nenhum dado" durante carregamento · skeletons com mesmas dimensões aproximadas dos cards reais (anti-CLS).
+Build OK · payload de listagens reduzido · sem regressão funcional · queries determinísticas · índices presentes para os filtros mais quentes.
 
-Depois: Item 19 — Otimização de queries (select específico, paginação, índices sugeridos).
+Depois: Item 20 — Memoização e re-render hygiene (React.memo, useCallback/useMemo onde mede ganho).

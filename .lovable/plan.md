@@ -1,31 +1,32 @@
 
-Item 20/23 — Memoização e re-render hygiene.
+Item 21/23 — Bundle size & code splitting.
 
 ## Mudanças
 
-**1. `React.memo` em componentes de lista pesados** (renderizados N vezes em grids):
-- `src/components/catalog/CourseCard.tsx`
-- `src/components/catalog/CourseListItem.tsx`
-- `src/components/learning-paths/LearningPathCard.tsx`
-- `src/components/learning-paths/LearningPathCourseItem.tsx`
+**1. `vite.config.ts`** — refinar `manualChunks` para isolar libs pesadas em chunks separados (melhor cache):
+- `react-vendor`: react, react-dom, react-router-dom
+- `ui-vendor`: @radix-ui/*
+- `motion-vendor`: framer-motion
+- `chart-vendor`: recharts
+- `query-vendor`: @tanstack/react-query
+- `supabase-vendor`: @supabase/supabase-js
+- `utils-vendor`: date-fns, fuse.js, canvas-confetti
 
-Envolver export com `memo(...)` para evitar re-render quando props não mudam.
+**2. Lazy-load de páginas pesadas** em `src/App.tsx` — confirmar que rotas admin/dashboards já usam `React.lazy` + `Suspense` com `PageLoader`. Adicionar onde faltar:
+- `Admin`, `RateLimitDashboard`, `SecurityDashboard`, `PlatformAnalytics` (sub-rotas).
 
-**2. `useCallback` em handlers passados a filhos memoizados**:
-- `src/pages/Catalog.tsx` — handlers de filtro/busca/toggle view passados para `CategoryFilter`, `LevelFilter`, `ViewToggle`, `SearchInput`.
-- `src/pages/LearningPaths.tsx` — handlers passados aos cards.
+**3. Imports tree-shakeable**:
+- Auditar `import * as X from ...` e trocar por imports nomeados.
+- `lucide-react` — confirmar imports nomeados (já são, ok).
+- `date-fns` — usar `import { format } from 'date-fns'` (named, tree-shakes).
 
-**3. `useMemo` em listas derivadas (filter/sort/group)**:
-- `src/pages/Catalog.tsx` — confirmar que `filteredCourses` está em `useMemo` com deps corretas (cursos, query, categoria, nível).
-- `src/pages/Leaderboard.tsx` — ranking ordenado.
-- `src/components/dashboard/DashboardStatsGrid.tsx` — cards derivados de stats.
+**4. Dynamic imports para libs usadas só em fluxos específicos:**
+- `canvas-confetti` em `useConfetti` — `await import('canvas-confetti')` sob demanda (evita carregar no first paint).
+- `html2canvas`/`jspdf` (se presentes em certificados) — dynamic import no clique de "baixar PDF".
 
-**4. Estabilizar referências de objetos/arrays passadas como props**:
-- Substituir literais inline (`style={{...}}`, `options={[...]}`) por constantes/`useMemo` em componentes que renderizam muito.
-
-**5. Não memoizar onde não há ganho** — evitar `useCallback`/`useMemo` em handlers de página única ou cálculos triviais (custo > benefício).
+**5. Remover imports não usados** detectados em arquivos editados recentemente.
 
 ## Aceite
-Build OK · zero regressão visual/funcional · grids grandes (100+ cards) sem re-render desnecessário ao digitar busca · React DevTools Profiler mostra menos commits em filhos de lista.
+Build OK · chunks vendor separados visíveis no output do Vite · first paint não carrega `canvas-confetti` · zero regressão funcional.
 
-Depois: Item 21 — Bundle size & code splitting (analisar imports, tree-shaking, dynamic imports onde compensa).
+Depois: Item 22 — Testes (cobrir hooks críticos novos: toastHelpers, RouteErrorBoundary).

@@ -6,6 +6,8 @@ import { useUserXP } from "@/hooks/useUserXP";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useStreaks } from "@/hooks/useStreaks";
 import { useCertificates } from "@/hooks/useCertificates";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { usePomodoro } from "@/hooks/usePomodoro";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
@@ -33,6 +35,8 @@ const LessonPlayer = () => {
   const { checkAchievements, newAchievements, dismissAchievement } = useAchievements();
   const { updateStreak, hasStudiedToday } = useStreaks();
   const { generateCertificate } = useCertificates();
+  const { preferences, updatePreference } = useUserPreferences();
+  const { state: pomodoroState, startWork } = usePomodoro();
   const celebratedLessons = useRef<Set<string>>(new Set());
   const streakUpdatedToday = useRef(false);
 
@@ -46,6 +50,45 @@ const LessonPlayer = () => {
   const [streakCelebration, setStreakCelebration] = useState<{ newStreak: number; xpAwarded: number; isNewRecord: boolean } | null>(null);
   const [showCourseQuizModal, setShowCourseQuizModal] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
+
+  const focusMode = preferences.focusMode;
+
+  const toggleFocusMode = useCallback(() => {
+    const next = !focusMode;
+    updatePreference('focusMode', next);
+    if (next) {
+      setShowSidebar(false);
+      if (pomodoroState === 'idle') startWork();
+      toast.success('🎯 Modo Foco ativado', { description: 'Pomodoro iniciado. Boa sessão!' });
+    } else {
+      setShowSidebar(true);
+      toast.info('Modo Foco desativado');
+    }
+  }, [focusMode, updatePreference, pomodoroState, startWork]);
+
+  // Apply focus-mode-active class to <html>
+  useEffect(() => {
+    const root = document.documentElement;
+    if (focusMode) root.classList.add('focus-mode-active');
+    else root.classList.remove('focus-mode-active');
+    return () => { root.classList.remove('focus-mode-active'); };
+  }, [focusMode]);
+
+  // F shortcut to toggle
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== 'f') return;
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      // Avoid clashing with video fullscreen 'f' inside <video> focus
+      if (target && target.tagName === 'VIDEO') return;
+      e.preventDefault();
+      toggleFocusMode();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [toggleFocusMode]);
 
   useEffect(() => { if (newAchievements.length > 0 && !currentNewAchievement) setCurrentNewAchievement(newAchievements[0]); }, [newAchievements, currentNewAchievement]);
   const handleDismissNewAchievement = () => { if (currentNewAchievement) { dismissAchievement(currentNewAchievement.id); setCurrentNewAchievement(null); refetchXP(); } };
@@ -125,11 +168,11 @@ const LessonPlayer = () => {
       <FloatingProgress progress={courseProgress} lessonTitle={currentLesson.title} lessonNumber={currentIndex + 1} totalLessons={lessons.length} />
 
       <div className="min-h-screen flex flex-col">
-        <LessonPlayerHeader courseSlug={slug!} courseTitle={course.title} userName={userName} courseProgress={courseProgress} onSignOut={handleSignOut} />
+        <LessonPlayerHeader courseSlug={slug!} courseTitle={course.title} userName={userName} courseProgress={courseProgress} onSignOut={handleSignOut} focusMode={focusMode} onToggleFocus={toggleFocusMode} />
 
         <div className="flex-1 flex">
-          <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar ? 'lg:mr-80 xl:mr-96' : ''}`}>
-            <div className="flex-1 p-4 lg:p-6">
+          <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar && !focusMode ? 'lg:mr-80 xl:mr-96' : ''}`}>
+            <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`}>
               <div className="rounded-2xl overflow-hidden shadow-2xl mb-6">
                 {currentLesson.video_url ? <VideoPlayer src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} initialPosition={currentProgress?.last_position_seconds || 0} /> : (
                   <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 flex flex-col items-center justify-center gap-4"><div className="p-6 bg-card/50 backdrop-blur-sm rounded-full"><Play className="h-12 w-12 text-muted-foreground" /></div><p className="text-muted-foreground font-medium">Vídeo não disponível</p></div>
@@ -153,10 +196,10 @@ const LessonPlayer = () => {
               </div>
             </div>
 
-            <Button variant="outline" size="sm" onClick={() => setShowSidebar(!showSidebar)} className="lg:hidden fixed bottom-4 right-4 z-40 rounded-full shadow-lg h-14 w-14 bg-card"><BookOpen className="h-5 w-5" /></Button>
+            {!focusMode && <Button variant="outline" size="sm" onClick={() => setShowSidebar(!showSidebar)} className="lg:hidden fixed bottom-4 right-4 z-40 rounded-full shadow-lg h-14 w-14 bg-card"><BookOpen className="h-5 w-5" /></Button>}
           </main>
 
-          <LessonPlayerSidebar lessons={lessons} lessonsProgress={lessonsProgress} currentLessonId={currentLesson.id} courseSlug={slug!} courseProgress={courseProgress} completedCount={completedCount} showSidebar={showSidebar} onCloseSidebar={() => setShowSidebar(false)} />
+          {!focusMode && <LessonPlayerSidebar lessons={lessons} lessonsProgress={lessonsProgress} currentLessonId={currentLesson.id} courseSlug={slug!} courseProgress={courseProgress} completedCount={completedCount} showSidebar={showSidebar} onCloseSidebar={() => setShowSidebar(false)} />}
         </div>
       </div>
     </>

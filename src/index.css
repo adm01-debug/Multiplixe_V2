@@ -891,3 +891,15 @@
     }
   }
 }
+
+/* ============================================
+   FOCUS MODE — silencia distrações no LessonPlayer
+   ============================================ */
+.focus-mode-active [data-focus-hide] {
+  display: none !important;
+}
+.focus-mode-active [data-sonner-toaster] [data-type="info"],
+.focus-mode-active [data-sonner-toaster] [data-type="default"] {
+  display: none !important;
+}
+

@@ -149,11 +149,11 @@ const GoalsWidget = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-8"
           >
-            <Flame className="h-12 w-12 mx-auto mb-3 text-muted-foreground/30" />
-            <p className="text-muted-foreground">Nenhuma meta ativa</p>
-            <p className="text-sm text-muted-foreground">Crie uma meta para se manter motivado!</p>
+            <EmptyState
+              type="goals"
+              onAction={() => setIsDialogOpen(true)}
+            />
           </motion.div>
         ) : (
           <div className="space-y-4">

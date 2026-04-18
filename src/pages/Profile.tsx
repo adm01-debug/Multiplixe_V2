@@ -139,6 +139,7 @@ const Profile = () => {
       <main id="main-content" className="container mx-auto px-4 py-8">
         <ProfileHeader userName={userName} userEmail={userEmail} totalXP={totalXP} levelIcon={userLevel.currentLevel.icon} levelNumber={userLevel.currentLevel.level} memberSinceDate={memberSinceDate} />
         <section className="mb-12"><LevelProgress totalXP={totalXP} /></section>
+        <Suspense fallback={null}><PersonalImpactWidget /></Suspense>
 
         <section className="mb-12">
           <div className="flex items-center gap-4 mb-6"><div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20"><BarChart3 className="h-6 w-6 text-emerald-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Distribuição de XP</h3><p className="text-sm text-muted-foreground">Como você ganhou seus pontos</p></div></div>

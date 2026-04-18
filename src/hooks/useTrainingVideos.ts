@@ -22,11 +22,18 @@ export const videoKeys = {
   list: (includeUnpublished = false) => ['training-videos', 'list', includeUnpublished] as const,
 };
 
+const VIDEO_LIST_COLUMNS =
+  'id, title, description, video_url, thumbnail_url, category, duration_seconds, tags, view_count, is_published, created_at, updated_at';
+
 export const useTrainingVideos = (includeUnpublished = false) => {
   return useQuery({
     queryKey: videoKeys.list(includeUnpublished),
     queryFn: async () => {
-      let query = supabase.from('training_videos').select('*').order('created_at', { ascending: false });
+      let query = supabase
+        .from('training_videos')
+        .select(VIDEO_LIST_COLUMNS)
+        .order('created_at', { ascending: false })
+        .limit(200);
       if (!includeUnpublished) query = query.eq('is_published', true);
       const { data, error } = await query;
       if (error) throw error;

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ListSkeleton } from '@/components/skeletons/PageSkeletons';
 import { usePlaybooks } from '@/hooks/usePlaybooks';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import EmptyState from '@/components/SimpleEmptyState';

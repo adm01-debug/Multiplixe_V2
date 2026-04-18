@@ -1,24 +1,33 @@
 
-Item 12/23 — Lazy load + code splitting agressivo.
+Item 13/23 — Memoização agressiva em listas e cards.
+
+## Alvos
+
+Componentes renderizados em listas grandes (catálogo, trilhas, leaderboard, achievements, lessons) que re-renderizam sem necessidade quando o pai atualiza estado.
 
 ## Mudanças
 
-**1. `src/App.tsx`** — converter overlays globais raramente críticos para lazy:
-- `CommandPalette`, `KeyboardShortcutsModal`, `PWAInstallPrompt`, `NotificationPermissionBanner` → `lazy()` envolvidos em `<Suspense fallback={null}>`
+**1. `React.memo` nos cards de listagem:**
+- `src/components/catalog/CourseCard.tsx`
+- `src/components/catalog/CourseListItem.tsx`
+- `src/components/learning-paths/LearningPathCard.tsx`
+- `src/components/learning-paths/LearningPathCourseItem.tsx`
+- `src/components/gamification/AchievementBadge.tsx`
+- `src/components/CertificateCard.tsx`
+- `src/components/player/LessonList.tsx` (item interno)
 
-**2. `vite.config.ts`** — adicionar manualChunks adicionais:
-- `vendor-icons`: `lucide-react`
-- `vendor-confetti`: `canvas-confetti`
-- `vendor-fuse`: `fuse.js`
-- `vendor-helmet`: `react-helmet-async`
+Envolver `export default` com `memo(...)` e adicionar `displayName`.
 
-**3. `src/pages/Dashboard.tsx`** — lazy load widgets pesados (recharts/framer):
-- `XPEvolutionChart`, `SmartRecommendations`, `WeeklyGoalTracker`, `DailyChallenges` com Suspense + Skeleton
+**2. `useMemo` em arrays derivados pesados:**
+- `src/pages/Catalog.tsx` — array filtrado/ordenado de cursos
+- `src/pages/LearningPaths.tsx` — array de paths filtrado
+- `src/pages/Leaderboard.tsx` — ranking ordenado
+- `src/components/AchievementsGrid.tsx` — grupos por categoria
 
-**4. `src/pages/Profile.tsx`** — lazy load:
-- `XPEvolutionChart`, `AchievementsGrid`, `SkillRadarChart`
+**3. `useCallback` em handlers passados como props para itens memoizados:**
+- handlers de favoritar, navegar, selecionar nas páginas acima.
 
 ## Aceite
-Build OK · bundle inicial reduzido · zero regressão visual · Suspense fallbacks invisíveis para overlays.
+Zero regressão visual · re-renders reduzidos em listas · build OK · sem mudanças de comportamento.
 
-Depois: Item 13 (Memoização agressiva: React.memo + useMemo em listas grandes).
+Depois: Item 14 — Otimização de imagens (LazyImage + decoding="async" + width/height para evitar CLS).

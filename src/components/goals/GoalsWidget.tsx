@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import EmptyState from "@/components/EmptyState";
 
 const GoalsWidget = () => {
   const { activeGoals, createGoal, deleteGoal, isCreating, isLoading } = useGoals();

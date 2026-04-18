@@ -1,5 +1,3 @@
-import confetti from 'canvas-confetti';
-
 type ConfettiType = 'lesson' | 'course' | 'achievement' | 'xp';
 
 const defaults = {
@@ -7,8 +5,15 @@ const defaults = {
   zIndex: 9999,
 };
 
+// Lazy-load canvas-confetti only when first used (keeps it out of initial bundle)
+const loadConfetti = async () => {
+  const mod = await import('canvas-confetti');
+  return mod.default;
+};
+
 export const useConfetti = () => {
-  const fireLessonComplete = () => {
+  const fireLessonComplete = async () => {
+    const confetti = await loadConfetti();
     // Quick burst of confetti for lesson completion
     confetti({
       ...defaults,
@@ -19,7 +24,8 @@ export const useConfetti = () => {
     });
   };
 
-  const fireCourseComplete = () => {
+  const fireCourseComplete = async () => {
+    const confetti = await loadConfetti();
     // Grand celebration for course completion
     const duration = 3000;
     const animationEnd = Date.now() + duration;
@@ -76,7 +82,8 @@ export const useConfetti = () => {
     });
   };
 
-  const fireAchievement = () => {
+  const fireAchievement = async () => {
+    const confetti = await loadConfetti();
     // Star-shaped confetti for achievements
     const scalar = 2;
     const shapes = [confetti.shapeFromText({ text: '⭐', scalar })];
@@ -99,7 +106,8 @@ export const useConfetti = () => {
     });
   };
 
-  const fireXP = (amount?: number) => {
+  const fireXP = async (_amount?: number) => {
+    const confetti = await loadConfetti();
     // Quick sparkle effect for XP gain
     confetti({
       ...defaults,

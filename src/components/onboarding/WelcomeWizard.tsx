@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import confetti from 'canvas-confetti';
+
 import {
   WelcomeStep, DepartmentStep, GoalsStep, StudyTimeStep, QuickWinStep
 } from './WizardStepContent';
@@ -48,6 +48,7 @@ const WelcomeWizard = ({ onComplete }: WelcomeWizardProps) => {
       localStorage.setItem(`onboarding_completed_${user.id}`, 'true');
       localStorage.setItem(`user_goals_${user.id}`, JSON.stringify(selectedGoals));
       localStorage.setItem(`study_time_${user.id}`, studyTime);
+      const { default: confetti } = await import('canvas-confetti');
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'] });
       toast.success('Bem-vindo ao MULTIPLIXE! 🎉');
       onComplete();

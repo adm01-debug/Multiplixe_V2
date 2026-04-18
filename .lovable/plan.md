@@ -1,35 +1,27 @@
 
-Item 16/23 — Acessibilidade WCAG AA completa.
+Item 17/23 — Tratamento de erros robusto.
 
 ## Mudanças
 
-**1. `aria-label` em botões só com ícone** (sem texto visível):
-- `src/components/NotificationBell.tsx` — botão do sino
-- `src/components/ThemeToggle.tsx` — toggle de tema
-- `src/components/LanguageToggle.tsx` — toggle de idioma
-- `src/components/favorites/FavoriteButton.tsx` — botão de favoritar
-- `src/components/pomodoro/FloatingPomodoroButton.tsx`
-- `src/components/navigation/ScrollToTop.tsx`
-- `src/components/player/VideoControls.tsx` — play/pause/mute/fullscreen
+**1. `src/components/ErrorBoundary.tsx`** — melhorar:
+- Aceitar prop `routeName?: string` para contexto no telemetry.
+- Adicionar contador de retries (max 3) e botão "Recarregar página" como fallback final.
+- Logar `componentStack` + `routeName` no `trackRenderError`.
 
-**2. `focus-visible` consistente:**
-- Audit em `src/index.css` para garantir `:focus-visible` ring em todos elementos interativos (já presente em shadcn, validar overrides).
-- Adicionar classe `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2` em links/cards customizados (CourseCard, LearningPathCard).
+**2. `src/components/RouteErrorBoundary.tsx`** (novo) — wrapper especializado por rota:
+- Usa `ErrorBoundary` com fallback contextualizado (mostra nome da rota).
+- Reset automático ao mudar de rota (via `useLocation` key).
 
-**3. Skip links cobertura:**
-- Confirmar que `<SkipLinks />` aparece em todas páginas via `App.tsx`/`Layout`. Adicionar `id="main-content"` em `<main>` das páginas que ainda não têm (Catalog, Profile, LearningPaths, Leaderboard).
+**3. `src/App.tsx`** — envolver cada `<Route element={...}>` lazy com `<RouteErrorBoundary routeName="...">` para isolar falhas de rota (uma rota com erro não derruba a app inteira).
 
-**4. `aria-current="page"` em navegação ativa:**
-- `src/components/navigation/MobileBottomNav.tsx` — marcar item ativo.
-- Nav header (se houver).
+**4. `src/lib/toastHelpers.ts`** (novo) — helpers estruturados:
+- `toastError(title, description?, action?)` — toast vermelho com ícone e ação opcional "Tentar novamente".
+- `toastSuccess`, `toastInfo`, `toastWarning` — variantes consistentes.
+- Padroniza uso de `sonner` em toda a aplicação.
 
-**5. `role` e landmarks:**
-- Garantir `<main>`, `<nav>`, `<header>`, `<footer>` em todas páginas com semântica HTML5 correta.
-
-**6. Imagens decorativas:**
-- Adicionar `alt=""` (vazio) em imagens puramente decorativas (HeroBackground, HeroFloatingElements) para que screen readers ignorem.
+**5. Cobertura mínima** — substituir 3-5 chamadas avulsas de `toast.error(...)` em hooks críticos (`useAuth`, `useFavorites`, `useNotifications`) pelo helper para validar a API.
 
 ## Aceite
-Zero regressão visual · todos botões só-ícone com aria-label · focus ring visível em tab · skip links funcionais · navegação ativa anunciada por screen reader · landmarks semânticos.
+Build OK · falha em uma rota lazy não derruba app · toasts de erro consistentes · retry funcional no boundary · zero regressão visual.
 
-Depois: Item 17 — Tratamento de erros robusto (Error Boundaries por rota + retry + toast estruturado).
+Depois: Item 18 — Loading states & skeletons consistentes em todas listas/páginas.

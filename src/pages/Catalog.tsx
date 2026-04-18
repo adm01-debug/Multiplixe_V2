@@ -1,6 +1,6 @@
 import { useCallback, useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
@@ -51,7 +51,7 @@ const Catalog = () => {
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  if (!authLoading && !user) { navigate("/auth"); return null; }
+  
 
   const fuzzySearchResults = useFuzzySearchWithMatches(
     courses as Course[], ["title", "description", "instructor_name", "categories.name"], debouncedSearch
@@ -94,7 +94,7 @@ const Catalog = () => {
     );
   }
 
-  if (!user) return null;
+  if (!user) return <Navigate to="/auth" replace />;
 
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "Colaborador";
   const hasActiveFilters = selectedCategory || selectedLevel;

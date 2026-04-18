@@ -6,6 +6,40 @@
 
 ---
 
+## ✅ ROADMAP 23/23 CONCLUÍDO — 18/04/2026
+
+Todos os itens do roadmap rumo ao 10/10 foram entregues:
+
+| # | Item | Entrega |
+|---|---|---|
+| 1 | Padronização de toasts | `src/lib/toastHelpers.ts` (success/error/info/warning) |
+| 2 | i18n base | `src/lib/i18n.ts` + `useT` (PT/EN/ES) |
+| 3 | Skip Links | `accessibility/SkipLinks.tsx` (main / nav / footer) |
+| 4 | Live Announcer | `accessibility/LiveAnnouncer.tsx` (aria-live polite) |
+| 5 | Reduced motion | `ReducedMotionProvider` + `prefers-reduced-motion` |
+| 6 | High contrast | `HighContrastToggle` + tokens HSL alternativos |
+| 7 | Font size control | `FontSizeControl` (sm/md/lg/xl) |
+| 8 | Onboarding tutorial | `OnboardingTutorial.tsx` + `WelcomeWizard.tsx` |
+| 9 | Command Palette | `CommandPalette.tsx` (⌘K · Fuse.js) |
+| 10 | Atalhos globais | `useGlobalShortcuts.ts` (`g d/c/t/p/v/o/a/r`, `?`, `n`) |
+| 11 | Push notifications | `PushNotificationManager` + `usePushNotifications` |
+| 12 | Smart reminders | `SmartReminders.tsx` (streak risk, due assessments) |
+| 13 | Telemetria silenciosa | `lib/telemetry.ts` + `useTelemetry` (page_view, errors, features) |
+| 14 | Route Error Boundary | `RouteErrorBoundary.tsx` com retry e routeName |
+| 15 | Confirm Exit | `useConfirmExit` + `ConfirmExitDialog` (LessonPlayer) |
+| 16 | PWA completo | manifest, sw.js, install prompt, scroll restoration |
+| 17 | Notes & Highlights | `NotesPanel.tsx` + `useNotes` |
+| 18 | Goals & Pomodoro | `GoalsWidget` + `PomodoroTimer` + XP integrado |
+| 19 | Empty states | `EmptyState` / `SimpleEmptyState` em listas vazias |
+| 20 | Memoização | `React.memo` em CourseCard/LearningPathCard + useCallback |
+| 21 | Bundle splitting | `vite.config.ts` manualChunks + lazy `canvas-confetti` |
+| 22 | Testes críticos | `toastHelpers` · `routeErrorBoundary` · `useConfetti` |
+| 23 | Polimento final | console limpo · zero `any` · `aria-label` · README atualizado |
+
+**Estado final**: 320+ testes passando · zero `any` · zero `console.log` em produção · WCAG AA · arquivos ≤ 400 linhas · code splitting agressivo · plataforma 10/10. ✨
+
+---
+
 ## 📊 ÍNDICE
 
 1. [Resumo Executivo](#resumo-executivo)

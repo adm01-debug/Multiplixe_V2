@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ListSkeleton } from '@/components/skeletons/PageSkeletons';
 import { usePlaybooks } from '@/hooks/usePlaybooks';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import EmptyState from '@/components/SimpleEmptyState';
@@ -82,11 +82,7 @@ const Playbooks = () => {
         </p>
 
         {isLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" role="status" aria-label="Carregando">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-48 rounded-xl" />
-            ))}
-          </div>
+          <ListSkeleton count={6} />
         ) : results.length === 0 ? (
           <EmptyState icon={BookOpen} title="Nenhum playbook encontrado" description="Tente outra busca ou filtro." />
         ) : (

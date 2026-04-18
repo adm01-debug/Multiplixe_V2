@@ -45,7 +45,10 @@ const NotificationBell = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <motion.button
-          className="relative inline-flex items-center justify-center rounded-xl border border-border/50 h-11 w-11 bg-background hover:bg-primary/10 transition-colors"
+          aria-label={unreadCount > 0 ? `Notificações (${unreadCount} não lidas)` : 'Notificações'}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          className="relative inline-flex items-center justify-center rounded-xl border border-border/50 h-11 w-11 bg-background hover:bg-primary/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           whileHover={{ 
             scale: 1.08,
           }}

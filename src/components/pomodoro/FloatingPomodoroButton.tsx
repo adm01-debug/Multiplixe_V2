@@ -75,8 +75,9 @@ const FloatingPomodoroButton = () => {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <motion.button
+            aria-label={state === 'idle' ? 'Abrir timer Pomodoro' : `Pomodoro - ${getStateLabel(state)} (${formattedTime})`}
             className={cn(
-              "fixed bottom-6 right-6 z-50 h-14 rounded-full shadow-lg flex items-center justify-center",
+              "fixed bottom-6 right-6 z-50 h-14 rounded-full shadow-lg flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               state !== 'idle' ? "px-4 gap-2" : "w-14 px-0",
               getStateColor(state)
             )}

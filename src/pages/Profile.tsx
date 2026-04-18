@@ -135,7 +135,7 @@ const Profile = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main id="main-content" className="container mx-auto px-4 py-8">
         <ProfileHeader userName={userName} userEmail={userEmail} totalXP={totalXP} levelIcon={userLevel.currentLevel.icon} levelNumber={userLevel.currentLevel.level} memberSinceDate={memberSinceDate} />
         <section className="mb-12"><LevelProgress totalXP={totalXP} /></section>
 

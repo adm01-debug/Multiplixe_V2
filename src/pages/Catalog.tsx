@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -43,7 +43,7 @@ const Catalog = () => {
 
   const isStale = coursesStale || categoriesStale;
   const isFetching = coursesFetching || categoriesFetching;
-  const handleRefresh = () => { refetchCourses(); refetchCategories(); };
+  const handleRefresh = useCallback(() => { refetchCourses(); refetchCategories(); }, [refetchCourses, refetchCategories]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebouncedValue(searchQuery, 300);
@@ -74,7 +74,9 @@ const Catalog = () => {
       .map((result) => result.item);
   }, [fuzzySearchResults, selectedCategory, selectedLevel]);
 
-  const handleSignOut = async () => { await signOut(); navigate("/"); };
+  const handleSignOut = useCallback(async () => { await signOut(); navigate("/"); }, [signOut, navigate]);
+  const handleClearAll = useCallback(() => { setSearchQuery(""); setSelectedCategory(null); setSelectedLevel(null); }, []);
+  const handleToggleFilters = useCallback(() => setShowFilters((v) => !v), []);
   const loading = coursesLoading || categoriesLoading;
 
   if (authLoading) {
@@ -111,7 +113,7 @@ const Catalog = () => {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <SearchInput value={searchQuery} onChange={setSearchQuery} className="pl-12 h-14 text-base rounded-2xl border-border/50 bg-card/50 backdrop-blur-sm focus:bg-card neon-border" />
             </div>
-            <Button variant="outline" onClick={() => setShowFilters(!showFilters)} className={`h-14 px-6 rounded-2xl border-border/50 gap-2 neon-border ${hasActiveFilters ? 'bg-primary/10 border-primary/50 text-primary dark:shadow-[0_0_20px_hsl(270_100%_70%/0.3)]' : ''}`}>
+            <Button variant="outline" onClick={handleToggleFilters} className={`h-14 px-6 rounded-2xl border-border/50 gap-2 neon-border ${hasActiveFilters ? 'bg-primary/10 border-primary/50 text-primary dark:shadow-[0_0_20px_hsl(270_100%_70%/0.3)]' : ''}`}>
               <Filter className="h-5 w-5" /><span>Filtros</span>
               {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-primary animate-pulse dark:shadow-[0_0_10px_hsl(270_100%_70%/0.8)]" />}
               <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
@@ -130,7 +132,7 @@ const Catalog = () => {
               </div>
               {hasActiveFilters && (
                 <div className="pt-2">
-                  <Button variant="ghost" size="sm" onClick={() => { setSelectedCategory(null); setSelectedLevel(null); }} className="text-muted-foreground hover:text-foreground">Limpar filtros</Button>
+                  <Button variant="ghost" size="sm" onClick={handleClearAll} className="text-muted-foreground hover:text-foreground">Limpar filtros</Button>
                 </div>
               )}
             </div>
@@ -161,7 +163,7 @@ const Catalog = () => {
             </motion.div>
           )
         ) : (
-          <EmptyState type="search" title="Nenhum curso encontrado" description="Tente ajustar os filtros ou buscar por outros termos para encontrar o curso perfeito para você" actionLabel="Limpar busca" onAction={() => { setSearchQuery(""); setSelectedCategory(null); setSelectedLevel(null); }} />
+          <EmptyState type="search" title="Nenhum curso encontrado" description="Tente ajustar os filtros ou buscar por outros termos para encontrar o curso perfeito para você" actionLabel="Limpar busca" onAction={handleClearAll} />
         )}
       </main>
     </div>

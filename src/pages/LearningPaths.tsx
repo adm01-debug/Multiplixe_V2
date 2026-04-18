@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -36,10 +36,10 @@ export default function LearningPaths() {
   const isStale = pathsStale || progressStale;
   const isFetching = pathsFetching || progressFetching;
   
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     refetchPaths();
     refetchProgress();
-  };
+  }, [refetchPaths, refetchProgress]);
 
   // Transformar dados para o formato esperado pelos componentes
   const learningPaths = useMemo(() => {

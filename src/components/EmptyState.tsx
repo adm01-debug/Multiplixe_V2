@@ -276,6 +276,8 @@ const EmptyState = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
+      role="status"
+      aria-live="polite"
       className="flex flex-col items-center justify-center py-16 px-6 text-center"
     >
       {/* Illustration */}

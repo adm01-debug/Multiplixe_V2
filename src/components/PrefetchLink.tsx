@@ -1,94 +1,115 @@
 import { Link, LinkProps } from 'react-router-dom';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { queryClient } from '@/lib/queryClient';
+import {
+  prefetchRouteChunk,
+  prefetchRouteWhenIdle,
+} from '@/lib/routePrefetch';
 
-// Map of routes to their lazy-loaded components for prefetching
-const routeModules: Record<string, () => Promise<unknown>> = {
-  '/': () => import('@/pages/Index'),
-  '/auth': () => import('@/pages/Auth'),
-  '/forgot-password': () => import('@/pages/ForgotPassword'),
-  '/reset-password': () => import('@/pages/ResetPassword'),
-  '/dashboard': () => import('@/pages/Dashboard'),
-  '/catalogo': () => import('@/pages/Catalog'),
-  '/perfil': () => import('@/pages/Profile'),
-  '/ranking': () => import('@/pages/Leaderboard'),
-  '/trilhas': () => import('@/pages/LearningPaths'),
-  '/admin': () => import('@/pages/Admin'),
-  '/admin/security': () => import('@/pages/RateLimitDashboard'),
-  '/seguranca': () => import('@/pages/SecurityDashboard'),
-  '/verificar-certificado': () => import('@/pages/VerifyCertificate'),
-  // Dynamic routes
-  '/curso': () => import('@/pages/CourseDetail'),
-  '/trilha': () => import('@/pages/LearningPathDetail'),
-  '/aula': () => import('@/pages/LessonPlayer'),
-};
-
-// Cache for prefetched modules
-const prefetchedRoutes = new Set<string>();
+export type PrefetchStrategy = 'hover' | 'intersect' | 'both' | 'none';
 
 interface PrefetchLinkProps extends LinkProps {
+  /** @deprecated use prefetchStrategy */
   prefetch?: 'intent' | 'render' | 'none';
+  prefetchStrategy?: PrefetchStrategy;
   prefetchDelay?: number;
   onPrefetchData?: () => void;
 }
 
-const PrefetchLink = ({ 
-  to, 
-  prefetch = 'intent', 
+const dataPrefetchedPaths = new Set<string>();
+
+const PrefetchLink = ({
+  to,
+  prefetch,
+  prefetchStrategy,
   prefetchDelay = 100,
   onPrefetchData,
   onMouseEnter,
   onFocus,
   children,
-  ...props 
+  ...props
 }: PrefetchLinkProps) => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-  const dataPrefetchedRef = useRef(false);
-  
-  const prefetchRoute = useCallback(() => {
-    const path = typeof to === 'string' ? to : to.pathname || '';
-    
-    // Check if it's a dynamic route (contains :)
-    const basePath = path.split('/').slice(0, 2).join('/');
-    const routeToPreload = routeModules[path] || routeModules[basePath];
-    
-    if (routeToPreload && !prefetchedRoutes.has(path)) {
-      prefetchedRoutes.add(path);
-      routeToPreload().catch(() => {
-        // Remove from cache if prefetch fails so it can be retried
-        prefetchedRoutes.delete(path);
-      });
-    }
+  const linkRef = useRef<HTMLAnchorElement | null>(null);
 
-    // Prefetch data if callback provided and not already prefetched
-    if (onPrefetchData && !dataPrefetchedRef.current) {
-      dataPrefetchedRef.current = true;
-      onPrefetchData();
-    }
-  }, [to, onPrefetchData]);
+  // Resolve strategy (back-compat with old `prefetch` prop)
+  const strategy: PrefetchStrategy =
+    prefetchStrategy ??
+    (prefetch === 'none' ? 'none' : prefetch === 'render' ? 'both' : 'both');
 
-  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (prefetch === 'intent') {
-      timeoutRef.current = setTimeout(prefetchRoute, prefetchDelay);
-    }
-    onMouseEnter?.(e);
-  }, [prefetch, prefetchDelay, prefetchRoute, onMouseEnter]);
+  const path = typeof to === 'string' ? to : to.pathname || '';
+
+  const runDataPrefetch = useCallback(() => {
+    if (!onPrefetchData || dataPrefetchedPaths.has(path)) return;
+    dataPrefetchedPaths.add(path);
+    onPrefetchData();
+  }, [onPrefetchData, path]);
+
+  const prefetchAll = useCallback(() => {
+    prefetchRouteChunk(path);
+    runDataPrefetch();
+  }, [path, runDataPrefetch]);
+
+  // Intersection-based prefetch (when link enters viewport, prefetch on idle)
+  useEffect(() => {
+    if (strategy !== 'intersect' && strategy !== 'both') return;
+    const el = linkRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            prefetchRouteWhenIdle(path);
+            // Data prefetch on idle as well
+            if (onPrefetchData && !dataPrefetchedPaths.has(path)) {
+              const idle =
+                'requestIdleCallback' in window
+                  ? (window as typeof window & {
+                      requestIdleCallback: (cb: () => void) => number;
+                    }).requestIdleCallback
+                  : (cb: () => void) => window.setTimeout(cb, 1);
+              idle(runDataPrefetch);
+            }
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [strategy, path, onPrefetchData, runDataPrefetch]);
+
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (strategy === 'hover' || strategy === 'both') {
+        timeoutRef.current = setTimeout(prefetchAll, prefetchDelay);
+      }
+      onMouseEnter?.(e);
+    },
+    [strategy, prefetchDelay, prefetchAll, onMouseEnter]
+  );
 
   const handleMouseLeave = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, []);
 
-  const handleFocus = useCallback((e: React.FocusEvent<HTMLAnchorElement>) => {
-    if (prefetch === 'intent') {
-      prefetchRoute();
-    }
-    onFocus?.(e);
-  }, [prefetch, prefetchRoute, onFocus]);
+  const handleFocus = useCallback(
+    (e: React.FocusEvent<HTMLAnchorElement>) => {
+      if (strategy === 'hover' || strategy === 'both') {
+        prefetchAll();
+      }
+      onFocus?.(e);
+    },
+    [strategy, prefetchAll, onFocus]
+  );
 
   return (
     <Link
+      ref={linkRef}
       to={to}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -105,20 +126,15 @@ export default PrefetchLink;
 // Hook for programmatic prefetching
 export const usePrefetch = () => {
   const prefetch = useCallback((path: string) => {
-    const basePath = path.split('/').slice(0, 2).join('/');
-    const routeToPreload = routeModules[path] || routeModules[basePath];
-    
-    if (routeToPreload && !prefetchedRoutes.has(path)) {
-      prefetchedRoutes.add(path);
-      routeToPreload().catch(() => {
-        prefetchedRoutes.delete(path);
-      });
-    }
+    prefetchRouteChunk(path);
   }, []);
 
-  const prefetchMultiple = useCallback((paths: string[]) => {
-    paths.forEach(prefetch);
-  }, [prefetch]);
+  const prefetchMultiple = useCallback(
+    (paths: string[]) => {
+      paths.forEach(prefetch);
+    },
+    [prefetch]
+  );
 
   return { prefetch, prefetchMultiple };
 };
@@ -141,7 +157,6 @@ export const usePrefetchQuery = () => {
         staleTime: 5 * 60 * 1000,
       });
 
-      // Also prefetch lessons
       queryClient.prefetchQuery({
         queryKey: ['course-lessons', slug],
         queryFn: async () => {
@@ -150,9 +165,9 @@ export const usePrefetchQuery = () => {
             .select('id')
             .eq('slug', slug)
             .maybeSingle();
-          
+
           if (!course) return [];
-          
+
           const { data } = await supabase
             .from('lessons')
             .select('id, title, description, duration_seconds, order_index, is_free')
@@ -181,7 +196,6 @@ export const usePrefetchQuery = () => {
         staleTime: 5 * 60 * 1000,
       });
 
-      // Also prefetch courses in the path
       queryClient.prefetchQuery({
         queryKey: ['learning-path-courses', slug],
         queryFn: async () => {
@@ -190,7 +204,7 @@ export const usePrefetchQuery = () => {
             .select('id')
             .eq('slug', slug)
             .maybeSingle();
-          
+
           if (!path) return [];
 
           const { data } = await supabase
@@ -198,7 +212,7 @@ export const usePrefetchQuery = () => {
             .select(`
               *,
               course:courses (
-                id, title, slug, description, thumbnail_url, 
+                id, title, slug, description, thumbnail_url,
                 duration_minutes, level, total_lessons
               )
             `)
@@ -211,7 +225,6 @@ export const usePrefetchQuery = () => {
     });
   }, []);
 
-  // Prefetch catalog data (courses and categories)
   const prefetchCatalog = useCallback(() => {
     import('@/integrations/supabase/client').then(({ supabase }) => {
       queryClient.prefetchQuery({
@@ -241,7 +254,6 @@ export const usePrefetchQuery = () => {
     });
   }, []);
 
-  // Prefetch learning paths list
   const prefetchLearningPaths = useCallback(() => {
     import('@/integrations/supabase/client').then(({ supabase }) => {
       queryClient.prefetchQuery({
@@ -264,14 +276,12 @@ export const usePrefetchQuery = () => {
     });
   }, []);
 
-  // Prefetch leaderboard data
   const prefetchLeaderboard = useCallback(() => {
     import('@/integrations/supabase/client').then(({ supabase }) => {
       queryClient.prefetchQuery({
         queryKey: ['leaderboard', 'all'],
         queryFn: async () => {
-          const { data } = await supabase
-            .rpc('get_leaderboard', { p_limit: 50 });
+          const { data } = await supabase.rpc('get_leaderboard', { p_limit: 50 });
           return data || [];
         },
         staleTime: 5 * 60 * 1000,
@@ -279,11 +289,11 @@ export const usePrefetchQuery = () => {
     });
   }, []);
 
-  return { 
-    prefetchCourseDetail, 
+  return {
+    prefetchCourseDetail,
     prefetchLearningPathDetail,
     prefetchCatalog,
     prefetchLearningPaths,
-    prefetchLeaderboard
+    prefetchLeaderboard,
   };
 };

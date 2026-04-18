@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import PrefetchLink from "@/components/PrefetchLink";
 import { motion } from "framer-motion";
 import { 
   Play, 
@@ -146,7 +147,7 @@ const FeaturedCoursesPreview = () => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className="group"
             >
-              <Link to={`/curso/${course.slug}`}>
+              <PrefetchLink to={`/curso/${course.slug}`}>
                 <div className="relative bg-card/80 backdrop-blur-sm rounded-3xl border border-border/50 hover:border-primary/30 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10">
                   {/* Thumbnail */}
                   <div className="relative aspect-video overflow-hidden">
@@ -240,7 +241,7 @@ const FeaturedCoursesPreview = () => {
                     )}
                   </div>
                 </div>
-              </Link>
+              </PrefetchLink>
             </motion.div>
           ))}
         </div>
@@ -253,12 +254,12 @@ const FeaturedCoursesPreview = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <Link to="/catalogo">
+          <PrefetchLink to="/catalogo">
             <Button size="lg" variant="outline" className="group border-2">
               Ver todos os cursos
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-          </Link>
+          </PrefetchLink>
         </motion.div>
       </div>
     </section>

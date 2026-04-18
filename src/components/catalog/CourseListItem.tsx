@@ -1,5 +1,6 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
+import { useCallback } from "react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, TrendingUp, ChevronRight } from "lucide-react";
@@ -60,14 +61,19 @@ const CourseListItem = memo(({
     : `${minutes}min`;
 
   const levelStyle = levelConfig[level] || levelConfig.iniciante;
+  const { prefetchCourseDetail } = usePrefetchQuery();
+  const handlePrefetch = useCallback(() => {
+    prefetchCourseDetail(slug);
+  }, [slug, prefetchCourseDetail]);
 
   return (
     <motion.div
       whileHover={{ x: 4 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <Link
+      <PrefetchLink
         to={`/curso/${slug}`}
+        onPrefetchData={handlePrefetch}
         className="group flex gap-4 p-4 rounded-2xl bg-card/80 border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all"
       >
         {/* Thumbnail */}
@@ -179,7 +185,7 @@ const CourseListItem = memo(({
             </div>
           </div>
         </div>
-      </Link>
+      </PrefetchLink>
     </motion.div>
   );
 });

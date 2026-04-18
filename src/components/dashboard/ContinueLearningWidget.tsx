@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
+import { useCallback } from "react";
 import { motion } from "framer-motion";
 import { Play, Clock, ChevronRight, Flame, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,10 +34,15 @@ interface ContinueLearningWidgetProps {
 }
 
 const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearningWidgetProps) => {
-  // Get the most recent in-progress course
+  const { prefetchCourseDetail } = usePrefetchQuery();
   const inProgressCourse = userProgress.find(
     (p) => (p.progress_percentage ?? 0) > 0 && (p.progress_percentage ?? 0) < 100
   );
+
+  const slug = inProgressCourse?.courses?.slug;
+  const handlePrefetch = useCallback(() => {
+    if (slug) prefetchCourseDetail(slug);
+  }, [slug, prefetchCourseDetail]);
 
   if (!inProgressCourse || !inProgressCourse.courses) return null;
 
@@ -81,8 +87,9 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
 
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Thumbnail */}
-          <Link 
+          <PrefetchLink
             to={`/curso/${course.slug}`}
+            onPrefetchData={handlePrefetch}
             className="relative shrink-0 group"
           >
             <div className="relative w-full sm:w-32 h-20 rounded-xl overflow-hidden bg-muted">
@@ -112,15 +119,15 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
                 </motion.div>
               </div>
             </div>
-          </Link>
+          </PrefetchLink>
 
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <Link to={`/curso/${course.slug}`}>
+            <PrefetchLink to={`/curso/${course.slug}`} onPrefetchData={handlePrefetch}>
               <h3 className="font-semibold text-foreground line-clamp-1 hover:text-primary transition-colors">
                 {course.title}
               </h3>
-            </Link>
+            </PrefetchLink>
             
             {course.instructor_name && (
               <p className="text-sm text-muted-foreground mt-0.5">
@@ -142,7 +149,7 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
 
             {/* CTA Button */}
             <div className="mt-4">
-              <Link to={`/curso/${course.slug}`}>
+              <PrefetchLink to={`/curso/${course.slug}`} onPrefetchData={handlePrefetch}>
                 <Button 
                   size="sm"
                   className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-lg shadow-primary/20 group"
@@ -151,7 +158,7 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
                   Continuar Curso
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
-              </Link>
+              </PrefetchLink>
             </div>
           </div>
         </div>

@@ -82,11 +82,7 @@ const Playbooks = () => {
         </p>
 
         {isLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" role="status" aria-label="Carregando">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-48 rounded-xl" />
-            ))}
-          </div>
+          <ListSkeleton count={6} />
         ) : results.length === 0 ? (
           <EmptyState icon={BookOpen} title="Nenhum playbook encontrado" description="Tente outra busca ou filtro." />
         ) : (

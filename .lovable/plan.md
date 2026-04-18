@@ -1,41 +1,19 @@
 
-E5 — Edge function `weekly-admin-digest` (relatório semanal por e-mail para admins).
+Ciclo E1→E5 concluído. Para manter a evolução rumo ao 10/10 absoluto, proponho novo ciclo **P1→P5 (Polimento Final)** focado em qualidade percebida, performance e robustez.
 
-## Mudanças
+## P1 — Skeleton states unificados no Dashboard
+Substituir spinners genéricos por skeletons dedicados (widgets de Continue, Stats, Recommendations) usando `PageSkeletons`. Reduz CLS e percepção de lentidão.
 
-**1. `supabase/functions/weekly-admin-digest/index.ts`** — nova edge function:
-- Consulta agregações dos últimos 7 dias:
-  - Novos usuários (`profiles` por `created_at`).
-  - Cursos mais concluídos (top 5 via `user_course_progress` com 100%).
-  - Total de XP distribuído (`user_xp_history`).
-  - Aulas completadas (`user_lesson_progress`).
-  - Alertas de queda: usuários com streak quebrada (`user_streaks` com `last_activity_date` > 3 dias).
-- Busca admins via `user_roles` + `profiles.email`.
-- Renderiza HTML responsivo com gradiente Indigo/Roxo (alinhado ao design system).
-- Envia via Resend (reusa `RESEND_API_KEY` se já existir; caso contrário, solicita).
-- `verify_jwt = false` (chamada por cron).
-- Validação Zod no payload opcional (`{ dryRun?: boolean }`).
-- CORS completo, logs estruturados, falha graciosa por admin (não aborta lote).
+## P2 — Toast helpers centralizados com ações
+Estender `toastHelpers.ts` para suportar `action` button (ex: "Desfazer" em favoritar, "Ver" em conquista). Aplicar em `useFavorites`, `useAchievements`, `ShareAchievement`.
 
-**2. Cron job** — agendar via SQL (toda segunda 09:00 UTC):
-```sql
-select cron.schedule(
-  'weekly-admin-digest',
-  '0 9 * * 1',
-  $$ select net.http_post(...) $$
-);
-```
-Habilitar `pg_cron` e `pg_net` se necessário.
+## P3 — Prefetch inteligente de rotas no hover
+Ativar `PrefetchLink` nos cards de curso (`CourseCard`, `ContinueLearningWidget`) e itens de trilha. Latência percebida ~0ms na navegação.
 
-**3. Painel admin** — botão "Enviar digest agora" no `AdminStatsTab` para teste manual (chama edge function via `supabase.functions.invoke` com `{ dryRun: false }`), visível apenas para admins.
+## P4 — Empty states ilustrados
+Trocar `EmptyState` genérico por variantes contextuais (sem favoritos, sem progresso, sem notas) com ilustrações SVG inline e CTA claro.
 
-**4. Teste Deno** — `supabase/functions/weekly-admin-digest/index_test.ts` valida:
-- Schema de payload aceita `{}` e `{ dryRun: true }`.
-- Função de formatação de números/datas em PT-BR.
+## P5 — Lighthouse pass
+Auditoria final: lazy-load de imagens em `CourseCard`/`LearningPathCard`, `loading="lazy"` em iframes, `fetchpriority="high"` em hero, garantir `width`/`height` em todas imagens. Meta: 95+ em todas categorias.
 
-**5. Secret** — verificar `RESEND_API_KEY`; se ausente, solicitar via `add_secret` antes de prosseguir.
-
-## Aceite
-Edge function deploy OK · cron agendado · admin recebe e-mail semanal com KPIs · botão manual funciona · teste passa · zero regressão.
-
-Conclui o ciclo Excelência+ (E1→E5). Plataforma em 10/10.
+Executarei P1 primeiro. Após aprovação, sigo P2→P5 sem interrupções.

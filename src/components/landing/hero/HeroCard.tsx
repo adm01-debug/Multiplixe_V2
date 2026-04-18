@@ -63,6 +63,7 @@ const HeroCard = ({ cardY, mousePosition }: HeroCardProps) => {
             loop
             playsInline
             preload="metadata"
+            aria-label="Prévia do curso em destaque"
           >
             <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
           </video>

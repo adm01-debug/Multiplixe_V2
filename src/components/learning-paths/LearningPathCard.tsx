@@ -86,6 +86,8 @@ export const LearningPathCard = memo(function LearningPathCard({ learningPath, p
               <LazyImage
                 src={learningPath.thumbnail_url}
                 alt={learningPath.title}
+                width={640}
+                height={360}
                 className="h-full w-full"
                 placeholderClassName="bg-gradient-to-br from-primary/30 to-primary/10"
               />

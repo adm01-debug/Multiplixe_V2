@@ -90,6 +90,10 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
                 <img
                   src={course.thumbnail_url}
                   alt={course.title}
+                  width={128}
+                  height={80}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               ) : (

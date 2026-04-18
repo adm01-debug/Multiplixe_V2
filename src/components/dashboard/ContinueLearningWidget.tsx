@@ -1,55 +1,56 @@
 import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Play, Clock, ChevronRight, Flame, Sparkles } from "lucide-react";
+import { Play, Clock, ChevronRight, Flame, Sparkles, Route, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-
-interface CourseData {
-  id: string;
-  title: string;
-  slug: string;
-  thumbnail_url: string | null;
-  duration_minutes: number | null;
-  total_lessons: number | null;
-  instructor_name: string | null;
-  description?: string | null;
-  level?: string | null;
-  is_featured?: boolean | null;
-  categories?: {
-    name: string;
-    color: string | null;
-  } | null;
-}
-
-interface CourseProgress {
-  course_id: string;
-  progress_percentage: number | null;
-  courses: CourseData | null;
-}
+import {
+  pickContinueRecommendation,
+  type ContinueProgressInput,
+  type ContinueCourseData,
+  type PathSuggestion,
+  type ContinueSource,
+} from "@/lib/continueLearning";
 
 interface ContinueLearningWidgetProps {
-  userProgress: CourseProgress[];
+  userProgress: ContinueProgressInput[];
+  learningPathSuggestion?: PathSuggestion | null;
+  favoriteSuggestion?: ContinueCourseData | null;
   className?: string;
 }
 
-const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearningWidgetProps) => {
+const BADGE_CONFIG: Record<ContinueSource, { icon: typeof Flame; label: (pathName?: string) => string }> = {
+  in_progress: { icon: Flame, label: () => "Continue de onde parou" },
+  learning_path: { icon: Route, label: (pathName?: string) => `Próximo na trilha${pathName ? ` ${pathName}` : ""}` },
+  favorite: { icon: Heart, label: () => "Você favoritou" },
+};
+
+const ContinueLearningWidget = ({
+  userProgress,
+  learningPathSuggestion,
+  favoriteSuggestion,
+  className = "",
+}: ContinueLearningWidgetProps) => {
   const { prefetchCourseDetail } = usePrefetchQuery();
-  const inProgressCourse = userProgress.find(
-    (p) => (p.progress_percentage ?? 0) > 0 && (p.progress_percentage ?? 0) < 100
+
+  const recommendation = useMemo(
+    () => pickContinueRecommendation(userProgress, learningPathSuggestion, favoriteSuggestion),
+    [userProgress, learningPathSuggestion, favoriteSuggestion]
   );
 
-  const slug = inProgressCourse?.courses?.slug;
+  const slug = recommendation?.course.slug;
   const handlePrefetch = useCallback(() => {
     if (slug) prefetchCourseDetail(slug);
   }, [slug, prefetchCourseDetail]);
 
-  if (!inProgressCourse || !inProgressCourse.courses) return null;
+  if (!recommendation) return null;
 
-  const course = inProgressCourse.courses;
-  const progress = inProgressCourse.progress_percentage ?? 0;
+  const { course, progress, source, pathName } = recommendation;
   const remainingPercent = 100 - progress;
   const estimatedMinutes = Math.ceil((remainingPercent / 100) * (course.duration_minutes || 30));
+  const badge = BADGE_CONFIG[source];
+  const BadgeIcon = badge.icon;
+  const ctaLabel = source === "in_progress" ? "Continuar Curso" : "Iniciar Curso";
 
   return (
     <motion.div
@@ -80,8 +81,8 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
             animate={{ scale: [1, 1.02, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Flame className="w-3 h-3" />
-            Continue de onde parou
+            <BadgeIcon className="w-3 h-3" />
+            {badge.label(pathName)}
           </motion.div>
         </div>
 
@@ -108,7 +109,7 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
                   <Sparkles className="w-8 h-8 text-primary/50" />
                 </div>
               )}
-              
+
               {/* Play overlay */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <motion.div
@@ -128,7 +129,7 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
                 {course.title}
               </h3>
             </PrefetchLink>
-            
+
             {course.instructor_name && (
               <p className="text-sm text-muted-foreground mt-0.5">
                 {course.instructor_name}
@@ -150,12 +151,12 @@ const ContinueLearningWidget = ({ userProgress, className = "" }: ContinueLearni
             {/* CTA Button */}
             <div className="mt-4">
               <PrefetchLink to={`/curso/${course.slug}`} onPrefetchData={handlePrefetch}>
-                <Button 
+                <Button
                   size="sm"
                   className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-lg shadow-primary/20 group"
                 >
                   <Play className="w-4 h-4 mr-1.5" fill="currentColor" />
-                  Continuar Curso
+                  {ctaLabel}
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
               </PrefetchLink>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { toastSuccess } from '@/lib/toastHelpers';
 
 interface Achievement {
   id: string;
@@ -106,6 +107,19 @@ export const useAchievements = () => {
 
           setNewAchievements(newlyUnlocked);
           
+          // Toast passivo de reforço com link para conquistas
+          newlyUnlocked.forEach((a) => {
+            toastSuccess(`${a.icon} Conquista desbloqueada: ${a.name}`, {
+              description: `+${a.xp_reward} XP`,
+              action: {
+                label: "Ver conquistas",
+                onClick: () => {
+                  window.location.href = "/perfil?tab=conquistas";
+                },
+              },
+            });
+          });
+
           // Refresh achievements list
           await fetchAchievements();
           

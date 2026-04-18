@@ -94,8 +94,13 @@ export function useFavorites() {
       if (ctx?.previous) queryClient.setQueryData(["favorites", user?.id], ctx.previous);
       toastError("Erro ao remover dos favoritos");
     },
-    onSuccess: () => {
-      toastSuccess("Curso removido dos favoritos");
+    onSuccess: (_data, courseId) => {
+      toastSuccess("Curso removido dos favoritos", {
+        action: {
+          label: "Desfazer",
+          onClick: () => addFavorite.mutate(courseId),
+        },
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });

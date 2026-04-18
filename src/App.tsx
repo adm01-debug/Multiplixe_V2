@@ -25,6 +25,7 @@ import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import RouteErrorBoundary from "@/components/RouteErrorBoundary";
 
 // Setup cache persistence
 setupCachePersistence(queryClient);

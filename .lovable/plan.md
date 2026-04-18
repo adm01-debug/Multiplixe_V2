@@ -1,24 +1,25 @@
 
-Roadmap 23/23 já concluído. Proponho um novo ciclo: **Excelência+ (5 melhorias incrementais)** para elevar a plataforma além do 10/10, com foco em valor de produto, não em refatorações cosméticas.
+E2/E5 — Modo "Foco" no LessonPlayer.
 
-## Próximas 5 melhorias
+## Mudanças
 
-**E1 — Dashboard de impacto pessoal**
-Widget no `/perfil` mostrando: horas estudadas (semana/mês), XP por dia (sparkline), top 3 categorias, comparação com média do departamento. Reusa `useUserXP`, `useXPHistory`, `useDepartmentLeaderboard`. Sem novas tabelas.
+**1. `useUserPreferences.ts`** — adicionar `focusMode: boolean` (default false) ao tipo e DEFAULT_PREFERENCES.
 
-**E2 — Modo "Foco" no LessonPlayer**
-Toggle que esconde sidebar/header, ativa Pomodoro automático e silencia notificações. Persiste preferência em `useUserPreferences`. Eleva engajamento e tempo de tela útil.
+**2. `LessonPlayer.tsx`** — quando `focusMode` ativo:
+- Esconder `LessonPlayerSidebar` e header secundário (manter apenas botão sair).
+- Centralizar player com max-width maior.
+- Iniciar Pomodoro automaticamente (via `usePomodoro.startWork()`) ao ativar.
+- Adicionar classe `focus-mode-active` no `<html>` para silenciar `NotificationBell`/toasts não-críticos via CSS.
 
-**E3 — Recomendação "Continue de onde parou" inteligente**
-Refinar `ContinueLearningWidget` priorizando: (1) última aula iniciada não concluída, (2) próxima aula da trilha ativa, (3) curso favoritado sem progresso. Hoje pega só a mais recente.
+**3. `src/components/player/LessonPlayerHeader.tsx`** — botão toggle (ícone `Maximize2`/`Minimize2`) com `aria-pressed`, tooltip "Modo Foco (F)".
 
-**E4 — Compartilhamento social de conquistas (real)**
-`ShareAchievement` hoje gera imagem mas falta integração nativa Web Share API + fallback de download. Adicionar `navigator.share` com imagem PNG gerada e copy persuasivo (LinkedIn-ready).
+**4. `useVideoShortcuts.ts`** (ou criar handler local) — atalho `F` toggla focus mode.
 
-**E5 — Painel admin: relatório semanal por e-mail**
-Edge function `weekly-admin-digest` (cron) envia para admins: novos usuários, cursos mais concluídos, alertas de queda de engajamento. Reusa `send-security-alert` como base de transporte.
+**5. `src/index.css`** — `.focus-mode-active` esconde toasts não-críticos (`[data-sonner-toaster] [data-type="info"]`) e `NotificationBell` via `[data-focus-hide]`. Marcar `NotificationBell` com esse atributo.
 
-## Aceite global
-Cada item entrega valor mensurável sem dívida técnica. Build OK · zero regressão · testes onde fizer sentido (E3, E5).
+**6. Persistência** — preferência salva em localStorage via `updatePreference('focusMode', value)`; restaura ao reabrir player.
 
-Vou executar E1 → E5 em sequência, sem pausas, ao aprovar.
+## Aceite
+Toggle visível no header do player · F atalho funciona · sidebar/header somem · Pomodoro inicia automático · notificações silenciadas · preferência persiste · zero regressão fora do player.
+
+Depois: E3 — Continue inteligente.

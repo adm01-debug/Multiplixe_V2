@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { Sparkles, ArrowRight } from "lucide-react";
+import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -7,6 +7,7 @@ import { useSmartRecommendations } from "@/hooks/useSmartRecommendations";
 
 const SmartRecommendations = () => {
   const { data: recs = [], isLoading } = useSmartRecommendations(3);
+  const { prefetchCourseDetail } = usePrefetchQuery();
 
   if (isLoading) {
     return (
@@ -33,7 +34,7 @@ const SmartRecommendations = () => {
       </div>
       <div className="grid gap-3 sm:grid-cols-3">
         {recs.map((r) => (
-          <Link key={r.id} to={`/curso/${r.slug}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+          <PrefetchLink key={r.id} to={`/curso/${r.slug}`} onPrefetchData={() => prefetchCourseDetail(r.slug)} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
             <Card className="h-full hover:border-primary/50 transition-colors group">
               <CardContent className="p-4 space-y-2">
                 <Badge variant="secondary" className="text-[10px]">
@@ -46,7 +47,7 @@ const SmartRecommendations = () => {
                 </div>
               </CardContent>
             </Card>
-          </Link>
+          </PrefetchLink>
         ))}
       </div>
     </section>

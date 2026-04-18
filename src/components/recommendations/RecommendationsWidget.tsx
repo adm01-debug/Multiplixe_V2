@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, Sparkles, ChevronRight, TrendingUp } from "lucide-react";
 
 const RecommendationsWidget = () => {
   const { recommendations, isLoading } = useRecommendations(4);
+  const { prefetchCourseDetail } = usePrefetchQuery();
 
   if (isLoading) {
     return (
@@ -53,8 +55,9 @@ const RecommendationsWidget = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Link
+            <PrefetchLink
               to={`/curso/${course.slug}`}
+              onPrefetchData={() => prefetchCourseDetail(course.slug)}
               className="group flex gap-4 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border/50 transition-all"
             >
               {/* Thumbnail */}
@@ -99,7 +102,7 @@ const RecommendationsWidget = () => {
                   {course.recommendation_reason}
                 </Badge>
               </div>
-            </Link>
+            </PrefetchLink>
           </motion.div>
         ))}
       </div>

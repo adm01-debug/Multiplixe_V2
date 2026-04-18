@@ -22,6 +22,7 @@ import {
   FileText,
   Loader2,
 } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 interface NotesPanelProps {
   lessonId: string;
@@ -127,11 +128,8 @@ const NotesPanel = ({ lessonId, courseId, currentTime = 0, onSeekToTime }: Notes
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center py-8 text-muted-foreground"
                 >
-                  <PenLine className="h-12 w-12 mx-auto mb-3 opacity-30" />
-                  <p>Nenhuma nota ainda</p>
-                  <p className="text-sm">Adicione sua primeira anotação!</p>
+                  <EmptyState type="notes" />
                 </motion.div>
               ) : (
                 <div className="space-y-3 pr-4">

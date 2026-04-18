@@ -10,7 +10,10 @@ import {
   Flame,
   Target,
   Route,
-  BarChart
+  BarChart,
+  Heart,
+  PenLine,
+  Flag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -27,7 +30,10 @@ interface EmptyStateProps {
     | "streaks"
     | "challenges"
     | "learning-paths"
-    | "analytics";
+    | "analytics"
+    | "favorites"
+    | "notes"
+    | "goals";
   title?: string;
   description?: string;
   actionLabel?: string;
@@ -213,6 +219,46 @@ const emptyStateConfigs = {
       </svg>
     ),
   },
+  favorites: {
+    icon: Heart,
+    title: "Sem favoritos ainda",
+    description: "Marque cursos com o coração para acessá-los rapidamente. Comece explorando o catálogo!",
+    actionLabel: "Explorar cursos",
+    gradient: "from-rose-500 to-pink-500",
+    illustration: (
+      <svg className="w-32 h-32 text-muted-foreground/20" viewBox="0 0 200 200" fill="none">
+        <path d="M100 170s-60-35-60-85a35 35 0 0160-25 35 35 0 0160 25c0 50-60 85-60 85z" stroke="currentColor" strokeWidth="4" strokeLinejoin="round"/>
+        <path d="M70 80c0-10 8-18 18-18" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  notes: {
+    icon: PenLine,
+    title: "Nenhuma anotação ainda",
+    description: "Tome notas durante as aulas para revisar pontos importantes e fixar o aprendizado!",
+    gradient: "from-amber-500 to-orange-500",
+    illustration: (
+      <svg className="w-32 h-32 text-muted-foreground/20" viewBox="0 0 200 200" fill="none">
+        <rect x="45" y="30" width="100" height="140" rx="6" stroke="currentColor" strokeWidth="4"/>
+        <path d="M65 60h70M65 85h70M65 110h70M65 135h45" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M140 145l20-20 10 10-20 20-15 5z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+  goals: {
+    icon: Flag,
+    title: "Nenhuma meta definida",
+    description: "Defina metas semanais ou mensais para se manter motivado e medir seu progresso!",
+    actionLabel: "Definir meta",
+    gradient: "from-emerald-500 to-teal-500",
+    illustration: (
+      <svg className="w-32 h-32 text-muted-foreground/20" viewBox="0 0 200 200" fill="none">
+        <path d="M60 30v140" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M60 35h90l-20 25 20 25H60" stroke="currentColor" strokeWidth="4" strokeLinejoin="round"/>
+        <circle cx="60" cy="170" r="8" fill="currentColor"/>
+      </svg>
+    ),
+  },
 };
 
 const EmptyState = ({
@@ -230,6 +276,8 @@ const EmptyState = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
+      role="status"
+      aria-live="polite"
       className="flex flex-col items-center justify-center py-16 px-6 text-center"
     >
       {/* Illustration */}

@@ -13,6 +13,7 @@ import { CertificateCard } from '@/components/CertificateCard';
 // Lazy load heavy widgets
 const AchievementsGrid = lazy(() => import('@/components/AchievementsGrid'));
 const XPEvolutionChart = lazy(() => import('@/components/XPEvolutionChart'));
+const PersonalImpactWidget = lazy(() => import('@/components/profile/PersonalImpactWidget'));
 import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';

@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import PrefetchLink, { usePrefetchQuery } from "@/components/PrefetchLink";
+import { useCallback } from "react";
 import { motion } from "framer-motion";
 import { Play, Clock, ChevronRight, Flame, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 import { toast } from "sonner";
+import { toastError, toastSuccess } from "@/lib/toastHelpers";
 
 export interface Favorite {
   id: string;
@@ -61,10 +62,10 @@ export function useFavorites() {
     },
     onError: (_err, _vars, ctx) => {
       if (ctx?.previous) queryClient.setQueryData(["favorites", user?.id], ctx.previous);
-      toast.error("Erro ao adicionar aos favoritos");
+      toastError("Erro ao adicionar aos favoritos");
     },
     onSuccess: () => {
-      toast.success("Curso adicionado aos favoritos! ⭐");
+      toastSuccess("Curso adicionado aos favoritos! ⭐");
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
@@ -91,10 +92,10 @@ export function useFavorites() {
     },
     onError: (_err, _vars, ctx) => {
       if (ctx?.previous) queryClient.setQueryData(["favorites", user?.id], ctx.previous);
-      toast.error("Erro ao remover dos favoritos");
+      toastError("Erro ao remover dos favoritos");
     },
     onSuccess: () => {
-      toast.success("Curso removido dos favoritos");
+      toastSuccess("Curso removido dos favoritos");
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });

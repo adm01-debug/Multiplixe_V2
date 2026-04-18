@@ -25,6 +25,7 @@ import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import RouteErrorBoundary from "@/components/RouteErrorBoundary";
 
 // Setup cache persistence
 setupCachePersistence(queryClient);
@@ -112,29 +113,29 @@ const App = () => (
                 <Suspense fallback={<PageLoader />}>
                   <PageTransition>
                     <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
-                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="/catalogo" element={<ProtectedRoute><Catalog /></ProtectedRoute>} />
-                    <Route path="/curso/:slug" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
-                    <Route path="/curso/:slug/aula/:lessonId" element={<ProtectedRoute><LessonPlayer /></ProtectedRoute>} />
-                    <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                    <Route path="/ranking" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
-                    <Route path="/trilhas" element={<ProtectedRoute><LearningPaths /></ProtectedRoute>} />
-                    <Route path="/trilha/:slug" element={<ProtectedRoute><LearningPathDetail /></ProtectedRoute>} />
-                    <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
-                    <Route path="/admin/security" element={<ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute>} />
-                    <Route path="/seguranca" element={<ProtectedRoute><SecurityDashboard /></ProtectedRoute>} />
-                    <Route path="/verificar-certificado" element={<VerifyCertificate />} />
-                    <Route path="/playbooks" element={<ProtectedRoute><Playbooks /></ProtectedRoute>} />
-                    <Route path="/playbook/:slug" element={<ProtectedRoute><PlaybookDetail /></ProtectedRoute>} />
-                    <Route path="/biblioteca-videos" element={<ProtectedRoute><VideoLibrary /></ProtectedRoute>} />
-                    <Route path="/onboarding" element={<ProtectedRoute><SalesOnboarding /></ProtectedRoute>} />
-                    <Route path="/onboarding/executar" element={<ProtectedRoute><OnboardingRuntime /></ProtectedRoute>} />
-                    <Route path="/avaliacoes" element={<ProtectedRoute><SkillAssessments /></ProtectedRoute>} />
-                    <Route path="/avaliacao/:id" element={<ProtectedRoute><AssessmentRunner /></ProtectedRoute>} />
+                    <Route path="/" element={<RouteErrorBoundary routeName="Home"><Index /></RouteErrorBoundary>} />
+                    <Route path="/auth" element={<RouteErrorBoundary routeName="Login"><Auth /></RouteErrorBoundary>} />
+                    <Route path="/forgot-password" element={<RouteErrorBoundary routeName="Esqueci a senha"><ForgotPassword /></RouteErrorBoundary>} />
+                    <Route path="/reset-password" element={<RouteErrorBoundary routeName="Redefinir senha"><ResetPassword /></RouteErrorBoundary>} />
+                    <Route path="/dashboard" element={<RouteErrorBoundary routeName="Dashboard"><ProtectedRoute><Dashboard /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/catalogo" element={<RouteErrorBoundary routeName="Catálogo"><ProtectedRoute><Catalog /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/curso/:slug" element={<RouteErrorBoundary routeName="Curso"><ProtectedRoute><CourseDetail /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/curso/:slug/aula/:lessonId" element={<RouteErrorBoundary routeName="Aula"><ProtectedRoute><LessonPlayer /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/perfil" element={<RouteErrorBoundary routeName="Perfil"><ProtectedRoute><Profile /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/ranking" element={<RouteErrorBoundary routeName="Ranking"><ProtectedRoute><Leaderboard /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/trilhas" element={<RouteErrorBoundary routeName="Trilhas"><ProtectedRoute><LearningPaths /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/trilha/:slug" element={<RouteErrorBoundary routeName="Trilha"><ProtectedRoute><LearningPathDetail /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/admin" element={<RouteErrorBoundary routeName="Admin"><ProtectedRoute requireAdmin><Admin /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/admin/security" element={<RouteErrorBoundary routeName="Segurança Admin"><ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/seguranca" element={<RouteErrorBoundary routeName="Segurança"><ProtectedRoute><SecurityDashboard /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/verificar-certificado" element={<RouteErrorBoundary routeName="Verificar Certificado"><VerifyCertificate /></RouteErrorBoundary>} />
+                    <Route path="/playbooks" element={<RouteErrorBoundary routeName="Playbooks"><ProtectedRoute><Playbooks /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/playbook/:slug" element={<RouteErrorBoundary routeName="Playbook"><ProtectedRoute><PlaybookDetail /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/biblioteca-videos" element={<RouteErrorBoundary routeName="Biblioteca de Vídeos"><ProtectedRoute><VideoLibrary /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/onboarding" element={<RouteErrorBoundary routeName="Onboarding"><ProtectedRoute><SalesOnboarding /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/onboarding/executar" element={<RouteErrorBoundary routeName="Onboarding Runtime"><ProtectedRoute><OnboardingRuntime /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/avaliacoes" element={<RouteErrorBoundary routeName="Avaliações"><ProtectedRoute><SkillAssessments /></ProtectedRoute></RouteErrorBoundary>} />
+                    <Route path="/avaliacao/:id" element={<RouteErrorBoundary routeName="Avaliação"><ProtectedRoute><AssessmentRunner /></ProtectedRoute></RouteErrorBoundary>} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                     </Routes>

@@ -9,6 +9,10 @@ interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   threshold?: number;
   rootMargin?: string;
   blurDataURL?: string;
+  /** When true, image loads immediately (no IntersectionObserver). Use for above-the-fold/LCP images. */
+  eager?: boolean;
+  /** Hint to the browser for fetch priority. 'high' for LCP images. */
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 const LazyImage = ({
@@ -19,14 +23,19 @@ const LazyImage = ({
   threshold = 0.1,
   rootMargin = '100px',
   blurDataURL,
+  eager = false,
+  fetchPriority,
+  width,
+  height,
   ...props
 }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(eager);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (eager) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -45,7 +54,7 @@ const LazyImage = ({
     }
 
     return () => observer.disconnect();
-  }, [threshold, rootMargin]);
+  }, [threshold, rootMargin, eager]);
 
   return (
     <div ref={imgRef} className={cn('relative overflow-hidden', className)}>
@@ -118,11 +127,15 @@ const LazyImage = ({
           <img
             src={src}
             alt={alt}
+            width={width}
+            height={height}
             className="w-full h-full object-cover"
             onLoad={() => setIsLoaded(true)}
             onError={() => setHasError(true)}
-            loading="lazy"
+            loading={eager ? 'eager' : 'lazy'}
             decoding="async"
+            // @ts-expect-error - fetchpriority is a valid HTML attribute, React types lag
+            fetchpriority={fetchPriority}
             {...props}
           />
         </motion.div>

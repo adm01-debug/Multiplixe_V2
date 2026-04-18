@@ -76,6 +76,8 @@ const CourseListItem = memo(({
             <LazyImage
               src={thumbnailUrl}
               alt={title}
+              width={192}
+              height={112}
               className="w-full h-full"
               placeholderClassName="bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10"
             />

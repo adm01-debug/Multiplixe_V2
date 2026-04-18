@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Star, Lock, Sparkles, CheckCircle } from "lucide-react";
 
@@ -206,4 +207,7 @@ export const AchievementProgress = ({
   );
 };
 
-export default AchievementBadge;
+const MemoizedAchievementBadge = memo(AchievementBadge);
+MemoizedAchievementBadge.displayName = "AchievementBadge";
+
+export default MemoizedAchievementBadge;

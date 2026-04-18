@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLeaderboard, LeaderboardPeriod } from '@/hooks/useLeaderboard';
@@ -24,7 +24,7 @@ const Leaderboard = () => {
   const [period, setPeriod] = useState<LeaderboardPeriod>('all');
   const { leaderboard, userRank, loading } = useLeaderboard(50, period);
 
-  const getRankBgClass = (rank: number) => {
+  const getRankBgClass = useCallback((rank: number) => {
     switch (rank) {
       case 1:
         return 'bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border-yellow-500/50';
@@ -35,9 +35,9 @@ const Leaderboard = () => {
       default:
         return 'bg-card/50 border-border/50';
     }
-  };
+  }, []);
 
-  const getPeriodLabel = () => {
+  const getPeriodLabel = useCallback(() => {
     switch (period) {
       case 'week':
         return 'desta semana';
@@ -46,7 +46,7 @@ const Leaderboard = () => {
       default:
         return 'de todos os tempos';
     }
-  };
+  }, [period]);
 
   if (loading) {
     return (

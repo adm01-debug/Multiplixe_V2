@@ -35,6 +35,8 @@ import DashboardHero from '@/components/dashboard/DashboardHero';
 import DashboardStatsGrid, { StatItem } from '@/components/dashboard/DashboardStatsGrid';
 import { DashboardStatsSkeleton } from '@/components/skeletons/PageSkeletons';
 import { useCourses } from '@/hooks/useCachedQuery';
+import { useFavorites } from '@/hooks/useFavorites';
+import type { ContinueCourseData, PathSuggestion } from '@/lib/continueLearning';
 import {
   Trophy, Loader2, Sparkles, Flame, Zap, TrendingUp, Play, ArrowRight,
 } from 'lucide-react';
@@ -58,7 +60,7 @@ interface Course {
   duration_minutes: number; level: string; instructor_name: string | null; total_lessons: number;
   is_featured: boolean; categories: { name: string; color: string | null } | null;
 }
-interface UserProgress { course_id: string; progress_percentage: number; courses: Course; }
+interface UserProgress { course_id: string; progress_percentage: number; last_accessed_at?: string | null; courses: Course; }
 interface Achievement { id: string; type: 'xp' | 'badge' | 'streak' | 'course'; title: string; description: string; value?: number; }
 
 const Dashboard = () => {
@@ -71,9 +73,12 @@ const Dashboard = () => {
   const { currentStreak, longestStreak, isStreakAtRisk, hasStudiedToday } = useStreaks();
   const { isAdmin } = useAdminRole();
   const { isStale: coursesStale, isFetching: coursesFetching, refetch: refetchCourses } = useCourses();
+  const { favorites } = useFavorites();
 
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
+  const [pathSuggestion, setPathSuggestion] = useState<PathSuggestion | null>(null);
+  const [favoriteSuggestion, setFavoriteSuggestion] = useState<ContinueCourseData | null>(null);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [currentAchievement, setCurrentAchievement] = useState<Achievement | null>(null);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
@@ -112,7 +117,7 @@ const Dashboard = () => {
       setLoadingCourses(true);
       const [coursesRes, progressRes] = await Promise.all([
         supabase.from('courses').select('*, categories(*)').eq('is_published', true).eq('is_featured', true).limit(4),
-        supabase.from('user_course_progress').select('course_id, progress_percentage, courses(*, categories(*))').eq('user_id', user.id).order('last_accessed_at', { ascending: false }).limit(4),
+        supabase.from('user_course_progress').select('course_id, progress_percentage, last_accessed_at, courses(*, categories(*))').eq('user_id', user.id).order('last_accessed_at', { ascending: false }).limit(4),
       ]);
       if (coursesRes.data) setFeaturedCourses(coursesRes.data as Course[]);
       if (progressRes.data) setUserProgress(progressRes.data as unknown as UserProgress[]);
@@ -120,6 +125,60 @@ const Dashboard = () => {
     };
     fetchData();
   }, [user]);
+
+  // P2: next course from active learning path (only when no in-progress course)
+  useEffect(() => {
+    const fetchPathSuggestion = async () => {
+      if (!user) return;
+      const hasInProgress = userProgress.some(p => p.progress_percentage > 0 && p.progress_percentage < 100);
+      if (hasInProgress) { setPathSuggestion(null); return; }
+
+      const { data: activePath } = await supabase
+        .from('user_learning_path_progress')
+        .select('learning_path_id, learning_paths(title)')
+        .eq('user_id', user.id)
+        .is('completed_at', null)
+        .order('started_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!activePath?.learning_path_id) { setPathSuggestion(null); return; }
+
+      const { data: pathCourses } = await supabase
+        .from('learning_path_courses')
+        .select('course_id, order_index, courses(id, title, slug, thumbnail_url, duration_minutes, total_lessons, instructor_name, description, level)')
+        .eq('learning_path_id', activePath.learning_path_id)
+        .order('order_index', { ascending: true });
+
+      if (!pathCourses?.length) { setPathSuggestion(null); return; }
+
+      const completedIds = new Set(userProgress.filter(p => p.progress_percentage === 100).map(p => p.course_id));
+      const next = pathCourses.find(pc => !completedIds.has(pc.course_id));
+      if (!next?.courses) { setPathSuggestion(null); return; }
+
+      const pathTitle = (activePath as unknown as { learning_paths?: { title?: string } }).learning_paths?.title ?? '';
+      setPathSuggestion({ course: next.courses as ContinueCourseData, pathName: pathTitle });
+    };
+    fetchPathSuggestion();
+  }, [user, userProgress]);
+
+  // P3: favorite course without progress
+  useEffect(() => {
+    const fetchFavoriteSuggestion = async () => {
+      if (!user || favorites.length === 0) { setFavoriteSuggestion(null); return; }
+      const progressedIds = new Set(userProgress.map(p => p.course_id));
+      const candidate = favorites.find(f => !progressedIds.has(f.course_id));
+      if (!candidate) { setFavoriteSuggestion(null); return; }
+
+      const { data } = await supabase
+        .from('courses')
+        .select('id, title, slug, thumbnail_url, duration_minutes, total_lessons, instructor_name, description, level')
+        .eq('id', candidate.course_id)
+        .maybeSingle();
+      setFavoriteSuggestion((data as ContinueCourseData) ?? null);
+    };
+    fetchFavoriteSuggestion();
+  }, [user, favorites, userProgress]);
 
   const handleSignOut = async () => { await signOut(); toast.success('Até logo!'); navigate('/'); };
 
@@ -178,11 +237,13 @@ const Dashboard = () => {
           <DueAssessmentsWidget />
         </div>
 
-        {userProgress.some(p => p.progress_percentage > 0 && p.progress_percentage < 100) && (
-          <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
-            <ContinueLearningWidget userProgress={userProgress} />
-          </motion.section>
-        )}
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+          <ContinueLearningWidget
+            userProgress={userProgress}
+            learningPathSuggestion={pathSuggestion}
+            favoriteSuggestion={favoriteSuggestion}
+          />
+        </motion.section>
 
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
           <Suspense fallback={<WidgetFallback />}><SmartRecommendations /></Suspense>

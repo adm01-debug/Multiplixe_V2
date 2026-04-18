@@ -19,12 +19,12 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-recharts': ['recharts'],
-          'vendor-framer': ['framer-motion'],
-          'vendor-radix': [
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'supabase-vendor': ['@supabase/supabase-js'],
+          'query-vendor': ['@tanstack/react-query'],
+          'chart-vendor': ['recharts'],
+          'motion-vendor': ['framer-motion'],
+          'ui-vendor': [
             '@radix-ui/react-dialog',
             '@radix-ui/react-dropdown-menu',
             '@radix-ui/react-tabs',
@@ -33,10 +33,9 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-select',
             '@radix-ui/react-accordion',
           ],
-          'vendor-icons': ['lucide-react'],
-          'vendor-confetti': ['canvas-confetti'],
-          'vendor-fuse': ['fuse.js'],
-          'vendor-helmet': ['react-helmet-async'],
+          'icons-vendor': ['lucide-react'],
+          'utils-vendor': ['date-fns', 'fuse.js'],
+          'helmet-vendor': ['react-helmet-async'],
         },
       },
     },

@@ -35,6 +35,8 @@ const LessonPlayer = () => {
   const { checkAchievements, newAchievements, dismissAchievement } = useAchievements();
   const { updateStreak, hasStudiedToday } = useStreaks();
   const { generateCertificate } = useCertificates();
+  const { preferences, updatePreference } = useUserPreferences();
+  const { state: pomodoroState, startWork } = usePomodoro();
   const celebratedLessons = useRef<Set<string>>(new Set());
   const streakUpdatedToday = useRef(false);
 
@@ -48,6 +50,45 @@ const LessonPlayer = () => {
   const [streakCelebration, setStreakCelebration] = useState<{ newStreak: number; xpAwarded: number; isNewRecord: boolean } | null>(null);
   const [showCourseQuizModal, setShowCourseQuizModal] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
+
+  const focusMode = preferences.focusMode;
+
+  const toggleFocusMode = useCallback(() => {
+    const next = !focusMode;
+    updatePreference('focusMode', next);
+    if (next) {
+      setShowSidebar(false);
+      if (pomodoroState === 'idle') startWork();
+      toast.success('🎯 Modo Foco ativado', { description: 'Pomodoro iniciado. Boa sessão!' });
+    } else {
+      setShowSidebar(true);
+      toast.info('Modo Foco desativado');
+    }
+  }, [focusMode, updatePreference, pomodoroState, startWork]);
+
+  // Apply focus-mode-active class to <html>
+  useEffect(() => {
+    const root = document.documentElement;
+    if (focusMode) root.classList.add('focus-mode-active');
+    else root.classList.remove('focus-mode-active');
+    return () => { root.classList.remove('focus-mode-active'); };
+  }, [focusMode]);
+
+  // F shortcut to toggle
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== 'f') return;
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      // Avoid clashing with video fullscreen 'f' inside <video> focus
+      if (target && target.tagName === 'VIDEO') return;
+      e.preventDefault();
+      toggleFocusMode();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [toggleFocusMode]);
 
   useEffect(() => { if (newAchievements.length > 0 && !currentNewAchievement) setCurrentNewAchievement(newAchievements[0]); }, [newAchievements, currentNewAchievement]);
   const handleDismissNewAchievement = () => { if (currentNewAchievement) { dismissAchievement(currentNewAchievement.id); setCurrentNewAchievement(null); refetchXP(); } };

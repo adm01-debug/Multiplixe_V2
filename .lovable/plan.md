@@ -1,32 +1,26 @@
 
-Item 21/23 — Bundle size & code splitting.
+Item 22/23 — Testes para hooks/componentes críticos novos.
 
 ## Mudanças
 
-**1. `vite.config.ts`** — refinar `manualChunks` para isolar libs pesadas em chunks separados (melhor cache):
-- `react-vendor`: react, react-dom, react-router-dom
-- `ui-vendor`: @radix-ui/*
-- `motion-vendor`: framer-motion
-- `chart-vendor`: recharts
-- `query-vendor`: @tanstack/react-query
-- `supabase-vendor`: @supabase/supabase-js
-- `utils-vendor`: date-fns, fuse.js, canvas-confetti
+**1. `src/test/toastHelpers.test.ts`** (novo) — cobrir `src/lib/toastHelpers.ts`:
+- `toastSuccess`, `toastError`, `toastInfo`, `toastWarning` chamam `sonner` com variant correto.
+- Mock de `sonner` (`vi.mock('sonner', ...)`) e assertions sobre `toast.success/error/info/warning` chamados com a mensagem.
 
-**2. Lazy-load de páginas pesadas** em `src/App.tsx` — confirmar que rotas admin/dashboards já usam `React.lazy` + `Suspense` com `PageLoader`. Adicionar onde faltar:
-- `Admin`, `RateLimitDashboard`, `SecurityDashboard`, `PlatformAnalytics` (sub-rotas).
+**2. `src/test/routeErrorBoundary.test.tsx`** (novo) — cobrir `RouteErrorBoundary`:
+- Renderiza children quando não há erro.
+- Captura erro de filho e renderiza fallback com `routeName`.
+- Botão "Tentar novamente" reseta o boundary (state).
+- Após 3 retries, exibe botão "Recarregar página".
 
-**3. Imports tree-shakeable**:
-- Auditar `import * as X from ...` e trocar por imports nomeados.
-- `lucide-react` — confirmar imports nomeados (já são, ok).
-- `date-fns` — usar `import { format } from 'date-fns'` (named, tree-shakes).
+**3. `src/test/useConfetti.test.ts`** (novo) — garantir que `loadConfetti` usa dynamic import:
+- Mock `canvas-confetti` via `vi.mock` retornando função spy.
+- Chamar `fireLessonComplete()` e validar que confetti foi invocado com `particleCount: 80`.
+- Validar que `fireXP`, `fireAchievement` invocam confetti.
 
-**4. Dynamic imports para libs usadas só em fluxos específicos:**
-- `canvas-confetti` em `useConfetti` — `await import('canvas-confetti')` sob demanda (evita carregar no first paint).
-- `html2canvas`/`jspdf` (se presentes em certificados) — dynamic import no clique de "baixar PDF".
-
-**5. Remover imports não usados** detectados em arquivos editados recentemente.
+**4. Garantir que rodam** — os testes seguem padrão dos arquivos existentes em `src/test/` (vitest + @testing-library/react quando necessário). Sem alterar `vitest.config.ts`.
 
 ## Aceite
-Build OK · chunks vendor separados visíveis no output do Vite · first paint não carrega `canvas-confetti` · zero regressão funcional.
+3 novos arquivos de teste · todos passam · cobertura adicional sobre toastHelpers, RouteErrorBoundary e useConfetti · zero alterações em código de produção.
 
-Depois: Item 22 — Testes (cobrir hooks críticos novos: toastHelpers, RouteErrorBoundary).
+Depois: Item 23 — Polimento final (audit a11y, console limpo, lint zero warning, README atualizado).

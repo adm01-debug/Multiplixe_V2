@@ -671,23 +671,5 @@ export const DetailHeroSkeleton = () => (
   </div>
 );
 
-// Table Skeleton (tabelas admin/leaderboard)
-export const TableSkeleton = ({ rows = 8, columns = 4 }: { rows?: number; columns?: number }) => (
-  <div className="w-full rounded-xl border border-border/50 overflow-hidden">
-    <div className="grid gap-4 p-4 border-b border-border/50 bg-muted/30" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>
-      {Array.from({ length: columns }).map((_, i) => (
-        <Skeleton key={i} className="h-4 w-24" />
-      ))}
-    </div>
-    {Array.from({ length: rows }).map((_, r) => (
-      <div key={r} className="grid gap-4 p-4 border-b border-border/30 last:border-b-0" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>
-        {Array.from({ length: columns }).map((_, c) => (
-          <Skeleton key={c} className="h-5 w-full max-w-[180px]" />
-        ))}
-      </div>
-    ))}
-  </div>
-);
-
 // Stats Grid Skeleton (alias semântico)
 export const StatsGridSkeleton = () => <DashboardStatsSkeleton />;

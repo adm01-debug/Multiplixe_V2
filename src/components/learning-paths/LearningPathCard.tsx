@@ -36,7 +36,7 @@ export const LearningPathCard = memo(function LearningPathCard({ learningPath, p
   }, [learningPath.slug, prefetchLearningPathDetail]);
 
   return (
-    <PrefetchLink to={`/trilha/${learningPath.slug}`} onPrefetchData={handlePrefetchData}>
+    <PrefetchLink to={`/trilha/${learningPath.slug}`} aria-label={`Trilha: ${learningPath.title}`} className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" onPrefetchData={handlePrefetchData}>
       <MotionCard 
         className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm cursor-pointer will-change-transform"
         initial={{ opacity: 0, y: 20 }}

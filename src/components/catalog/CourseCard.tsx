@@ -69,7 +69,7 @@ const CourseCard = memo(({
   }, [slug, prefetchCourseDetail]);
 
   return (
-    <PrefetchLink to={`/curso/${slug}`} className="group block h-full" onPrefetchData={handlePrefetchData}>
+    <PrefetchLink to={`/curso/${slug}`} className="group block h-full rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label={`Curso: ${title}`} onPrefetchData={handlePrefetchData}>
       <motion.div 
         className="relative h-full rounded-3xl bg-card border border-border/50 overflow-hidden cursor-pointer will-change-transform"
         whileHover={{ 

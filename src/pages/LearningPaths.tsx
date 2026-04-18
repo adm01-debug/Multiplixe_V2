@@ -89,7 +89,7 @@ export default function LearningPaths() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-8">
+        <main id="main-content" className="container mx-auto px-4 py-8">
           {/* Hero Section */}
           <div className="mb-12 rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent p-8 md:p-12">
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">

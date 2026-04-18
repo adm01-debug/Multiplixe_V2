@@ -109,7 +109,7 @@ const Leaderboard = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 space-y-8">
+      <main id="main-content" className="container mx-auto px-4 py-8 space-y-8">
         {/* Tabs: Individual vs Teams */}
         <Tabs defaultValue="individual" className="w-full">
           <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">

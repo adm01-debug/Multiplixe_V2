@@ -101,7 +101,7 @@ const Catalog = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <CatalogHeader userName={userName} onSignOut={handleSignOut} />
 
-      <main className="container mx-auto px-4 py-8">
+      <main id="main-content" className="container mx-auto px-4 py-8">
         <CatalogHero coursesCount={courses.length} categoriesCount={categories.length} />
 
         {/* Search and Filters */}

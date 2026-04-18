@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { CardGridSkeleton } from '@/components/skeletons/PageSkeletons';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useTrainingVideos, useUpdateVideoProgress, type TrainingVideo } from '@/hooks/useTrainingVideos';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
@@ -100,9 +100,7 @@ const VideoLibrary = () => {
         </p>
 
         {isLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" role="status" aria-label="Carregando">
-            {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-64 rounded-xl" />)}
-          </div>
+          <CardGridSkeleton count={6} />
         ) : results.length === 0 ? (
           <EmptyState icon={Video} title="Nenhum vídeo encontrado" description="Tente outra busca ou categoria." />
         ) : (

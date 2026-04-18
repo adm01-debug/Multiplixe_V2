@@ -1,33 +1,25 @@
 
-Item 13/23 — Memoização agressiva em listas e cards.
-
-## Alvos
-
-Componentes renderizados em listas grandes (catálogo, trilhas, leaderboard, achievements, lessons) que re-renderizam sem necessidade quando o pai atualiza estado.
+Item 14/23 — Otimização de imagens (LazyImage + decoding async + dimensões para evitar CLS).
 
 ## Mudanças
 
-**1. `React.memo` nos cards de listagem:**
-- `src/components/catalog/CourseCard.tsx`
-- `src/components/catalog/CourseListItem.tsx`
-- `src/components/learning-paths/LearningPathCard.tsx`
-- `src/components/learning-paths/LearningPathCourseItem.tsx`
-- `src/components/gamification/AchievementBadge.tsx`
-- `src/components/CertificateCard.tsx`
-- `src/components/player/LessonList.tsx` (item interno)
+**1. `src/components/LazyImage.tsx`** — adicionar suporte a `width`/`height` e `fetchpriority` para reservar espaço (anti-CLS) e permitir LCP priority em hero.
 
-Envolver `export default` com `memo(...)` e adicionar `displayName`.
+**2. Substituir `<img>` por `LazyImage` (com width/height) nos cards de listagem:**
+- `src/components/catalog/CourseCard.tsx` — thumbnail do curso
+- `src/components/catalog/CourseListItem.tsx` — thumbnail
+- `src/components/learning-paths/LearningPathCard.tsx` — cover image
+- `src/components/CertificateCard.tsx` — preview/thumb
 
-**2. `useMemo` em arrays derivados pesados:**
-- `src/pages/Catalog.tsx` — array filtrado/ordenado de cursos
-- `src/pages/LearningPaths.tsx` — array de paths filtrado
-- `src/pages/Leaderboard.tsx` — ranking ordenado
-- `src/components/AchievementsGrid.tsx` — grupos por categoria
+**3. Adicionar `decoding="async"` + `loading="lazy"` + `width`/`height` em `<img>` remanescentes:**
+- `src/components/profile/ProfileHeader.tsx` (avatar usa Avatar do shadcn — verificar)
+- `src/components/landing/hero/HeroCard.tsx`
+- `src/components/landing/FeaturedCoursesPreview.tsx`
+- `src/components/dashboard/ContinueLearningWidget.tsx`
 
-**3. `useCallback` em handlers passados como props para itens memoizados:**
-- handlers de favoritar, navegar, selecionar nas páginas acima.
+**4. Hero LCP image:** marcar imagem do hero da landing com `fetchpriority="high"` e `loading="eager"` (não lazy) para acelerar LCP.
 
 ## Aceite
-Zero regressão visual · re-renders reduzidos em listas · build OK · sem mudanças de comportamento.
+Zero regressão visual · CLS reduzido (dimensões reservadas) · LCP melhor no hero · imagens fora da viewport carregam apenas quando próximas.
 
-Depois: Item 14 — Otimização de imagens (LazyImage + decoding="async" + width/height para evitar CLS).
+Depois: Item 15 — Prefetch inteligente de rotas (intersect + idle) já parcialmente em `PrefetchLink`; expandir cobertura.

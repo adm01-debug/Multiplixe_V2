@@ -1,28 +1,25 @@
 
-E3/E5 — Recomendação "Continue de onde parou" inteligente.
+E4/E5 — Compartilhamento social real de conquistas via Web Share API.
 
 ## Mudanças
 
-**1. `ContinueLearningWidget.tsx`** — refinar lógica de seleção. Hoje usa `userProgress.find()` pegando o primeiro com 0 < progress < 100. Substituir por priorização:
-   - **P1**: Última aula iniciada não concluída — ordenar `userProgress` por `last_accessed_at` desc.
-   - **P2**: Próximo curso da trilha ativa — se nenhuma aula em andamento, sugerir próximo curso da trilha do usuário.
-   - **P3**: Curso favoritado sem progresso — fallback final via `useFavorites`.
+**1. `src/components/share/ShareAchievement.tsx`** — refinar fluxo:
+- Gerar imagem PNG da conquista (canvas já existente ou via html2canvas se aplicável).
+- Detectar suporte a `navigator.canShare({ files })`:
+  - **Suportado**: `navigator.share()` com `files: [pngFile]`, `title`, `text` persuasivo (LinkedIn-ready) e `url` para perfil/conquista.
+  - **Fallback**: download automático do PNG + `navigator.clipboard.writeText()` com texto pronto + toast informativo.
+- Botões secundários permanecem: copiar link, copiar texto, baixar imagem.
 
-**2. Props** — expandir `ContinueLearningWidgetProps`:
-   - Manter `userProgress` (P1).
-   - Adicionar `learningPathSuggestion?: { course, pathName }` (P2).
-   - Adicionar `favoriteSuggestion?: CourseData` (P3).
+**2. Copy persuasivo** — template em PT-BR otimizado para LinkedIn:
+> "🏆 Acabei de conquistar [nome] na Promo Brindes Academy! +[XP] XP somados à minha jornada de aprendizado contínuo. #vendas #aprendizadocontinuo #promobrindes"
 
-**3. UI** — badge dinâmico de origem:
-   - P1: "Continue de onde parou" (Flame).
-   - P2: "Próximo na trilha [nome]" (Route).
-   - P3: "Você favoritou" (Heart).
+**3. Telemetria** — registrar eventos `share_attempt`, `share_success`, `share_fallback` via `useTelemetry` para medir adoção real.
 
-**4. `Dashboard.tsx`** — calcular as 3 fontes e passar como props. Reusar hooks já carregados (`useUserProgress`, `useLearningPaths`, `useFavorites`) sem novas queries pesadas.
+**4. Acessibilidade** — botão principal com `aria-label` claro ("Compartilhar conquista X"), feedback via `LiveAnnouncer` ao concluir.
 
-**5. Teste** — `src/test/continueLearning.test.ts` cobrindo priorização P1→P2→P3 e ausência total (retorna null).
+**5. Teste manual** — validar em mobile (iOS/Android share sheet) e desktop (fallback download + clipboard).
 
 ## Aceite
-Widget exibe recomendação correta por prioridade · badge reflete origem · não renderiza sem fontes · teste passa · zero regressão.
+Web Share nativo dispara em mobile · fallback elegante em desktop · copy LinkedIn-ready · telemetria registrada · zero regressão · sem novas dependências pesadas.
 
-Depois: E4 — Web Share API real para conquistas.
+Depois: E5 — Edge function `weekly-admin-digest` (cron + relatório por e-mail).

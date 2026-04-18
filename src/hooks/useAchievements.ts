@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { toastSuccess } from '@/lib/toastHelpers';
 
 interface Achievement {
   id: string;

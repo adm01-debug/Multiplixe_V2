@@ -1,26 +1,36 @@
 
-Item 22/23 — Testes para hooks/componentes críticos novos.
+Item 23/23 — Polimento final rumo ao 10/10.
 
 ## Mudanças
 
-**1. `src/test/toastHelpers.test.ts`** (novo) — cobrir `src/lib/toastHelpers.ts`:
-- `toastSuccess`, `toastError`, `toastInfo`, `toastWarning` chamam `sonner` com variant correto.
-- Mock de `sonner` (`vi.mock('sonner', ...)`) e assertions sobre `toast.success/error/info/warning` chamados com a mensagem.
+**1. Console limpo em produção** — varrer `console.log` remanescentes em `src/` (manter apenas `console.error`/`console.warn` justificados em catch blocks). Substituir por telemetria silenciosa onde fizer sentido.
 
-**2. `src/test/routeErrorBoundary.test.tsx`** (novo) — cobrir `RouteErrorBoundary`:
-- Renderiza children quando não há erro.
-- Captura erro de filho e renderiza fallback com `routeName`.
-- Botão "Tentar novamente" reseta o boundary (state).
-- Após 3 retries, exibe botão "Recarregar página".
+**2. Lint zero warning** — auditar arquivos editados nos itens 1-22:
+- Remover imports não usados.
+- Trocar `any` residual por `unknown` + narrowing (regra de memória).
+- Garantir `ReturnType<typeof setTimeout>` em timers.
 
-**3. `src/test/useConfetti.test.ts`** (novo) — garantir que `loadConfetti` usa dynamic import:
-- Mock `canvas-confetti` via `vi.mock` retornando função spy.
-- Chamar `fireLessonComplete()` e validar que confetti foi invocado com `particleCount: 80`.
-- Validar que `fireXP`, `fireAchievement` invocam confetti.
+**3. Acessibilidade — passada final**:
+- Confirmar `aria-label` em todos botões icon-only nos componentes mais visíveis (`NotificationBell`, `ThemeToggle`, `LanguageToggle`, `FavoriteButton`, `MobileBottomNav`).
+- Garantir `role="alert"` em fallbacks de erro (já feito em ErrorBoundary, validar nos toasts críticos).
+- `alt` descritivo em imagens de cursos/playbooks (não vazio).
 
-**4. Garantir que rodam** — os testes seguem padrão dos arquivos existentes em `src/test/` (vitest + @testing-library/react quando necessário). Sem alterar `vitest.config.ts`.
+**4. README.md atualizado** — refletir estado final:
+- Stack atual, scripts (`dev`, `build`, `test`, `lint`).
+- Estrutura de pastas resumida.
+- Variáveis de ambiente (referenciar Lovable Cloud, não Supabase).
+- Como rodar testes (`npm test`).
+- Link da preview e published.
+
+**5. `PLANO_MELHORIAS.md`** — marcar todos os 23 itens como concluídos com data, deixar registro do que foi entregue (changelog conciso por item).
+
+**6. Smoke check final** — listar manualmente:
+- Rotas principais carregam (`/`, `/dashboard`, `/catalogo`, `/trilhas`, `/perfil`, `/admin`).
+- Sem erros no console em first paint.
+- Skeletons aparecem antes de dados.
+- Toasts consistentes via `toastHelpers`.
 
 ## Aceite
-3 novos arquivos de teste · todos passam · cobertura adicional sobre toastHelpers, RouteErrorBoundary e useConfetti · zero alterações em código de produção.
+Console limpo · zero `any` em arquivos tocados · README reflete realidade · PLANO_MELHORIAS.md mostra 23/23 ✅ · plataforma pronta para apresentação 10/10.
 
-Depois: Item 23 — Polimento final (audit a11y, console limpo, lint zero warning, README atualizado).
+Fim do roadmap.

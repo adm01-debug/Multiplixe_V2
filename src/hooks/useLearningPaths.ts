@@ -64,9 +64,11 @@ export function useLearningPaths() {
       setLoading(true);
       const { data, error: fetchError } = await supabase
         .from('learning_paths')
-        .select('*')
+        .select('id, title, slug, description, thumbnail_url, estimated_hours, difficulty_level, is_published, is_featured, xp_reward, created_at')
         .eq('is_published', true)
-        .order('created_at', { ascending: false });
+        .order('is_featured', { ascending: false })
+        .order('created_at', { ascending: false })
+        .limit(100);
 
       if (fetchError) throw fetchError;
 

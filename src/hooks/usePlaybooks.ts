@@ -23,15 +23,23 @@ export const playbookKeys = {
   detail: (slug: string) => ['playbooks', 'detail', slug] as const,
 };
 
+// Colunas leves para listagem (sem `content` pesado)
+const PLAYBOOK_LIST_COLUMNS =
+  'id, title, slug, category, summary, tags, author_id, is_published, view_count, created_at, updated_at';
+
 export const usePlaybooks = (includeUnpublished = false) => {
   return useQuery({
     queryKey: playbookKeys.list(includeUnpublished),
     queryFn: async () => {
-      let query = supabase.from('playbooks').select('*').order('created_at', { ascending: false });
+      let query = supabase
+        .from('playbooks')
+        .select(PLAYBOOK_LIST_COLUMNS)
+        .order('created_at', { ascending: false })
+        .limit(200);
       if (!includeUnpublished) query = query.eq('is_published', true);
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []) as Playbook[];
+      return (data || []) as unknown as Omit<Playbook, 'content'>[];
     },
   });
 };

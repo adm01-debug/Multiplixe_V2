@@ -38,6 +38,8 @@ const FavoriteButton = ({ courseId, className = "", size = "md" }: FavoriteButto
           <motion.button
             onClick={handleClick}
             disabled={isTogglingFavorite}
+            aria-label={isFav ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+            aria-pressed={isFav}
             className={`
               ${sizeClasses[size]} 
               rounded-full 

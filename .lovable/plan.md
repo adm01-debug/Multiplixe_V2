@@ -1,23 +1,23 @@
 
-P4 — Empty states ilustrados contextuais.
+P5 — Lighthouse pass final (performance, acessibilidade, SEO).
 
 ## Mudanças
 
-**1. `src/components/EmptyState.tsx`** — já possui 12 variantes ilustradas (courses, progress, achievements, notifications, certificates, search, discussions, leaderboard, streaks, challenges, learning-paths, analytics). Adicionar 3 novas variantes:
-- `favorites` — ilustração de coração, CTA "Explorar cursos".
-- `notes` — ilustração de caderno, CTA "Começar a estudar".
-- `goals` — ilustração de alvo/bandeira, CTA "Definir meta".
+**1. `src/components/catalog/CourseCard.tsx`** — adicionar `loading="lazy"` + `decoding="async"` + `width`/`height` explícitos na thumbnail. Garantir `alt` descritivo.
 
-**2. Aplicar em telas reais**:
-- `src/components/favorites/*` ou onde lista favoritos vazia → usar `<EmptyState type="favorites" />`.
-- `src/components/notes/NotesPanel.tsx` → quando `notes.length === 0` substituir mensagem genérica.
-- `src/components/goals/GoalsWidget.tsx` → idem para metas vazias.
-- `src/pages/Catalog.tsx` → garantir uso de `type="search"` quando filtro retorna vazio (verificar se já usa).
-- `src/pages/LearningPaths.tsx` → `type="learning-paths"` quando lista vazia.
+**2. `src/components/learning-paths/LearningPathCard.tsx`** — mesmo tratamento na imagem de capa.
 
-**3. Acessibilidade** — `role="status"` + `aria-live="polite"` no container do empty state para anunciar estado.
+**3. `src/components/landing/HeroSection.tsx`** (e `hero/HeroBackground.tsx`) — imagem principal com `fetchpriority="high"` + `loading="eager"`. Demais imagens da landing com `loading="lazy"`.
+
+**4. `src/components/player/VideoPlayer.tsx`** — se houver `<iframe>` (YouTube/Vimeo), adicionar `loading="lazy"` e `title` descritivo.
+
+**5. `src/components/LazyImage.tsx`** — verificar se já aplica `width`/`height` para evitar CLS; se não, aceitar props e renderizar.
+
+**6. `index.html`** — confirmar `<link rel="preconnect">` para Supabase e fontes (Google Fonts). Adicionar `<meta name="theme-color">` se ausente.
+
+**7. Acessibilidade** — varredura rápida em botões icon-only sem `aria-label` nos cards (Favorite, Share). Garantir todos têm rótulo.
 
 ## Aceite
-3 novas variantes ilustradas · empty states aplicados em favoritos/notas/metas · zero regressão visual · acessível.
+Lighthouse Performance ≥95 · Accessibility ≥95 · SEO ≥95 · zero CLS visível em cards · hero LCP otimizado.
 
-Depois: P5 — Lighthouse pass final.
+Conclui ciclo P1→P5. Plataforma em 10/10 absoluto.

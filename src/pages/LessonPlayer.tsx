@@ -6,6 +6,8 @@ import { useUserXP } from "@/hooks/useUserXP";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useStreaks } from "@/hooks/useStreaks";
 import { useCertificates } from "@/hooks/useCertificates";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { usePomodoro } from "@/hooks/usePomodoro";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";

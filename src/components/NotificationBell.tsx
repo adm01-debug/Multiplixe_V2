@@ -45,6 +45,7 @@ const NotificationBell = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <motion.button
+          data-focus-hide
           aria-label={unreadCount > 0 ? `Notificações (${unreadCount} não lidas)` : 'Notificações'}
           aria-haspopup="dialog"
           aria-expanded={open}

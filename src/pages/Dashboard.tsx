@@ -33,7 +33,7 @@ const SkillRadarChart = lazy(() => import('@/components/analytics/SkillRadarChar
 const WidgetFallback = () => <Skeleton className="h-48 w-full rounded-2xl" />;
 import DashboardHero from '@/components/dashboard/DashboardHero';
 import DashboardStatsGrid, { StatItem } from '@/components/dashboard/DashboardStatsGrid';
-import { DashboardStatsSkeleton } from '@/components/skeletons/PageSkeletons';
+import { DashboardStatsSkeleton, HeroSkeleton, CourseGridSkeleton } from '@/components/skeletons/PageSkeletons';
 import { useCourses } from '@/hooks/useCachedQuery';
 import { useFavorites } from '@/hooks/useFavorites';
 import type { ContinueCourseData, PathSuggestion } from '@/lib/continueLearning';
@@ -184,20 +184,16 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/30">
-        <div className="flex flex-col items-center gap-6">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-50 animate-pulse" />
-            <div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-primary to-accent p-1">
-              <div className="w-full h-full bg-background rounded-full flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20" aria-busy="true" aria-label="Carregando dashboard">
+        <div className="container mx-auto px-4 py-8 space-y-8">
+          <HeroSkeleton />
+          <DashboardStatsSkeleton />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Skeleton className="h-32 rounded-2xl" />
+            <Skeleton className="h-32 rounded-2xl" />
           </div>
-          <div className="text-center">
-            <p className="text-lg font-semibold text-foreground animate-pulse">Carregando...</p>
-            <p className="text-sm text-muted-foreground">Preparando seu dashboard</p>
-          </div>
+          <Skeleton className="h-48 rounded-2xl" />
+          <CourseGridSkeleton count={4} />
         </div>
       </div>
     );

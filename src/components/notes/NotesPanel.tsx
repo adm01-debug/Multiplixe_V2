@@ -22,6 +22,7 @@ import {
   FileText,
   Loader2,
 } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 interface NotesPanelProps {
   lessonId: string;

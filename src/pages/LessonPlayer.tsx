@@ -168,11 +168,11 @@ const LessonPlayer = () => {
       <FloatingProgress progress={courseProgress} lessonTitle={currentLesson.title} lessonNumber={currentIndex + 1} totalLessons={lessons.length} />
 
       <div className="min-h-screen flex flex-col">
-        <LessonPlayerHeader courseSlug={slug!} courseTitle={course.title} userName={userName} courseProgress={courseProgress} onSignOut={handleSignOut} />
+        <LessonPlayerHeader courseSlug={slug!} courseTitle={course.title} userName={userName} courseProgress={courseProgress} onSignOut={handleSignOut} focusMode={focusMode} onToggleFocus={toggleFocusMode} />
 
         <div className="flex-1 flex">
-          <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar ? 'lg:mr-80 xl:mr-96' : ''}`}>
-            <div className="flex-1 p-4 lg:p-6">
+          <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar && !focusMode ? 'lg:mr-80 xl:mr-96' : ''}`}>
+            <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`}>
               <div className="rounded-2xl overflow-hidden shadow-2xl mb-6">
                 {currentLesson.video_url ? <VideoPlayer src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} initialPosition={currentProgress?.last_position_seconds || 0} /> : (
                   <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 flex flex-col items-center justify-center gap-4"><div className="p-6 bg-card/50 backdrop-blur-sm rounded-full"><Play className="h-12 w-12 text-muted-foreground" /></div><p className="text-muted-foreground font-medium">Vídeo não disponível</p></div>
@@ -196,10 +196,10 @@ const LessonPlayer = () => {
               </div>
             </div>
 
-            <Button variant="outline" size="sm" onClick={() => setShowSidebar(!showSidebar)} className="lg:hidden fixed bottom-4 right-4 z-40 rounded-full shadow-lg h-14 w-14 bg-card"><BookOpen className="h-5 w-5" /></Button>
+            {!focusMode && <Button variant="outline" size="sm" onClick={() => setShowSidebar(!showSidebar)} className="lg:hidden fixed bottom-4 right-4 z-40 rounded-full shadow-lg h-14 w-14 bg-card"><BookOpen className="h-5 w-5" /></Button>}
           </main>
 
-          <LessonPlayerSidebar lessons={lessons} lessonsProgress={lessonsProgress} currentLessonId={currentLesson.id} courseSlug={slug!} courseProgress={courseProgress} completedCount={completedCount} showSidebar={showSidebar} onCloseSidebar={() => setShowSidebar(false)} />
+          {!focusMode && <LessonPlayerSidebar lessons={lessons} lessonsProgress={lessonsProgress} currentLessonId={currentLesson.id} courseSlug={slug!} courseProgress={courseProgress} completedCount={completedCount} showSidebar={showSidebar} onCloseSidebar={() => setShowSidebar(false)} />}
         </div>
       </div>
     </>

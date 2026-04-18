@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import { Lock, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -21,9 +22,12 @@ interface AchievementsGridProps {
 }
 
 const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: AchievementsGridProps) => {
+  const displayAchievements = useMemo(
+    () => (compact ? achievements.slice(0, 4) : achievements),
+    [achievements, compact]
+  );
+
   if (compact) {
-    // Show only first 4 achievements in compact mode
-    const displayAchievements = achievements.slice(0, 4);
     
     return (
       <div className="flex flex-wrap gap-3">
@@ -183,4 +187,4 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
   );
 };
 
-export default AchievementsGrid;
+export default memo(AchievementsGrid);

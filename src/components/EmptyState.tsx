@@ -10,7 +10,10 @@ import {
   Flame,
   Target,
   Route,
-  BarChart
+  BarChart,
+  Heart,
+  PenLine,
+  Flag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

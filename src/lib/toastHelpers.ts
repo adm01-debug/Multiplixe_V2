@@ -1,11 +1,11 @@
 import { toast } from "sonner";
 
-interface ToastAction {
+export interface ToastAction {
   label: string;
   onClick: () => void;
 }
 
-interface ToastOptions {
+export interface ToastOptions {
   description?: string;
   action?: ToastAction;
   duration?: number;

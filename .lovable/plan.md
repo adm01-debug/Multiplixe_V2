@@ -1,28 +1,31 @@
 
-Item 19/23 — Otimização de queries Supabase.
+Item 20/23 — Memoização e re-render hygiene.
 
 ## Mudanças
 
-**1. Auditar `select('*')` em hooks de listagem** e trocar por colunas específicas:
-- `src/hooks/usePlaybooks.ts` — listar apenas `id, title, slug, summary, category, cover_url, created_at` (não buscar `content` pesado em listagem).
-- `src/hooks/useTrainingVideos.ts` — selecionar campos do card.
-- `src/hooks/useLearningPaths.ts` — colunas mínimas para grid.
-- `src/hooks/useNotifications.ts` — `id, title, message, type, read, created_at`.
+**1. `React.memo` em componentes de lista pesados** (renderizados N vezes em grids):
+- `src/components/catalog/CourseCard.tsx`
+- `src/components/catalog/CourseListItem.tsx`
+- `src/components/learning-paths/LearningPathCard.tsx`
+- `src/components/learning-paths/LearningPathCourseItem.tsx`
 
-**2. Paginação/limit em queries que podem crescer:**
-- `useNotifications` — `.limit(50)` (mais antigas via "carregar mais").
-- `useLeaderboard` / `useDepartmentLeaderboard` — confirmar `.limit(100)`.
-- `useXPHistory` — `.limit(30)` para o gráfico (últimos 30 dias).
+Envolver export com `memo(...)` para evitar re-render quando props não mudam.
 
-**3. `.order()` explícito** em todas listagens para resultado determinístico (evita reordenação no client).
+**2. `useCallback` em handlers passados a filhos memoizados**:
+- `src/pages/Catalog.tsx` — handlers de filtro/busca/toggle view passados para `CategoryFilter`, `LevelFilter`, `ViewToggle`, `SearchInput`.
+- `src/pages/LearningPaths.tsx` — handlers passados aos cards.
 
-**4. Detalhe vs listagem** — em hooks de detalhe (`usePlaybook(slug)`, `useCourse(slug)`) manter `select('*')` ou expandir relações com `select('*, lessons(*)')` apenas onde necessário.
+**3. `useMemo` em listas derivadas (filter/sort/group)**:
+- `src/pages/Catalog.tsx` — confirmar que `filteredCourses` está em `useMemo` com deps corretas (cursos, query, categoria, nível).
+- `src/pages/Leaderboard.tsx` — ranking ordenado.
+- `src/components/dashboard/DashboardStatsGrid.tsx` — cards derivados de stats.
 
-**5. Migration sugerida (índices)** — criar índices para colunas frequentemente filtradas/ordenadas que ainda não tenham:
-- `playbooks(created_at desc)`, `notifications(user_id, read, created_at desc)`, `user_xp_history(user_id, created_at desc)`.
-- Aplicar via tool de migração (índices `IF NOT EXISTS`, sem locks longos).
+**4. Estabilizar referências de objetos/arrays passadas como props**:
+- Substituir literais inline (`style={{...}}`, `options={[...]}`) por constantes/`useMemo` em componentes que renderizam muito.
+
+**5. Não memoizar onde não há ganho** — evitar `useCallback`/`useMemo` em handlers de página única ou cálculos triviais (custo > benefício).
 
 ## Aceite
-Build OK · payload de listagens reduzido · sem regressão funcional · queries determinísticas · índices presentes para os filtros mais quentes.
+Build OK · zero regressão visual/funcional · grids grandes (100+ cards) sem re-render desnecessário ao digitar busca · React DevTools Profiler mostra menos commits em filhos de lista.
 
-Depois: Item 20 — Memoização e re-render hygiene (React.memo, useCallback/useMemo onde mede ganho).
+Depois: Item 21 — Bundle size & code splitting (analisar imports, tree-shaking, dynamic imports onde compensa).

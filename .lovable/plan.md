@@ -1,19 +1,19 @@
 
-Ciclo E1→E5 concluído. Para manter a evolução rumo ao 10/10 absoluto, proponho novo ciclo **P1→P5 (Polimento Final)** focado em qualidade percebida, performance e robustez.
+P2 — Toast helpers com action buttons (Desfazer / Ver).
 
-## P1 — Skeleton states unificados no Dashboard
-Substituir spinners genéricos por skeletons dedicados (widgets de Continue, Stats, Recommendations) usando `PageSkeletons`. Reduz CLS e percepção de lentidão.
+## Mudanças
 
-## P2 — Toast helpers centralizados com ações
-Estender `toastHelpers.ts` para suportar `action` button (ex: "Desfazer" em favoritar, "Ver" em conquista). Aplicar em `useFavorites`, `useAchievements`, `ShareAchievement`.
+**1. `src/lib/toastHelpers.ts`** — interface `ToastAction` já existe e é repassada. Sem mudanças estruturais; apenas garantir tipagem exportada (`export type ToastAction`) para reuso.
 
-## P3 — Prefetch inteligente de rotas no hover
-Ativar `PrefetchLink` nos cards de curso (`CourseCard`, `ContinueLearningWidget`) e itens de trilha. Latência percebida ~0ms na navegação.
+**2. `src/hooks/useFavorites.ts`** — ao remover favorito, exibir toast com ação "Desfazer" que chama `addFavorite.mutate(courseId)`. Ao adicionar, manter toast simples (ação inversa via botão de favorito já é trivial).
 
-## P4 — Empty states ilustrados
-Trocar `EmptyState` genérico por variantes contextuais (sem favoritos, sem progresso, sem notas) com ilustrações SVG inline e CTA claro.
+**3. `src/hooks/useAchievements.ts`** — ao desbloquear conquista (em `checkAchievements`), além do modal de celebração, disparar `toastSuccess` com action "Ver conquistas" → navega para `/perfil?tab=conquistas` (ou rota equivalente). Garantir que não duplique com o modal: só mostra toast se modal não estiver visível ou como reforço passivo.
 
-## P5 — Lighthouse pass
-Auditoria final: lazy-load de imagens em `CourseCard`/`LearningPathCard`, `loading="lazy"` em iframes, `fetchpriority="high"` em hero, garantir `width`/`height` em todas imagens. Meta: 95+ em todas categorias.
+**4. `src/components/share/ShareAchievement.tsx`** — após share bem-sucedido, toast com action "Compartilhar outra" abrindo o seletor novamente (opcional, baixo custo).
 
-Executarei P1 primeiro. Após aprovação, sigo P2→P5 sem interrupções.
+**5. Teste** — estender `src/test/toastHelpers.test.ts` (já cobre `action`). Adicionar caso em `useFavorites` test (se existir) validando callback de undo.
+
+## Aceite
+Undo funciona em remoção de favorito · toast de conquista navega para perfil · zero regressão · acessível (botão de ação focável).
+
+Depois: P3 — Prefetch nos cards.

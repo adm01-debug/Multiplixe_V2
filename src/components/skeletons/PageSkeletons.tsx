@@ -631,3 +631,63 @@ export const ChartSkeleton = ({ height = 300 }: { height?: number }) => (
     </div>
   </div>
 );
+
+// Generic List Skeleton (linhas verticais, ex: playbooks, notificações longas)
+export const ListSkeleton = ({ count = 6, className }: { count?: number; className?: string }) => (
+  <div className={cn("space-y-3", className)} role="status" aria-label="Carregando lista">
+    {Array.from({ length: count }).map((_, i) => (
+      <div key={i} className="flex items-start gap-4 p-4 rounded-xl border border-border/50 bg-card/40">
+        <Skeleton className="h-12 w-12 rounded-xl flex-shrink-0" />
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-5 w-3/5" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+        <Skeleton className="h-6 w-16 rounded-full hidden sm:block" />
+      </div>
+    ))}
+  </div>
+);
+
+// Alias semântico para grids de cards (usa CourseGridSkeleton sob o capô)
+export const CardGridSkeleton = ({ count = 8 }: { count?: number }) => (
+  <CourseGridSkeleton count={count} />
+);
+
+// Detail Hero Skeleton (página de detalhe: curso, trilha, playbook)
+export const DetailHeroSkeleton = () => (
+  <div className="relative rounded-2xl border border-border/50 bg-card/40 p-8 overflow-hidden">
+    <ShimmerOverlay />
+    <div className="relative space-y-4 max-w-3xl">
+      <Skeleton className="h-6 w-28 rounded-full" />
+      <Skeleton className="h-10 w-3/4" />
+      <Skeleton className="h-5 w-full" />
+      <Skeleton className="h-5 w-2/3" />
+      <div className="flex gap-3 pt-2">
+        <Skeleton className="h-12 w-36 rounded-xl" />
+        <Skeleton className="h-12 w-36 rounded-xl" />
+      </div>
+    </div>
+  </div>
+);
+
+// Table Skeleton (tabelas admin/leaderboard)
+export const TableSkeleton = ({ rows = 8, columns = 4 }: { rows?: number; columns?: number }) => (
+  <div className="w-full rounded-xl border border-border/50 overflow-hidden">
+    <div className="grid gap-4 p-4 border-b border-border/50 bg-muted/30" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>
+      {Array.from({ length: columns }).map((_, i) => (
+        <Skeleton key={i} className="h-4 w-24" />
+      ))}
+    </div>
+    {Array.from({ length: rows }).map((_, r) => (
+      <div key={r} className="grid gap-4 p-4 border-b border-border/30 last:border-b-0" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>
+        {Array.from({ length: columns }).map((_, c) => (
+          <Skeleton key={c} className="h-5 w-full max-w-[180px]" />
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
+// Stats Grid Skeleton (alias semântico)
+export const StatsGridSkeleton = () => <DashboardStatsSkeleton />;

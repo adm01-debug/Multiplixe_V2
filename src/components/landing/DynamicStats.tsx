@@ -102,36 +102,20 @@ const DynamicStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Fetch counts in parallel
-        const [
-          coursesResponse,
-          certificatesResponse,
-          lessonsCompletedResponse,
-          usersResponse
-        ] = await Promise.all([
-          supabase.from('courses').select('id', { count: 'exact', head: true }).eq('is_published', true),
-          supabase.from('certificates').select('id', { count: 'exact', head: true }),
-          supabase.from('user_lesson_progress').select('id', { count: 'exact', head: true }).eq('is_completed', true),
-          supabase.from('profiles').select('id', { count: 'exact', head: true })
-        ]);
-
+        // Single cached RPC — evita 4 COUNT full-scan por visitante
+        const { data, error } = await supabase.rpc('get_platform_stats');
+        if (error || !data || !data[0]) return;
+        const s = data[0] as {
+          users_count: number;
+          courses_count: number;
+          certificates_count: number;
+          lessons_completed_count: number;
+        };
         setDynamicStats(prev => [
-          {
-            ...prev[0],
-            value: Math.max(usersResponse.count || 0, 500), // Minimum 500 for social proof
-          },
-          {
-            ...prev[1],
-            value: Math.max(coursesResponse.count || 0, 50),
-          },
-          {
-            ...prev[2],
-            value: Math.max(certificatesResponse.count || 0, 1200),
-          },
-          {
-            ...prev[3],
-            value: Math.max(lessonsCompletedResponse.count || 0, 15000),
-          },
+          { ...prev[0], value: Math.max(Number(s.users_count) || 0, 500) },
+          { ...prev[1], value: Math.max(Number(s.courses_count) || 0, 50) },
+          { ...prev[2], value: Math.max(Number(s.certificates_count) || 0, 1200) },
+          { ...prev[3], value: Math.max(Number(s.lessons_completed_count) || 0, 15000) },
         ]);
       } catch {
         // Keep default values on error

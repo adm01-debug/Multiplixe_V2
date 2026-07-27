@@ -939,6 +939,33 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_stats_cache: {
+        Row: {
+          certificates_count: number
+          courses_count: number
+          id: number
+          lessons_completed_count: number
+          updated_at: string
+          users_count: number
+        }
+        Insert: {
+          certificates_count?: number
+          courses_count?: number
+          id?: number
+          lessons_completed_count?: number
+          updated_at?: string
+          users_count?: number
+        }
+        Update: {
+          certificates_count?: number
+          courses_count?: number
+          id?: number
+          lessons_completed_count?: number
+          updated_at?: string
+          users_count?: number
+        }
+        Relationships: []
+      }
       playbook_comments: {
         Row: {
           content: string
@@ -2484,6 +2511,16 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_platform_stats: {
+        Args: never
+        Returns: {
+          certificates_count: number
+          courses_count: number
+          lessons_completed_count: number
+          updated_at: string
+          users_count: number
+        }[]
+      }
       get_recommended_courses: {
         Args: { p_limit?: number; p_user_id: string }
         Returns: {
@@ -2606,6 +2643,7 @@ export type Database = {
           total_attempts: number
         }[]
       }
+      refresh_platform_stats: { Args: never; Returns: undefined }
       register_playbook_view: {
         Args: { p_playbook_id: string }
         Returns: undefined

@@ -1,0 +1,313 @@
+import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { QuizPlayer } from './QuizPlayer';
+import { useQuizzes } from '@/hooks/useQuizzes';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { GraduationCap, Trophy, Target, Sparkles, Loader2, Award, AlertCircle, Clock, History, CheckCircle, XCircle } from 'lucide-react';
+
+interface CourseQuizModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  courseId: string;
+  courseTitle: string;
+  onQuizPassed?: (score: number) => void;
+}
+
+interface QuizAttemptHistory {
+  id: string;
+  score: number;
+  passed: boolean;
+  completed_at: string;
+}
+
+const DEFAULT_COOLDOWN_HOURS = 24;
+
+export const CourseQuizModal = ({ 
+  isOpen, 
+  onClose, 
+  courseId, 
+  courseTitle,
+  onQuizPassed 
+}: CourseQuizModalProps) => {
+  const { user } = useAuth();
+  const { fetchQuizForCourse, submitQuizAttempt, loading } = useQuizzes();
+  const [quiz, setQuiz] = useState<any>(null);
+  const [loadingQuiz, setLoadingQuiz] = useState(true);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [hasPassedQuiz, setHasPassedQuiz] = useState(false);
+  const [bestScore, setBestScore] = useState<number | null>(null);
+  const [cooldownRemaining, setCooldownRemaining] = useState<string | null>(null);
+  const [isOnCooldown, setIsOnCooldown] = useState(false);
+  const [attemptHistory, setAttemptHistory] = useState<QuizAttemptHistory[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+
+  useEffect(() => {
+    const loadQuiz = async () => {
+      if (!isOpen || !courseId || !user) return;
+      
+      setLoadingQuiz(true);
+      setCooldownRemaining(null);
+      setIsOnCooldown(false);
+      setAttemptHistory([]);
+      
+      // Fetch course quiz
+      const quizData = await fetchQuizForCourse(courseId);
+      setQuiz(quizData);
+      
+      // Check if user already passed the quiz and cooldown status
+      if (quizData) {
+        const { data: attempts } = await supabase
+          .from('user_quiz_attempts')
+          .select('id, score, passed, completed_at')
+          .eq('user_id', user.id)
+          .eq('quiz_id', quizData.id)
+          .order('completed_at', { ascending: false });
+        
+        if (attempts && attempts.length > 0) {
+          // Store all attempts for history
+          setAttemptHistory(attempts);
+          // Get best score
+          const scores = attempts.map(a => a.score);
+          const best = Math.max(...scores);
+          setBestScore(best);
+          setHasPassedQuiz(attempts.some(a => a.passed));
+          
+          // Check cooldown (only if not passed)
+          if (!attempts.some(a => a.passed)) {
+            const cooldownHours = quizData.cooldown_hours ?? DEFAULT_COOLDOWN_HOURS;
+            
+            // If cooldown is 0, no cooldown is applied
+            if (cooldownHours > 0) {
+              const lastAttempt = new Date(attempts[0].completed_at);
+              const now = new Date();
+              const hoursSinceLastAttempt = (now.getTime() - lastAttempt.getTime()) / (1000 * 60 * 60);
+              
+              if (hoursSinceLastAttempt < cooldownHours) {
+                setIsOnCooldown(true);
+                const remainingHours = Math.floor(cooldownHours - hoursSinceLastAttempt);
+                const remainingMinutes = Math.floor(((cooldownHours - hoursSinceLastAttempt) % 1) * 60);
+                
+                if (remainingHours > 0) {
+                  setCooldownRemaining(`${remainingHours}h ${remainingMinutes}min`);
+                } else {
+                  setCooldownRemaining(`${remainingMinutes} minutos`);
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      setLoadingQuiz(false);
+    };
+
+    loadQuiz();
+  }, [isOpen, courseId, user]);
+
+  const handleQuizComplete = async (answers: Record<string, string>) => {
+    if (!quiz) return null;
+    
+    const result = await submitQuizAttempt(quiz, answers);
+    
+    if (result?.passed) {
+      setHasPassedQuiz(true);
+      setBestScore(result.score);
+      onQuizPassed?.(result.score);
+    }
+    
+    return result;
+  };
+
+  const handleClose = () => {
+    setShowQuiz(false);
+    onClose();
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        {loadingQuiz ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+            <p className="text-muted-foreground">Carregando quiz final...</p>
+          </div>
+        ) : !quiz ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mb-4">
+              <Trophy className="h-10 w-10 text-green-500" />
+            </div>
+            <DialogHeader className="text-center">
+              <DialogTitle className="text-2xl mb-2">🎉 Parabéns!</DialogTitle>
+              <DialogDescription className="text-base">
+                Você completou todas as aulas do curso <strong>{courseTitle}</strong>!
+                <br />
+                Este curso não possui um quiz final obrigatório.
+              </DialogDescription>
+            </DialogHeader>
+            <Button onClick={handleClose} className="mt-6 btn-gradient">
+              <Award className="w-4 h-4 mr-2" />
+              Ver Certificado
+            </Button>
+          </div>
+        ) : showQuiz ? (
+          <QuizPlayer
+            quiz={quiz}
+            onComplete={handleQuizComplete}
+            onClose={() => {
+              setShowQuiz(false);
+              if (hasPassedQuiz) {
+                handleClose();
+              }
+            }}
+            loading={loading}
+          />
+        ) : (
+          <div className="py-4">
+            <DialogHeader className="text-center mb-6">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mx-auto mb-4">
+                <GraduationCap className="h-10 w-10 text-primary" />
+              </div>
+              <DialogTitle className="text-2xl">
+                {hasPassedQuiz ? '🏆 Quiz Final Concluído!' : '📝 Quiz Final do Curso'}
+              </DialogTitle>
+              <DialogDescription className="text-base mt-2">
+                {hasPassedQuiz 
+                  ? `Você já passou no quiz com ${bestScore}% de aproveitamento!`
+                  : `Complete o quiz final de "${courseTitle}" para receber seu certificado.`
+                }
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                <Target className="h-5 w-5 text-primary shrink-0" />
+                <div className="flex-1">
+                  <p className="font-medium text-sm">Aprovação mínima</p>
+                  <p className="text-muted-foreground text-sm">Você precisa acertar pelo menos 90% das questões</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                <Sparkles className="h-5 w-5 text-amber-500 shrink-0" />
+                <div className="flex-1">
+                  <p className="font-medium text-sm">Bônus de XP</p>
+                  <p className="text-muted-foreground text-sm">Ganhe {quiz.xp_reward} XP ao passar no quiz!</p>
+                </div>
+              </div>
+
+              {quiz.time_limit_seconds && (
+                <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                  <AlertCircle className="h-5 w-5 text-orange-500 shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">Tempo limite</p>
+                    <p className="text-muted-foreground text-sm">
+                      Você terá {Math.floor(quiz.time_limit_seconds / 60)} minutos para completar
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {bestScore !== null && !hasPassedQuiz && (
+                <div className="flex items-center gap-3 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl">
+                  <AlertCircle className="h-5 w-5 text-orange-500 shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-sm text-orange-600">Melhor pontuação: {bestScore}%</p>
+                    <p className="text-muted-foreground text-sm">Continue tentando para alcançar 90%!</p>
+                  </div>
+                </div>
+              )}
+
+              {attemptHistory.length > 0 && (
+                <div className="border border-border rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="w-full flex items-center gap-3 p-4 bg-muted/30 hover:bg-muted/50 transition-colors"
+                  >
+                    <History className="h-5 w-5 text-muted-foreground shrink-0" />
+                    <div className="flex-1 text-left">
+                      <p className="font-medium text-sm">Histórico de tentativas ({attemptHistory.length})</p>
+                    </div>
+                    <span className="text-muted-foreground text-sm">
+                      {showHistory ? '▲' : '▼'}
+                    </span>
+                  </button>
+                  
+                  {showHistory && (
+                    <div className="max-h-48 overflow-y-auto divide-y divide-border">
+                      {attemptHistory.map((attempt, index) => (
+                        <div
+                          key={attempt.id}
+                          className="flex items-center justify-between p-3 bg-background hover:bg-muted/20 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            {attempt.passed ? (
+                              <CheckCircle className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <XCircle className="h-4 w-4 text-red-500" />
+                            )}
+                            <span className="text-sm">
+                              Tentativa {attemptHistory.length - index}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className={`text-sm font-medium ${attempt.passed ? 'text-green-600' : 'text-red-600'}`}>
+                              {attempt.score}%
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(attempt.completed_at).toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {isOnCooldown && !hasPassedQuiz && (
+                <div className="flex items-center gap-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                  <Clock className="h-5 w-5 text-blue-500 shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-sm text-blue-600">Aguarde para tentar novamente</p>
+                    <p className="text-muted-foreground text-sm">
+                      Você poderá fazer outra tentativa em {cooldownRemaining}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={handleClose} className="flex-1">
+                {hasPassedQuiz ? 'Fechar' : 'Fazer depois'}
+              </Button>
+              {hasPassedQuiz ? (
+                <Button onClick={handleClose} className="flex-1 btn-gradient">
+                  <Award className="w-4 h-4 mr-2" />
+                  Ver Certificado
+                </Button>
+              ) : (
+                <Button 
+                  onClick={() => setShowQuiz(true)} 
+                  className="flex-1 btn-gradient"
+                  disabled={isOnCooldown}
+                >
+                  <Target className="w-4 h-4 mr-2" />
+                  {isOnCooldown ? 'Em cooldown' : 'Iniciar Quiz'}
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+};

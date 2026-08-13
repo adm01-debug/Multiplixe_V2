@@ -1,0 +1,153 @@
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable/index';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
+import AuthLeftPanel from '@/components/auth/AuthLeftPanel';
+import { GraduationCap, Mail, Lock, User, Loader2, Sparkles, ArrowRight, Eye, EyeOff, ShieldAlert } from 'lucide-react';
+
+const emailSchema = z.string().email('Email inválido').refine((email) => email.endsWith('@promobrindes.com.br'), 'Apenas emails @promobrindes.com.br são permitidos');
+const passwordSchema = z.string().min(8, 'A senha deve ter pelo menos 8 caracteres').regex(/[A-Z]/, 'Deve conter letra maiúscula').regex(/[a-z]/, 'Deve conter letra minúscula').regex(/[0-9]/, 'Deve conter número').regex(/[!@#$%^&*(),.?":{}|<>]/, 'Deve conter caractere especial');
+const fullNameSchema = z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100, 'Nome muito longo');
+
+const Auth = () => {
+  const navigate = useNavigate();
+  const { user, loading: authLoading, signIn, signUp } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string; fullName?: string }>({});
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isPasswordBreached, setIsPasswordBreached] = useState<boolean | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [lockoutSeconds, setLockoutSeconds] = useState(0);
+  const [attemptCount, setAttemptCount] = useState(0);
+
+  useEffect(() => { if (user) navigate('/dashboard'); }, [user, navigate]);
+
+  useEffect(() => {
+    if (lockoutSeconds <= 0) return;
+    const timer = setInterval(() => { setLockoutSeconds(prev => { if (prev <= 1) { clearInterval(timer); return 0; } return prev - 1; }); }, 1000);
+    return () => clearInterval(timer);
+  }, [lockoutSeconds]);
+
+  const checkLockoutStatus = useCallback(async (emailToCheck: string) => {
+    if (!emailToCheck || isSignUp) return;
+    try {
+      const { data, error } = await supabase.rpc('check_login_allowed', { p_email: emailToCheck });
+      if (!error && data && data.length > 0) {
+        const result = data[0];
+        if (!result.is_allowed) { setLockoutSeconds(result.remaining_seconds); setAttemptCount(result.attempt_count); }
+        else { setLockoutSeconds(0); setAttemptCount(result.attempt_count); }
+      }
+    } catch { /* Silent fail */ }
+  }, [isSignUp]);
+
+  useEffect(() => { const timer = setTimeout(() => { if (email && !isSignUp) checkLockoutStatus(email); }, 500); return () => clearTimeout(timer); }, [email, isSignUp, checkLockoutStatus]);
+
+  const formatLockoutTime = (seconds: number): string => seconds >= 60 ? `${Math.floor(seconds / 60)}m ${seconds % 60}s` : `${seconds}s`;
+
+  const validateForm = (isSignUpMode: boolean) => {
+    const newErrors: { email?: string; password?: string; fullName?: string } = {};
+    const emailResult = emailSchema.safeParse(email); if (!emailResult.success) newErrors.email = emailResult.error.errors[0].message;
+    const passwordResult = passwordSchema.safeParse(password); if (!passwordResult.success) newErrors.password = passwordResult.error.errors[0].message;
+    if (isSignUpMode) { const nameResult = fullNameSchema.safeParse(fullName); if (!nameResult.success) newErrors.fullName = nameResult.error.errors[0].message; }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm(false)) return;
+    if (lockoutSeconds > 0) { toast.error(`Conta temporariamente bloqueada. Tente novamente em ${formatLockoutTime(lockoutSeconds)}.`); return; }
+    setLoading(true);
+    const { error } = await signIn(email, password);
+    if (error) {
+      try {
+        const { data } = await supabase.rpc('record_failed_login', { p_email: email, p_ip_address: null });
+        if (data && data.length > 0) {
+          const result = data[0]; setAttemptCount(result.total_attempts);
+          if (result.is_locked) { setLockoutSeconds(result.lockout_seconds); toast.error(`Muitas tentativas. Conta bloqueada por ${formatLockoutTime(result.lockout_seconds)}.`); }
+          else if (result.total_attempts >= 3) toast.error(`Email ou senha incorretos. ${5 - result.total_attempts} tentativas restantes.`);
+          else if (error.message.includes('Invalid login credentials')) toast.error('Email ou senha incorretos');
+          else if (error.message.includes('Email not confirmed')) toast.error('Por favor, confirme seu email antes de fazer login');
+          else toast.error('Erro ao fazer login. Tente novamente.');
+        }
+      } catch { toast.error('Erro ao fazer login. Tente novamente.'); }
+    } else {
+      try { await supabase.rpc('reset_login_attempts', { p_email: email }); } catch { /* Silent fail */ }
+      toast.success('Bem-vindo(a) de volta!');
+    }
+    setLoading(false);
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm(true)) return;
+    if (isPasswordBreached) { toast.error('Esta senha foi encontrada em vazamentos.'); return; }
+    setLoading(true);
+    const { error } = await signUp(email, password, fullName);
+    setLoading(false);
+    if (error) { toast.error(error.message.includes('User already registered') ? 'Este email já está cadastrado.' : 'Erro ao criar conta.'); }
+    else toast.success('Conta criada com sucesso!');
+  };
+
+  if (authLoading) {
+    return (<div className="min-h-screen flex items-center justify-center"><div className="flex flex-col items-center gap-4"><div className="relative"><div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary animate-spin-slow" /><div className="absolute inset-2 bg-background rounded-full" /><Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin text-primary" /></div><p className="text-muted-foreground font-medium animate-pulse">Carregando...</p></div></div>);
+  }
+
+  return (
+    <div className="min-h-screen flex">
+      <AuthLeftPanel />
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
+        <div className="w-full max-w-md">
+          <div className="lg:hidden text-center mb-10">
+            <Link to="/" className="inline-flex items-center gap-3 mb-4">
+              <div className="relative"><div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-2xl blur-lg opacity-50" /><div className="relative p-3 bg-gradient-to-r from-primary to-secondary rounded-2xl"><GraduationCap className="h-8 w-8 text-white" /></div></div>
+              <div className="text-left"><h1 className="text-xl font-display font-bold text-foreground">MULTIPLIXE</h1><p className="text-xs text-muted-foreground">by Promo Brindes</p></div>
+            </Link>
+          </div>
+
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6"><Sparkles className="h-4 w-4 text-primary" /><span className="text-sm font-semibold text-primary">{isSignUp ? 'Crie sua conta' : 'Bem-vindo de volta'}</span></div>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground mb-2">{isSignUp ? 'Junte-se a nós' : 'Acesse sua conta'}</h2>
+            <p className="text-muted-foreground">{isSignUp ? 'Comece sua jornada de aprendizado hoje' : 'Continue sua jornada de aprendizado'}</p>
+          </div>
+
+          <div className="flex p-1.5 bg-muted/50 rounded-2xl mb-8">
+            <button onClick={() => setIsSignUp(false)} className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-300 ${!isSignUp ? 'bg-card shadow-md text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>Entrar</button>
+            <button onClick={() => setIsSignUp(true)} className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-300 ${isSignUp ? 'bg-card shadow-md text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>Cadastrar</button>
+          </div>
+
+          {!isSignUp && lockoutSeconds > 0 && (<Alert variant="destructive" className="mb-6"><ShieldAlert className="h-4 w-4" /><AlertDescription className="ml-2"><span className="font-medium">Conta temporariamente bloqueada.</span><br />Tente novamente em <span className="font-bold">{formatLockoutTime(lockoutSeconds)}</span>.</AlertDescription></Alert>)}
+          {!isSignUp && attemptCount >= 3 && attemptCount < 5 && lockoutSeconds === 0 && (<Alert variant="default" className="mb-6 border-warning bg-warning/10"><ShieldAlert className="h-4 w-4 text-warning" /><AlertDescription className="ml-2 text-warning">Atenção: {5 - attemptCount} tentativas restantes antes do bloqueio temporário.</AlertDescription></Alert>)}
+
+          <form onSubmit={isSignUp ? handleSignUp : handleSignIn} className="space-y-5">
+            {isSignUp && (<div className="space-y-2 animate-fade-in"><Label htmlFor="fullName" className="text-foreground font-medium">Nome completo</Label><div className="relative"><User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" /><Input id="fullName" type="text" placeholder="Seu nome completo" value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-12 pl-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors" /></div>{errors.fullName && <p className="text-sm text-destructive flex items-center gap-1"><span className="inline-block w-1 h-1 rounded-full bg-destructive" />{errors.fullName}</p>}</div>)}
+            <div className="space-y-2"><Label htmlFor="email" className="text-foreground font-medium">Email corporativo</Label><div className="relative"><Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" /><Input id="email" type="email" placeholder="seu.nome@promobrindes.com.br" value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 pl-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors" /></div>{errors.email && <p className="text-sm text-destructive flex items-center gap-1"><span className="inline-block w-1 h-1 rounded-full bg-destructive" />{errors.email}</p>}</div>
+            <div className="space-y-2"><Label htmlFor="password" className="text-foreground font-medium">Senha</Label><div className="relative"><Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" /><Input id="password" type={showPassword ? "text" : "password"} placeholder={isSignUp ? "Crie uma senha forte" : "••••••••"} value={password} onChange={(e) => setPassword(e.target.value)} className="h-12 pl-12 pr-12 rounded-xl border-border/50 bg-muted/30 focus:bg-card transition-colors" /><button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors" aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}>{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button></div>{isSignUp && <PasswordStrengthIndicator password={password} onBreachCheck={setIsPasswordBreached} />}{errors.password && <p className="text-sm text-destructive flex items-center gap-1"><span className="inline-block w-1 h-1 rounded-full bg-destructive" />{errors.password}</p>}</div>
+            {!isSignUp && (<div className="text-center"><Link to="/forgot-password" className="text-sm text-primary hover:text-primary/80 hover:underline transition-colors">Esqueceu sua senha?</Link></div>)}
+            <Button type="submit" disabled={loading || lockoutSeconds > 0} className="w-full h-12 btn-gradient rounded-xl text-base font-semibold gap-2">{loading ? (<><Loader2 className="h-5 w-5 animate-spin" />{isSignUp ? 'Criando conta...' : 'Entrando...'}</>) : (<>{isSignUp ? 'Criar conta' : 'Entrar'}<ArrowRight className="h-5 w-5" /></>)}</Button>
+          </form>
+
+          <div className="flex items-center gap-4 my-6"><div className="flex-1 h-px bg-border" /><span className="text-sm text-muted-foreground">ou</span><div className="flex-1 h-px bg-border" /></div>
+          <Button type="button" variant="outline" disabled={loading} onClick={async () => { setLoading(true); try { const { error } = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin }); if (error) toast.error('Erro ao entrar com Google.'); } catch { toast.error('Erro ao entrar com Google.'); } finally { setLoading(false); } }} className="w-full h-12 rounded-xl text-base font-semibold gap-3">
+            <svg className="h-5 w-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" /><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" /><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" /><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" /></svg>
+            Continuar com Google
+          </Button>
+          <p className="text-center text-sm text-muted-foreground mt-8">Plataforma exclusiva para colaboradores <span className="font-semibold text-foreground">Promo Brindes</span></p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Auth;

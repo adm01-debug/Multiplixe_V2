@@ -216,7 +216,7 @@ const Dashboard = () => {
   if (showTutorial) return <OnboardingTutorial onComplete={handleTutorialComplete} onSkip={handleTutorialComplete} />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 relative">
       <AchievementCelebration achievement={currentAchievement} onClose={() => setCurrentAchievement(null)} />
       <LevelUpCelebration levelUpData={levelUpData} onClose={clearLevelUp} />
       <AchievementUnlocked achievement={currentNewAchievement} onClose={handleDismissNewAchievement} />
@@ -233,7 +233,7 @@ const Dashboard = () => {
           <DueAssessmentsWidget />
         </div>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <ContinueLearningWidget
             userProgress={userProgress}
             learningPathSuggestion={pathSuggestion}
@@ -241,18 +241,18 @@ const Dashboard = () => {
           />
         </motion.section>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <Suspense fallback={<WidgetFallback />}><SmartRecommendations /></Suspense>
         </motion.section>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><Suspense fallback={<WidgetFallback />}><DailyChallenges /></Suspense></motion.section>
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><GoalsWidget /></motion.section>
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><LevelProgress totalXP={totalXP} /></motion.section>
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><Suspense fallback={<WidgetFallback />}><DailyChallenges /></Suspense></motion.section>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><GoalsWidget /></motion.section>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><LevelProgress totalXP={totalXP} /></motion.section>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <StreakDisplay currentStreak={currentStreak} longestStreak={longestStreak} isAtRisk={isStreakAtRisk} hasStudiedToday={hasStudiedToday} />
         </motion.section>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <motion.div className="flex items-center justify-between mb-6" variants={itemVariants}>
             <div className="flex items-center gap-4">
               <motion.div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 dark:border-amber-500/40" whileHover={{ scale: 1.1, rotate: 5 }}>
@@ -267,10 +267,10 @@ const Dashboard = () => {
           <AchievementsGrid achievements={allAchievements} isUnlocked={isUnlocked} />
         </motion.section>
 
-        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}><Suspense fallback={<WidgetFallback />}><SkillRadarChart /></Suspense></motion.section>
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><Suspense fallback={<WidgetFallback />}><SkillRadarChart /></Suspense></motion.section>
 
         {userProgress.length > 0 && (
-          <motion.section className="mb-12" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+          <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
             <motion.div className="flex items-center justify-between mb-6" variants={itemVariants}>
               <div className="flex items-center gap-4">
                 <motion.div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20" whileHover={{ scale: 1.1, rotate: 5 }}>
@@ -285,7 +285,7 @@ const Dashboard = () => {
                 <Link to="/catalogo">Ver todos<ArrowRight className="h-4 w-4 neon-icon" /></Link>
               </Button>
             </motion.div>
-            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" variants={containerVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
               {userProgress.map((progress) => (
                 <motion.div key={progress.course_id} variants={itemVariants}>
                   <CourseCard id={progress.courses.id} slug={progress.courses.slug} title={progress.courses.title} description={progress.courses.description}
@@ -298,7 +298,7 @@ const Dashboard = () => {
           </motion.section>
         )}
 
-        <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}>
+        <motion.section variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <motion.div className="flex items-center justify-between mb-6" variants={itemVariants}>
             <div className="flex items-center gap-4">
               <motion.div className="p-3 rounded-2xl bg-gradient-to-br from-warning/10 to-orange-500/10 border border-warning/20" whileHover={{ scale: 1.1, rotate: 5 }}>
@@ -314,7 +314,7 @@ const Dashboard = () => {
             </Button>
           </motion.div>
           {loadingCourses ? <DashboardStatsSkeleton /> : (
-            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" variants={containerVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
               {featuredCourses.map((course) => (
                 <motion.div key={course.id} variants={itemVariants}>
                   <CourseCard id={course.id} slug={course.slug} title={course.title} description={course.description}

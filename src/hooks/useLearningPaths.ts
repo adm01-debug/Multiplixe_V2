@@ -159,9 +159,9 @@ export function useLearningPaths() {
         .select('*')
         .eq('user_id', user.id)
         .eq('learning_path_id', learningPathId)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data;
     } catch {
       return null;
@@ -208,7 +208,7 @@ export function useLearningPaths() {
         .eq('user_id', user.id)
         .eq('learning_path_id', learningPathId)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

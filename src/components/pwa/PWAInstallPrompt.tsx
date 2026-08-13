@@ -1,72 +1,78 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { usePWA } from '@/hooks/usePWA';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Download, X, Smartphone, Zap, Wifi } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const DISMISS_KEY = 'pwa-install-dismissed';
+const DISMISS_DAYS = 7;
+const SHOW_DELAY_MS = 10000;
+
 const PWAInstallPrompt = () => {
   const { isInstallable, isInstalled, installApp } = usePWA();
-  const [isDismissed, setIsDismissed] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const dismissed = localStorage.getItem(DISMISS_KEY);
+    if (!dismissed) return false;
+    const daysSinceDismissed = (Date.now() - new Date(dismissed).getTime()) / (1000 * 60 * 60 * 24);
+    return daysSinceDismissed < DISMISS_DAYS;
+  });
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
-    // Check if user dismissed the prompt before
-    const dismissed = localStorage.getItem('pwa-install-dismissed');
-    if (dismissed) {
-      const dismissedDate = new Date(dismissed);
-      const daysSinceDismissed = (Date.now() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
-      // Show again after 7 days
-      if (daysSinceDismissed < 7) {
+    if (isDismissed) return;
+    if (!isInstallable || isInstalled) return;
+
+    const timer = setTimeout(() => setShowPrompt(true), SHOW_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [isInstallable, isInstalled, isDismissed]);
+
+  const handleInstall = useCallback(async () => {
+    try {
+      const success = await installApp();
+      if (success) {
+        setShowPrompt(false);
         setIsDismissed(true);
-        return;
       }
-    }
-
-    // Show prompt after 10 seconds if installable
-    if (isInstallable && !isInstalled) {
-      const timer = setTimeout(() => {
-        setShowPrompt(true);
-      }, 10000);
-      return () => clearTimeout(timer);
-    }
-  }, [isInstallable, isInstalled]);
-
-  const handleInstall = async () => {
-    const success = await installApp();
-    if (success) {
+    } catch {
       setShowPrompt(false);
     }
-  };
+  }, [installApp]);
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     setIsDismissed(true);
     setShowPrompt(false);
-    localStorage.setItem('pwa-install-dismissed', new Date().toISOString());
-  };
+    try {
+      localStorage.setItem(DISMISS_KEY, new Date().toISOString());
+    } catch {
+      // localStorage may be unavailable in private mode
+    }
+  }, []);
 
   if (isInstalled || isDismissed || !showPrompt) return null;
 
   return (
     <AnimatePresence>
       <motion.div
+        key="pwa-install-prompt"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
-        className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-6 md:max-w-sm"
+        className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-6 md:max-w-sm pointer-events-none"
       >
-        <Card className="relative overflow-hidden border-primary/20 shadow-2xl">
+        <Card className="relative overflow-hidden border-primary/20 shadow-2xl pointer-events-auto">
           {/* Gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent" />
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 h-8 w-8 hover:bg-destructive/10"
+
+          <button
+            type="button"
+            aria-label="Fechar"
             onClick={handleDismiss}
+            className="absolute top-2 right-2 z-10 h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-destructive/10 transition-colors"
           >
             <X className="h-4 w-4" />
-          </Button>
+          </button>
 
           <CardContent className="relative p-6">
             <div className="flex items-start gap-4">
@@ -74,7 +80,7 @@ const PWAInstallPrompt = () => {
                 <Download className="h-6 w-6 text-white" />
               </div>
 
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 pr-6">
                 <h3 className="font-display font-bold text-lg mb-1">
                   Instalar MULTIPLIXE
                 </h3>
@@ -97,7 +103,7 @@ const PWAInstallPrompt = () => {
                   </div>
                 </div>
 
-                <Button 
+                <Button
                   className="w-full gap-2"
                   onClick={handleInstall}
                 >

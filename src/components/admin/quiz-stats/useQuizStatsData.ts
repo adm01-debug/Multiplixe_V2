@@ -114,21 +114,37 @@ export const useQuizStatsData = () => {
           return matchesQuiz && matchesCategory;
         });
 
-        const courseStats: CourseQuizStat[] = filteredQuizzes.map(quiz => {
-          const quizAttempts = attempts.filter(a => a.quiz_id === quiz.id);
-          const passedAttempts = quizAttempts.filter(a => a.passed).length;
-          const uniqueUsers = new Set(quizAttempts.map(a => a.user_id)).size;
-          const averageScore = quizAttempts.length > 0
-            ? Math.round(quizAttempts.reduce((sum, a) => sum + a.score, 0) / quizAttempts.length) : 0;
-          const passingRate = quizAttempts.length > 0
-            ? Math.round((passedAttempts / quizAttempts.length) * 100) : 0;
+        // Aggregate quiz attempts by course (multiple quizzes per course → one entry per course)
+        const courseMap = new Map<string, { quizIds: string[]; courseTitle: string; attempts: typeof attempts }>();
+        filteredQuizzes.forEach(quiz => {
+          if (!courseMap.has(quiz.course_id!)) {
+            courseMap.set(quiz.course_id!, { quizIds: [], courseTitle: quiz.courses?.title || 'Curso desconhecido', attempts: [] });
+          }
+          const entry = courseMap.get(quiz.course_id!)!;
+          entry.quizIds.push(quiz.id);
+          const quizTitle = quiz.title;
+          const quizAttempts = attempts.filter(a => a.quiz_id === quiz.id).map(a => ({ ...a, quizTitle }));
+          entry.attempts.push(...quizAttempts);
+        });
+
+        const courseStats: CourseQuizStat[] = Array.from(courseMap.entries()).map(([courseId, entry]) => {
+          const allAttempts = entry.attempts;
+          const passedAttempts = allAttempts.filter((a: typeof attempts[0]) => a.passed).length;
+          const uniqueUsers = new Set(allAttempts.map((a: typeof attempts[0]) => a.user_id)).size;
+          const averageScore = allAttempts.length > 0
+            ? Math.round(allAttempts.reduce((sum: number, a: typeof attempts[0]) => sum + a.score, 0) / allAttempts.length) : 0;
+          const passingRate = allAttempts.length > 0
+            ? Math.round((passedAttempts / allAttempts.length) * 100) : 0;
           return {
-            courseId: quiz.course_id!,
-            courseTitle: quiz.courses?.title || 'Curso desconhecido',
-            quizTitle: quiz.title,
-            quizId: quiz.id,
-            totalAttempts: quizAttempts.length,
-            passedAttempts, uniqueUsers, averageScore, passingRate
+            courseId,
+            courseTitle: entry.courseTitle,
+            quizTitle: entry.quizIds.length > 1 ? `${entry.quizIds.length} quizzes` : (allAttempts[0] as typeof attempts[0] & { quizTitle: string }).quizTitle || '',
+            quizId: entry.quizIds[0] || '',
+            totalAttempts: allAttempts.length,
+            passedAttempts,
+            uniqueUsers,
+            averageScore,
+            passingRate
           };
         }).sort((a, b) => b.totalAttempts - a.totalAttempts);
 

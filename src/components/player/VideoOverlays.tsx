@@ -64,10 +64,10 @@ export const PlayOverlay = ({ isPlaying, onTogglePlay }: PlayOverlayProps) => {
 
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] cursor-pointer"
-      onClick={onTogglePlay}
+      className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-[2px] cursor-pointer"
+      onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePlay(); }}
     >
-      <div className="relative group/play">
+      <div className="relative group/play pointer-events-none select-none">
         <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur-xl opacity-50 group-hover/play:opacity-75 transition-opacity scale-110" />
         <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center hover:scale-110 transition-transform shadow-2xl">
           <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" />

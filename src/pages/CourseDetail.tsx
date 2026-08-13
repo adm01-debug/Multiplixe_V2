@@ -63,8 +63,8 @@ const CourseDetail = () => {
   const handleStartCourse = async () => {
     if (!user || !course || lessons.length === 0) return;
     setStarting(true);
-    const { error } = await supabase.from("user_course_progress").insert({ user_id: user.id, course_id: course.id, progress_percentage: 0 });
-    if (error && error.code !== "23505") { toast.error("Erro ao iniciar curso"); setStarting(false); return; }
+    const { error } = await supabase.from("user_course_progress").upsert({ user_id: user.id, course_id: course.id, progress_percentage: 0 }, { onConflict: "user_id,course_id" });
+    if (error) { toast.error("Erro ao iniciar curso"); setStarting(false); return; }
     navigate(`/curso/${slug}/aula/${lessons[0].id}`);
     setStarting(false);
   };
@@ -89,7 +89,7 @@ const CourseDetail = () => {
   const completedLessons = lessonsProgress.filter(p => p.is_completed).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 relative">
       <header className="sticky top-0 z-50 glass neon-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

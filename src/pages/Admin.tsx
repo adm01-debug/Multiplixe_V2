@@ -15,20 +15,20 @@ import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
 import type { UserStat } from '@/components/admin/AdminUsersTab';
 
 // Lazy load tab contents
-const AdminCoursesTab = lazy(() => import('@/components/admin/AdminCoursesTab'));
-const AdminUsersTab = lazy(() => import('@/components/admin/AdminUsersTab'));
-const AdminStatsTab = lazy(() => import('@/components/admin/AdminStatsTab'));
-const QuizStats = lazy(() => import('@/components/admin/QuizStats').then(m => ({ default: m.QuizStats })));
-const PermissionsManager = lazy(() => import('@/components/admin/PermissionsManager'));
-const LearningPathsManager = lazy(() => import('@/components/admin/LearningPathsManager').then(m => ({ default: m.LearningPathsManager })));
-const PlatformAnalytics = lazy(() => import('@/components/admin/PlatformAnalytics'));
-const AdminPlaybooksTab = lazy(() => import('@/components/admin/AdminPlaybooksTab'));
-const AdminVideosTab = lazy(() => import('@/components/admin/AdminVideosTab'));
-const AdminWorkflowsTab = lazy(() => import('@/components/admin/AdminWorkflowsTab'));
-const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmentsTab'));
-const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap'));
-const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention'));
-const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget'));
+const AdminCoursesTab = lazy(() => import('@/components/admin/AdminCoursesTab').catch((e) => { console.error('[Admin] Failed to load AdminCoursesTab', e); throw e; }));
+const AdminUsersTab = lazy(() => import('@/components/admin/AdminUsersTab').catch((e) => { console.error('[Admin] Failed to load AdminUsersTab', e); throw e; }));
+const AdminStatsTab = lazy(() => import('@/components/admin/AdminStatsTab').catch((e) => { console.error('[Admin] Failed to load AdminStatsTab', e); throw e; }));
+const QuizStats = lazy(() => import('@/components/admin/QuizStats').then(m => ({ default: m.QuizStats })).catch((e) => { console.error('[Admin] Failed to load QuizStats', e); throw e; }));
+const PermissionsManager = lazy(() => import('@/components/admin/PermissionsManager').catch((e) => { console.error('[Admin] Failed to load PermissionsManager', e); throw e; }));
+const LearningPathsManager = lazy(() => import('@/components/admin/LearningPathsManager').then(m => ({ default: m.LearningPathsManager })).catch((e) => { console.error('[Admin] Failed to load LearningPathsManager', e); throw e; }));
+const PlatformAnalytics = lazy(() => import('@/components/admin/PlatformAnalytics').catch((e) => { console.error('[Admin] Failed to load PlatformAnalytics', e); throw e; }));
+const AdminPlaybooksTab = lazy(() => import('@/components/admin/AdminPlaybooksTab').catch((e) => { console.error('[Admin] Failed to load AdminPlaybooksTab', e); throw e; }));
+const AdminVideosTab = lazy(() => import('@/components/admin/AdminVideosTab').catch((e) => { console.error('[Admin] Failed to load AdminVideosTab', e); throw e; }));
+const AdminWorkflowsTab = lazy(() => import('@/components/admin/AdminWorkflowsTab').catch((e) => { console.error('[Admin] Failed to load AdminWorkflowsTab', e); throw e; }));
+const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmentsTab').catch((e) => { console.error('[Admin] Failed to load AdminAssessmentsTab', e); throw e; }));
+const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap').catch((e) => { console.error('[Admin] Failed to load AdminEngagementHeatmap', e); throw e; }));
+const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention').catch((e) => { console.error('[Admin] Failed to load AdminCohortRetention', e); throw e; }));
+const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget').catch((e) => { console.error('[Admin] Failed to load AdminTelemetryWidget', e); throw e; }));
 
 interface PlatformStats {
   totalUsers: number;
@@ -189,44 +189,84 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="courses" className="space-y-6">
-          <TabsList className="flex flex-wrap w-full h-auto gap-1">
-            <TabsTrigger value="courses" className="flex items-center gap-2"><BookOpen className="h-4 w-4" /> Cursos</TabsTrigger>
-            <TabsTrigger value="paths" className="flex items-center gap-2"><Route className="h-4 w-4" /> Trilhas</TabsTrigger>
-            <TabsTrigger value="playbooks" className="flex items-center gap-2"><FileText className="h-4 w-4" /> Playbooks</TabsTrigger>
-            <TabsTrigger value="videos" className="flex items-center gap-2"><Video className="h-4 w-4" /> Vídeos</TabsTrigger>
-            <TabsTrigger value="workflows" className="flex items-center gap-2"><Sparkles className="h-4 w-4" /> Workflows</TabsTrigger>
-            <TabsTrigger value="assessments" className="flex items-center gap-2"><Target className="h-4 w-4" /> Avaliações</TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center gap-2"><Users className="h-4 w-4" /> Usuários</TabsTrigger>
-            <TabsTrigger value="quizzes" className="flex items-center gap-2"><Target className="h-4 w-4" /> Quizzes</TabsTrigger>
-            <TabsTrigger value="permissions" className="flex items-center gap-2"><Shield className="h-4 w-4" /> Permissões</TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2"><TrendingUp className="h-4 w-4" /> Analytics</TabsTrigger>
-            <TabsTrigger value="stats" className="flex items-center gap-2"><BarChart3 className="h-4 w-4" /> Stats</TabsTrigger>
-          </TabsList>
+          <div className="relative z-0 overflow-x-auto pb-1">
+            <TabsList className="flex w-max gap-1 bg-muted/50 p-1 rounded-lg">
+              <TabsTrigger value="courses"><BookOpen className="h-4 w-4 mr-1.5 inline-block align-middle" />Cursos</TabsTrigger>
+              <TabsTrigger value="paths"><Route className="h-4 w-4 mr-1.5 inline-block align-middle" />Trilhas</TabsTrigger>
+              <TabsTrigger value="playbooks"><FileText className="h-4 w-4 mr-1.5 inline-block align-middle" />Playbooks</TabsTrigger>
+              <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1.5 inline-block align-middle" />Vídeos</TabsTrigger>
+              <TabsTrigger value="workflows"><Sparkles className="h-4 w-4 mr-1.5 inline-block align-middle" />Workflows</TabsTrigger>
+              <TabsTrigger value="assessments"><Target className="h-4 w-4 mr-1.5 inline-block align-middle" />Avaliações</TabsTrigger>
+              <TabsTrigger value="users"><Users className="h-4 w-4 mr-1.5 inline-block align-middle" />Usuários</TabsTrigger>
+              <TabsTrigger value="quizzes"><Target className="h-4 w-4 mr-1.5 inline-block align-middle" />Quizzes</TabsTrigger>
+              <TabsTrigger value="permissions"><Shield className="h-4 w-4 mr-1.5 inline-block align-middle" />Permissões</TabsTrigger>
+              <TabsTrigger value="analytics"><TrendingUp className="h-4 w-4 mr-1.5 inline-block align-middle" />Analytics</TabsTrigger>
+              <TabsTrigger value="stats"><BarChart3 className="h-4 w-4 mr-1.5 inline-block align-middle" />Stats</TabsTrigger>
+            </TabsList>
+          </div>
 
-          <Suspense fallback={<TabFallback />}>
-            <TabsContent value="courses">
+          <TabsContent value="courses">
+            <Suspense fallback={<TabFallback />}>
               <AdminCoursesTab courses={courses} setCourses={setCourses} loadingData={loadingData} onRefresh={fetchData} />
-            </TabsContent>
-            <TabsContent value="paths"><LearningPathsManager /></TabsContent>
-            <TabsContent value="playbooks"><AdminPlaybooksTab /></TabsContent>
-            <TabsContent value="videos"><AdminVideosTab /></TabsContent>
-            <TabsContent value="workflows"><AdminWorkflowsTab /></TabsContent>
-            <TabsContent value="assessments"><AdminAssessmentsTab /></TabsContent>
-            <TabsContent value="users"><AdminUsersTab users={users} loadingData={loadingData} /></TabsContent>
-            <TabsContent value="quizzes"><QuizStats /></TabsContent>
-            <TabsContent value="permissions"><PermissionsManager /></TabsContent>
-            <TabsContent value="analytics">
-              <div className="space-y-6">
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="paths">
+            <Suspense fallback={<TabFallback />}>
+              <LearningPathsManager />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="playbooks">
+            <Suspense fallback={<TabFallback />}>
+              <AdminPlaybooksTab />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="videos">
+            <Suspense fallback={<TabFallback />}>
+              <AdminVideosTab />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="workflows">
+            <Suspense fallback={<TabFallback />}>
+              <AdminWorkflowsTab />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="assessments">
+            <Suspense fallback={<TabFallback />}>
+              <AdminAssessmentsTab />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="users">
+            <Suspense fallback={<TabFallback />}>
+              <AdminUsersTab users={users} loadingData={loadingData} />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="quizzes">
+            <Suspense fallback={<TabFallback />}>
+              <QuizStats />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="permissions">
+            <Suspense fallback={<TabFallback />}>
+              <PermissionsManager />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="analytics">
+            <div className="space-y-6">
+              <Suspense fallback={<TabFallback />}>
                 <PlatformAnalytics />
                 <AdminTelemetryWidget />
                 <div className="grid lg:grid-cols-2 gap-4">
                   <AdminEngagementHeatmap />
                   <AdminCohortRetention />
                 </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="stats"><AdminStatsTab stats={stats} courses={courses} users={users} /></TabsContent>
-          </Suspense>
+              </Suspense>
+            </div>
+          </TabsContent>
+          <TabsContent value="stats">
+            <Suspense fallback={<TabFallback />}>
+              <AdminStatsTab stats={stats} courses={courses} users={users} />
+            </Suspense>
+          </TabsContent>
         </Tabs>
       </main>
     </div>

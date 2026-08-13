@@ -38,62 +38,58 @@ const PageTransition = ({ children }: PageTransitionProps) => {
   useEffect(() => {
     const prevIndex = getRouteIndex(prevPathRef.current);
     const currentIndex = getRouteIndex(location.pathname);
-    
+
     setDirection(currentIndex >= prevIndex ? 'forward' : 'backward');
     prevPathRef.current = location.pathname;
   }, [location.pathname]);
 
+  // Skip initial entrance animation so first render isn't blank
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const pageVariants: Variants = {
     initial: (dir: 'forward' | 'backward') => ({
       opacity: 0,
-      x: dir === 'forward' ? 60 : -60,
-      scale: 0.96,
-      filter: 'blur(8px)',
+      x: dir === 'forward' ? 30 : -30,
     }),
     animate: {
       opacity: 1,
       x: 0,
-      scale: 1,
-      filter: 'blur(0px)',
       transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
-        mass: 0.8,
-        opacity: { duration: 0.3, ease: 'easeOut' },
-        filter: { duration: 0.25, ease: 'easeOut' },
+        duration: 0.2,
+        ease: 'easeOut',
       },
     },
     exit: (dir: 'forward' | 'backward') => ({
       opacity: 0,
-      x: dir === 'forward' ? -40 : 40,
-      scale: 0.98,
-      filter: 'blur(6px)',
+      x: dir === 'forward' ? -20 : 20,
+      position: 'absolute',
+      inset: 0,
       transition: {
-        type: 'spring',
-        stiffness: 400,
-        damping: 35,
-        opacity: { duration: 0.2, ease: 'easeIn' },
-        filter: { duration: 0.15 },
+        duration: 0.15,
+        ease: 'easeIn',
       },
     }),
   };
 
   return (
-    <AnimatePresence mode="wait" initial={false} custom={direction}>
-      <motion.div
-        key={location.pathname}
-        custom={direction}
-        variants={pageVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="min-h-screen"
-        style={{ willChange: 'transform, opacity, filter' }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div className="relative">
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.div
+          key={location.pathname}
+          custom={direction}
+          variants={pageVariants}
+          initial={hasMounted ? 'initial' : false}
+          animate="animate"
+          exit="exit"
+          className="min-h-screen w-full"
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 };
 

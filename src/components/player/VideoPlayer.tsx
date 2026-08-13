@@ -174,7 +174,7 @@ const VideoPlayer = ({
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && setShowControls(false)}
     >
-      <video ref={videoRef} src={src} className="w-full aspect-video cursor-pointer" onClick={togglePlay} playsInline />
+      <video ref={videoRef} src={src} className="w-full aspect-video cursor-pointer" playsInline />
 
       <SpeedIndicator show={showSpeedIndicator} playbackRate={playbackRate} speedLabel={getSpeedLabel(playbackRate)} />
       <SkipIndicator indicator={showSkipIndicator} />

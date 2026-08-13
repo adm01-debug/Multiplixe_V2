@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
@@ -47,6 +46,8 @@ const VideoControls = ({
   isFullscreen, visible, onTogglePlay, onSeek, onSkip,
   onVolumeChange, onToggleMute, onPlaybackRateChange, onToggleFullscreen,
 }: VideoControlsProps) => {
+  const btnBase = "flex items-center justify-center rounded-lg transition-all duration-150 text-white/90 hover:text-white hover:bg-white/20 active:scale-95";
+
   return (
     <div
       className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 md:p-6 transition-opacity duration-300 ${
@@ -59,20 +60,20 @@ const VideoControls = ({
 
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1 md:gap-2">
-          <Button variant="ghost" size="icon" onClick={onTogglePlay} className="text-white hover:bg-white/20 h-10 w-10">
+          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePlay(); }} className={`${btnBase} h-10 w-10`} aria-label={isPlaying ? "Pausar" : "Reproduzir"}>
             {isPlaying ? <Pause className="h-5 w-5" fill="currentColor" /> : <Play className="h-5 w-5" fill="currentColor" />}
-          </Button>
-          <Button variant="ghost" size="icon" onClick={() => onSkip(-10)} className="text-white hover:bg-white/20 h-10 w-10 hidden sm:flex">
+          </button>
+          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onSkip(-10); }} className={`${btnBase} h-10 w-10 hidden sm:flex`} aria-label="Voltar 10 segundos">
             <SkipBack className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={() => onSkip(10)} className="text-white hover:bg-white/20 h-10 w-10 hidden sm:flex">
+          </button>
+          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onSkip(10); }} className={`${btnBase} h-10 w-10 hidden sm:flex`} aria-label="Avançar 10 segundos">
             <SkipForward className="h-4 w-4" />
-          </Button>
+          </button>
 
           <div className="flex items-center gap-1 group/volume">
-            <Button variant="ghost" size="icon" onClick={onToggleMute} className="text-white hover:bg-white/20 h-10 w-10">
+            <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleMute(); }} className={`${btnBase} h-10 w-10`} aria-label={isMuted ? "Ativar som" : "Silenciar"}>
               {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-            </Button>
+            </button>
             <div className="w-0 group-hover/volume:w-20 overflow-hidden transition-all duration-300">
               <Slider value={[isMuted ? 0 : volume]} max={1} step={0.01} onValueChange={onVolumeChange} />
             </div>
@@ -84,48 +85,45 @@ const VideoControls = ({
         </div>
 
         <div className="flex items-center gap-1 md:gap-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DropdownMenu>
+          <DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={`text-white hover:bg-white/20 text-xs font-semibold h-10 px-3 rounded-lg transition-all ${
-                      playbackRate !== 1 ? 'bg-primary/30 border border-primary/50' : ''
-                    }`}
+                  <button
+                    type="button"
+                    className={`${btnBase} text-xs font-semibold h-10 px-3 ${playbackRate !== 1 ? 'bg-primary/30 border border-primary/50' : ''}`}
                   >
                     <Gauge className="h-4 w-4 mr-1" />
                     {playbackRate}x
-                  </Button>
+                  </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-card/95 backdrop-blur-xl border-border/50 rounded-xl p-1">
-                  <div className="px-2 py-1.5 text-xs text-muted-foreground border-b border-border/50 mb-1">
-                    Velocidade <span className="text-primary">(teclas , e .)</span>
-                  </div>
-                  {playbackRates.map((rate) => (
-                    <DropdownMenuItem
-                      key={rate}
-                      onClick={() => onPlaybackRateChange(rate)}
-                      className={`rounded-lg flex items-center justify-between ${
-                        playbackRate === rate ? 'bg-primary/20 text-primary' : ''
-                      }`}
-                    >
-                      <span>{rate}x</span>
-                      <span className="text-xs text-muted-foreground ml-4">{getSpeedLabel(rate)}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TooltipTrigger>
-            <TooltipContent side="top" className="bg-card/95 backdrop-blur-xl">
-              <p>Velocidade: <kbd className="px-1.5 py-0.5 rounded bg-muted text-xs">,</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-muted text-xs">.</kbd></p>
-            </TooltipContent>
-          </Tooltip>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="bg-card/95 backdrop-blur-xl">
+                <p>Velocidade: <kbd className="px-1.5 py-0.5 rounded bg-muted text-xs">,</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-muted text-xs">.</kbd></p>
+              </TooltipContent>
+            </Tooltip>
+            <DropdownMenuContent className="bg-card/95 backdrop-blur-xl border-border/50 rounded-xl p-1">
+              <div className="px-2 py-1.5 text-xs text-muted-foreground border-b border-border/50 mb-1">
+                Velocidade <span className="text-primary">(teclas , e .)</span>
+              </div>
+              {playbackRates.map((rate) => (
+                <DropdownMenuItem
+                  key={rate}
+                  onClick={() => onPlaybackRateChange(rate)}
+                  className={`rounded-lg flex items-center justify-between ${
+                    playbackRate === rate ? 'bg-primary/20 text-primary' : ''
+                  }`}
+                >
+                  <span>{rate}x</span>
+                  <span className="text-xs text-muted-foreground ml-4">{getSpeedLabel(rate)}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-          <Button variant="ghost" size="icon" onClick={onToggleFullscreen} className="text-white hover:bg-white/20 h-10 w-10">
+          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleFullscreen(); }} className={`${btnBase} h-10 w-10`} aria-label={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}>
             {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
-          </Button>
+          </button>
         </div>
       </div>
     </div>

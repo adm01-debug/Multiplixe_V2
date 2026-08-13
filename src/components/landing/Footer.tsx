@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { GraduationCap, Mail, Phone, MapPin, HelpCircle, BookOpen, MessageCircle, Sparkles, ArrowUpRight, Heart, Send, CheckCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -185,12 +184,10 @@ const Footer = () => {
                   className="bg-background/10 border-background/20 text-background placeholder:text-background/40 flex-1"
                   disabled={isSubscribing}
                 />
-                <motion.button 
+                <button
                   type="submit"
                   disabled={isSubscribing || !email}
-                  className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-gradient-to-r from-primary to-accent hover:opacity-90 shrink-0 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-gradient-to-r from-primary to-accent hover:opacity-90 shrink-0 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-transform hover:scale-105 active:scale-95"
                 >
                   {isSubscribing ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -199,7 +196,7 @@ const Footer = () => {
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
-                </motion.button>
+                </button>
               </form>
             </div>
           </div>

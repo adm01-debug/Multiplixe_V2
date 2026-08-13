@@ -236,29 +236,29 @@ BEGIN
     sa.frequency_days,
     sa.passing_score,
     sa.quiz_id,
-    last_result.completed_at AS last_completed_at,
-    last_result.next_due_at,
+    lr.completed_at AS last_completed_at,
+    lr.next_due_at AS next_due_at,
     CASE
-      WHEN last_result.id IS NULL THEN 'pending'
-      WHEN last_result.next_due_at < now() THEN 'overdue'
-      WHEN last_result.next_due_at < now() + INTERVAL '7 days' THEN 'due_soon'
+      WHEN lr.id IS NULL THEN 'pending'
+      WHEN lr.next_due_at < now() THEN 'overdue'
+      WHEN lr.next_due_at < now() + INTERVAL '7 days' THEN 'due_soon'
       ELSE 'on_track'
     END AS status
   FROM public.skill_assessments sa
   LEFT JOIN LATERAL (
-    SELECT id, completed_at, next_due_at
-    FROM public.user_assessment_results
-    WHERE user_id = p_user_id AND assessment_id = sa.id
-    ORDER BY completed_at DESC
+    SELECT uar.id, uar.completed_at, uar.next_due_at
+    FROM public.user_assessment_results uar
+    WHERE uar.user_id = p_user_id AND uar.assessment_id = sa.id
+    ORDER BY uar.completed_at DESC
     LIMIT 1
-  ) last_result ON true
+  ) lr ON true
   WHERE sa.is_active = true
-  ORDER BY 
+  ORDER BY
     CASE
-      WHEN last_result.id IS NULL THEN 0
-      WHEN last_result.next_due_at < now() THEN 1
+      WHEN lr.id IS NULL THEN 0
+      WHEN lr.next_due_at < now() THEN 1
       ELSE 2
     END,
-    last_result.next_due_at NULLS FIRST;
+    lr.next_due_at NULLS FIRST;
 END;
 $$;

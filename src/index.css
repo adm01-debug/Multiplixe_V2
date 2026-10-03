@@ -903,3 +903,9 @@
   display: none !important;
 }
 
+
+
+/* marca da Lovable escondida */
+#lovable-badge {
+  display: none !important;
+}

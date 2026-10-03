@@ -152,18 +152,18 @@ const Footer = () => {
                 </div>
                 rh@promobrindes.com.br
               </a>
-              <p className="flex items-center gap-3 text-background/60">
+              <div className="flex items-center gap-3 text-background/60">
                 <div className="w-10 h-10 rounded-xl bg-background/5 flex items-center justify-center">
                   <Phone className="w-5 h-5" />
                 </div>
                 Ramal: 2001 (TI) | 2002 (RH)
-              </p>
-              <p className="flex items-center gap-3 text-background/60">
+              </div>
+              <div className="flex items-center gap-3 text-background/60">
                 <div className="w-10 h-10 rounded-xl bg-background/5 flex items-center justify-center">
                   <MapPin className="w-5 h-5" />
                 </div>
                 Goiânia, GO
-              </p>
+              </div>
             </div>
             
             {/* Newsletter Section */}

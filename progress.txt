@@ -1,0 +1,9 @@
+# Progresso deste projeto
+
+Escrito pelo agente ao fim de cada sessao. A sessao seguinte le isto ANTES
+de mexer em qualquer coisa — e como ela sabe o que ja foi feito.
+
+## 2026-10-03 15:23
+A tela renderizou sem o warning de DOM nesting. O erro do vídeo 403 é pré-existente e não relacionado ao problema reportado.
+
+Arquivos tocados: src/components/landing/Footer.tsx

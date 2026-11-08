@@ -23,9 +23,11 @@ Ler quando for confirmar um deploy, mexer em env var, domínio, secret ou edge f
 | Último deploy de produção | `dpl_82Zuxdqh…`, `READY`, da `main` `7128709` (2026-10-03) |
 | Histórico | **2 deploys de produção** desde a criação (2026-09-05 e 2026-10-03), os dois disparados por push do Lovable na `main` |
 
-- **Gatilho de deploy:** push na `main` (evidência: `meta.githubCommitRef = main`,
-  `githubRepo = Multiplixe_V2` nos dois deploys). Confirme o run depois do merge
-  (`mcp__Vercel__list_deployments` com `projectId`) e reporte o estado.
+- **Gatilho de deploy:** push na `main` vira deploy de **produção**; push em qualquer outra branch vira
+  **preview** (`target: null`) — verificado em 2026-11-08: a branch `claude/chore-padrao-agentes-261108-2040`
+  gerou `dpl_9oXf84r1…` (preview, `READY`) e o merge gerou `dpl_4s8C6igh…` (produção, `READY`, SHA
+  `decacef`). Confirme o run depois do merge (`mcp__Vercel__list_deployments` com `projectId`) e reporte o
+  estado — preview conta como prova de build, não de produção.
 - `mcp__Vercel__get_project` com `teamId` explícito devolveu **404**; sem `teamId`, funciona. Use sem
   `teamId` (ou `idOrName: "multiplixe-v2"`).
 - As duas URLs públicas (`multiplixe-v2.vercel.app` e a do Lovable) respondem `000` pelo proxy desta sessão

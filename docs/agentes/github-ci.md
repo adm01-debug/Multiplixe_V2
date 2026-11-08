@@ -21,7 +21,8 @@ forma estranha.
 
 ## O Lovable commita direto na `main`
 
-110 commits no total: **104 de `gpt-engineer-app[bot]`** (Lovable), 4 de `adm01-debug`, 2 de agente via
+112 commits no total (contagem em 2026-11-08, cresce a cada push do Lovable): **104 de
+`gpt-engineer-app[bot]`** (Lovable), 6 de `adm01-debug`, 2 de agente via
 Claude Code. Mensagens típicas: `Visual edit in Lovable`, `VibeDeploy: …`, `Changes`.
 
 - A `main` se move sem passar por PR. **Re-sync antes de editar** (`git fetch origin main`) e confira que o
@@ -48,8 +49,14 @@ Claude Code. Mensagens típicas: `Visual edit in Lovable`, `VibeDeploy: …`, `C
 | Squash | `squash_merge_commit_message=COMMIT_MESSAGES` · `squash_merge_commit_title=COMMIT_OR_PR_TITLE` |
 | Branches remotas | `main` e `master`; `master` parou em `b81fdbf` (import inicial, já dentro da `main` por `2a8e3e7`) — podável |
 | Homepage do repo | `https://multiplixe-v2.vercel.app` |
+| Secret scanning | **desligado** (`github_list_secret_scanning_alerts` → 404 "Secret scanning is disabled on this repository") |
+| Dependabot alerts | **desligado** (`github_list_dependabot_alerts` → 403 "Dependabot alerts are disabled for this repository") |
 
 Consequências:
+- **Nenhum alerta automático pega segredo commitado.** Com os dois acima desligados, uma chave exposta num
+  commit (como a `ACCESS_KEY` hardcoded em `supabase/functions/migrate-helper/index.ts`, ver
+  `docs/agentes/regras-dominio.md`) só é pega por revisão humana ou de agente — nunca pelo GitHub. Ligar os
+  dois é mudança de settings do repo: **chame o dono**.
 - **Nada barra um merge ruim.** Sem CI, a única prova é o que você rodou local — cite na PR o comando e a
   saída (`npx tsc --noEmit -p tsconfig.app.json`, `npx vitest run <caminho>`, `npx eslint <arquivos>`).
 - `delete_branch_on_merge=false`: apague a branch você mesmo depois do merge.

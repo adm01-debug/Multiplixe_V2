@@ -20,8 +20,8 @@ Ler quando for confirmar um deploy, mexer em env var, domínio, secret ou edge f
 | Framework / Node | `vite` · Node **24.x** |
 | Domínios | `multiplixe-v2.vercel.app` (homepage do repo), `multiplixe-v2-juca1.vercel.app`, `multiplixe-v2-git-main-juca1.vercel.app` — **nenhum domínio próprio** |
 | Proteção | `ssoProtection: all_except_custom_domains` (URLs `.vercel.app` exigem login Vercel) · password protection off · trusted IPs off |
-| Último deploy de produção | `dpl_82Zuxdqh…`, `READY`, da `main` `7128709` (2026-10-03) |
-| Histórico | **2 deploys de produção** desde a criação (2026-09-05 e 2026-10-03), os dois disparados por push do Lovable na `main` |
+| Último deploy de produção (lido em 2026-11-08, depois do próprio merge que criou este arquivo) | `dpl_4s8C6igh…`, `READY`, da `main` `decacef2` (merge da PR que criou estes docs) |
+| Histórico | **3 deploys de produção** desde a criação (2026-09-05, 2026-10-03, 2026-11-08) — número só cresce, cada merge na `main` soma 1. Não trate este valor como fixo: confira de novo com `mcp__Vercel__list_deployments(projectId, target: "production", limit: 1)`. |
 
 - **Gatilho de deploy:** push na `main` vira deploy de **produção**; push em qualquer outra branch vira
   **preview** (`target: null`) — verificado em 2026-11-08: a branch `claude/chore-padrao-agentes-261108-2040`
@@ -35,10 +35,10 @@ Ler quando for confirmar um deploy, mexer em env var, domínio, secret ou edge f
 
 ### Env vars do Vercel — passivo de segurança
 
-O projeto tem **14 env vars, todas em `production`, todas vindas de uma integração**
+O projeto tem **16 env vars, todas em `production`, todas vindas de uma integração**
 (`configurationId: icfg_l6F3AhnOcvXqyj1eMSD7Jpxb`), criadas junto com o projeto:
 `POSTGRES_URL`, `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING`, `POSTGRES_USER`, `POSTGRES_HOST`,
-`POSTGRES_PASSWORD`, `POSTGRES_DATABASE`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+`POSTGRES_PASSWORD`, `POSTGRES_DATABASE`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_PUBLISHABLE_KEY`,
 `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`, `SUPABASE_SECRET_KEY`, `NEXT_PUBLIC_SUPABASE_URL`,
 `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 

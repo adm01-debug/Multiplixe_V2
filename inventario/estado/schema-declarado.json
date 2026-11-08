@@ -1,0 +1,1610 @@
+{
+  "format_version": 1,
+  "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
+  "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
+  "resumo": {
+    "tabelas": 61,
+    "tabelas_no_types": 61,
+    "tabelas_nas_migrations": 60,
+    "colunas": 509,
+    "views": 1,
+    "funcoes": 42,
+    "funcoes_expostas_no_types": 32,
+    "enums": 1,
+    "policies": 159,
+    "cron_jobs": 2,
+    "buckets": 1,
+    "migrations": 49,
+    "alertas": 4,
+    "problemas": 1
+  },
+  "drift": {
+    "criterio": "types.ts (foto do banco) x replay das migrations (o que o repo pede)",
+    "so_no_types": [
+      "user_roles"
+    ],
+    "so_nas_migrations": [],
+    "referenciadas_sem_create": {
+      "user_roles": "20260417174055_98fdd75f-e029-41b3-84a6-bf5c614eddc2.sql"
+    },
+    "objetos_de_outros_schemas": [
+      "auth.users",
+      "realtime.messages",
+      "storage.objects"
+    ]
+  },
+  "tabelas": {
+    "achievements": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "audit_logs": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 6,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "blocked_ips": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "categories": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "certificates": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251224143442_e5427263-43c5-4e32-9ddf-498b0bab8632.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 1
+      }
+    },
+    "course_discussions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "courses": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 15,
+      "rls": true,
+      "policies": 1,
+      "triggers": [
+        "audit_courses_changes",
+        "trigger_notify_new_course",
+        "update_courses_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
+      "uso_no_codigo": {
+        "src": 23,
+        "edges": 2
+      }
+    },
+    "daily_challenges": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 9,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "discussion_replies": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
+    "discussion_votes": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 4,
+      "triggers": [
+        "trigger_update_discussion_votes"
+      ],
+      "indices": 0,
+      "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "geo_blocking_config": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251231130957_f3d88ff3-605f-4749-b02d-cf9a79264d75.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "geo_countries": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20251231130728_87894a28-9432-47fd-bdc8-c5599bc6b7b4.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "known_devices": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251231123416_83e20b52-2b88-4fb9-9084-9f76b5768723.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 4
+      }
+    },
+    "learning_path_certificates": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251227184138_4ad9a23a-7ad3-416f-b230-12bd21a2f1f0.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "learning_path_courses": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20251227184138_4ad9a23a-7ad3-416f-b230-12bd21a2f1f0.sql",
+      "uso_no_codigo": {
+        "src": 10,
+        "edges": 0
+      }
+    },
+    "learning_paths": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 12,
+      "rls": true,
+      "policies": 5,
+      "triggers": [
+        "audit_learning_paths_changes",
+        "update_learning_paths_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20251227184138_4ad9a23a-7ad3-416f-b230-12bd21a2f1f0.sql",
+      "uso_no_codigo": {
+        "src": 14,
+        "edges": 1
+      }
+    },
+    "lessons": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 1,
+      "triggers": [
+        "audit_lessons_changes",
+        "update_lessons_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20251224124233_69bd4579-c04e-42bf-b0b6-a2dbee94cd0b.sql",
+      "uso_no_codigo": {
+        "src": 9,
+        "edges": 0
+      }
+    },
+    "login_attempts": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20251231132503_94852e06-5c0b-4e71-ab79-b3cf669bfc93.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "newsletter_subscriptions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20260108143732_1f2783b3-8b5c-4cec-8f04-969ddcb39f1b.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "notifications": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 6,
+      "criada_em": "20251224141752_4d1be192-3452-4e9b-934d-41aba22063f6.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 2
+      }
+    },
+    "onboarding_workflows": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 9,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "audit_onboarding_workflows",
+        "audit_onboarding_workflows_changes",
+        "update_onboarding_workflows_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
+    "password_reset_requests": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 15,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251231131344_ff80cabe-0c9b-4568-8af0-1be2b0ce283a.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 2
+      }
+    },
+    "password_reset_tokens": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "permissions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "platform_stats_cache": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20260727133033_4b9c6252-9303-4759-b333-9ca33dcd9af9.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "playbook_comments": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 5,
+      "triggers": [
+        "trg_notify_new_playbook_comment",
+        "trg_playbook_comments_updated_at"
+      ],
+      "indices": 2,
+      "criada_em": "20260417002242_5adc87c9-15fb-49ef-8341-091ac8aa2bb8.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "playbook_views": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 4,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 5,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "playbooks": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 12,
+      "rls": true,
+      "policies": 5,
+      "triggers": [
+        "audit_playbooks",
+        "update_playbooks_updated_at"
+      ],
+      "indices": 5,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 7,
+        "edges": 1
+      }
+    },
+    "pomodoro_sessions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251227191432_f0c5c527-6bc0-4b5d-9054-35014fedde57.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "profiles": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 3,
+      "triggers": [
+        "update_profiles_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
+      "uso_no_codigo": {
+        "src": 20,
+        "edges": 3
+      }
+    },
+    "quiz_options": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251224144630_c94e702a-d64b-453f-a07c-82da51467186.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "quiz_performance_alerts": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251224173812_642c8f35-ed7a-49fd-8f92-a37a1e4240e0.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
+    "quiz_questions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251224144630_c94e702a-d64b-453f-a07c-82da51467186.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "quizzes": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "audit_quizzes_changes",
+        "update_quizzes_updated_at"
+      ],
+      "indices": 2,
+      "criada_em": "20251224144630_c94e702a-d64b-453f-a07c-82da51467186.sql",
+      "uso_no_codigo": {
+        "src": 7,
+        "edges": 0
+      }
+    },
+    "rate_limit_config": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "rate_limit_logs": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 3,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "role_permissions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 4,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "saved_filters": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 7,
+      "triggers": [
+        "ensure_single_default",
+        "saved_filters_updated_at",
+        "update_saved_filters_updated_at"
+      ],
+      "indices": 4,
+      "criada_em": "20260102115559_.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "security_alerts": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 12,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 3,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 2
+      }
+    },
+    "skill_assessments": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "audit_skill_assessments",
+        "update_skill_assessments_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
+    "training_video_views": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "update_training_video_views_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "training_videos": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 12,
+      "rls": true,
+      "policies": 5,
+      "triggers": [
+        "audit_training_videos",
+        "update_training_videos_updated_at"
+      ],
+      "indices": 4,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 6,
+        "edges": 1
+      }
+    },
+    "user_achievements": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
+      "uso_no_codigo": {
+        "src": 8,
+        "edges": 1
+      }
+    },
+    "user_assessment_results": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 4,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "user_course_progress": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 3,
+      "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
+      "uso_no_codigo": {
+        "src": 15,
+        "edges": 3
+      }
+    },
+    "user_daily_challenge_progress": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "user_favorites": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 4,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "user_goals": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "user_learning_path_progress": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 3,
+      "triggers": [
+        "update_user_learning_path_progress_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20251227184138_4ad9a23a-7ad3-416f-b230-12bd21a2f1f0.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
+    "user_lesson_progress": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 3,
+      "triggers": [
+        "update_user_lesson_progress_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20251224124233_69bd4579-c04e-42bf-b0b6-a2dbee94cd0b.sql",
+      "uso_no_codigo": {
+        "src": 14,
+        "edges": 1
+      }
+    },
+    "user_mfa_settings": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 7,
+      "triggers": [
+        "update_user_mfa_settings_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 1
+      }
+    },
+    "user_notes": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
+    "user_onboarding_progress": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 8,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "trg_notify_onboarding_completion",
+        "update_user_onboarding_progress_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "user_quiz_attempts": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20251224144630_c94e702a-d64b-453f-a07c-82da51467186.sql",
+      "uso_no_codigo": {
+        "src": 7,
+        "edges": 1
+      }
+    },
+    "user_roles": {
+      "no_types": true,
+      "nas_migrations": false,
+      "colunas": 4,
+      "rls": null,
+      "policies": null,
+      "triggers": [],
+      "indices": null,
+      "criada_em": null,
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 3
+      }
+    },
+    "user_sessions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 3,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "user_streaks": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 9,
+      "rls": true,
+      "policies": 3,
+      "triggers": [
+        "update_user_streaks_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20251224135554_5c37e348-13b9-4073-bc20-f0a7310a22d3.sql",
+      "uso_no_codigo": {
+        "src": 7,
+        "edges": 1
+      }
+    },
+    "user_xp": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 3,
+      "triggers": [
+        "update_user_xp_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20251224133454_73b37239-ecc0-4196-ab6c-04a06286e0cb.sql",
+      "uso_no_codigo": {
+        "src": 10,
+        "edges": 0
+      }
+    },
+    "user_xp_history": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251224142421_1ba36b19-9f29-4c42-885d-6097ba869c5a.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 1
+      }
+    },
+    "webauthn_credentials": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 4,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20251231124542_9f8578bf-c5b3-454c-9ccf-04203d628cb0.sql",
+      "uso_no_codigo": {
+        "src": 4,
+        "edges": 0
+      }
+    },
+    "whitelisted_ips": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 0,
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 6,
+        "edges": 0
+      }
+    }
+  },
+  "views": {
+    "quiz_options_public": {
+      "colunas": 4,
+      "security_invoker": true,
+      "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql"
+    }
+  },
+  "funcoes": {
+    "add_user_xp": {
+      "exposta_no_types": true,
+      "args": [
+        "p_amount",
+        "p_source",
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224142421_1ba36b19-9f29-4c42-885d-6097ba869c5a.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "audit_admin_changes": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417174055_98fdd75f-e029-41b3-84a6-bf5c614eddc2.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "audit_sales_enablement_changes": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417001322_acd29c09-2a1b-40ff-8f7c-f3296f175093.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "check_and_award_achievements": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "check_due_assessment_notifications": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417000433_54e30457-9157-4d86-b2bb-42c0a1f41dea.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "check_login_allowed": {
+      "exposta_no_types": true,
+      "args": [
+        "p_email"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231132503_94852e06-5c0b-4e71-ab79-b3cf669bfc93.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "check_rate_limit": {
+      "exposta_no_types": true,
+      "args": [
+        "p_endpoint",
+        "p_ip_address",
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "check_streak_risk_notifications": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224141752_4d1be192-3452-4e9b-934d-41aba22063f6.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "claim_daily_challenge_reward": {
+      "exposta_no_types": true,
+      "args": [
+        "p_progress_id",
+        "p_user_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "cleanup_old_security_logs": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 1
+      }
+    },
+    "complete_pomodoro_session": {
+      "exposta_no_types": true,
+      "args": [
+        "p_duration_minutes",
+        "p_session_type",
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251227191432_f0c5c527-6bc0-4b5d-9054-35014fedde57.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "create_audit_log": {
+      "exposta_no_types": true,
+      "args": [
+        "p_action",
+        "p_ip_address",
+        "p_metadata",
+        "p_new_values",
+        "p_old_values",
+        "p_resource_id",
+        "p_resource_type",
+        "p_user_id"
+      ],
+      "retorno": "string",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "create_notification": {
+      "exposta_no_types": true,
+      "args": [
+        "p_action_url",
+        "p_message",
+        "p_title",
+        "p_type",
+        "p_user_id"
+      ],
+      "retorno": "string",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224141752_4d1be192-3452-4e9b-934d-41aba22063f6.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 1
+      }
+    },
+    "ensure_single_default_filter": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20260102115559_.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "get_department_leaderboard": {
+      "exposta_no_types": true,
+      "args": [
+        "p_limit"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_due_assessments": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260416234914_a0526086-372f-4588-951c-80e863b87267.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_leaderboard": {
+      "exposta_no_types": true,
+      "args": [
+        "p_limit",
+        "p_period"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224141530_ba1a8f0a-00bb-480b-a50b-6a38cb5a7c3c.sql",
+      "uso_no_codigo": {
+        "src": 3,
+        "edges": 0
+      }
+    },
+    "get_platform_stats": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "{",
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20260727133050_05bea0c9-c4d0-4906-a115-a25635cc582e.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_recommended_courses": {
+      "exposta_no_types": true,
+      "args": [
+        "p_limit",
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_smart_recommendations": {
+      "exposta_no_types": true,
+      "args": [
+        "p_limit",
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417002242_5adc87c9-15fb-49ef-8341-091ac8aa2bb8.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_user_permissions": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "get_user_rank": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224141039_6394fe68-dd69-4a2b-9103-03639a9276e7.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_xp_history": {
+      "exposta_no_types": true,
+      "args": [
+        "p_days",
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224142421_1ba36b19-9f29-4c42-885d-6097ba869c5a.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "handle_new_user": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "has_permission": {
+      "exposta_no_types": true,
+      "args": [
+        "p_permission_name",
+        "p_user_id"
+      ],
+      "retorno": "boolean",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "has_role": {
+      "exposta_no_types": true,
+      "args": [
+        "_role",
+        "_user_id"
+      ],
+      "retorno": "boolean",
+      "security_definer": null,
+      "search_path": null,
+      "criada_em": null,
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 1
+      }
+    },
+    "issue_certificate": {
+      "exposta_no_types": true,
+      "args": [
+        "p_course_id",
+        "p_course_title",
+        "p_user_id",
+        "p_user_name"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224143442_e5427263-43c5-4e32-9ddf-498b0bab8632.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 1
+      }
+    },
+    "issue_learning_path_certificate": {
+      "exposta_no_types": true,
+      "args": [
+        "p_learning_path_id",
+        "p_path_title",
+        "p_user_id",
+        "p_user_name"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251227184138_4ad9a23a-7ad3-416f-b230-12bd21a2f1f0.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "notify_new_course": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224142303_1a0d4778-7182-4e8f-bb15-91c134b35837.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "notify_new_playbook_comment": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417110503_2420a193-bf52-428e-add6-f1959c2f2788.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "notify_onboarding_completion": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417000433_54e30457-9157-4d86-b2bb-42c0a1f41dea.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "record_failed_login": {
+      "exposta_no_types": true,
+      "args": [
+        "p_email",
+        "p_ip_address"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231132503_94852e06-5c0b-4e71-ab79-b3cf669bfc93.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "refresh_platform_stats": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260727133033_4b9c6252-9303-4759-b333-9ca33dcd9af9.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "register_playbook_view": {
+      "exposta_no_types": true,
+      "args": [
+        "p_playbook_id"
+      ],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417001322_acd29c09-2a1b-40ff-8f7c-f3296f175093.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "reset_login_attempts": {
+      "exposta_no_types": true,
+      "args": [
+        "p_email"
+      ],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251231132503_94852e06-5c0b-4e71-ab79-b3cf669bfc93.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "submit_quiz_attempt": {
+      "exposta_no_types": true,
+      "args": [
+        "p_answers",
+        "p_quiz_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 0
+      }
+    },
+    "update_discussion_votes": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "update_saved_filters_timestamp": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20260102115559_.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "update_updated_at_column": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "update_user_streak": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20251224135554_5c37e348-13b9-4073-bc20-f0a7310a22d3.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "verify_certificate_by_code": {
+      "exposta_no_types": true,
+      "args": [
+        "p_code"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "verify_path_certificate_by_code": {
+      "exposta_no_types": true,
+      "args": [
+        "p_code"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    }
+  },
+  "enums": {
+    "app_role": [
+      "admin",
+      "user",
+      "gestor"
+    ]
+  },
+  "cron": {
+    "refresh-platform-stats": {
+      "agenda": "0 * * * *",
+      "chama_edge": null,
+      "definido_em": "20260727133033_4b9c6252-9303-4759-b333-9ca33dcd9af9.sql"
+    },
+    "weekly-admin-digest": {
+      "agenda": "0 9 * * 1",
+      "chama_edge": "weekly-admin-digest",
+      "definido_em": "20260418134642_ab948a1e-eb00-40a8-aadc-54aede6157df.sql"
+    }
+  },
+  "buckets": {
+    "avatars": {
+      "publico": true,
+      "definido_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql"
+    }
+  },
+  "alertas": [
+    {
+      "tipo": "tabela_so_no_types",
+      "detalhe": [
+        "user_roles"
+      ]
+    },
+    {
+      "tipo": "tabela_sem_uso_no_codigo",
+      "detalhe": [
+        "password_reset_tokens",
+        "platform_stats_cache",
+        "playbook_views",
+        "saved_filters"
+      ]
+    },
+    {
+      "tipo": "funcao_sem_uso_no_codigo",
+      "detalhe": [
+        "check_due_assessment_notifications",
+        "check_rate_limit",
+        "check_streak_risk_notifications",
+        "get_user_permissions",
+        "has_permission",
+        "refresh_platform_stats",
+        "verify_path_certificate_by_code"
+      ]
+    },
+    {
+      "tipo": "bucket_publico",
+      "detalhe": [
+        "avatars"
+      ]
+    }
+  ],
+  "problemas": [
+    {
+      "tipo": "tabela_referenciada_sem_create",
+      "id": "user_roles",
+      "detalhe": "policy/trigger/indice em 20260417174055_98fdd75f-e029-41b3-84a6-bf5c614eddc2.sql mexe numa tabela que nenhuma migration do repo cria: o CREATE foi aplicado fora das migrations"
+    }
+  ]
+}

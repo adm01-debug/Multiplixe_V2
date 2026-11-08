@@ -1,0 +1,64 @@
+# docs:
+#   gatilho: push na main e pull request
+#   prova: nenhum .from()/.rpc() para objeto inexistente, instrucoes de agente inteiras,
+#          geradores passando nos proprios testes
+#   falha: o check fica vermelho e diz qual comando rodar para corrigir
+#   avisa: so o status do check (nao abre issue nem PR)
+name: Guardas do repositório
+
+# So Node e git: nenhum dos guards usa dependencia npm, por isso nao ha install (o repo tem
+# package-lock.json e bun.lock ao mesmo tempo e trocar de gerenciador aqui seria ruido).
+# Lint, typecheck e build NAO entram aqui de proposito: quem publica e o Lovable/Vercel, e um
+# check pesado em cada commit do bot do Lovable custaria minuto de Actions sem mudar decisao.
+#
+# FRESCOR do inventario tambem NAO e cobrado aqui, de proposito: o Lovable commita direto na main a
+# cada edicao de tela, e `rotas.json`/`inventario/ia` mudam junto com qualquer import — cobrar isso
+# em cada commit deixaria a main vermelha quase sempre. Quem mantem o inventario em dia e o
+# inventario-estado-semanal.yml, que regera e abre PR. Para cobrar a mao antes de uma PR:
+#   INVENTARIO_CHECK=1 npm run guards   (ou npm run inventario:check)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: guardas-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  guardas:
+    name: Inventário, uso do Supabase e instruções de agente
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # o guard das instrucoes compara bytes contra a base
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+
+      # Primeiro os testes dos proprios geradores: se o parser quebrou, o resto da mensagem errada.
+      - name: Testes dos geradores e guards
+        run: node --test scripts/ci/*.unit.mjs
+
+      - name: Uso do Supabase (.from/.rpc só para objeto que existe)
+        run: node scripts/ci/supabase-usage-guard.mjs
+
+      - name: Instruções para agentes continuam inteiras
+        env:
+          CLAUDE_MD_BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD~1' }}
+        run: node scripts/ci/check-claude-md-integrity.mjs

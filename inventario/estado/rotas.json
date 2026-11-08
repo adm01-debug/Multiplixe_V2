@@ -1,0 +1,3044 @@
+{
+  "format_version": 1,
+  "fonte": "scripts/inventario/gerar-rotas.mjs (le src/App.tsx, CommandPalette, MobileBottomNav, useGlobalShortcuts, routePrefetch e os imports de cada pagina)",
+  "resumo": {
+    "rotas": 24,
+    "protegidas": 18,
+    "so_admin": 2,
+    "entradas_na_ui": 111,
+    "hooks_distintos": 64,
+    "problemas": 1
+  },
+  "rotas": [
+    {
+      "caminho": "*",
+      "rotulo_tecnico": null,
+      "componente": "NotFound",
+      "arquivo": "src/pages/NotFound.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 1,
+      "hooks": [],
+      "buckets": [],
+      "edges": [],
+      "rpcs": [],
+      "tabelas": [],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/",
+      "rotulo_tecnico": "Home",
+      "componente": "Index",
+      "arquivo": "src/pages/Index.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 67,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCategories",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useCourses",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useDebouncedValue",
+          "arquivo": "src/hooks/useDebouncedValue.ts"
+        },
+        {
+          "nome": "useFavorites",
+          "arquivo": "src/hooks/useFavorites.ts"
+        },
+        {
+          "nome": "useFuzzySearchWithMatches",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useLeaderboard",
+          "arquivo": "src/hooks/useLeaderboard.ts"
+        },
+        {
+          "nome": "useLearningPaths",
+          "arquivo": "src/hooks/useLearningPaths.ts"
+        },
+        {
+          "nome": "useLearningPathsList",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useLevelUp",
+          "arquivo": "src/hooks/useLevelUp.ts"
+        },
+        {
+          "nome": "useMFA",
+          "arquivo": "src/hooks/useMFA.ts"
+        },
+        {
+          "nome": "useOnboardingTutorial",
+          "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePomodoro",
+          "arquivo": "src/hooks/usePomodoro.ts"
+        },
+        {
+          "nome": "usePushNotifications",
+          "arquivo": "src/hooks/usePushNotifications.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useRateLimitLogs",
+          "arquivo": "src/hooks/useRateLimitLogs.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useStreaks",
+          "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        },
+        {
+          "nome": "useUserLearningPathProgressCached",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useUserPreferences",
+          "arquivo": "src/hooks/useUserPreferences.ts"
+        },
+        {
+          "nome": "useUserSessions",
+          "arquivo": "src/hooks/useUserSessions.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "export-user-data",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "check_login_allowed",
+        "complete_pomodoro_session",
+        "create_audit_log",
+        "get_leaderboard",
+        "get_platform_stats",
+        "get_user_rank",
+        "has_role",
+        "issue_learning_path_certificate",
+        "record_failed_login",
+        "reset_login_attempts",
+        "submit_quiz_attempt",
+        "update_user_streak",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "audit_logs",
+        "blocked_ips",
+        "categories",
+        "certificates",
+        "courses",
+        "learning_path_certificates",
+        "learning_path_courses",
+        "learning_paths",
+        "lessons",
+        "newsletter_subscriptions",
+        "notifications",
+        "password_reset_requests",
+        "pomodoro_sessions",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "rate_limit_config",
+        "rate_limit_logs",
+        "security_alerts",
+        "user_achievements",
+        "user_course_progress",
+        "user_favorites",
+        "user_learning_path_progress",
+        "user_lesson_progress",
+        "user_mfa_settings",
+        "user_quiz_attempts",
+        "user_sessions",
+        "user_streaks",
+        "user_xp",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/admin",
+      "rotulo_tecnico": "Admin",
+      "componente": "Admin",
+      "arquivo": "src/pages/Admin.tsx",
+      "protegida": true,
+      "so_admin": true,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 41,
+      "hooks": [
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useDeleteAssessment",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useDeletePlaybook",
+          "arquivo": "src/hooks/usePlaybooks.ts"
+        },
+        {
+          "nome": "useDeleteTrainingVideo",
+          "arquivo": "src/hooks/useTrainingVideos.ts"
+        },
+        {
+          "nome": "useDeleteWorkflow",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        },
+        {
+          "nome": "useFuzzySearch",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useOnboardingWorkflows",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        },
+        {
+          "nome": "usePlaybooks",
+          "arquivo": "src/hooks/usePlaybooks.ts"
+        },
+        {
+          "nome": "useQuizStatsData",
+          "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts"
+        },
+        {
+          "nome": "useSaveAssessment",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useSavePlaybook",
+          "arquivo": "src/hooks/usePlaybooks.ts"
+        },
+        {
+          "nome": "useSaveTrainingVideo",
+          "arquivo": "src/hooks/useTrainingVideos.ts"
+        },
+        {
+          "nome": "useSaveWorkflow",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        },
+        {
+          "nome": "useSkillAssessments",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useTrainingVideos",
+          "arquivo": "src/hooks/useTrainingVideos.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "weekly-admin-digest"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "get_due_assessments",
+        "has_role",
+        "register_playbook_view"
+      ],
+      "tabelas": [
+        "audit_logs",
+        "categories",
+        "certificates",
+        "courses",
+        "learning_path_courses",
+        "learning_paths",
+        "lessons",
+        "newsletter_subscriptions",
+        "onboarding_workflows",
+        "permissions",
+        "playbooks",
+        "profiles",
+        "quiz_performance_alerts",
+        "quizzes",
+        "role_permissions",
+        "security_alerts",
+        "skill_assessments",
+        "training_video_views",
+        "training_videos",
+        "user_assessment_results",
+        "user_course_progress",
+        "user_lesson_progress",
+        "user_onboarding_progress",
+        "user_quiz_attempts",
+        "user_xp",
+        "user_xp_history"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/admin/security",
+      "rotulo_tecnico": "Segurança Admin",
+      "componente": "RateLimitDashboard",
+      "arquivo": "src/pages/RateLimitDashboard.tsx",
+      "protegida": true,
+      "so_admin": true,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "prefetch"
+      ],
+      "arquivos_lidos": 14,
+      "hooks": [
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useRateLimitLogs",
+          "arquivo": "src/hooks/useRateLimitLogs.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "has_role"
+      ],
+      "tabelas": [
+        "blocked_ips",
+        "rate_limit_config",
+        "rate_limit_logs",
+        "security_alerts",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/auth",
+      "rotulo_tecnico": "Login",
+      "componente": "Auth",
+      "arquivo": "src/pages/Auth.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 7,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "check_login_allowed",
+        "create_audit_log",
+        "record_failed_login",
+        "reset_login_attempts"
+      ],
+      "tabelas": [],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/avaliacao/:id",
+      "rotulo_tecnico": "Avaliação",
+      "componente": "AssessmentRunner",
+      "arquivo": "src/pages/AssessmentRunner.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": true,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 4,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useSubmitAssessment",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "get_due_assessments",
+        "submit_quiz_attempt"
+      ],
+      "tabelas": [
+        "quiz_options_public",
+        "quiz_questions",
+        "skill_assessments",
+        "user_assessment_results"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/avaliacoes",
+      "rotulo_tecnico": "Avaliações",
+      "componente": "SkillAssessments",
+      "arquivo": "src/pages/SkillAssessments.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 6,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useDueAssessments",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useUserAssessmentResults",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "get_due_assessments"
+      ],
+      "tabelas": [
+        "skill_assessments",
+        "user_assessment_results"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/biblioteca-videos",
+      "rotulo_tecnico": "Biblioteca de Vídeos",
+      "componente": "VideoLibrary",
+      "arquivo": "src/pages/VideoLibrary.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette"
+      ],
+      "arquivos_lidos": 8,
+      "hooks": [
+        {
+          "nome": "useFuzzySearch",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useTrainingVideos",
+          "arquivo": "src/hooks/useTrainingVideos.ts"
+        },
+        {
+          "nome": "useUpdateVideoProgress",
+          "arquivo": "src/hooks/useTrainingVideos.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [],
+      "rpcs": [],
+      "tabelas": [
+        "training_video_views",
+        "training_videos"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/catalogo",
+      "rotulo_tecnico": "Catálogo",
+      "componente": "Catalog",
+      "arquivo": "src/pages/Catalog.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "menu-mobile",
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 58,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCategories",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useCourses",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useDebouncedValue",
+          "arquivo": "src/hooks/useDebouncedValue.ts"
+        },
+        {
+          "nome": "useFavorites",
+          "arquivo": "src/hooks/useFavorites.ts"
+        },
+        {
+          "nome": "useFuzzySearchWithMatches",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useLeaderboard",
+          "arquivo": "src/hooks/useLeaderboard.ts"
+        },
+        {
+          "nome": "useLearningPaths",
+          "arquivo": "src/hooks/useLearningPaths.ts"
+        },
+        {
+          "nome": "useLearningPathsList",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useLevelUp",
+          "arquivo": "src/hooks/useLevelUp.ts"
+        },
+        {
+          "nome": "useMFA",
+          "arquivo": "src/hooks/useMFA.ts"
+        },
+        {
+          "nome": "useOnboardingTutorial",
+          "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePomodoro",
+          "arquivo": "src/hooks/usePomodoro.ts"
+        },
+        {
+          "nome": "usePrefetchQuery",
+          "arquivo": "src/components/PrefetchLink.tsx"
+        },
+        {
+          "nome": "usePushNotifications",
+          "arquivo": "src/hooks/usePushNotifications.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useRateLimitLogs",
+          "arquivo": "src/hooks/useRateLimitLogs.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useStreaks",
+          "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        },
+        {
+          "nome": "useUserLearningPathProgressCached",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useUserPreferences",
+          "arquivo": "src/hooks/useUserPreferences.ts"
+        },
+        {
+          "nome": "useUserSessions",
+          "arquivo": "src/hooks/useUserSessions.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "export-user-data",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "check_login_allowed",
+        "complete_pomodoro_session",
+        "create_audit_log",
+        "get_leaderboard",
+        "get_user_rank",
+        "has_role",
+        "issue_learning_path_certificate",
+        "record_failed_login",
+        "reset_login_attempts",
+        "submit_quiz_attempt",
+        "update_user_streak",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "audit_logs",
+        "blocked_ips",
+        "categories",
+        "certificates",
+        "courses",
+        "learning_path_certificates",
+        "learning_path_courses",
+        "learning_paths",
+        "lessons",
+        "notifications",
+        "password_reset_requests",
+        "pomodoro_sessions",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "rate_limit_config",
+        "rate_limit_logs",
+        "security_alerts",
+        "user_achievements",
+        "user_course_progress",
+        "user_favorites",
+        "user_learning_path_progress",
+        "user_lesson_progress",
+        "user_mfa_settings",
+        "user_quiz_attempts",
+        "user_sessions",
+        "user_streaks",
+        "user_xp",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/curso/:slug",
+      "rotulo_tecnico": "Curso",
+      "componente": "CourseDetail",
+      "arquivo": "src/pages/CourseDetail.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": true,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 13,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useDiscussions",
+          "arquivo": "src/hooks/useDiscussions.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "create_audit_log",
+        "submit_quiz_attempt"
+      ],
+      "tabelas": [
+        "course_discussions",
+        "courses",
+        "discussion_replies",
+        "discussion_votes",
+        "lessons",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "user_course_progress",
+        "user_lesson_progress",
+        "user_quiz_attempts",
+        "user_xp"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/curso/:slug/aula/:lessonId",
+      "rotulo_tecnico": "Aula",
+      "componente": "LessonPlayer",
+      "arquivo": "src/pages/LessonPlayer.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": true,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 29,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useNotes",
+          "arquivo": "src/hooks/useNotes.ts"
+        },
+        {
+          "nome": "usePomodoro",
+          "arquivo": "src/hooks/usePomodoro.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useStreaks",
+          "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useUserPreferences",
+          "arquivo": "src/hooks/useUserPreferences.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "complete_pomodoro_session",
+        "create_audit_log",
+        "submit_quiz_attempt",
+        "update_user_streak",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "certificates",
+        "courses",
+        "lessons",
+        "pomodoro_sessions",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "user_achievements",
+        "user_course_progress",
+        "user_lesson_progress",
+        "user_notes",
+        "user_quiz_attempts",
+        "user_streaks",
+        "user_xp"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/dashboard",
+      "rotulo_tecnico": "Dashboard",
+      "componente": "Dashboard",
+      "arquivo": "src/pages/Dashboard.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "menu-mobile",
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 82,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCategories",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useCourses",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useDailyChallenges",
+          "arquivo": "src/hooks/useDailyChallenges.ts"
+        },
+        {
+          "nome": "useDebouncedValue",
+          "arquivo": "src/hooks/useDebouncedValue.ts"
+        },
+        {
+          "nome": "useDefaultWorkflowProgress",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        },
+        {
+          "nome": "useDueAssessments",
+          "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useFavorites",
+          "arquivo": "src/hooks/useFavorites.ts"
+        },
+        {
+          "nome": "useFuzzySearchWithMatches",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useGoals",
+          "arquivo": "src/hooks/useGoals.ts"
+        },
+        {
+          "nome": "useLeaderboard",
+          "arquivo": "src/hooks/useLeaderboard.ts"
+        },
+        {
+          "nome": "useLearningPaths",
+          "arquivo": "src/hooks/useLearningPaths.ts"
+        },
+        {
+          "nome": "useLearningPathsList",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useLevelUp",
+          "arquivo": "src/hooks/useLevelUp.ts"
+        },
+        {
+          "nome": "useMFA",
+          "arquivo": "src/hooks/useMFA.ts"
+        },
+        {
+          "nome": "useNotifications",
+          "arquivo": "src/hooks/useNotifications.ts"
+        },
+        {
+          "nome": "useOnboardingTutorial",
+          "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePomodoro",
+          "arquivo": "src/hooks/usePomodoro.ts"
+        },
+        {
+          "nome": "usePrefetchQuery",
+          "arquivo": "src/components/PrefetchLink.tsx"
+        },
+        {
+          "nome": "usePushNotifications",
+          "arquivo": "src/hooks/usePushNotifications.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useRateLimitLogs",
+          "arquivo": "src/hooks/useRateLimitLogs.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useSmartRecommendations",
+          "arquivo": "src/hooks/useSmartRecommendations.ts"
+        },
+        {
+          "nome": "useStreaks",
+          "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        },
+        {
+          "nome": "useUserLearningPathProgressCached",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useUserPreferences",
+          "arquivo": "src/hooks/useUserPreferences.ts"
+        },
+        {
+          "nome": "useUserSessions",
+          "arquivo": "src/hooks/useUserSessions.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "export-user-data",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "check_login_allowed",
+        "claim_daily_challenge_reward",
+        "complete_pomodoro_session",
+        "create_audit_log",
+        "get_due_assessments",
+        "get_leaderboard",
+        "get_smart_recommendations",
+        "get_user_rank",
+        "has_role",
+        "issue_learning_path_certificate",
+        "record_failed_login",
+        "reset_login_attempts",
+        "submit_quiz_attempt",
+        "update_user_streak",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "audit_logs",
+        "blocked_ips",
+        "categories",
+        "certificates",
+        "courses",
+        "daily_challenges",
+        "learning_path_certificates",
+        "learning_path_courses",
+        "learning_paths",
+        "lessons",
+        "notifications",
+        "onboarding_workflows",
+        "password_reset_requests",
+        "pomodoro_sessions",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "rate_limit_config",
+        "rate_limit_logs",
+        "security_alerts",
+        "skill_assessments",
+        "user_achievements",
+        "user_assessment_results",
+        "user_course_progress",
+        "user_daily_challenge_progress",
+        "user_favorites",
+        "user_goals",
+        "user_learning_path_progress",
+        "user_lesson_progress",
+        "user_mfa_settings",
+        "user_onboarding_progress",
+        "user_quiz_attempts",
+        "user_sessions",
+        "user_streaks",
+        "user_xp",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/forgot-password",
+      "rotulo_tecnico": "Esqueci a senha",
+      "componente": "ForgotPassword",
+      "arquivo": "src/pages/ForgotPassword.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 3,
+      "hooks": [
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [],
+      "rpcs": [],
+      "tabelas": [
+        "password_reset_requests",
+        "profiles"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/onboarding",
+      "rotulo_tecnico": "Onboarding",
+      "componente": "SalesOnboarding",
+      "arquivo": "src/pages/SalesOnboarding.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "menu-mobile",
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 6,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useDefaultWorkflowProgress",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        },
+        {
+          "nome": "useUpdateOnboardingProgress",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log"
+      ],
+      "tabelas": [
+        "onboarding_workflows",
+        "user_onboarding_progress"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/onboarding/executar",
+      "rotulo_tecnico": "Onboarding Runtime",
+      "componente": "OnboardingRuntime",
+      "arquivo": "src/pages/OnboardingRuntime.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 6,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useDefaultWorkflowProgress",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        },
+        {
+          "nome": "useUpdateOnboardingProgress",
+          "arquivo": "src/hooks/useOnboardingWorkflow.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log"
+      ],
+      "tabelas": [
+        "onboarding_workflows",
+        "user_onboarding_progress"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/perfil",
+      "rotulo_tecnico": "Perfil",
+      "componente": "Profile",
+      "arquivo": "src/pages/Profile.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "command-palette",
+        "menu-mobile",
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 21,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useDepartmentLeaderboard",
+          "arquivo": "src/hooks/useDepartmentLeaderboard.ts"
+        },
+        {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useXPHistory",
+          "arquivo": "src/hooks/useXPHistory.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "export-user-data",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "create_audit_log",
+        "get_department_leaderboard",
+        "get_xp_history",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "certificates",
+        "profiles",
+        "user_achievements",
+        "user_course_progress",
+        "user_lesson_progress",
+        "user_xp"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/playbook/:slug",
+      "rotulo_tecnico": "Playbook",
+      "componente": "PlaybookDetail",
+      "arquivo": "src/pages/PlaybookDetail.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": true,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 9,
+      "hooks": [
+        {
+          "nome": "useAddPlaybookComment",
+          "arquivo": "src/hooks/usePlaybookComments.ts"
+        },
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useDeletePlaybookComment",
+          "arquivo": "src/hooks/usePlaybookComments.ts"
+        },
+        {
+          "nome": "usePlaybook",
+          "arquivo": "src/hooks/usePlaybooks.ts"
+        },
+        {
+          "nome": "usePlaybookComments",
+          "arquivo": "src/hooks/usePlaybookComments.ts"
+        },
+        {
+          "nome": "useRegisterPlaybookView",
+          "arquivo": "src/hooks/usePlaybooks.ts"
+        },
+        {
+          "nome": "useUpdatePlaybookComment",
+          "arquivo": "src/hooks/usePlaybookComments.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "ai-playbook-summarize",
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "has_role",
+        "register_playbook_view"
+      ],
+      "tabelas": [
+        "playbook_comments",
+        "playbooks",
+        "profiles"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/playbooks",
+      "rotulo_tecnico": "Playbooks",
+      "componente": "Playbooks",
+      "arquivo": "src/pages/Playbooks.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 8,
+      "hooks": [
+        {
+          "nome": "useFuzzySearch",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "usePlaybooks",
+          "arquivo": "src/hooks/usePlaybooks.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [],
+      "rpcs": [
+        "register_playbook_view"
+      ],
+      "tabelas": [
+        "playbooks"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/ranking",
+      "rotulo_tecnico": "Ranking",
+      "componente": "Leaderboard",
+      "arquivo": "src/pages/Leaderboard.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "menu-mobile",
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 11,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useDepartmentLeaderboard",
+          "arquivo": "src/hooks/useDepartmentLeaderboard.ts"
+        },
+        {
+          "nome": "useLeaderboard",
+          "arquivo": "src/hooks/useLeaderboard.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "get_department_leaderboard",
+        "get_leaderboard",
+        "get_user_rank"
+      ],
+      "tabelas": [],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/reset-password",
+      "rotulo_tecnico": "Redefinir senha",
+      "componente": "ResetPassword",
+      "arquivo": "src/pages/ResetPassword.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "prefetch"
+      ],
+      "arquivos_lidos": 3,
+      "hooks": [
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [],
+      "rpcs": [],
+      "tabelas": [],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/seguranca",
+      "rotulo_tecnico": "Segurança",
+      "componente": "SecurityDashboard",
+      "arquivo": "src/pages/SecurityDashboard.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "command-palette",
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 23,
+      "hooks": [
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useFuzzySearch",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useMFA",
+          "arquivo": "src/hooks/useMFA.ts"
+        },
+        {
+          "nome": "usePasskeys",
+          "arquivo": "src/hooks/usePasskeys.ts"
+        },
+        {
+          "nome": "usePushNotifications",
+          "arquivo": "src/hooks/usePushNotifications.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        },
+        {
+          "nome": "useUserSessions",
+          "arquivo": "src/hooks/useUserSessions.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "approve-password-reset",
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "has_role",
+        "reset_login_attempts"
+      ],
+      "tabelas": [
+        "geo_blocking_config",
+        "geo_countries",
+        "login_attempts",
+        "password_reset_requests",
+        "security_alerts",
+        "user_mfa_settings",
+        "user_sessions",
+        "webauthn_credentials",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/trilha/:slug",
+      "rotulo_tecnico": "Trilha",
+      "componente": "LearningPathDetail",
+      "arquivo": "src/pages/LearningPathDetail.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": true,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 50,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCategories",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useCourses",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useDebouncedValue",
+          "arquivo": "src/hooks/useDebouncedValue.ts"
+        },
+        {
+          "nome": "useFavorites",
+          "arquivo": "src/hooks/useFavorites.ts"
+        },
+        {
+          "nome": "useFuzzySearchWithMatches",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useLeaderboard",
+          "arquivo": "src/hooks/useLeaderboard.ts"
+        },
+        {
+          "nome": "useLearningPaths",
+          "arquivo": "src/hooks/useLearningPaths.ts"
+        },
+        {
+          "nome": "useLearningPathsList",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useLevelUp",
+          "arquivo": "src/hooks/useLevelUp.ts"
+        },
+        {
+          "nome": "useMFA",
+          "arquivo": "src/hooks/useMFA.ts"
+        },
+        {
+          "nome": "useOnboardingTutorial",
+          "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePomodoro",
+          "arquivo": "src/hooks/usePomodoro.ts"
+        },
+        {
+          "nome": "usePrefetchQuery",
+          "arquivo": "src/components/PrefetchLink.tsx"
+        },
+        {
+          "nome": "usePushNotifications",
+          "arquivo": "src/hooks/usePushNotifications.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useRateLimitLogs",
+          "arquivo": "src/hooks/useRateLimitLogs.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useStreaks",
+          "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        },
+        {
+          "nome": "useUserLearningPathProgressCached",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useUserPreferences",
+          "arquivo": "src/hooks/useUserPreferences.ts"
+        },
+        {
+          "nome": "useUserSessions",
+          "arquivo": "src/hooks/useUserSessions.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "export-user-data",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "check_login_allowed",
+        "complete_pomodoro_session",
+        "create_audit_log",
+        "get_leaderboard",
+        "get_user_rank",
+        "has_role",
+        "issue_learning_path_certificate",
+        "record_failed_login",
+        "reset_login_attempts",
+        "submit_quiz_attempt",
+        "update_user_streak",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "audit_logs",
+        "blocked_ips",
+        "categories",
+        "certificates",
+        "courses",
+        "learning_path_certificates",
+        "learning_path_courses",
+        "learning_paths",
+        "lessons",
+        "notifications",
+        "password_reset_requests",
+        "pomodoro_sessions",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "rate_limit_config",
+        "rate_limit_logs",
+        "security_alerts",
+        "user_achievements",
+        "user_course_progress",
+        "user_favorites",
+        "user_learning_path_progress",
+        "user_lesson_progress",
+        "user_mfa_settings",
+        "user_quiz_attempts",
+        "user_sessions",
+        "user_streaks",
+        "user_xp",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/trilhas",
+      "rotulo_tecnico": "Trilhas",
+      "componente": "LearningPaths",
+      "arquivo": "src/pages/LearningPaths.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "atalho-teclado",
+        "command-palette",
+        "navegacao-no-codigo",
+        "prefetch"
+      ],
+      "arquivos_lidos": 53,
+      "hooks": [
+        {
+          "nome": "useAchievements",
+          "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCategories",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        },
+        {
+          "nome": "useConfetti",
+          "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useCourses",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useDebouncedValue",
+          "arquivo": "src/hooks/useDebouncedValue.ts"
+        },
+        {
+          "nome": "useFavorites",
+          "arquivo": "src/hooks/useFavorites.ts"
+        },
+        {
+          "nome": "useFuzzySearchWithMatches",
+          "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useLeaderboard",
+          "arquivo": "src/hooks/useLeaderboard.ts"
+        },
+        {
+          "nome": "useLearningPaths",
+          "arquivo": "src/hooks/useLearningPaths.ts"
+        },
+        {
+          "nome": "useLearningPathsList",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useLevelUp",
+          "arquivo": "src/hooks/useLevelUp.ts"
+        },
+        {
+          "nome": "useMFA",
+          "arquivo": "src/hooks/useMFA.ts"
+        },
+        {
+          "nome": "useOnboardingTutorial",
+          "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePomodoro",
+          "arquivo": "src/hooks/usePomodoro.ts"
+        },
+        {
+          "nome": "usePrefetchQuery",
+          "arquivo": "src/components/PrefetchLink.tsx"
+        },
+        {
+          "nome": "usePushNotifications",
+          "arquivo": "src/hooks/usePushNotifications.ts"
+        },
+        {
+          "nome": "useQuizzes",
+          "arquivo": "src/hooks/useQuizzes.ts"
+        },
+        {
+          "nome": "useRateLimitLogs",
+          "arquivo": "src/hooks/useRateLimitLogs.ts"
+        },
+        {
+          "nome": "useSecurityAlerts",
+          "arquivo": "src/hooks/useSecurityAlerts.ts"
+        },
+        {
+          "nome": "useStreaks",
+          "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useToast",
+          "arquivo": "src/hooks/use-toast.ts"
+        },
+        {
+          "nome": "useUserLearningPathProgressCached",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
+          "nome": "useUserPreferences",
+          "arquivo": "src/hooks/useUserPreferences.ts"
+        },
+        {
+          "nome": "useUserSessions",
+          "arquivo": "src/hooks/useUserSessions.ts"
+        },
+        {
+          "nome": "useUserXP",
+          "arquivo": "src/hooks/useUserXP.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device",
+        "export-user-data",
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "add_user_xp",
+        "check_and_award_achievements",
+        "check_login_allowed",
+        "complete_pomodoro_session",
+        "create_audit_log",
+        "get_leaderboard",
+        "get_user_rank",
+        "has_role",
+        "issue_learning_path_certificate",
+        "record_failed_login",
+        "reset_login_attempts",
+        "submit_quiz_attempt",
+        "update_user_streak",
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "achievements",
+        "audit_logs",
+        "blocked_ips",
+        "categories",
+        "certificates",
+        "courses",
+        "learning_path_certificates",
+        "learning_path_courses",
+        "learning_paths",
+        "lessons",
+        "notifications",
+        "password_reset_requests",
+        "pomodoro_sessions",
+        "profiles",
+        "quiz_options_public",
+        "quiz_questions",
+        "quizzes",
+        "rate_limit_config",
+        "rate_limit_logs",
+        "security_alerts",
+        "user_achievements",
+        "user_course_progress",
+        "user_favorites",
+        "user_learning_path_progress",
+        "user_lesson_progress",
+        "user_mfa_settings",
+        "user_quiz_attempts",
+        "user_sessions",
+        "user_streaks",
+        "user_xp",
+        "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/verificar-certificado",
+      "rotulo_tecnico": "Verificar Certificado",
+      "componente": "VerifyCertificate",
+      "arquivo": "src/pages/VerifyCertificate.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "prefetch"
+      ],
+      "arquivos_lidos": 3,
+      "hooks": [
+        {
+          "nome": "useCertificates",
+          "arquivo": "src/hooks/useCertificates.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "generate-certificate"
+      ],
+      "rpcs": [
+        "verify_certificate_by_code"
+      ],
+      "tabelas": [
+        "certificates"
+      ],
+      "imports_quebrados": []
+    }
+  ],
+  "entradas_na_ui": [
+    {
+      "origem": "atalho-teclado",
+      "destino": "/avaliacoes",
+      "rotulo": "a"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/biblioteca-videos",
+      "rotulo": "v"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/catalogo",
+      "rotulo": "c"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/dashboard",
+      "rotulo": "d"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/onboarding",
+      "rotulo": "o"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/playbooks",
+      "rotulo": "p"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/ranking",
+      "rotulo": "r"
+    },
+    {
+      "origem": "atalho-teclado",
+      "destino": "/trilhas",
+      "rotulo": "t"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/avaliacoes",
+      "rotulo": "Avaliações"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/biblioteca-videos",
+      "rotulo": "Biblioteca de Vídeos"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/catalogo",
+      "rotulo": "Catálogo de Cursos"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/dashboard",
+      "rotulo": "Dashboard"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/onboarding",
+      "rotulo": "Onboarding"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/perfil",
+      "rotulo": "Meu Perfil"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/playbooks",
+      "rotulo": "Playbooks"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/ranking",
+      "rotulo": "Ranking"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/seguranca",
+      "rotulo": "Segurança"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/trilhas",
+      "rotulo": "Trilhas"
+    },
+    {
+      "origem": "menu-mobile",
+      "destino": "/catalogo",
+      "rotulo": "t('nav.catalog')"
+    },
+    {
+      "origem": "menu-mobile",
+      "destino": "/dashboard",
+      "rotulo": "t('nav.dashboard')"
+    },
+    {
+      "origem": "menu-mobile",
+      "destino": "/onboarding",
+      "rotulo": "t('nav.onboarding')"
+    },
+    {
+      "origem": "menu-mobile",
+      "destino": "/perfil",
+      "rotulo": "t('nav.profile')"
+    },
+    {
+      "origem": "menu-mobile",
+      "destino": "/ranking",
+      "rotulo": "t('nav.ranking')"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/components/auth/AuthLeftPanel.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/components/landing/Footer.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/components/landing/Header.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/Auth.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/Catalog.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/CourseDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/Dashboard.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/LessonPlayer.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/NotFound.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/VerifyCertificate.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/admin",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/admin",
+      "rotulo": "src/pages/RateLimitDashboard.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/components/ProtectedRoute.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/components/landing/CTASection.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/components/landing/FeaturesSection.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/components/landing/Header.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/components/landing/HeroSection.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/components/landing/MobileStickyCTA.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/Admin.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/Catalog.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/CourseDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/Dashboard.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/ForgotPassword.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/LearningPathDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/LessonPlayer.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/auth",
+      "rotulo": "src/pages/ResetPassword.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/avaliacoes",
+      "rotulo": "src/components/dashboard/DueAssessmentsWidget.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/avaliacoes",
+      "rotulo": "src/pages/AssessmentRunner.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/catalog/CatalogHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/dashboard/DashboardHero.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/landing/CTASection.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/landing/FeaturedCoursesPreview.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/landing/FeaturesSection.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/landing/Header.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/landing/HeroSection.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/recommendations/RecommendationsWidget.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/pages/CourseDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/pages/Dashboard.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/pages/Leaderboard.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/pages/LessonPlayer.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/components/ProtectedRoute.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/components/catalog/CatalogHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/components/player/LessonPlayerHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/Admin.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/Auth.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/CourseDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/LearningPaths.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/OnboardingRuntime.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/Playbooks.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/SalesOnboarding.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/SkillAssessments.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/VideoLibrary.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/forgot-password",
+      "rotulo": "src/pages/Auth.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/forgot-password",
+      "rotulo": "src/pages/ResetPassword.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/onboarding",
+      "rotulo": "src/components/dashboard/OnboardingWidget.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/onboarding",
+      "rotulo": "src/pages/OnboardingRuntime.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/onboarding/executar",
+      "rotulo": "src/pages/SalesOnboarding.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/perfil",
+      "rotulo": "src/components/catalog/CatalogHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/perfil",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/perfil",
+      "rotulo": "src/pages/CourseDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/playbooks",
+      "rotulo": "src/pages/PlaybookDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/ranking",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/ranking",
+      "rotulo": "src/components/social/StudyBuddies.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/seguranca",
+      "rotulo": "src/pages/SecurityDashboard.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/trilhas",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/trilhas",
+      "rotulo": "src/pages/LearningPathDetail.tsx"
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/admin",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/admin/security",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/aula",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/auth",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/catalogo",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/curso",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/dashboard",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/forgot-password",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/perfil",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/ranking",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/reset-password",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/seguranca",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/trilha",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/trilhas",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/verificar-certificado",
+      "rotulo": null
+    }
+  ],
+  "hooks": {
+    "useAchievements": {
+      "arquivo": "src/hooks/useAchievements.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/perfil",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useAddPlaybookComment": {
+      "arquivo": "src/hooks/usePlaybookComments.ts",
+      "rotas": [
+        "/playbook/:slug"
+      ]
+    },
+    "useAdminRole": {
+      "arquivo": "src/hooks/useAdminRole.ts",
+      "rotas": [
+        "/",
+        "/admin",
+        "/admin/security",
+        "/catalogo",
+        "/dashboard",
+        "/playbook/:slug",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useAuth": {
+      "arquivo": "src/hooks/useAuth.tsx",
+      "rotas": [
+        "/",
+        "/admin",
+        "/admin/security",
+        "/auth",
+        "/avaliacao/:id",
+        "/avaliacoes",
+        "/catalogo",
+        "/curso/:slug",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/onboarding",
+        "/onboarding/executar",
+        "/perfil",
+        "/playbook/:slug",
+        "/ranking",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useCategories": {
+      "arquivo": "src/hooks/useCachedQuery.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useCertificates": {
+      "arquivo": "src/hooks/useCertificates.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/perfil",
+        "/trilha/:slug",
+        "/trilhas",
+        "/verificar-certificado"
+      ]
+    },
+    "useConfetti": {
+      "arquivo": "src/hooks/useConfetti.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/onboarding/executar",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useCourses": {
+      "arquivo": "src/hooks/useCachedQuery.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useDailyChallenges": {
+      "arquivo": "src/hooks/useDailyChallenges.ts",
+      "rotas": [
+        "/dashboard"
+      ]
+    },
+    "useDebouncedValue": {
+      "arquivo": "src/hooks/useDebouncedValue.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useDefaultWorkflowProgress": {
+      "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+      "rotas": [
+        "/dashboard",
+        "/onboarding",
+        "/onboarding/executar"
+      ]
+    },
+    "useDeleteAssessment": {
+      "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useDeletePlaybook": {
+      "arquivo": "src/hooks/usePlaybooks.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useDeletePlaybookComment": {
+      "arquivo": "src/hooks/usePlaybookComments.ts",
+      "rotas": [
+        "/playbook/:slug"
+      ]
+    },
+    "useDeleteTrainingVideo": {
+      "arquivo": "src/hooks/useTrainingVideos.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useDeleteWorkflow": {
+      "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useDepartmentLeaderboard": {
+      "arquivo": "src/hooks/useDepartmentLeaderboard.ts",
+      "rotas": [
+        "/perfil",
+        "/ranking"
+      ]
+    },
+    "useDiscussions": {
+      "arquivo": "src/hooks/useDiscussions.ts",
+      "rotas": [
+        "/curso/:slug"
+      ]
+    },
+    "useDueAssessments": {
+      "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/avaliacoes",
+        "/dashboard"
+      ]
+    },
+    "useFavorites": {
+      "arquivo": "src/hooks/useFavorites.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useFuzzySearch": {
+      "arquivo": "src/hooks/useFuzzySearch.ts",
+      "rotas": [
+        "/admin",
+        "/biblioteca-videos",
+        "/playbooks",
+        "/seguranca"
+      ]
+    },
+    "useFuzzySearchWithMatches": {
+      "arquivo": "src/hooks/useFuzzySearch.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useGoals": {
+      "arquivo": "src/hooks/useGoals.ts",
+      "rotas": [
+        "/dashboard"
+      ]
+    },
+    "useLeaderboard": {
+      "arquivo": "src/hooks/useLeaderboard.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/ranking",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useLearningPaths": {
+      "arquivo": "src/hooks/useLearningPaths.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useLearningPathsList": {
+      "arquivo": "src/hooks/useCachedQuery.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useLevelUp": {
+      "arquivo": "src/hooks/useLevelUp.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useMFA": {
+      "arquivo": "src/hooks/useMFA.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useNotes": {
+      "arquivo": "src/hooks/useNotes.ts",
+      "rotas": [
+        "/curso/:slug/aula/:lessonId"
+      ]
+    },
+    "useNotifications": {
+      "arquivo": "src/hooks/useNotifications.ts",
+      "rotas": [
+        "/dashboard"
+      ]
+    },
+    "useOnboardingTutorial": {
+      "arquivo": "src/components/onboarding/OnboardingTutorial.tsx",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useOnboardingWorkflows": {
+      "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "usePasskeys": {
+      "arquivo": "src/hooks/usePasskeys.ts",
+      "rotas": [
+        "/seguranca"
+      ]
+    },
+    "usePlaybook": {
+      "arquivo": "src/hooks/usePlaybooks.ts",
+      "rotas": [
+        "/playbook/:slug"
+      ]
+    },
+    "usePlaybookComments": {
+      "arquivo": "src/hooks/usePlaybookComments.ts",
+      "rotas": [
+        "/playbook/:slug"
+      ]
+    },
+    "usePlaybooks": {
+      "arquivo": "src/hooks/usePlaybooks.ts",
+      "rotas": [
+        "/admin",
+        "/playbooks"
+      ]
+    },
+    "usePomodoro": {
+      "arquivo": "src/hooks/usePomodoro.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "usePrefetchQuery": {
+      "arquivo": "src/components/PrefetchLink.tsx",
+      "rotas": [
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "usePushNotifications": {
+      "arquivo": "src/hooks/usePushNotifications.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useQuizStatsData": {
+      "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useQuizzes": {
+      "arquivo": "src/hooks/useQuizzes.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useRateLimitLogs": {
+      "arquivo": "src/hooks/useRateLimitLogs.ts",
+      "rotas": [
+        "/",
+        "/admin/security",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useRegisterPlaybookView": {
+      "arquivo": "src/hooks/usePlaybooks.ts",
+      "rotas": [
+        "/playbook/:slug"
+      ]
+    },
+    "useSaveAssessment": {
+      "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useSavePlaybook": {
+      "arquivo": "src/hooks/usePlaybooks.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useSaveTrainingVideo": {
+      "arquivo": "src/hooks/useTrainingVideos.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useSaveWorkflow": {
+      "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useSecurityAlerts": {
+      "arquivo": "src/hooks/useSecurityAlerts.ts",
+      "rotas": [
+        "/",
+        "/admin/security",
+        "/catalogo",
+        "/dashboard",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useSkillAssessments": {
+      "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useSmartRecommendations": {
+      "arquivo": "src/hooks/useSmartRecommendations.ts",
+      "rotas": [
+        "/dashboard"
+      ]
+    },
+    "useStreaks": {
+      "arquivo": "src/hooks/useStreaks.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useSubmitAssessment": {
+      "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/avaliacao/:id"
+      ]
+    },
+    "useT": {
+      "arquivo": "src/lib/i18n.ts",
+      "rotas": [
+        "/",
+        "/dashboard",
+        "/perfil"
+      ]
+    },
+    "useToast": {
+      "arquivo": "src/hooks/use-toast.ts",
+      "rotas": [
+        "/",
+        "/admin/security",
+        "/catalogo",
+        "/dashboard",
+        "/forgot-password",
+        "/reset-password",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useTrainingVideos": {
+      "arquivo": "src/hooks/useTrainingVideos.ts",
+      "rotas": [
+        "/admin",
+        "/biblioteca-videos"
+      ]
+    },
+    "useUpdateOnboardingProgress": {
+      "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+      "rotas": [
+        "/onboarding",
+        "/onboarding/executar"
+      ]
+    },
+    "useUpdatePlaybookComment": {
+      "arquivo": "src/hooks/usePlaybookComments.ts",
+      "rotas": [
+        "/playbook/:slug"
+      ]
+    },
+    "useUpdateVideoProgress": {
+      "arquivo": "src/hooks/useTrainingVideos.ts",
+      "rotas": [
+        "/biblioteca-videos"
+      ]
+    },
+    "useUserAssessmentResults": {
+      "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/avaliacoes"
+      ]
+    },
+    "useUserLearningPathProgressCached": {
+      "arquivo": "src/hooks/useCachedQuery.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useUserPreferences": {
+      "arquivo": "src/hooks/useUserPreferences.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useUserSessions": {
+      "arquivo": "src/hooks/useUserSessions.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/seguranca",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useUserXP": {
+      "arquivo": "src/hooks/useUserXP.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/perfil",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useXPHistory": {
+      "arquivo": "src/hooks/useXPHistory.ts",
+      "rotas": [
+        "/perfil"
+      ]
+    }
+  },
+  "problemas": [
+    {
+      "tipo": "entrada_ui_sem_rota",
+      "id": "/aula",
+      "detalhe": "prefetch -> /aula: chave de prefetch que nenhuma rota alcanca (prefetchRouteChunk casa o caminho inteiro ou o 1o segmento) — nunca aquece nada"
+    }
+  ]
+}

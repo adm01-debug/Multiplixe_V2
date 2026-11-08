@@ -1,0 +1,1617 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
+ "format_version": 1,
+ "total": 99,
+ "sem_uso": [
+  "useAnnouncements",
+  "useAuditLog",
+  "useCoisa",
+  "useConfirmExit",
+  "useCourseDetail",
+  "useCourseNotes",
+  "useDados",
+  "useDebouncedCallback",
+  "useFuzzySearchWithScore",
+  "useInfiniteScroll",
+  "useLeaderboardCached",
+  "useLearningPathDetail",
+  "useLiveAnnouncer",
+  "useMemoizedSelector",
+  "useNotificationsCached",
+  "usePlatformComparison",
+  "usePrefetch",
+  "useReducedMotion",
+  "useStableCallback",
+  "useStableMemo",
+  "useStudyCalendar",
+  "useThrottledCallback",
+  "useUserAchievementsCached",
+  "useUserStreakCached",
+  "useUserXPCached",
+  "useVideoKeyboard",
+  "useVideoShortcuts",
+  "useViewMode"
+ ],
+ "sem_teste": [
+  "useAchievements",
+  "useAdminRole",
+  "useAnnouncements",
+  "useAuditLog",
+  "useAuth",
+  "useAvatarUpload",
+  "useCategories",
+  "useCertificates",
+  "useCoisa",
+  "useConfirmExit",
+  "useCourseDetail",
+  "useCourseNotes",
+  "useCourses",
+  "useDados",
+  "useDailyChallenges",
+  "useDebouncedCallback",
+  "useDebouncedValue",
+  "useDepartmentLeaderboard",
+  "useDiscussions",
+  "useFuzzySearch",
+  "useFuzzySearchWithMatches",
+  "useFuzzySearchWithScore",
+  "useGoals",
+  "useInfiniteScroll",
+  "useIsMobile",
+  "useLeaderboard",
+  "useLeaderboardCached",
+  "useLearningPathDetail",
+  "useLearningPaths",
+  "useLearningPathsList",
+  "useLevelUp",
+  "useLiveAnnouncer",
+  "useMFA",
+  "useMemoizedSelector",
+  "useNotes",
+  "useNotifications",
+  "useNotificationsCached",
+  "useOnboardingTutorial",
+  "usePWA",
+  "usePasskeys",
+  "usePlatformComparison",
+  "usePomodoro",
+  "usePrefetch",
+  "usePrefetchQuery",
+  "usePushNotifications",
+  "useQuizStatsData",
+  "useQuizzes",
+  "useRateLimitLogs",
+  "useRecommendations",
+  "useReducedMotion",
+  "useSecurityAlerts",
+  "useSessionRotation",
+  "useSmartRecommendations",
+  "useStableCallback",
+  "useStableMemo",
+  "useStreaks",
+  "useStudyCalendar",
+  "useThrottledCallback",
+  "useUserAchievementsCached",
+  "useUserLearningPathProgressCached",
+  "useUserPreferences",
+  "useUserSessions",
+  "useUserStreakCached",
+  "useUserXP",
+  "useUserXPCached",
+  "useVideoKeyboard",
+  "useVideoShortcuts",
+  "useViewMode",
+  "useXPHistory"
+ ],
+ "hooks": {
+  "useAchievements": {
+   "arquivo": "src/hooks/useAchievements.ts",
+   "linhas": 177,
+   "tabelas": [
+    "achievements",
+    "user_achievements"
+   ],
+   "rpcs": [
+    "check_and_award_achievements"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Dashboard.tsx",
+    "src/pages/LessonPlayer.tsx",
+    "src/pages/Profile.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useAddPlaybookComment": {
+   "arquivo": "src/hooks/usePlaybookComments.ts",
+   "linhas": 106,
+   "tabelas": [
+    "playbook_comments",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/playbooks/PlaybookComments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useAdminRole": {
+   "arquivo": "src/hooks/useAdminRole.ts",
+   "linhas": 39,
+   "tabelas": [],
+   "rpcs": [
+    "has_role"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/ProtectedRoute.tsx",
+    "src/components/playbooks/PlaybookComments.tsx",
+    "src/hooks/useRateLimitLogs.ts",
+    "src/hooks/useSecurityAlerts.ts",
+    "src/pages/Admin.tsx",
+    "src/pages/Dashboard.tsx",
+    "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useAnnouncements": {
+   "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
+   "linhas": 112,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useAuditLog": {
+   "arquivo": "src/hooks/useAuditLog.ts",
+   "linhas": 63,
+   "tabelas": [],
+   "rpcs": [
+    "create_audit_log"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useAuth": {
+   "arquivo": "src/hooks/useAuth.tsx",
+   "linhas": 137,
+   "tabelas": [],
+   "rpcs": [
+    "create_audit_log"
+   ],
+   "edges": [
+    "detect-new-device"
+   ],
+   "usado_por": [
+    "src/App.tsx",
+    "src/components/CommandPalette.tsx",
+    "src/components/ProtectedRoute.tsx",
+    "src/components/activity/ActivityTimeline.tsx",
+    "src/components/analytics/SkillRadarChart.tsx",
+    "src/components/discussions/CourseDiscussions.tsx",
+    "src/components/export/ExportProgress.tsx",
+    "src/components/feedback/FeedbackWidget.tsx",
+    "src/components/gamification/WeeklyGoalTracker.tsx",
+    "src/components/notifications/SmartReminders.tsx",
+    "src/components/onboarding/OnboardingTutorial.tsx",
+    "src/components/onboarding/ProfileCompletionBar.tsx",
+    "src/components/onboarding/WelcomeWizard.tsx",
+    "src/components/playbooks/PlaybookComments.tsx",
+    "src/components/profile/PersonalImpactWidget.tsx",
+    "src/components/quiz/CourseQuizModal.tsx",
+    "src/components/social/StudyBuddies.tsx",
+    "src/components/stats/LearningStats.tsx",
+    "src/hooks/useAchievements.ts",
+    "src/hooks/useAdminRole.ts",
+    "src/hooks/useAuditLog.ts",
+    "src/hooks/useAvatarUpload.ts",
+    "src/hooks/useDailyChallenges.ts",
+    "src/hooks/useDiscussions.ts",
+    "src/hooks/useFavorites.ts",
+    "src/hooks/useGoals.ts",
+    "src/hooks/useLeaderboard.ts",
+    "src/hooks/useLearningPaths.ts",
+    "src/hooks/useMFA.ts",
+    "src/hooks/useNotes.ts",
+    "src/hooks/useNotifications.ts",
+    "src/hooks/useOnboardingWorkflow.ts",
+    "src/hooks/usePasskeys.ts",
+    "src/hooks/usePlatformComparison.ts",
+    "src/hooks/usePlaybookComments.ts",
+    "src/hooks/usePomodoro.ts",
+    "src/hooks/usePushNotifications.ts",
+    "src/hooks/useQuizzes.ts",
+    "src/hooks/useRateLimitLogs.ts",
+    "src/hooks/useRecommendations.ts",
+    "src/hooks/useSecurityAlerts.ts",
+    "src/hooks/useSessionRotation.ts",
+    "src/hooks/useSkillAssessments.ts",
+    "src/hooks/useSmartRecommendations.ts",
+    "src/hooks/useStreaks.ts",
+    "src/hooks/useStudyCalendar.ts",
+    "src/hooks/useUserPreferences.ts",
+    "src/hooks/useUserSessions.ts",
+    "src/hooks/useUserXP.ts",
+    "src/hooks/useXPHistory.ts",
+    "src/pages/Admin.tsx",
+    "src/pages/Auth.tsx",
+    "src/pages/Catalog.tsx",
+    "src/pages/CourseDetail.tsx",
+    "src/pages/Dashboard.tsx",
+    "src/pages/Leaderboard.tsx",
+    "src/pages/LearningPathDetail.tsx",
+    "src/pages/LearningPaths.tsx",
+    "src/pages/LessonPlayer.tsx",
+    "src/pages/Profile.tsx",
+    "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useAvatarUpload": {
+   "arquivo": "src/hooks/useAvatarUpload.ts",
+   "linhas": 132,
+   "tabelas": [
+    "avatars",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/profile/AvatarUpload.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useCategories": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useCertificates": {
+   "arquivo": "src/hooks/useCertificates.ts",
+   "linhas": 119,
+   "tabelas": [
+    "certificates"
+   ],
+   "rpcs": [
+    "verify_certificate_by_code"
+   ],
+   "edges": [
+    "generate-certificate"
+   ],
+   "usado_por": [
+    "src/components/CertificateCard.tsx",
+    "src/components/export/ExportProgress.tsx",
+    "src/pages/LessonPlayer.tsx",
+    "src/pages/Profile.tsx",
+    "src/pages/VerifyCertificate.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useCoisa": {
+   "arquivo": "scripts/ci/inventario-rotas.unit.mjs",
+   "linhas": 178,
+   "tabelas": [
+    "direta",
+    "tabela_a",
+    "tabela_b"
+   ],
+   "rpcs": [
+    "minha_rpc"
+   ],
+   "edges": [
+    "edge-x"
+   ],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useConfetti": {
+   "arquivo": "src/hooks/useConfetti.ts",
+   "linhas": 149,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/AchievementCelebration.tsx",
+    "src/components/AchievementUnlocked.tsx",
+    "src/components/LevelUpCelebration.tsx",
+    "src/components/StreakCelebration.tsx",
+    "src/pages/LessonPlayer.tsx",
+    "src/pages/OnboardingRuntime.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useConfirmExit": {
+   "arquivo": "src/hooks/useConfirmExit.ts",
+   "linhas": 63,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useCourseDetail": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useCourseNotes": {
+   "arquivo": "src/hooks/useNotes.ts",
+   "linhas": 158,
+   "tabelas": [
+    "user_notes"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useCourses": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx",
+    "src/pages/Dashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useDados": {
+   "arquivo": "scripts/ci/ai-context.unit.mjs",
+   "linhas": 197,
+   "tabelas": [
+    "cursos"
+   ],
+   "rpcs": [
+    "has_role"
+   ],
+   "edges": [
+    "minha-edge"
+   ],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useDailyChallenges": {
+   "arquivo": "src/hooks/useDailyChallenges.ts",
+   "linhas": 173,
+   "tabelas": [
+    "daily_challenges",
+    "user_daily_challenge_progress"
+   ],
+   "rpcs": [
+    "claim_daily_challenge_reward"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/gamification/DailyChallenges.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useDebouncedCallback": {
+   "arquivo": "src/hooks/usePerformance.ts",
+   "linhas": 108,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useDebouncedValue": {
+   "arquivo": "src/hooks/useDebouncedValue.ts",
+   "linhas": 35,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useDefaultWorkflowProgress": {
+   "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+   "linhas": 163,
+   "tabelas": [
+    "onboarding_workflows",
+    "user_onboarding_progress"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/dashboard/OnboardingWidget.tsx",
+    "src/pages/OnboardingRuntime.tsx",
+    "src/pages/SalesOnboarding.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useDeleteAssessment": {
+   "arquivo": "src/hooks/useSkillAssessments.ts",
+   "linhas": 148,
+   "tabelas": [
+    "skill_assessments",
+    "user_assessment_results"
+   ],
+   "rpcs": [
+    "get_due_assessments"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminAssessmentsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useDeletePlaybook": {
+   "arquivo": "src/hooks/usePlaybooks.ts",
+   "linhas": 103,
+   "tabelas": [
+    "playbooks"
+   ],
+   "rpcs": [
+    "register_playbook_view"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminPlaybooksTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useDeletePlaybookComment": {
+   "arquivo": "src/hooks/usePlaybookComments.ts",
+   "linhas": 106,
+   "tabelas": [
+    "playbook_comments",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/playbooks/PlaybookComments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useDeleteTrainingVideo": {
+   "arquivo": "src/hooks/useTrainingVideos.ts",
+   "linhas": 95,
+   "tabelas": [
+    "training_video_views",
+    "training_videos"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminVideosTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useDeleteWorkflow": {
+   "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+   "linhas": 163,
+   "tabelas": [
+    "onboarding_workflows",
+    "user_onboarding_progress"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWorkflowsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useDepartmentLeaderboard": {
+   "arquivo": "src/hooks/useDepartmentLeaderboard.ts",
+   "linhas": 39,
+   "tabelas": [],
+   "rpcs": [
+    "get_department_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/gamification/DepartmentRanking.tsx",
+    "src/components/leaderboard/DepartmentLeaderboard.tsx",
+    "src/components/profile/PersonalImpactWidget.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useDiscussions": {
+   "arquivo": "src/hooks/useDiscussions.ts",
+   "linhas": 270,
+   "tabelas": [
+    "course_discussions",
+    "discussion_replies",
+    "discussion_votes",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/discussions/CourseDiscussions.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useDueAssessments": {
+   "arquivo": "src/hooks/useSkillAssessments.ts",
+   "linhas": 148,
+   "tabelas": [
+    "skill_assessments",
+    "user_assessment_results"
+   ],
+   "rpcs": [
+    "get_due_assessments"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/dashboard/DueAssessmentsWidget.tsx",
+    "src/pages/SkillAssessments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useFavorites": {
+   "arquivo": "src/hooks/useFavorites.ts",
+   "linhas": 134,
+   "tabelas": [
+    "user_favorites"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/favorites/FavoriteButton.tsx",
+    "src/pages/Dashboard.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useFuzzySearch": {
+   "arquivo": "src/hooks/useFuzzySearch.ts",
+   "linhas": 177,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminCoursesTab.tsx",
+    "src/components/admin/AdminUsersTab.tsx",
+    "src/components/admin/GeoBlockingManager.tsx",
+    "src/components/admin/IPWhitelistManager.tsx",
+    "src/components/admin/LearningPathsManager.tsx",
+    "src/components/admin/PasswordResetApproval.tsx",
+    "src/pages/Playbooks.tsx",
+    "src/pages/VideoLibrary.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useFuzzySearchWithMatches": {
+   "arquivo": "src/hooks/useFuzzySearch.ts",
+   "linhas": 177,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useFuzzySearchWithScore": {
+   "arquivo": "src/hooks/useFuzzySearch.ts",
+   "linhas": 177,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useGlobalSearch": {
+   "arquivo": "src/hooks/useGlobalSearch.ts",
+   "linhas": 94,
+   "tabelas": [
+    "courses",
+    "learning_paths",
+    "playbooks",
+    "training_videos"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/CommandPalette.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useGlobalShortcuts": {
+   "arquivo": "src/hooks/useGlobalShortcuts.ts",
+   "linhas": 94,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/KeyboardShortcutsModal.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useGoals": {
+   "arquivo": "src/hooks/useGoals.ts",
+   "linhas": 182,
+   "tabelas": [
+    "user_goals"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/goals/GoalsWidget.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useInfiniteScroll": {
+   "arquivo": "src/hooks/useInfiniteScroll.ts",
+   "linhas": 60,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useIsMobile": {
+   "arquivo": "src/hooks/use-mobile.tsx",
+   "linhas": 20,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/ui/sidebar.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useLeaderboard": {
+   "arquivo": "src/hooks/useLeaderboard.ts",
+   "linhas": 87,
+   "tabelas": [],
+   "rpcs": [
+    "get_leaderboard",
+    "get_user_rank"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Leaderboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useLeaderboardCached": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useLearningPathDetail": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useLearningPaths": {
+   "arquivo": "src/hooks/useLearningPaths.ts",
+   "linhas": 278,
+   "tabelas": [
+    "learning_path_certificates",
+    "learning_path_courses",
+    "learning_paths",
+    "user_learning_path_progress"
+   ],
+   "rpcs": [
+    "issue_learning_path_certificate"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/LearningPathDetail.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useLearningPathsList": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/LearningPaths.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useLevelUp": {
+   "arquivo": "src/hooks/useLevelUp.ts",
+   "linhas": 52,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Dashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useLiveAnnouncer": {
+   "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
+   "linhas": 112,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useMFA": {
+   "arquivo": "src/hooks/useMFA.ts",
+   "linhas": 250,
+   "tabelas": [
+    "user_mfa_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/security/MFAEnrollmentDialog.tsx",
+    "src/components/security/MFASettingsCard.tsx",
+    "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useMemoizedSelector": {
+   "arquivo": "src/hooks/usePerformance.ts",
+   "linhas": 108,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useNotes": {
+   "arquivo": "src/hooks/useNotes.ts",
+   "linhas": 158,
+   "tabelas": [
+    "user_notes"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/notes/NotesPanel.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useNotifications": {
+   "arquivo": "src/hooks/useNotifications.ts",
+   "linhas": 162,
+   "tabelas": [
+    "notifications"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/NotificationBell.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useNotificationsCached": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useOnboardingTutorial": {
+   "arquivo": "src/components/onboarding/OnboardingTutorial.tsx",
+   "linhas": 344,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Dashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useOnboardingWorkflows": {
+   "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+   "linhas": 163,
+   "tabelas": [
+    "onboarding_workflows",
+    "user_onboarding_progress"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWorkflowsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "usePWA": {
+   "arquivo": "src/hooks/usePWA.ts",
+   "linhas": 76,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/pwa/PWAInstallPrompt.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "usePasskeys": {
+   "arquivo": "src/hooks/usePasskeys.ts",
+   "linhas": 263,
+   "tabelas": [
+    "webauthn_credentials"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/security/PasskeyManager.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "usePlatformComparison": {
+   "arquivo": "src/hooks/usePlatformComparison.ts",
+   "linhas": 127,
+   "tabelas": [
+    "user_course_progress",
+    "user_xp"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "usePlaybook": {
+   "arquivo": "src/hooks/usePlaybooks.ts",
+   "linhas": 103,
+   "tabelas": [
+    "playbooks"
+   ],
+   "rpcs": [
+    "register_playbook_view"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/PlaybookDetail.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "usePlaybookComments": {
+   "arquivo": "src/hooks/usePlaybookComments.ts",
+   "linhas": 106,
+   "tabelas": [
+    "playbook_comments",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/playbooks/PlaybookComments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "usePlaybooks": {
+   "arquivo": "src/hooks/usePlaybooks.ts",
+   "linhas": 103,
+   "tabelas": [
+    "playbooks"
+   ],
+   "rpcs": [
+    "register_playbook_view"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminPlaybooksTab.tsx",
+    "src/pages/Playbooks.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "usePomodoro": {
+   "arquivo": "src/hooks/usePomodoro.ts",
+   "linhas": 180,
+   "tabelas": [
+    "pomodoro_sessions"
+   ],
+   "rpcs": [
+    "complete_pomodoro_session"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/pomodoro/FloatingPomodoroButton.tsx",
+    "src/components/pomodoro/PomodoroTimer.tsx",
+    "src/pages/LessonPlayer.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "usePrefetch": {
+   "arquivo": "src/components/PrefetchLink.tsx",
+   "linhas": 300,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_path_courses",
+    "learning_paths",
+    "lessons"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "usePrefetchQuery": {
+   "arquivo": "src/components/PrefetchLink.tsx",
+   "linhas": 300,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_path_courses",
+    "learning_paths",
+    "lessons"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/catalog/CourseCard.tsx",
+    "src/components/catalog/CourseListItem.tsx",
+    "src/components/dashboard/ContinueLearningWidget.tsx",
+    "src/components/dashboard/DashboardHeader.tsx",
+    "src/components/dashboard/SmartRecommendations.tsx",
+    "src/components/learning-paths/LearningPathCard.tsx",
+    "src/components/learning-paths/LearningPathCourseItem.tsx",
+    "src/components/navigation/MobileBottomNav.tsx",
+    "src/components/recommendations/RecommendationsWidget.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "usePushNotifications": {
+   "arquivo": "src/hooks/usePushNotifications.ts",
+   "linhas": 131,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/notifications/PushNotificationManager.tsx",
+    "src/components/security/NotificationPermissionBanner.tsx",
+    "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useQuizStatsData": {
+   "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts",
+   "linhas": 271,
+   "tabelas": [
+    "categories",
+    "profiles",
+    "quiz_performance_alerts",
+    "quizzes",
+    "user_quiz_attempts"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/QuizStats.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useQuizzes": {
+   "arquivo": "src/hooks/useQuizzes.ts",
+   "linhas": 197,
+   "tabelas": [
+    "quiz_options_public",
+    "quiz_questions",
+    "quizzes",
+    "user_quiz_attempts"
+   ],
+   "rpcs": [
+    "submit_quiz_attempt"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/quiz/CourseQuizModal.tsx",
+    "src/components/quiz/QuizCard.tsx",
+    "src/pages/CourseDetail.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useRateLimitLogs": {
+   "arquivo": "src/hooks/useRateLimitLogs.ts",
+   "linhas": 256,
+   "tabelas": [
+    "blocked_ips",
+    "rate_limit_config",
+    "rate_limit_logs",
+    "whitelisted_ips"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/RateLimitDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useRecommendations": {
+   "arquivo": "src/hooks/useRecommendations.ts",
+   "linhas": 68,
+   "tabelas": [
+    "courses"
+   ],
+   "rpcs": [
+    "get_recommended_courses"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/recommendations/RecommendationsWidget.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useReducedMotion": {
+   "arquivo": "src/components/accessibility/ReducedMotionProvider.tsx",
+   "linhas": 97,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useRegisterPlaybookView": {
+   "arquivo": "src/hooks/usePlaybooks.ts",
+   "linhas": 103,
+   "tabelas": [
+    "playbooks"
+   ],
+   "rpcs": [
+    "register_playbook_view"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/PlaybookDetail.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSaveAssessment": {
+   "arquivo": "src/hooks/useSkillAssessments.ts",
+   "linhas": 148,
+   "tabelas": [
+    "skill_assessments",
+    "user_assessment_results"
+   ],
+   "rpcs": [
+    "get_due_assessments"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminAssessmentsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSavePlaybook": {
+   "arquivo": "src/hooks/usePlaybooks.ts",
+   "linhas": 103,
+   "tabelas": [
+    "playbooks"
+   ],
+   "rpcs": [
+    "register_playbook_view"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminPlaybooksTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSaveTrainingVideo": {
+   "arquivo": "src/hooks/useTrainingVideos.ts",
+   "linhas": 95,
+   "tabelas": [
+    "training_video_views",
+    "training_videos"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminVideosTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSaveWorkflow": {
+   "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+   "linhas": 163,
+   "tabelas": [
+    "onboarding_workflows",
+    "user_onboarding_progress"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWorkflowsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSecurityAlerts": {
+   "arquivo": "src/hooks/useSecurityAlerts.ts",
+   "linhas": 114,
+   "tabelas": [
+    "security_alerts"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/RateLimitDashboard.tsx",
+    "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useSessionRotation": {
+   "arquivo": "src/hooks/useSessionRotation.ts",
+   "linhas": 69,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/App.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useSkillAssessments": {
+   "arquivo": "src/hooks/useSkillAssessments.ts",
+   "linhas": 148,
+   "tabelas": [
+    "skill_assessments",
+    "user_assessment_results"
+   ],
+   "rpcs": [
+    "get_due_assessments"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminAssessmentsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSmartRecommendations": {
+   "arquivo": "src/hooks/useSmartRecommendations.ts",
+   "linhas": 37,
+   "tabelas": [],
+   "rpcs": [
+    "get_smart_recommendations"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/dashboard/SmartRecommendations.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useStableCallback": {
+   "arquivo": "src/hooks/usePerformance.ts",
+   "linhas": 108,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useStableMemo": {
+   "arquivo": "src/hooks/usePerformance.ts",
+   "linhas": 108,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useStreaks": {
+   "arquivo": "src/hooks/useStreaks.ts",
+   "linhas": 124,
+   "tabelas": [
+    "user_streaks"
+   ],
+   "rpcs": [
+    "update_user_streak"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/gamification/DailyChallenges.tsx",
+    "src/pages/Dashboard.tsx",
+    "src/pages/LessonPlayer.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useStudyCalendar": {
+   "arquivo": "src/hooks/useStudyCalendar.ts",
+   "linhas": 119,
+   "tabelas": [
+    "user_achievements",
+    "user_lesson_progress",
+    "user_quiz_attempts"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useSubmitAssessment": {
+   "arquivo": "src/hooks/useSkillAssessments.ts",
+   "linhas": 148,
+   "tabelas": [
+    "skill_assessments",
+    "user_assessment_results"
+   ],
+   "rpcs": [
+    "get_due_assessments"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/AssessmentRunner.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useT": {
+   "arquivo": "src/lib/i18n.ts",
+   "linhas": 143,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/LanguageToggle.tsx",
+    "src/components/dashboard/DashboardHeader.tsx",
+    "src/components/navigation/MobileBottomNav.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useTelemetry": {
+   "arquivo": "src/hooks/useTelemetry.ts",
+   "linhas": 29,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/share/ShareAchievement.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useThrottledCallback": {
+   "arquivo": "src/hooks/usePerformance.ts",
+   "linhas": 108,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useTrainingVideos": {
+   "arquivo": "src/hooks/useTrainingVideos.ts",
+   "linhas": 95,
+   "tabelas": [
+    "training_video_views",
+    "training_videos"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminVideosTab.tsx",
+    "src/pages/VideoLibrary.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useUpdateOnboardingProgress": {
+   "arquivo": "src/hooks/useOnboardingWorkflow.ts",
+   "linhas": 163,
+   "tabelas": [
+    "onboarding_workflows",
+    "user_onboarding_progress"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/OnboardingRuntime.tsx",
+    "src/pages/SalesOnboarding.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useUpdatePlaybookComment": {
+   "arquivo": "src/hooks/usePlaybookComments.ts",
+   "linhas": 106,
+   "tabelas": [
+    "playbook_comments",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/playbooks/PlaybookComments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useUpdateVideoProgress": {
+   "arquivo": "src/hooks/useTrainingVideos.ts",
+   "linhas": 95,
+   "tabelas": [
+    "training_video_views",
+    "training_videos"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/VideoLibrary.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useUserAchievementsCached": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useUserAssessmentResults": {
+   "arquivo": "src/hooks/useSkillAssessments.ts",
+   "linhas": 148,
+   "tabelas": [
+    "skill_assessments",
+    "user_assessment_results"
+   ],
+   "rpcs": [
+    "get_due_assessments"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/SkillAssessments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useUserLearningPathProgressCached": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/LearningPaths.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useUserPreferences": {
+   "arquivo": "src/hooks/useUserPreferences.ts",
+   "linhas": 145,
+   "tabelas": [
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/LessonPlayer.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useUserSessions": {
+   "arquivo": "src/hooks/useUserSessions.ts",
+   "linhas": 98,
+   "tabelas": [
+    "user_sessions"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useUserStreakCached": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useUserXP": {
+   "arquivo": "src/hooks/useUserXP.ts",
+   "linhas": 112,
+   "tabelas": [
+    "user_xp"
+   ],
+   "rpcs": [
+    "add_user_xp"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/export/ExportProgress.tsx",
+    "src/components/navigation/MobileBottomNav.tsx",
+    "src/components/profile/PersonalImpactWidget.tsx",
+    "src/hooks/useQuizzes.ts",
+    "src/pages/Dashboard.tsx",
+    "src/pages/LessonPlayer.tsx",
+    "src/pages/Profile.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useUserXPCached": {
+   "arquivo": "src/hooks/useCachedQuery.ts",
+   "linhas": 236,
+   "tabelas": [
+    "categories",
+    "courses",
+    "learning_paths",
+    "notifications",
+    "user_achievements",
+    "user_learning_path_progress",
+    "user_streaks",
+    "user_xp"
+   ],
+   "rpcs": [
+    "get_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useVideoKeyboard": {
+   "arquivo": "src/hooks/useVideoKeyboard.ts",
+   "linhas": 63,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useVideoShortcuts": {
+   "arquivo": "src/hooks/useVideoShortcuts.ts",
+   "linhas": 200,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useViewMode": {
+   "arquivo": "src/components/catalog/ViewToggle.tsx",
+   "linhas": 88,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useXPHistory": {
+   "arquivo": "src/hooks/useXPHistory.ts",
+   "linhas": 55,
+   "tabelas": [],
+   "rpcs": [
+    "get_xp_history"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/XPEvolutionChart.tsx",
+    "src/components/profile/PersonalImpactWidget.tsx"
+   ],
+   "coberto_por_teste": false
+  }
+ }
+}

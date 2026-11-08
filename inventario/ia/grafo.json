@@ -1,0 +1,2092 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
+ "format_version": 1,
+ "nos": 401,
+ "arestas": 1039,
+ "hubs": [
+  {
+   "arquivo": "src/components/ui/button.tsx",
+   "importado_por": 118
+  },
+  {
+   "arquivo": "src/integrations/supabase/client.ts",
+   "importado_por": 89
+  },
+  {
+   "arquivo": "src/lib/utils.ts",
+   "importado_por": 62
+  },
+  {
+   "arquivo": "src/hooks/useAuth.tsx",
+   "importado_por": 61
+  },
+  {
+   "arquivo": "src/components/ui/card.tsx",
+   "importado_por": 56
+  },
+  {
+   "arquivo": "src/components/ui/badge.tsx",
+   "importado_por": 50
+  },
+  {
+   "arquivo": "src/components/ui/input.tsx",
+   "importado_por": 30
+  },
+  {
+   "arquivo": "src/components/ui/dialog.tsx",
+   "importado_por": 29
+  },
+  {
+   "arquivo": "src/components/ui/label.tsx",
+   "importado_por": 20
+  },
+  {
+   "arquivo": "src/components/ui/progress.tsx",
+   "importado_por": 20
+  },
+  {
+   "arquivo": "src/components/ui/textarea.tsx",
+   "importado_por": 18
+  },
+  {
+   "arquivo": "src/components/ui/skeleton.tsx",
+   "importado_por": 14
+  },
+  {
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 14
+  },
+  {
+   "arquivo": "src/components/admin/quiz-stats/types.ts",
+   "importado_por": 12
+  },
+  {
+   "arquivo": "src/components/ui/table.tsx",
+   "importado_por": 12
+  },
+  {
+   "arquivo": "src/components/ui/tooltip.tsx",
+   "importado_por": 11
+  },
+  {
+   "arquivo": "src/components/PrefetchLink.tsx",
+   "importado_por": 10
+  },
+  {
+   "arquivo": "src/components/ui/select.tsx",
+   "importado_por": 10
+  },
+  {
+   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "importado_por": 9
+  },
+  {
+   "arquivo": "src/components/ui/tabs.tsx",
+   "importado_por": 9
+  },
+  {
+   "arquivo": "src/hooks/useFuzzySearch.ts",
+   "importado_por": 9
+  },
+  {
+   "arquivo": "src/components/SimpleEmptyState.tsx",
+   "importado_por": 8
+  },
+  {
+   "arquivo": "src/hooks/use-toast.ts",
+   "importado_por": 8
+  },
+  {
+   "arquivo": "src/components/seo/DynamicSEO.tsx",
+   "importado_por": 7
+  },
+  {
+   "arquivo": "src/components/skeletons/PageSkeletons.tsx",
+   "importado_por": 7
+  },
+  {
+   "arquivo": "src/hooks/useAdminRole.ts",
+   "importado_por": 7
+  },
+  {
+   "arquivo": "src/hooks/useUserXP.ts",
+   "importado_por": 7
+  },
+  {
+   "arquivo": "src/components/EmptyState.tsx",
+   "importado_por": 6
+  },
+  {
+   "arquivo": "src/components/ui/scroll-area.tsx",
+   "importado_por": 6
+  },
+  {
+   "arquivo": "src/hooks/useConfetti.ts",
+   "importado_por": 6
+  }
+ ],
+ "ciclos": {
+  "criterio": "so import estatico; import() dinamico (lazy) nao forma ciclo em tempo de execucao",
+  "total": 0,
+  "maiores": []
+ },
+ "orfaos": [
+  "eslint.config.js",
+  "postcss.config.js",
+  "scripts/ai-context/gerar.mjs",
+  "scripts/ci/ai-context.unit.mjs",
+  "scripts/ci/check-claude-md-integrity.mjs",
+  "scripts/ci/inventario-banco.unit.mjs",
+  "scripts/ci/inventario-mudou.unit.mjs",
+  "scripts/ci/inventario-rotas.unit.mjs",
+  "scripts/ci/inventario-schema.unit.mjs",
+  "scripts/ci/supabase-usage-guard.unit.mjs",
+  "src/components/accessibility/FontSizeControl.tsx",
+  "src/components/accessibility/HighContrastToggle.tsx",
+  "src/components/accessibility/LiveAnnouncer.tsx",
+  "src/components/accessibility/ReducedMotionProvider.tsx",
+  "src/components/activity/ActivityTimeline.tsx",
+  "src/components/admin/AdminTopPlaybooksWidget.tsx",
+  "src/components/admin/AdminVideoEngagementWidget.tsx",
+  "src/components/analytics/PerformanceComparison.tsx",
+  "src/components/calendar/StudyCalendar.tsx",
+  "src/components/catalog/CourseListItem.tsx",
+  "src/components/catalog/ViewToggle.tsx",
+  "src/components/command/SearchResultGroup.tsx",
+  "src/components/course/CourseProgress3D.tsx",
+  "src/components/dialogs/ConfirmExitDialog.tsx",
+  "src/components/export/ExportProgress.tsx",
+  "src/components/feedback/FeedbackWidget.tsx",
+  "src/components/gamification/AchievementBadge.tsx",
+  "src/components/gamification/DepartmentRanking.tsx",
+  "src/components/gamification/WeeklyGoalTracker.tsx",
+  "src/components/gamification/XPAnimations.tsx",
+  "src/components/landing/GlobalSearchHint.tsx",
+  "src/components/navigation/Breadcrumb.tsx",
+  "src/components/notifications/PushNotificationManager.tsx",
+  "src/components/notifications/SmartReminders.tsx",
+  "src/components/profile/AvatarUpload.tsx",
+  "src/components/quiz/QuizReview.tsx",
+  "src/components/recommendations/RecommendationsWidget.tsx",
+  "src/components/share/ShareAchievement.tsx",
+  "src/components/social/StudyBuddies.tsx",
+  "src/components/stats/LearningStats.tsx",
+  "src/components/ui/ActionFeedback.tsx",
+  "src/components/ui/Banner.tsx",
+  "src/components/ui/KeyboardShortcut.tsx",
+  "src/components/ui/ThemeCustomizer.tsx",
+  "src/components/ui/accordion.tsx",
+  "src/components/ui/aspect-ratio.tsx",
+  "src/components/ui/breadcrumb.tsx",
+  "src/components/ui/calendar.tsx",
+  "src/components/ui/carousel.tsx",
+  "src/components/ui/chart.tsx",
+  "src/components/ui/collapsible.tsx",
+  "src/components/ui/context-menu.tsx",
+  "src/components/ui/drawer.tsx",
+  "src/components/ui/form.tsx",
+  "src/components/ui/interactive-button.tsx",
+  "src/components/ui/menubar.tsx",
+  "src/components/ui/motion.tsx",
+  "src/components/ui/navigation-menu.tsx",
+  "src/components/ui/pagination.tsx",
+  "src/components/ui/resizable.tsx",
+  "src/components/ui/sidebar.tsx",
+  "src/components/ui/toggle-group.tsx",
+  "src/components/ui/use-toast.ts",
+  "src/hooks/useAuditLog.ts",
+  "src/hooks/useConfirmExit.ts",
+  "src/hooks/useInfiniteScroll.ts",
+  "src/hooks/usePerformance.ts",
+  "src/hooks/usePlatformComparison.ts",
+  "src/hooks/useStudyCalendar.ts",
+  "src/hooks/useVideoKeyboard.ts",
+  "src/hooks/useVideoShortcuts.ts",
+  "supabase/functions/ai-playbook-summarize/index.ts",
+  "supabase/functions/ai-quiz-generator/index.ts",
+  "supabase/functions/approve-password-reset/index.ts",
+  "supabase/functions/cleanup-security-logs/index.ts",
+  "supabase/functions/detect-new-device/index.ts",
+  "supabase/functions/export-user-data/index.ts",
+  "supabase/functions/generate-certificate/index.ts",
+  "supabase/functions/generate-sitemap/index.ts",
+  "supabase/functions/migrate-helper/index.ts",
+  "supabase/functions/send-security-alert/index.ts",
+  "supabase/functions/verify-mfa/index.ts",
+  "supabase/functions/weekly-admin-digest/index.ts",
+  "supabase/functions/weekly-admin-digest/index_test.ts",
+  "tailwind.config.ts",
+  "vite.config.ts",
+  "vitest.config.ts"
+ ],
+ "arestas_por_arquivo": {
+  "eslint.config.js": [],
+  "postcss.config.js": [],
+  "scripts/ai-context/gerar.mjs": [],
+  "scripts/ci/ai-context.unit.mjs": [],
+  "scripts/ci/check-claude-md-integrity.mjs": [],
+  "scripts/ci/inventario-banco.unit.mjs": [],
+  "scripts/ci/inventario-mudou.unit.mjs": [],
+  "scripts/ci/inventario-rotas.unit.mjs": [],
+  "scripts/ci/inventario-schema.unit.mjs": [
+   "scripts/lib/migrations-supabase.mjs",
+   "scripts/lib/types-supabase.mjs"
+  ],
+  "scripts/ci/supabase-usage-guard.mjs": [],
+  "scripts/ci/supabase-usage-guard.unit.mjs": [
+   "scripts/ci/supabase-usage-guard.mjs"
+  ],
+  "scripts/lib/migrations-supabase.mjs": [],
+  "scripts/lib/types-supabase.mjs": [],
+  "src/App.tsx": [
+   "src/components/ErrorBoundary.tsx",
+   "src/components/PageLoader.tsx",
+   "src/components/ProtectedRoute.tsx",
+   "src/components/RouteErrorBoundary.tsx",
+   "src/components/accessibility/SkipLinks.tsx",
+   "src/components/navigation/MobileBottomNav.tsx",
+   "src/components/navigation/NavigationProgress.tsx",
+   "src/components/navigation/PageTransition.tsx",
+   "src/components/navigation/ScrollRestoration.tsx",
+   "src/components/navigation/ScrollToTop.tsx",
+   "src/components/pomodoro/FloatingPomodoroButton.tsx",
+   "src/components/ui/sonner.tsx",
+   "src/components/ui/toaster.tsx",
+   "src/components/ui/tooltip.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useSessionRotation.ts",
+   "src/lib/queryClient.ts",
+   "src/lib/queryPersister.ts"
+  ],
+  "src/components/AchievementCelebration.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/useConfetti.ts"
+  ],
+  "src/components/AchievementUnlocked.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/useConfetti.ts"
+  ],
+  "src/components/AchievementsGrid.tsx": [],
+  "src/components/CertificateCard.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/tooltip.tsx",
+   "src/hooks/useCertificates.ts"
+  ],
+  "src/components/CommandPalette.tsx": [
+   "src/components/ui/command.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useGlobalSearch.ts"
+  ],
+  "src/components/EmptyState.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/ErrorBoundary.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/telemetry.ts"
+  ],
+  "src/components/KeyboardShortcutsModal.tsx": [
+   "src/components/ui/dialog.tsx",
+   "src/hooks/useGlobalShortcuts.ts"
+  ],
+  "src/components/LanguageToggle.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dropdown-menu.tsx",
+   "src/lib/i18n.ts"
+  ],
+  "src/components/LazyImage.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/LevelProgress.tsx": [
+   "src/lib/levelSystem.ts"
+  ],
+  "src/components/LevelUpCelebration.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/useConfetti.ts"
+  ],
+  "src/components/NotificationBell.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/popover.tsx",
+   "src/components/ui/scroll-area.tsx",
+   "src/hooks/useNotifications.ts"
+  ],
+  "src/components/PageLoader.tsx": [],
+  "src/components/PasswordStrengthIndicator.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/PrefetchLink.tsx": [
+   "src/lib/queryClient.ts",
+   "src/lib/routePrefetch.ts"
+  ],
+  "src/components/ProtectedRoute.tsx": [
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx"
+  ],
+  "src/components/RankBadge.tsx": [],
+  "src/components/RouteErrorBoundary.tsx": [
+   "src/components/ErrorBoundary.tsx"
+  ],
+  "src/components/SimpleEmptyState.tsx": [],
+  "src/components/StreakCelebration.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/useConfetti.ts"
+  ],
+  "src/components/StreakDisplay.tsx": [],
+  "src/components/ThemeToggle.tsx": [],
+  "src/components/VirtualizedCourseGrid.tsx": [
+   "src/components/catalog/CourseCard.tsx"
+  ],
+  "src/components/VirtualizedLearningPathGrid.tsx": [
+   "src/components/learning-paths/LearningPathCard.tsx",
+   "src/hooks/useLearningPaths.ts"
+  ],
+  "src/components/XPEvolutionChart.tsx": [
+   "src/hooks/useXPHistory.ts"
+  ],
+  "src/components/accessibility/FontSizeControl.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/popover.tsx",
+   "src/components/ui/slider.tsx"
+  ],
+  "src/components/accessibility/HighContrastToggle.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/tooltip.tsx"
+  ],
+  "src/components/accessibility/LiveAnnouncer.tsx": [],
+  "src/components/accessibility/ReducedMotionProvider.tsx": [],
+  "src/components/accessibility/SkipLinks.tsx": [],
+  "src/components/activity/ActivityTimeline.tsx": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AIQuizGeneratorModal.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminAssessmentsTab.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useSkillAssessments.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/components/admin/AdminCohortRetention.tsx": [
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminCoursesTab.tsx": [
+   "src/components/admin/CourseForm.tsx",
+   "src/components/admin/LessonsManager.tsx",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminEngagementHeatmap.tsx": [
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminPlaybooksTab.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/usePlaybooks.ts",
+   "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/components/admin/AdminStatsTab.tsx": [
+   "src/components/admin/AdminCoursesTab.tsx",
+   "src/components/admin/AdminUsersTab.tsx",
+   "src/components/ui/button.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminTelemetryWidget.tsx": [
+   "src/components/ui/card.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminTopPlaybooksWidget.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminUsersTab.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useFuzzySearch.ts"
+  ],
+  "src/components/admin/AdminVideoEngagementWidget.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/AdminVideosTab.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useTrainingVideos.ts",
+   "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/components/admin/AdminWorkflowsTab.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useOnboardingWorkflow.ts",
+   "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/components/admin/BlockedLoginAttempts.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/table.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/CourseForm.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/GeoBlockingManager.tsx": [
+   "src/components/admin/GeoCountriesList.ts",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/GeoCountriesList.ts": [],
+  "src/components/admin/IPWhitelistManager.tsx": [
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/table.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/LearningPathCoursesManager.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/select.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/LearningPathForm.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/LearningPathsManager.tsx": [
+   "src/components/admin/LearningPathCoursesManager.tsx",
+   "src/components/admin/LearningPathForm.tsx",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/LessonForm.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/LessonsManager.tsx": [
+   "src/components/admin/LessonForm.tsx",
+   "src/components/admin/QuizManager.tsx",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/table.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/PasswordResetApproval.tsx": [
+   "src/components/admin/password-reset/RequestStatusBadge.tsx",
+   "src/components/admin/password-reset/ReviewDialog.tsx",
+   "src/components/admin/password-reset/types.ts",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/table.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/PermissionsManager.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/checkbox.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/PlatformAnalytics.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/scroll-area.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/QuizManager.tsx": [
+   "src/components/admin/AIQuizGeneratorModal.tsx",
+   "src/components/admin/QuizQuestionCard.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/QuizQuestionCard.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx"
+  ],
+  "src/components/admin/QuizStats.tsx": [
+   "src/components/admin/quiz-stats/AlertHistoryPanel.tsx",
+   "src/components/admin/quiz-stats/CourseStatsTable.tsx",
+   "src/components/admin/quiz-stats/EvolutionChart.tsx",
+   "src/components/admin/quiz-stats/LowPerformanceAlerts.tsx",
+   "src/components/admin/quiz-stats/OverallStatsCards.tsx",
+   "src/components/admin/quiz-stats/PerformanceDistribution.tsx",
+   "src/components/admin/quiz-stats/QuizComparisonChart.tsx",
+   "src/components/admin/quiz-stats/QuizRankings.tsx",
+   "src/components/admin/quiz-stats/QuizStatsFilters.tsx",
+   "src/components/admin/quiz-stats/QuizStatsSummary.tsx",
+   "src/components/admin/quiz-stats/exportUtils.ts",
+   "src/components/admin/quiz-stats/useQuizStatsData.ts"
+  ],
+  "src/components/admin/password-reset/RequestStatusBadge.tsx": [
+   "src/components/ui/badge.tsx"
+  ],
+  "src/components/admin/password-reset/ReviewDialog.tsx": [
+   "src/components/admin/password-reset/types.ts",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/textarea.tsx"
+  ],
+  "src/components/admin/password-reset/types.ts": [],
+  "src/components/admin/quiz-stats/AlertHistoryPanel.tsx": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/admin/quiz-stats/CourseStatsTable.tsx": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/components/ui/progress.tsx"
+  ],
+  "src/components/admin/quiz-stats/EvolutionChart.tsx": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/components/ui/tabs.tsx"
+  ],
+  "src/components/admin/quiz-stats/LowPerformanceAlerts.tsx": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/admin/quiz-stats/OverallStatsCards.tsx": [
+   "src/components/admin/quiz-stats/types.ts"
+  ],
+  "src/components/admin/quiz-stats/PerformanceDistribution.tsx": [
+   "src/components/admin/quiz-stats/types.ts"
+  ],
+  "src/components/admin/quiz-stats/QuizComparisonChart.tsx": [
+   "src/components/admin/quiz-stats/types.ts"
+  ],
+  "src/components/admin/quiz-stats/QuizRankings.tsx": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/components/ui/avatar.tsx"
+  ],
+  "src/components/admin/quiz-stats/QuizStatsFilters.tsx": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dropdown-menu.tsx",
+   "src/components/ui/select.tsx"
+  ],
+  "src/components/admin/quiz-stats/QuizStatsSummary.tsx": [
+   "src/components/admin/quiz-stats/types.ts"
+  ],
+  "src/components/admin/quiz-stats/exportUtils.ts": [
+   "src/components/admin/quiz-stats/types.ts"
+  ],
+  "src/components/admin/quiz-stats/types.ts": [],
+  "src/components/admin/quiz-stats/useQuizStatsData.ts": [
+   "src/components/admin/quiz-stats/types.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/analytics/PerformanceComparison.tsx": [
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/analytics/SkillRadarChart.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/auth/AuthLeftPanel.tsx": [],
+  "src/components/calendar/StudyCalendar.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/tooltip.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/catalog/CatalogHeader.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/catalog/CatalogHero.tsx": [],
+  "src/components/catalog/CategoryFilter.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/catalog/CourseCard.tsx": [
+   "src/components/LazyImage.tsx",
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/FuzzyHighlight.tsx",
+   "src/components/ui/badge.tsx"
+  ],
+  "src/components/catalog/CourseListItem.tsx": [
+   "src/components/LazyImage.tsx",
+   "src/components/PrefetchLink.tsx",
+   "src/components/favorites/FavoriteButton.tsx",
+   "src/components/ui/FuzzyHighlight.tsx",
+   "src/components/ui/badge.tsx"
+  ],
+  "src/components/catalog/LevelFilter.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/catalog/SearchInput.tsx": [
+   "src/components/ui/input.tsx"
+  ],
+  "src/components/catalog/ViewToggle.tsx": [
+   "src/components/ui/tooltip.tsx"
+  ],
+  "src/components/command/SearchResultGroup.tsx": [
+   "src/components/ui/FuzzyHighlight.tsx",
+   "src/components/ui/command.tsx"
+  ],
+  "src/components/course/CourseDetailHero.tsx": [
+   "src/components/ui/badge.tsx"
+  ],
+  "src/components/course/CourseDetailSidebar.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/course/CourseProgress3D.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/dashboard/ContinueLearningWidget.tsx": [
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/lib/continueLearning.ts"
+  ],
+  "src/components/dashboard/DashboardHeader.tsx": [
+   "src/components/LanguageToggle.tsx",
+   "src/components/NotificationBell.tsx",
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/CacheIndicator.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/tooltip.tsx",
+   "src/lib/i18n.ts"
+  ],
+  "src/components/dashboard/DashboardHero.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/dashboard/DashboardStatsGrid.tsx": [],
+  "src/components/dashboard/DueAssessmentsWidget.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useSkillAssessments.ts"
+  ],
+  "src/components/dashboard/OnboardingWidget.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useOnboardingWorkflow.ts"
+  ],
+  "src/components/dashboard/SmartRecommendations.tsx": [
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useSmartRecommendations.ts"
+  ],
+  "src/components/dialogs/ConfirmExitDialog.tsx": [
+   "src/components/ui/alert-dialog.tsx"
+  ],
+  "src/components/discussions/CourseDiscussions.tsx": [
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useDiscussions.ts"
+  ],
+  "src/components/export/ExportProgress.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useCertificates.ts",
+   "src/hooks/useUserXP.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/favorites/FavoriteButton.tsx": [
+   "src/components/ui/tooltip.tsx",
+   "src/hooks/useFavorites.ts"
+  ],
+  "src/components/feedback/FeedbackWidget.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useAuth.tsx"
+  ],
+  "src/components/gamification/AchievementBadge.tsx": [],
+  "src/components/gamification/DailyChallenges.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/useDailyChallenges.ts",
+   "src/hooks/useStreaks.ts",
+   "src/lib/utils.ts"
+  ],
+  "src/components/gamification/DepartmentRanking.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useDepartmentLeaderboard.ts"
+  ],
+  "src/components/gamification/WeeklyGoalTracker.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/gamification/XPAnimations.tsx": [],
+  "src/components/goals/GoalsWidget.tsx": [
+   "src/components/EmptyState.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/progress.tsx",
+   "src/components/ui/select.tsx",
+   "src/hooks/useGoals.ts"
+  ],
+  "src/components/landing/CTASection.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/landing/DynamicStats.tsx": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/landing/FeaturedCoursesPreview.tsx": [
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/landing/FeaturesSection.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/tabs.tsx"
+  ],
+  "src/components/landing/Footer.tsx": [
+   "src/components/ui/input.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/landing/GlobalSearchHint.tsx": [],
+  "src/components/landing/Header.tsx": [
+   "src/components/LanguageToggle.tsx",
+   "src/components/ThemeToggle.tsx",
+   "src/components/landing/SearchOverlay.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/hover-card.tsx",
+   "src/components/ui/sheet.tsx"
+  ],
+  "src/components/landing/HeroSection.tsx": [
+   "src/components/landing/hero/HeroBackground.tsx",
+   "src/components/landing/hero/HeroCard.tsx",
+   "src/components/landing/hero/HeroFloatingElements.tsx",
+   "src/components/landing/hero/HeroStats.tsx",
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/landing/MobileStickyCTA.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/landing/SearchOverlay.tsx": [
+   "src/components/ui/input.tsx"
+  ],
+  "src/components/landing/SocialProofCounter.tsx": [],
+  "src/components/landing/TestimonialCarousel.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/landing/TestimonialsSection.tsx": [
+   "src/components/landing/TestimonialCarousel.tsx"
+  ],
+  "src/components/landing/hero/CountUp.tsx": [],
+  "src/components/landing/hero/HeroBackground.tsx": [],
+  "src/components/landing/hero/HeroCard.tsx": [
+   "src/components/landing/hero/CountUp.tsx"
+  ],
+  "src/components/landing/hero/HeroFloatingElements.tsx": [],
+  "src/components/landing/hero/HeroStats.tsx": [],
+  "src/components/leaderboard/DepartmentLeaderboard.tsx": [
+   "src/components/RankBadge.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useDepartmentLeaderboard.ts"
+  ],
+  "src/components/learning-paths/CertificateModal.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/hooks/use-toast.ts",
+   "src/hooks/useLearningPaths.ts"
+  ],
+  "src/components/learning-paths/LearningPathCard.tsx": [
+   "src/components/LazyImage.tsx",
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useLearningPaths.ts"
+  ],
+  "src/components/learning-paths/LearningPathCourseItem.tsx": [
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useLearningPaths.ts"
+  ],
+  "src/components/learning-paths/LearningPathHero.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useLearningPaths.ts"
+  ],
+  "src/components/navigation/Breadcrumb.tsx": [],
+  "src/components/navigation/MobileBottomNav.tsx": [
+   "src/components/PrefetchLink.tsx",
+   "src/hooks/useUserXP.ts",
+   "src/lib/i18n.ts",
+   "src/lib/utils.ts"
+  ],
+  "src/components/navigation/NavigationProgress.tsx": [],
+  "src/components/navigation/PageTransition.tsx": [],
+  "src/components/navigation/ScrollRestoration.tsx": [],
+  "src/components/navigation/ScrollToTop.tsx": [],
+  "src/components/notes/NotesPanel.tsx": [
+   "src/components/EmptyState.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/scroll-area.tsx",
+   "src/components/ui/sheet.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useNotes.ts"
+  ],
+  "src/components/notifications/PushNotificationManager.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/switch.tsx",
+   "src/hooks/usePushNotifications.ts"
+  ],
+  "src/components/notifications/SmartReminders.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/hooks/useAuth.tsx"
+  ],
+  "src/components/onboarding/OnboardingTutorial.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/useAuth.tsx"
+  ],
+  "src/components/onboarding/ProfileCompletionBar.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/onboarding/WelcomeWizard.tsx": [
+   "src/components/onboarding/WizardStepContent.tsx",
+   "src/components/ui/button.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/onboarding/WizardStepContent.tsx": [],
+  "src/components/playbooks/PlaybookComments.tsx": [
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/usePlaybookComments.ts"
+  ],
+  "src/components/player/FloatingProgress.tsx": [],
+  "src/components/player/LessonList.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/player/LessonPlayerHeader.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/tooltip.tsx"
+  ],
+  "src/components/player/LessonPlayerSidebar.tsx": [
+   "src/components/player/LessonList.tsx",
+   "src/components/pomodoro/PomodoroTimer.tsx",
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/player/VideoControls.tsx": [
+   "src/components/ui/dropdown-menu.tsx",
+   "src/components/ui/slider.tsx",
+   "src/components/ui/tooltip.tsx"
+  ],
+  "src/components/player/VideoOverlays.tsx": [],
+  "src/components/player/VideoPlayer.tsx": [
+   "src/components/player/VideoControls.tsx",
+   "src/components/player/VideoOverlays.tsx"
+  ],
+  "src/components/pomodoro/FloatingPomodoroButton.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/components/ui/sheet.tsx",
+   "src/hooks/usePomodoro.ts",
+   "src/lib/utils.ts"
+  ],
+  "src/components/pomodoro/PomodoroTimer.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/usePomodoro.ts",
+   "src/lib/utils.ts"
+  ],
+  "src/components/profile/AvatarUpload.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useAvatarUpload.ts"
+  ],
+  "src/components/profile/PersonalImpactWidget.tsx": [
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useDepartmentLeaderboard.ts",
+   "src/hooks/useUserXP.ts",
+   "src/hooks/useXPHistory.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/profile/ProfileHeader.tsx": [],
+  "src/components/pwa/PWAInstallPrompt.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/usePWA.ts"
+  ],
+  "src/components/quiz/CourseQuizModal.tsx": [
+   "src/components/quiz/QuizPlayer.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useQuizzes.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/quiz/QuizCard.tsx": [
+   "src/components/quiz/QuizPlayer.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/hooks/useQuizzes.ts"
+  ],
+  "src/components/quiz/QuizPlayer.tsx": [
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/quiz/QuizReview.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/scroll-area.tsx"
+  ],
+  "src/components/rate-limit/ActivityTab.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/table.tsx"
+  ],
+  "src/components/rate-limit/AlertsTab.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/scroll-area.tsx"
+  ],
+  "src/components/rate-limit/BlockedIPsTab.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/scroll-area.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx"
+  ],
+  "src/components/rate-limit/ConfigTab.tsx": [
+   "src/components/ui/card.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx"
+  ],
+  "src/components/rate-limit/RateLimitHeader.tsx": [
+   "src/components/ui/button.tsx"
+  ],
+  "src/components/rate-limit/RateLimitStatsCards.tsx": [
+   "src/components/ui/card.tsx"
+  ],
+  "src/components/rate-limit/WhitelistTab.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/table.tsx"
+  ],
+  "src/components/recommendations/RecommendationsWidget.tsx": [
+   "src/components/PrefetchLink.tsx",
+   "src/components/ui/badge.tsx",
+   "src/hooks/useRecommendations.ts"
+  ],
+  "src/components/security/MFAEnrollmentDialog.tsx": [
+   "src/components/ui/alert.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input-otp.tsx",
+   "src/hooks/useMFA.ts"
+  ],
+  "src/components/security/MFASettingsCard.tsx": [
+   "src/components/security/MFAEnrollmentDialog.tsx",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useMFA.ts"
+  ],
+  "src/components/security/NotificationPermissionBanner.tsx": [
+   "src/components/ui/button.tsx",
+   "src/hooks/usePushNotifications.ts"
+  ],
+  "src/components/security/PasskeyManager.tsx": [
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/usePasskeys.ts"
+  ],
+  "src/components/security/SecurityOverviewTab.tsx": [
+   "src/components/security/MFASettingsCard.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx"
+  ],
+  "src/components/security/SecurityScoreCard.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx"
+  ],
+  "src/components/seo/DynamicSEO.tsx": [],
+  "src/components/share/ShareAchievement.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/hooks/useTelemetry.ts",
+   "src/lib/shareImage.ts"
+  ],
+  "src/components/skeletons/PageSkeletons.tsx": [
+   "src/components/ui/skeleton.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/skeletons/PlaybookDetailSkeleton.tsx": [
+   "src/components/ui/skeleton.tsx"
+  ],
+  "src/components/social/StudyBuddies.tsx": [
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/stats/LearningStats.tsx": [
+   "src/components/ui/card.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/ui/ActionFeedback.tsx": [],
+  "src/components/ui/Banner.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/CacheIndicator.tsx": [
+   "src/components/ui/tooltip.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/FuzzyHighlight.tsx": [],
+  "src/components/ui/KeyboardShortcut.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/ThemeCustomizer.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/sheet.tsx"
+  ],
+  "src/components/ui/accordion.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/alert-dialog.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/alert.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/aspect-ratio.tsx": [],
+  "src/components/ui/avatar.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/badge.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/breadcrumb.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/button.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/calendar.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/card.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/carousel.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/chart.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/checkbox.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/collapsible.tsx": [],
+  "src/components/ui/command.tsx": [
+   "src/components/ui/dialog.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/context-menu.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/dialog.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/drawer.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/dropdown-menu.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/form.tsx": [
+   "src/components/ui/label.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/hover-card.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/input-otp.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/input.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/interactive-button.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/label.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/menubar.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/motion.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/navigation-menu.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/pagination.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/popover.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/progress.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/radio-group.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/resizable.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/scroll-area.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/select.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/separator.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/sheet.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/sidebar.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/separator.tsx",
+   "src/components/ui/sheet.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/tooltip.tsx",
+   "src/hooks/use-mobile.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/skeleton.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/slider.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/sonner.tsx": [],
+  "src/components/ui/stagger-container.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/switch.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/table.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/tabs.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/textarea.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/toast.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/toaster.tsx": [
+   "src/components/ui/toast.tsx",
+   "src/hooks/use-toast.ts"
+  ],
+  "src/components/ui/toggle-group.tsx": [
+   "src/components/ui/toggle.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/toggle.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/tooltip.tsx": [
+   "src/lib/utils.ts"
+  ],
+  "src/components/ui/use-toast.ts": [
+   "src/hooks/use-toast.ts"
+  ],
+  "src/hooks/use-mobile.tsx": [],
+  "src/hooks/use-toast.ts": [
+   "src/components/ui/toast.tsx"
+  ],
+  "src/hooks/useAchievements.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/lib/toastHelpers.ts"
+  ],
+  "src/hooks/useAdminRole.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useAuditLog.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/integrations/supabase/types.ts"
+  ],
+  "src/hooks/useAuth.tsx": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useAvatarUpload.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useCachedQuery.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
+  "src/hooks/useCertificates.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useConfetti.ts": [],
+  "src/hooks/useConfirmExit.ts": [],
+  "src/hooks/useDailyChallenges.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useDebouncedValue.ts": [],
+  "src/hooks/useDepartmentLeaderboard.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useDiscussions.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useFavorites.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/lib/toastHelpers.ts"
+  ],
+  "src/hooks/useFuzzySearch.ts": [],
+  "src/hooks/useGlobalSearch.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useGlobalShortcuts.ts": [],
+  "src/hooks/useGoals.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useInfiniteScroll.ts": [],
+  "src/hooks/useLeaderboard.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useLearningPaths.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useLevelUp.ts": [
+   "src/lib/levelSystem.ts"
+  ],
+  "src/hooks/useMFA.ts": [
+   "src/hooks/use-toast.ts",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useNotes.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useNotifications.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useOnboardingWorkflow.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/usePWA.ts": [],
+  "src/hooks/usePasskeys.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/usePerformance.ts": [],
+  "src/hooks/usePlatformComparison.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/usePlaybookComments.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/usePlaybooks.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/usePomodoro.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/usePushNotifications.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useQuizzes.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useUserXP.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useRateLimitLogs.ts": [
+   "src/hooks/use-toast.ts",
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useRecommendations.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useSecurityAlerts.ts": [
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/integrations/supabase/types.ts"
+  ],
+  "src/hooks/useSessionRotation.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useSkillAssessments.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useSmartRecommendations.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useStreaks.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useStudyCalendar.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useTelemetry.ts": [
+   "src/lib/telemetry.ts"
+  ],
+  "src/hooks/useTrainingVideos.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useUserPreferences.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useUserSessions.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useUserXP.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useVideoKeyboard.ts": [],
+  "src/hooks/useVideoShortcuts.ts": [],
+  "src/hooks/useXPHistory.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/integrations/lovable/index.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/integrations/supabase/client.ts": [
+   "src/integrations/supabase/types.ts"
+  ],
+  "src/integrations/supabase/types.ts": [],
+  "src/lib/continueLearning.ts": [],
+  "src/lib/i18n.ts": [],
+  "src/lib/levelSystem.ts": [],
+  "src/lib/queryClient.ts": [
+   "src/lib/telemetry.ts"
+  ],
+  "src/lib/queryPersister.ts": [],
+  "src/lib/routePrefetch.ts": [],
+  "src/lib/salesEnablementSchemas.ts": [],
+  "src/lib/shareImage.ts": [],
+  "src/lib/telemetry.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/lib/toastHelpers.ts": [],
+  "src/lib/utils.ts": [],
+  "src/main.tsx": [
+   "src/App.tsx",
+   "src/index.css"
+  ],
+  "src/pages/Admin.tsx": [
+   "src/components/admin/AdminCoursesTab.tsx",
+   "src/components/admin/AdminUsersTab.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/AssessmentRunner.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/progress.tsx",
+   "src/components/ui/radio-group.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useSkillAssessments.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/Auth.tsx": [
+   "src/components/PasswordStrengthIndicator.tsx",
+   "src/components/auth/AuthLeftPanel.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/integrations/lovable/index.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/Catalog.tsx": [
+   "src/components/EmptyState.tsx",
+   "src/components/VirtualizedCourseGrid.tsx",
+   "src/components/catalog/CatalogHeader.tsx",
+   "src/components/catalog/CatalogHero.tsx",
+   "src/components/catalog/CategoryFilter.tsx",
+   "src/components/catalog/CourseCard.tsx",
+   "src/components/catalog/LevelFilter.tsx",
+   "src/components/catalog/SearchInput.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/CacheIndicator.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/stagger-container.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useCachedQuery.ts",
+   "src/hooks/useDebouncedValue.ts",
+   "src/hooks/useFuzzySearch.ts"
+  ],
+  "src/pages/CourseDetail.tsx": [
+   "src/components/course/CourseDetailHero.tsx",
+   "src/components/course/CourseDetailSidebar.tsx",
+   "src/components/discussions/CourseDiscussions.tsx",
+   "src/components/player/LessonList.tsx",
+   "src/components/quiz/CourseQuizModal.tsx",
+   "src/components/ui/button.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useQuizzes.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/Dashboard.tsx": [
+   "src/components/AchievementCelebration.tsx",
+   "src/components/AchievementUnlocked.tsx",
+   "src/components/AchievementsGrid.tsx",
+   "src/components/LevelProgress.tsx",
+   "src/components/LevelUpCelebration.tsx",
+   "src/components/StreakDisplay.tsx",
+   "src/components/catalog/CourseCard.tsx",
+   "src/components/dashboard/ContinueLearningWidget.tsx",
+   "src/components/dashboard/DashboardHeader.tsx",
+   "src/components/dashboard/DashboardHero.tsx",
+   "src/components/dashboard/DashboardStatsGrid.tsx",
+   "src/components/dashboard/DueAssessmentsWidget.tsx",
+   "src/components/dashboard/OnboardingWidget.tsx",
+   "src/components/goals/GoalsWidget.tsx",
+   "src/components/onboarding/OnboardingTutorial.tsx",
+   "src/components/onboarding/ProfileCompletionBar.tsx",
+   "src/components/onboarding/WelcomeWizard.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useAchievements.ts",
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useCachedQuery.ts",
+   "src/hooks/useFavorites.ts",
+   "src/hooks/useLevelUp.ts",
+   "src/hooks/useStreaks.ts",
+   "src/hooks/useUserXP.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/continueLearning.ts"
+  ],
+  "src/pages/ForgotPassword.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/use-toast.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/Index.tsx": [
+   "src/components/landing/CTASection.tsx",
+   "src/components/landing/DynamicStats.tsx",
+   "src/components/landing/FeaturedCoursesPreview.tsx",
+   "src/components/landing/FeaturesSection.tsx",
+   "src/components/landing/Footer.tsx",
+   "src/components/landing/Header.tsx",
+   "src/components/landing/HeroSection.tsx",
+   "src/components/landing/MobileStickyCTA.tsx",
+   "src/components/landing/SocialProofCounter.tsx",
+   "src/components/landing/TestimonialsSection.tsx",
+   "src/components/seo/DynamicSEO.tsx"
+  ],
+  "src/pages/Leaderboard.tsx": [
+   "src/components/EmptyState.tsx",
+   "src/components/RankBadge.tsx",
+   "src/components/leaderboard/DepartmentLeaderboard.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useLeaderboard.ts",
+   "src/lib/levelSystem.ts"
+  ],
+  "src/pages/LearningPathDetail.tsx": [
+   "src/components/learning-paths/CertificateModal.tsx",
+   "src/components/learning-paths/LearningPathCourseItem.tsx",
+   "src/components/learning-paths/LearningPathHero.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/use-toast.ts",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useLearningPaths.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/LearningPaths.tsx": [
+   "src/components/EmptyState.tsx",
+   "src/components/VirtualizedLearningPathGrid.tsx",
+   "src/components/learning-paths/LearningPathCard.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/CacheIndicator.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/stagger-container.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useCachedQuery.ts"
+  ],
+  "src/pages/LessonPlayer.tsx": [
+   "src/components/AchievementUnlocked.tsx",
+   "src/components/StreakCelebration.tsx",
+   "src/components/notes/NotesPanel.tsx",
+   "src/components/player/FloatingProgress.tsx",
+   "src/components/player/LessonPlayerHeader.tsx",
+   "src/components/player/LessonPlayerSidebar.tsx",
+   "src/components/player/VideoPlayer.tsx",
+   "src/components/quiz/CourseQuizModal.tsx",
+   "src/components/quiz/QuizCard.tsx",
+   "src/components/ui/button.tsx",
+   "src/hooks/useAchievements.ts",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useCertificates.ts",
+   "src/hooks/useConfetti.ts",
+   "src/hooks/usePomodoro.ts",
+   "src/hooks/useStreaks.ts",
+   "src/hooks/useUserPreferences.ts",
+   "src/hooks/useUserXP.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/NotFound.tsx": [],
+  "src/pages/OnboardingRuntime.tsx": [
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useConfetti.ts",
+   "src/hooks/useOnboardingWorkflow.ts"
+  ],
+  "src/pages/PlaybookDetail.tsx": [
+   "src/components/playbooks/PlaybookComments.tsx",
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/skeletons/PlaybookDetailSkeleton.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/usePlaybooks.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/Playbooks.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/hooks/usePlaybooks.ts"
+  ],
+  "src/pages/Profile.tsx": [
+   "src/components/CertificateCard.tsx",
+   "src/components/EmptyState.tsx",
+   "src/components/LanguageToggle.tsx",
+   "src/components/LevelProgress.tsx",
+   "src/components/profile/ProfileHeader.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useAchievements.ts",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useCertificates.ts",
+   "src/hooks/useUserXP.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/levelSystem.ts"
+  ],
+  "src/pages/RateLimitDashboard.tsx": [
+   "src/components/rate-limit/ActivityTab.tsx",
+   "src/components/rate-limit/AlertsTab.tsx",
+   "src/components/rate-limit/BlockedIPsTab.tsx",
+   "src/components/rate-limit/ConfigTab.tsx",
+   "src/components/rate-limit/RateLimitHeader.tsx",
+   "src/components/rate-limit/RateLimitStatsCards.tsx",
+   "src/components/rate-limit/WhitelistTab.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/hooks/useRateLimitLogs.ts",
+   "src/hooks/useSecurityAlerts.ts"
+  ],
+  "src/pages/ResetPassword.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/hooks/use-toast.ts",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/SalesOnboarding.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/progress.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useOnboardingWorkflow.ts"
+  ],
+  "src/pages/SecurityDashboard.tsx": [
+   "src/components/admin/BlockedLoginAttempts.tsx",
+   "src/components/admin/GeoBlockingManager.tsx",
+   "src/components/admin/IPWhitelistManager.tsx",
+   "src/components/admin/PasswordResetApproval.tsx",
+   "src/components/security/NotificationPermissionBanner.tsx",
+   "src/components/security/PasskeyManager.tsx",
+   "src/components/security/SecurityOverviewTab.tsx",
+   "src/components/security/SecurityScoreCard.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/hooks/useAdminRole.ts",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useMFA.ts",
+   "src/hooks/usePushNotifications.ts",
+   "src/hooks/useSecurityAlerts.ts",
+   "src/hooks/useUserSessions.ts"
+  ],
+  "src/pages/SkillAssessments.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useSkillAssessments.ts"
+  ],
+  "src/pages/VerifyCertificate.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/hooks/useCertificates.ts"
+  ],
+  "src/pages/VideoLibrary.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/hooks/useFuzzySearch.ts",
+   "src/hooks/useTrainingVideos.ts"
+  ],
+  "src/test/accessibility.test.tsx": [],
+  "src/test/aiQuizGenerator.test.ts": [],
+  "src/test/auth.test.tsx": [],
+  "src/test/componentArchitecture.test.ts": [],
+  "src/test/continueLearning.test.ts": [
+   "src/lib/continueLearning.ts"
+  ],
+  "src/test/designSystem.test.ts": [],
+  "src/test/edgeCases.test.ts": [],
+  "src/test/edgeFunctionSecurity.test.ts": [],
+  "src/test/errorBoundary.test.tsx": [
+   "src/components/ErrorBoundary.tsx"
+  ],
+  "src/test/fuzzySearch.test.ts": [],
+  "src/test/globalSearchHook.test.ts": [],
+  "src/test/heroSection.test.tsx": [
+   "src/components/landing/hero/CountUp.tsx",
+   "src/components/landing/hero/HeroStats.tsx"
+  ],
+  "src/test/i18n.test.ts": [
+   "src/lib/i18n.ts"
+  ],
+  "src/test/i18nLocaleEs.test.ts": [
+   "src/lib/i18n.ts"
+  ],
+  "src/test/levelSystem.test.ts": [
+   "src/lib/levelSystem.ts"
+  ],
+  "src/test/levelSystemExtended.test.ts": [
+   "src/lib/levelSystem.ts"
+  ],
+  "src/test/memoization.test.tsx": [
+   "src/components/admin/QuizQuestionCard.tsx",
+   "src/components/player/LessonList.tsx"
+  ],
+  "src/test/navigation.test.tsx": [],
+  "src/test/optimisticFavorites.test.ts": [],
+  "src/test/performanceOptimizations.test.ts": [],
+  "src/test/playbookCommentsHook.test.ts": [],
+  "src/test/routeErrorBoundary.test.tsx": [
+   "src/components/RouteErrorBoundary.tsx"
+  ],
+  "src/test/salesEnablement.test.ts": [],
+  "src/test/salesEnablementSchemas.test.ts": [
+   "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/test/security.test.ts": [],
+  "src/test/setup.ts": [],
+  "src/test/shareImage.test.ts": [
+   "src/lib/shareImage.ts"
+  ],
+  "src/test/shortcutsExpanded.test.ts": [
+   "src/hooks/useGlobalShortcuts.ts"
+  ],
+  "src/test/sprintCoroacao.test.ts": [
+   "src/hooks/useGlobalShortcuts.ts"
+  ],
+  "src/test/sprintExcellence.test.ts": [],
+  "src/test/sprintPerfection.test.ts": [
+   "src/hooks/useGlobalShortcuts.ts"
+  ],
+  "src/test/telemetry.test.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/telemetry.ts"
+  ],
+  "src/test/telemetryHook.test.ts": [
+   "src/hooks/useTelemetry.ts"
+  ],
+  "src/test/toastHelpers.test.ts": [
+   "src/lib/toastHelpers.ts"
+  ],
+  "src/test/useConfetti.test.ts": [
+   "src/hooks/useConfetti.ts"
+  ],
+  "src/test/utils.test.ts": [
+   "src/lib/utils.ts"
+  ],
+  "supabase/functions/ai-playbook-summarize/index.ts": [],
+  "supabase/functions/ai-quiz-generator/index.ts": [],
+  "supabase/functions/approve-password-reset/index.ts": [],
+  "supabase/functions/cleanup-security-logs/index.ts": [],
+  "supabase/functions/detect-new-device/index.ts": [],
+  "supabase/functions/export-user-data/index.ts": [],
+  "supabase/functions/generate-certificate/index.ts": [],
+  "supabase/functions/generate-sitemap/index.ts": [],
+  "supabase/functions/migrate-helper/index.ts": [],
+  "supabase/functions/send-security-alert/index.ts": [],
+  "supabase/functions/verify-mfa/index.ts": [],
+  "supabase/functions/weekly-admin-digest/index.ts": [],
+  "supabase/functions/weekly-admin-digest/index_test.ts": [],
+  "tailwind.config.ts": [],
+  "vite.config.ts": [],
+  "vitest.config.ts": []
+ },
+ "arestas_dinamicas": {
+  "src/App.tsx": [
+   "src/components/CommandPalette.tsx",
+   "src/components/KeyboardShortcutsModal.tsx",
+   "src/components/pwa/PWAInstallPrompt.tsx",
+   "src/components/security/NotificationPermissionBanner.tsx",
+   "src/pages/Admin.tsx",
+   "src/pages/AssessmentRunner.tsx",
+   "src/pages/Auth.tsx",
+   "src/pages/Catalog.tsx",
+   "src/pages/CourseDetail.tsx",
+   "src/pages/Dashboard.tsx",
+   "src/pages/ForgotPassword.tsx",
+   "src/pages/Index.tsx",
+   "src/pages/Leaderboard.tsx",
+   "src/pages/LearningPathDetail.tsx",
+   "src/pages/LearningPaths.tsx",
+   "src/pages/LessonPlayer.tsx",
+   "src/pages/NotFound.tsx",
+   "src/pages/OnboardingRuntime.tsx",
+   "src/pages/PlaybookDetail.tsx",
+   "src/pages/Playbooks.tsx",
+   "src/pages/Profile.tsx",
+   "src/pages/RateLimitDashboard.tsx",
+   "src/pages/ResetPassword.tsx",
+   "src/pages/SalesOnboarding.tsx",
+   "src/pages/SecurityDashboard.tsx",
+   "src/pages/SkillAssessments.tsx",
+   "src/pages/VerifyCertificate.tsx",
+   "src/pages/VideoLibrary.tsx"
+  ],
+  "src/components/PrefetchLink.tsx": [
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/lib/routePrefetch.ts": [
+   "src/pages/Admin.tsx",
+   "src/pages/Auth.tsx",
+   "src/pages/Catalog.tsx",
+   "src/pages/CourseDetail.tsx",
+   "src/pages/Dashboard.tsx",
+   "src/pages/ForgotPassword.tsx",
+   "src/pages/Index.tsx",
+   "src/pages/Leaderboard.tsx",
+   "src/pages/LearningPathDetail.tsx",
+   "src/pages/LearningPaths.tsx",
+   "src/pages/LessonPlayer.tsx",
+   "src/pages/Profile.tsx",
+   "src/pages/RateLimitDashboard.tsx",
+   "src/pages/ResetPassword.tsx",
+   "src/pages/SecurityDashboard.tsx",
+   "src/pages/VerifyCertificate.tsx"
+  ],
+  "src/pages/Admin.tsx": [
+   "src/components/admin/AdminAssessmentsTab.tsx",
+   "src/components/admin/AdminCohortRetention.tsx",
+   "src/components/admin/AdminEngagementHeatmap.tsx",
+   "src/components/admin/AdminPlaybooksTab.tsx",
+   "src/components/admin/AdminStatsTab.tsx",
+   "src/components/admin/AdminTelemetryWidget.tsx",
+   "src/components/admin/AdminVideosTab.tsx",
+   "src/components/admin/AdminWorkflowsTab.tsx",
+   "src/components/admin/LearningPathsManager.tsx",
+   "src/components/admin/PermissionsManager.tsx",
+   "src/components/admin/PlatformAnalytics.tsx",
+   "src/components/admin/QuizStats.tsx"
+  ],
+  "src/pages/Dashboard.tsx": [
+   "src/components/analytics/SkillRadarChart.tsx",
+   "src/components/dashboard/SmartRecommendations.tsx",
+   "src/components/gamification/DailyChallenges.tsx"
+  ],
+  "src/pages/Profile.tsx": [
+   "src/components/AchievementsGrid.tsx",
+   "src/components/XPEvolutionChart.tsx",
+   "src/components/profile/PersonalImpactWidget.tsx"
+  ],
+  "src/test/accessibility.test.tsx": [
+   "src/components/landing/FeaturesSection.tsx",
+   "src/components/landing/Footer.tsx",
+   "src/components/landing/Header.tsx",
+   "src/components/landing/hero/HeroBackground.tsx",
+   "src/components/landing/hero/HeroFloatingElements.tsx"
+  ],
+  "src/test/aiQuizGenerator.test.ts": [
+   "src/components/admin/AIQuizGeneratorModal.tsx"
+  ],
+  "src/test/globalSearchHook.test.ts": [
+   "src/hooks/useGlobalSearch.ts"
+  ],
+  "src/test/navigation.test.tsx": [
+   "src/components/landing/Header.tsx"
+  ],
+  "src/test/optimisticFavorites.test.ts": [
+   "src/hooks/useFavorites.ts"
+  ],
+  "src/test/playbookCommentsHook.test.ts": [
+   "src/hooks/usePlaybookComments.ts"
+  ],
+  "src/test/salesEnablement.test.ts": [
+   "src/components/admin/AdminAssessmentsTab.tsx",
+   "src/components/admin/AdminPlaybooksTab.tsx",
+   "src/components/admin/AdminVideosTab.tsx",
+   "src/components/admin/AdminWorkflowsTab.tsx",
+   "src/components/dashboard/DueAssessmentsWidget.tsx",
+   "src/components/dashboard/OnboardingWidget.tsx",
+   "src/hooks/useOnboardingWorkflow.ts",
+   "src/hooks/usePlaybooks.ts",
+   "src/hooks/useSkillAssessments.ts",
+   "src/hooks/useTrainingVideos.ts",
+   "src/pages/AssessmentRunner.tsx",
+   "src/pages/PlaybookDetail.tsx",
+   "src/pages/Playbooks.tsx",
+   "src/pages/SalesOnboarding.tsx",
+   "src/pages/SkillAssessments.tsx",
+   "src/pages/VideoLibrary.tsx"
+  ],
+  "src/test/sprintCoroacao.test.ts": [
+   "src/lib/i18n.ts"
+  ],
+  "src/test/sprintExcellence.test.ts": [
+   "src/components/ErrorBoundary.tsx",
+   "src/components/admin/AdminTopPlaybooksWidget.tsx",
+   "src/components/admin/AdminVideoEngagementWidget.tsx",
+   "src/lib/queryClient.ts",
+   "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/test/telemetryHook.test.ts": [
+   "src/lib/telemetry.ts"
+  ]
+ }
+}

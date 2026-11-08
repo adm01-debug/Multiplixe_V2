@@ -8,6 +8,11 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
+    "inventario": "node scripts/inventario/gerar-rotas.mjs && node scripts/inventario/gerar-repo.mjs < /dev/null && node scripts/inventario/gerar-schema.mjs && node scripts/ai-context/gerar.mjs",
+    "inventario:check": "node scripts/inventario/gerar-rotas.mjs --check && node scripts/inventario/gerar-repo.mjs --check && node scripts/inventario/gerar-schema.mjs --check",
+    "contexto:ia": "node scripts/ai-context/gerar.mjs",
+    "guard:supabase": "node scripts/ci/supabase-usage-guard.mjs",
+    "guards": "node --test scripts/ci/*.unit.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

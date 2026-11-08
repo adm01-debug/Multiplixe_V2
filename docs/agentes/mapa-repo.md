@@ -1,7 +1,9 @@
 # Mapa do repositório — referência para agentes
 
 Ler quando precisar saber onde fica algo **antes** de buscar por texto. Não há grafo de código aqui
-(`AGENTS.md` > Grafo de código): este arquivo é o índice.
+(`AGENTS.md` > Grafo de código): este arquivo é o índice escrito à mão, e `inventario/` é o índice
+**gerado por script** — comece por `inventario/ia/INDEX.md`, que é refeito do código e não envelhece
+em silêncio. Este arquivo cobre o que script nenhum sabe: por que as coisas estão onde estão.
 
 ## Onde olhar primeiro
 
@@ -13,6 +15,7 @@ Ler quando precisar saber onde fica algo **antes** de buscar por texto. Não há
 | Perímetro do GitHub, commit, merge | `docs/agentes/github-ci.md` |
 | Regra de negócio que o código não deixa óbvio | `docs/agentes/regras-dominio.md` |
 | O que a sessão anterior fez | `progress.txt` (raiz) — escreva no fim da sua |
+| Números do repo, rotas, edges, tabelas, dívida, ciclos de import | `inventario/ia/INDEX.md` e os JSON de `inventario/` (gerados: `npm run inventario`) — tabela em `inventario/README.md` |
 | Contexto histórico (não é fonte de verdade) | `README.md`, `DOCUMENTACAO.md` (22 KB), `PLANO_MELHORIAS.md` (40 KB), `PLANO_IMPLEMENTACAO_PENDENTES.md` (33 KB), `.lovable/plan.md`, `.hermes.md` |
 
 ## Mapa rápido
@@ -28,6 +31,11 @@ Ler quando precisar saber onde fica algo **antes** de buscar por texto. Não há
 | `src/test/` | 35 arquivos, **299 casos** (`it`/`test`), Vitest + jsdom, setup em `src/test/setup.ts`; inclui `security.test.ts`, `edgeFunctionSecurity.test.ts`, `accessibility.test.tsx`, `componentArchitecture.test.ts`, `designSystem.test.ts` |
 | `supabase/functions/` | 12 edge functions Deno (ver `docs/agentes/lovable-vercel.md`) |
 | `supabase/migrations/` | 49 `.sql` aplicados pelo Lovable (ver `docs/agentes/banco.md`) |
+| `scripts/inventario/` | geradores do estado real: `gerar-rotas.mjs`, `gerar-repo.mjs` (edges), `gerar-schema.mjs` (types.ts + replay das migrations), `gerar-banco.mjs` + `banco.sql` (banco ao vivo, só leitura), `mudou-conteudo.mjs` |
+| `scripts/lib/` | parsers reusados: `types-supabase.mjs` (lê o `types.ts` gerado), `migrations-supabase.mjs` (replay de `supabase/migrations/`) |
+| `scripts/ai-context/gerar.mjs` | mapa do código para agentes → `inventario/ia/` (INDEX.md, componentes, hooks, grafo, baseline, manifest) |
+| `scripts/ci/` | guards: `check-claude-md-integrity.mjs`, `supabase-usage-guard.mjs` + `known-violations.json`, e os `*.unit.mjs` (`npm run guards`) |
+| `.github/workflows/` | `guardas.yml` (push/PR) e `inventario-estado-semanal.yml` (segunda 10:23 UTC, abre PR com o inventário novo) |
 | `scripts/ci/` | `check-claude-md-integrity.mjs` (guard destas instruções) — ver `scripts/ci/README.md` |
 | `public/` | PWA (`manifest`, ícones), `favicon.ico`, assets da landing |
 

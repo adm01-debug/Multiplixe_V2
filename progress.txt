@@ -7,3 +7,24 @@ de mexer em qualquer coisa — e como ela sabe o que ja foi feito.
 A tela renderizou sem o warning de DOM nesting. O erro do vídeo 403 é pré-existente e não relacionado ao problema reportado.
 
 Arquivos tocados: src/components/landing/Footer.tsx
+
+## 2026-11-08 22:47 UTC
+Portei do Zapp Web V2 a camada de "scripts autonomos" que mantem o repo sincronizado com o estado
+real, adaptada a este projeto (sem acesso a banco por agente, Lovable commitando na main).
+
+Novo: scripts/lib/ (parsers do types.ts e replay das migrations), scripts/inventario/ (rotas, edges,
+schema declarado, banco ao vivo via Management API/SQL Editor, mudou-conteudo), scripts/ai-context/
+gerar.mjs (mapa do codigo -> inventario/ia/), scripts/ci/supabase-usage-guard.mjs + 5 arquivos de
+teste (71 testes, node --test), .github/workflows/{guardas,inventario-estado-semanal}.yml.
+
+Artefatos commitados: inventario/estado/{rotas,edges,schema-declarado}.json e inventario/ia/*.
+banco.json NAO foi commitado: exige consulta real ao banco, que esta sessao nao tem.
+
+Achados reais do proprio inventario (nao corrigidos, nao foi o pedido):
+- user_roles esta no types.ts e nenhuma migration do repo a cria (DDL aplicado fora das migrations).
+- '/aula' em src/lib/routePrefetch.ts e chave morta: prefetchRouteChunk casa o caminho inteiro ou o
+  1o segmento, e a rota e /curso/:slug/aula/:lessonId -> nunca aquece nada.
+- 5 edge functions sem nenhum chamador no repo; 4 tabelas e 7 funcoes expostas sem uso no codigo.
+
+Pendente do dono: mergear a PR (contem .github/workflows/, que por AGENTS.md exige o dono) e, se
+quiser banco.json automatico, criar o secret SUPABASE_ACCESS_TOKEN no repo.

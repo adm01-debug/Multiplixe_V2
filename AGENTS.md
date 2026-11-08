@@ -63,7 +63,8 @@ Responda sempre em PT-BR.
   **Não há hook de commit neste repo** (sem `.husky/`): a convenção vale por disciplina, ninguém barra.
 - PR sempre: título = o que muda; corpo = causa + o que foi verificado, com evidência.
 - Mergeie sem aprovação (squash, apague a branch) PR sua pronta: sem conflito, escopo comum (front, edge
-  function, docs, config). **Não há CI** — a prova é o que você rodou local, citada na PR.
+  function, docs, config). O único CI é `.github/workflows/guardas.yml` (testes dos geradores, uso do
+  Supabase, integridade das instruções) — build, lint e typecheck continuam sendo prova local, citada na PR.
   **Deixe aberta e chame o dono**: DDL/migration; segredos e rotação de chave; criar `.github/workflows/`;
   deleção de dado; arquitetura ou custo; conflito com PR de outro agente.
 - Conflito: rebase em `main`; `--force-with-lease` só na sua branch.
@@ -98,16 +99,29 @@ Responda sempre em PT-BR.
   (`supabase/functions/` Deno, `supabase/migrations/`), Vitest + Testing Library (`src/test/`), Node 24 no Vercel.
 - `npm install` (há `package-lock.json`; `bun.lock`/`bun.lockb` também estão versionados — não troque de
   gerenciador no mesmo PR).
-- **`npm test` não existe** (`package.json` só tem `dev`, `build`, `build:dev`, `lint`, `preview`):
-  use `npx vitest run <caminho>`. Typecheck: `npx tsc --noEmit -p tsconfig.app.json` (`strict: false`,
+- **`npm test` não existe** (`package.json` tem `dev`, `build`, `build:dev`, `lint`, `preview` e os de
+  inventário/guards abaixo): use `npx vitest run <caminho>`. Typecheck: `npx tsc --noEmit -p tsconfig.app.json` (`strict: false`,
   `noImplicitAny: false` — erro de tipo novo é seu, não do config). Lint: `npx eslint <arquivos>`.
   Build: `npm run build`.
 - `@playwright/test` está em `dependencies` mas **não há E2E** (sem `e2e/`, sem `playwright.config.*`):
   não prometa teste de ponta a ponta.
-- Antes de qualquer tarefa: `progress.txt`, `docs/agentes/mapa-repo.md` e, se o tema for banco/deploy/regra,
-  o `docs/agentes/<tema>.md` correspondente.
+- Inventário e guards (só Node, sem dependência): `npm run inventario` (refaz `inventario/`),
+  `npm run inventario:check`, `npm run contexto:ia`, `npm run guard:supabase`, `npm run guards`
+  (`node --test scripts/ci/*.unit.mjs`); com `INVENTARIO_CHECK=1` os testes também cobram o frescor do
+  inventário commitado. Detalhe em `inventario/README.md` e `scripts/ci/README.md`.
+- Antes de qualquer tarefa: `inventario/ia/INDEX.md`, `progress.txt`, `docs/agentes/mapa-repo.md` e, se o
+  tema for banco/deploy/regra, o `docs/agentes/<tema>.md` correspondente.
 
 ## Grafo de código
-Este repo **não tem grafo** (sem `graphify`, sem `graphify-out/`, sem hook de sessão). Até existir, a ordem é:
-`docs/agentes/mapa-repo.md` → `rg`/`grep` com caminho restrito (`src/pages`, `src/hooks`, `supabase/functions`)
-→ leitura por faixa de linhas. Não varra o repo inteiro para achar uma função: 373 arquivos em `src/`.
+Não há `graphify`, mas há **inventário gerado por script** — use antes de `grep`. A ordem é:
+`inventario/ia/INDEX.md` (mapa do repo, números, rotas, edges, alertas de banco) → o JSON que responde a
+pergunta (`inventario/estado/rotas.json`, `edges.json`, `schema-declarado.json`, `inventario/ia/hooks.json`,
+`componentes.json`, `grafo.json`) → `docs/agentes/mapa-repo.md` → `rg`/`grep` com caminho restrito →
+leitura por faixa de linhas. Tabela completa em `inventario/README.md`. Não varra o repo inteiro para achar
+uma função: 373 arquivos em `src/`.
+- Mudou rota, edge function, migration ou import? Regere com `npm run inventario` e commite junto; o
+  inventário desatualizado é pior que nenhum. Quem cobra frescor é o cron semanal
+  (`.github/workflows/inventario-estado-semanal.yml`), não o check de PR.
+- `inventario/estado/banco.json` (banco ao vivo) só existe depois de consulta real: sem
+  `SUPABASE_ACCESS_TOKEN` no Actions, é o dono rodando `scripts/inventario/banco.sql` no SQL Editor e
+  `node scripts/inventario/gerar-banco.mjs --entrada <arquivo>`. Nunca invente número de banco.

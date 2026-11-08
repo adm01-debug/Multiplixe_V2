@@ -1,0 +1,280 @@
+{
+  "format_version": 1,
+  "fonte": "scripts/inventario/gerar-repo.mjs (le supabase/functions/, src/, supabase/migrations/ e supabase/config.toml)",
+  "resumo": {
+    "edges": 12,
+    "sem_chamador_no_repo": 5,
+    "segredos_distintos": 6
+  },
+  "sem_chamador_no_repo": [
+    "cleanup-security-logs",
+    "generate-sitemap",
+    "migrate-helper",
+    "send-security-alert",
+    "verify-mfa"
+  ],
+  "segredos_lidos_pelas_edges": [
+    "LOVABLE_API_KEY",
+    "RESEND_API_KEY",
+    "SUPABASE_ANON_KEY",
+    "SUPABASE_DB_URL",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+  ],
+  "edge_functions": {
+    "ai-playbook-summarize": {
+      "linhas": 76,
+      "segredos_lidos": [
+        "LOVABLE_API_KEY"
+      ],
+      "tabelas": [],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [
+          "src/pages/PlaybookDetail.tsx"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
+    "ai-quiz-generator": {
+      "linhas": 141,
+      "segredos_lidos": [
+        "LOVABLE_API_KEY",
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [],
+      "rpcs": [
+        "has_role"
+      ],
+      "chamada_em": {
+        "src": [
+          "src/components/admin/AIQuizGeneratorModal.tsx"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
+    "approve-password-reset": {
+      "linhas": 178,
+      "segredos_lidos": [
+        "RESEND_API_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "password_reset_requests",
+        "user_roles"
+      ],
+      "rpcs": [
+        "create_notification"
+      ],
+      "chamada_em": {
+        "src": [
+          "src/components/admin/PasswordResetApproval.tsx"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
+    "cleanup-security-logs": {
+      "linhas": 40,
+      "segredos_lidos": [
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [],
+      "rpcs": [
+        "cleanup_old_security_logs"
+      ],
+      "chamada_em": {
+        "src": [],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": true
+    },
+    "detect-new-device": {
+      "linhas": 266,
+      "segredos_lidos": [
+        "RESEND_API_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "known_devices",
+        "security_alerts"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [
+          "src/hooks/useAuth.tsx"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
+    "export-user-data": {
+      "linhas": 64,
+      "segredos_lidos": [
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "certificates",
+        "notifications",
+        "profiles",
+        "user_achievements",
+        "user_course_progress"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [
+          "src/pages/Profile.tsx"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
+    "generate-certificate": {
+      "linhas": 211,
+      "segredos_lidos": [
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "user_course_progress",
+        "user_quiz_attempts"
+      ],
+      "rpcs": [
+        "issue_certificate"
+      ],
+      "chamada_em": {
+        "src": [
+          "src/hooks/useCertificates.ts"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
+    "generate-sitemap": {
+      "linhas": 72,
+      "segredos_lidos": [
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "courses",
+        "learning_paths",
+        "playbooks",
+        "training_videos"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": true
+    },
+    "migrate-helper": {
+      "linhas": 35,
+      "segredos_lidos": [
+        "SUPABASE_DB_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": true
+    },
+    "send-security-alert": {
+      "linhas": 121,
+      "segredos_lidos": [
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "notifications",
+        "security_alerts",
+        "user_roles"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": true
+    },
+    "verify-mfa": {
+      "linhas": 96,
+      "segredos_lidos": [
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "user_mfa_settings"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": false,
+      "sem_chamador": true
+    },
+    "weekly-admin-digest": {
+      "linhas": 280,
+      "segredos_lidos": [
+        "RESEND_API_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "courses",
+        "profiles",
+        "user_course_progress",
+        "user_lesson_progress",
+        "user_roles",
+        "user_streaks",
+        "user_xp_history"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [
+          "src/components/admin/AdminStatsTab.tsx"
+        ],
+        "migrations": [
+          "supabase/migrations/20260418134642_ab948a1e-eb00-40a8-aadc-54aede6157df.sql"
+        ],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    }
+  }
+}

@@ -1,0 +1,341 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
+ "format_version": 1,
+ "git": {
+  "commit": "b5d3ada8382283fcc4cc6a2eca7c706ca80e547a",
+  "branch": "claude/feat-inventario-estado-261108-2221",
+  "data_commit": "2026-11-08T22:47:48+00:00",
+  "ultimos_commits": [
+   "b5d3ada feat(inventario): scripts autonomos de estado real portados do Zapp Web V2",
+   "612fa03 fix(agentes): corrige gaps achados na auditoria de 5 agentes (#3)",
+   "f11748a docs(agentes): registra preview deploy por branch no Vercel (#2)",
+   "decacef chore(agentes): adota padrão AGENTS.md + docs/agentes (#1)",
+   "7128709 VibeDeploy: O app deu este erro em / quando eu usei: Warning: validateDOMNesting(. (3 arquivos)",
+   "580966a Visual edit in Lovable",
+   "3bfe26b chore(hermes): adiciona .hermes.md (regras da casa Hermes)",
+   "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)",
+   "2a8e3e7 merge: master para main",
+   "b81fdbf feat: Migração Banco Lovable para Supabase Multiplixe"
+  ],
+  "arquivos_mais_mudados_90d": [
+   {
+    "arquivo": "AGENTS.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "docs/agentes/lovable-vercel.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "docs/agentes/mapa-repo.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "scripts/ci/README.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "supabase/config.toml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "docs/agentes/banco.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "docs/agentes/github-ci.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "package.json",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "progress.txt",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/ci/check-claude-md-integrity.mjs",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "src/components/landing/Footer.tsx",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "src/index.css",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "supabase/.temp/linked-project.json",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "supabase/functions/ai-playbook-summarize/index.ts",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "supabase/functions/ai-quiz-generator/index.ts",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "supabase/functions/export-user-data/index.ts",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "supabase/functions/migrate-helper/index.ts",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".agents/skills/multiplixe-v2/agents/openai.yaml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".agents/skills/multiplixe-v2/SKILL.md",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".claude/scheduled_tasks.lock",
+    "mudancas": 1
+   }
+  ]
+ },
+ "contagens": {
+  "arquivos": 478,
+  "arquivos_de_codigo": 401,
+  "linhas_de_codigo": 55217,
+  "componentes": 218,
+  "hooks": 99,
+  "paginas": 24,
+  "testes": 36,
+  "edge_functions": 12,
+  "rotas": 24,
+  "tabelas": 61,
+  "migrations": 49
+ },
+ "por_pasta": {
+  ".github/workflows": 2,
+  "AGENTS.md": 1,
+  "CLAUDE.md": 1,
+  "DOCUMENTACAO.md": 1,
+  "PLANO_IMPLEMENTACAO_PENDENTES.md": 1,
+  "PLANO_MELHORIAS.md": 1,
+  "README.md": 1,
+  "bun.lock": 1,
+  "bun.lockb": 1,
+  "components.json": 1,
+  "docs/agentes": 5,
+  "eslint.config.js": 1,
+  "index.html": 1,
+  "package-lock.json": 1,
+  "package.json": 1,
+  "postcss.config.js": 1,
+  "progress.txt": 1,
+  "scripts/ai-context": 1,
+  "scripts/ci": 10,
+  "scripts/lib": 2,
+  "src/App.tsx": 1,
+  "src/components": 243,
+  "src/hooks": 53,
+  "src/index.css": 1,
+  "src/integrations": 3,
+  "src/lib": 11,
+  "src/main.tsx": 1,
+  "src/pages": 24,
+  "src/test": 36,
+  "src/vite-env.d.ts": 1,
+  "supabase/config.toml": 1,
+  "supabase/functions": 13,
+  "supabase/migrations": 49,
+  "tailwind.config.ts": 1,
+  "tsconfig.app.json": 1,
+  "tsconfig.json": 1,
+  "tsconfig.node.json": 1,
+  "vite.config.ts": 1,
+  "vitest.config.ts": 1
+ },
+ "maiores_arquivos": [
+  {
+   "arquivo": "src/integrations/supabase/types.ts",
+   "linhas": 2823
+  },
+  {
+   "arquivo": "src/components/skeletons/PageSkeletons.tsx",
+   "linhas": 676
+  },
+  {
+   "arquivo": "src/components/ui/sidebar.tsx",
+   "linhas": 638
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linhas": 470
+  },
+  {
+   "arquivo": "src/components/discussions/CourseDiscussions.tsx",
+   "linhas": 383
+  },
+  {
+   "arquivo": "src/components/admin/PlatformAnalytics.tsx",
+   "linhas": 376
+  },
+  {
+   "arquivo": "src/components/gamification/DailyChallenges.tsx",
+   "linhas": 376
+  },
+  {
+   "arquivo": "src/components/analytics/SkillRadarChart.tsx",
+   "linhas": 359
+  },
+  {
+   "arquivo": "src/components/admin/IPWhitelistManager.tsx",
+   "linhas": 354
+  },
+  {
+   "arquivo": "src/components/admin/LearningPathsManager.tsx",
+   "linhas": 351
+  },
+  {
+   "arquivo": "src/components/onboarding/OnboardingTutorial.tsx",
+   "linhas": 344
+  },
+  {
+   "arquivo": "src/components/landing/FeaturesSection.tsx",
+   "linhas": 343
+  },
+  {
+   "arquivo": "src/components/EmptyState.tsx",
+   "linhas": 339
+  },
+  {
+   "arquivo": "src/pages/Dashboard.tsx",
+   "linhas": 335
+  },
+  {
+   "arquivo": "src/components/admin/CourseForm.tsx",
+   "linhas": 331
+  },
+  {
+   "arquivo": "src/components/admin/LearningPathCoursesManager.tsx",
+   "linhas": 322
+  },
+  {
+   "arquivo": "src/components/gamification/XPAnimations.tsx",
+   "linhas": 320
+  },
+  {
+   "arquivo": "src/components/quiz/CourseQuizModal.tsx",
+   "linhas": 314
+  },
+  {
+   "arquivo": "src/components/admin/PermissionsManager.tsx",
+   "linhas": 312
+  },
+  {
+   "arquivo": "src/components/gamification/WeeklyGoalTracker.tsx",
+   "linhas": 309
+  },
+  {
+   "arquivo": "src/components/feedback/FeedbackWidget.tsx",
+   "linhas": 306
+  },
+  {
+   "arquivo": "src/components/ui/chart.tsx",
+   "linhas": 304
+  },
+  {
+   "arquivo": "src/components/admin/LessonsManager.tsx",
+   "linhas": 302
+  },
+  {
+   "arquivo": "src/components/PrefetchLink.tsx",
+   "linhas": 300
+  },
+  {
+   "arquivo": "src/components/quiz/QuizPlayer.tsx",
+   "linhas": 299
+  }
+ ],
+ "qualidade": {
+  "any": 2,
+  "console_log": 14,
+  "ts_ignore": 1,
+  "eslint_disable": 2,
+  "todos": 5,
+  "arquivos_acima_500_linhas": [
+   "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/sidebar.tsx",
+   "src/integrations/supabase/types.ts"
+  ]
+ },
+ "todos": [
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 11,
+   "texto": "*   baseline.json     numeros do repo, qualidade (any/console.log/@ts-ignore/TODO), git, alertas"
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 103,
+   "texto": "todo: /\\b(TODO|FIXME|HACK|XXX)\\b/g,"
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 367,
+   "texto": "'| numeros do repo, divida, TODO, git | `inventario/ia/baseline.json` |', '');"
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 380,
+   "texto": "+ `\\`eslint-disable\\`: ${q.eslint_disable} · TODO/FIXME: ${q.todos} · arquivos > 500 linhas: ${q.arquivos_acima_500_linhas?.length ?? 0}`, '"
+  },
+  {
+   "arquivo": "scripts/ci/ai-context.unit.mjs",
+   "linha": 34,
+   "texto": "// TODO: paginar"
+  }
+ ],
+ "env": {
+  "declaradas_no_env": [
+   "VITE_SUPABASE_PROJECT_ID",
+   "VITE_SUPABASE_PUBLISHABLE_KEY",
+   "VITE_SUPABASE_URL"
+  ],
+  "usadas_no_codigo": [
+   "LOVABLE_API_KEY",
+   "RESEND_API_KEY",
+   "SUPABASE_ANON_KEY",
+   "SUPABASE_DB_URL",
+   "SUPABASE_SERVICE_ROLE_KEY",
+   "SUPABASE_URL",
+   "VITE_ALGO",
+   "VITE_SUPABASE_PUBLISHABLE_KEY",
+   "VITE_SUPABASE_URL"
+  ],
+  "usadas_mas_nao_declaradas": [
+   "VITE_ALGO"
+  ]
+ },
+ "scripts_npm": {
+  "build": "vite build",
+  "build:dev": "vite build --mode development",
+  "contexto:ia": "node scripts/ai-context/gerar.mjs",
+  "dev": "vite",
+  "guard:supabase": "node scripts/ci/supabase-usage-guard.mjs",
+  "guards": "node --test scripts/ci/*.unit.mjs",
+  "inventario": "node scripts/inventario/gerar-rotas.mjs && node scripts/inventario/gerar-repo.mjs < /dev/null && node scripts/inventario/gerar-schema.mjs && node scripts/ai-context/gerar.mjs",
+  "inventario:check": "node scripts/inventario/gerar-rotas.mjs --check && node scripts/inventario/gerar-repo.mjs --check && node scripts/inventario/gerar-schema.mjs --check",
+  "lint": "eslint .",
+  "preview": "vite preview"
+ },
+ "alertas": {
+  "componentes_orfaos": 45,
+  "componentes_com_nome_duplicado": 3,
+  "hooks_sem_uso": 28,
+  "ciclos_de_import": 0,
+  "problemas_de_rota": 1,
+  "edges_sem_chamador": 5,
+  "alertas_de_schema": 4
+ },
+ "erros_do_gerador": []
+}

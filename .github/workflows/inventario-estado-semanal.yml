@@ -1,0 +1,129 @@
+# docs:
+#   gatilho: agendado (seg 10:23 UTC) e dispatch manual
+#   prova: inventario/estado e inventario/ia regerados do codigo (e do banco, se houver token)
+#   falha: o job fica vermelho e o inventario nao e atualizado
+#   avisa: PR automation/inventario-estado com o inventario novo
+name: Inventário do estado real (semanal)
+
+# Refaz inventario/ (rotas, edge functions, schema declarado, contexto para IA) a partir do codigo
+# e, se o secret SUPABASE_ACCESS_TOKEN existir, tambem inventario/estado/banco.json a partir do
+# banco oficial (somente leitura, Management API). Abre PR se o CONTEUDO mudou.
+#
+# Nunca faz push direto na main — entrega via PR na branch automation/inventario-estado.
+# Os geradores nao usam nenhuma dependencia npm: so Node e git. Por isso nao ha install aqui.
+#
+# Secret opcional:
+#   SUPABASE_ACCESS_TOKEN — personal access token do Supabase, usado SO em leitura:
+#     POST /v1/projects/gyqtndkjvwvtkfeaxtlv/database/query/read-only e GET /functions.
+#     Sem ele o job roda igual e banco.json simplesmente nao e gerado.
+
+on:
+  schedule:
+    - cron: '23 10 * * 1' # segunda, 10:23 UTC (07:23 BRT) — fora do minuto 0, onde a fila do GitHub concentra
+  workflow_dispatch:
+
+concurrency:
+  group: inventario-estado-semanal
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  gerar:
+    name: Refazer inventario/
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write       # branch do PR
+      pull-requests: write  # abrir/atualizar o PR
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 120 # baseline.json usa git log de 90 dias
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+
+      - name: Inventário do código (rotas, edges, schema declarado)
+        run: |
+          node scripts/inventario/gerar-rotas.mjs
+          node scripts/inventario/gerar-repo.mjs < /dev/null
+          node scripts/inventario/gerar-schema.mjs
+
+      - name: Contexto para agentes de IA
+        run: node scripts/ai-context/gerar.mjs
+
+      - name: Inventário do banco (somente leitura, se houver token)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::warning::SUPABASE_ACCESS_TOKEN ausente: banco.json nao sera gerado (o resto do inventario roda)."
+            exit 0
+          fi
+          node scripts/inventario/gerar-banco.mjs
+
+      - name: Provar que os geradores continuam corretos
+        run: node --test scripts/ci/*.unit.mjs
+
+      - name: Decidir se vale PR
+        id: mudou
+        # Compara o JSON sem os carimbos de data e sem a telemetria rolante de 7 dias, arquivo a
+        # arquivo contra o HEAD. Filtrar linhas do diff nao serve: a data esta dentro do JSON.
+        run: |
+          valor="$(node scripts/inventario/mudou-conteudo.mjs \
+            inventario/estado/banco.json \
+            inventario/estado/rotas.json \
+            inventario/estado/edges.json \
+            inventario/estado/schema-declarado.json \
+            inventario/ia/INDEX.md \
+            inventario/ia/componentes.json \
+            inventario/ia/hooks.json \
+            inventario/ia/grafo.json \
+            inventario/ia/baseline.json)"
+          echo "valor=$valor" >> "$GITHUB_OUTPUT"
+          if [ "$valor" != "true" ]; then
+            echo "Inventário sem mudança de conteúdo — nenhum PR a abrir."
+          fi
+
+      - name: Abrir ou atualizar PR do inventário
+        id: pull-request
+        if: steps.mudou.outputs.valor == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ github.token }}
+          base: main
+          branch: automation/inventario-estado
+          delete-branch: true
+          commit-message: 'chore(inventario): estado real regerado [auto]'
+          title: 'chore(inventario): estado real do projeto (semanal)'
+          body: |
+            Inventário refeito automaticamente por `.github/workflows/inventario-estado-semanal.yml`
+            a partir do código (e do banco oficial, em leitura, quando há token).
+
+            - main de origem: `${{ github.sha }}`
+            - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Só arquivos em `inventario/`. Se algo aqui divergir do que você mediu, a fonte é o
+            gerador, não o arquivo: veja `inventario/README.md`.
+          labels: inventario
+          add-paths: |
+            inventario/estado/*.json
+            inventario/ia/*
+
+      - name: Upload do inventário
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: inventario-${{ github.run_id }}
+          path: inventario/
+          retention-days: 14

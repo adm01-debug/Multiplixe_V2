@@ -55,7 +55,9 @@ import; **não troque de gerenciador numa PR de outro assunto**.
 | `/aula/:lessonId` | `/curso/:slug/aula/:lessonId` (`src/App.tsx:123`) |
 | `/trilhas/:slug` | `/trilha/:slug` (`src/App.tsx:127`) |
 | `/verificar-certificado/:code` | `/verificar-certificado` **sem parâmetro** (`src/App.tsx:131`) |
+| `/avaliacao/:assessmentId` | `/avaliacao/:id` (`src/App.tsx:138`) |
 | `/rate-limit` | `/admin/security` (`RateLimitDashboard`) e `/seguranca` (`SecurityDashboard`) |
+| "Zero `any`" | 2 ocorrências em código de produção: `src/components/quiz/CourseQuizModal.tsx:36` (`useState<any>`), `src/components/discussions/CourseDiscussions.tsx:47` (`Promise<any>`) |
 | `npm test` | script não existe |
 | Estado com **Zustand** | não há `zustand` no `package.json`; estado é React Query + hooks |
 | "320+ testes" | 299 casos em 35 arquivos (`grep` por `it(`/`test(`) |

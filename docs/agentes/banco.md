@@ -52,7 +52,8 @@ Consequências práticas:
 
 ## Estrutura declarada (de `types.ts`)
 
-- **61 tabelas**, **1 view** (`quiz_options_public`), **32 funções**, 0 enums.
+- **61 tabelas**, **1 view** (`quiz_options_public`), **32 funções**, **1 enum**
+  (`app_role: "admin" | "user" | "gestor"`, `types.ts:2690-2692` e `Constants.public.Enums`).
 - Domínios: conteúdo (`courses`, `lessons`, `learning_paths`, `learning_path_courses`, `playbooks`,
   `training_videos`, `skill_assessments`, `quizzes`/`quiz_questions`/`quiz_options`), progresso
   (`user_course_progress`, `user_lesson_progress`, `user_learning_path_progress`, `user_quiz_attempts`,

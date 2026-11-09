@@ -1,14 +1,14 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-09T00:37:28.833Z",
- "commit": "5fa27f1c12edce13f1f909b98e340f33de76215a",
+ "gerado_em": "2026-11-09T00:38:52.609Z",
+ "commit": "aa9184f368b80f0ceba46b04ae46cfdc0dd5f96d",
  "branch": "claude/fix-workflow-gating-baseline-261109-1200",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.4",
  "arquivos": {
-  "INDEX.md": "74e32850a8d79cbc",
-  "baseline.json": "86fa0df3b9cecdc0",
+  "INDEX.md": "9277df39016df347",
+  "baseline.json": "fbc0b151ddaf1f1a",
   "componentes.json": "22c6b1772a853f35",
   "grafo.json": "ea54f46d4ff6e6ca",
   "hooks.json": "f3ce3a0942438908"

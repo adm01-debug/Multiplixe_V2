@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "5fa27f1c12edce13f1f909b98e340f33de76215a",
+  "commit": "aa9184f368b80f0ceba46b04ae46cfdc0dd5f96d",
   "branch": "claude/fix-workflow-gating-baseline-261109-1200",
-  "data_commit": "2026-11-09T00:34:50+00:00",
+  "data_commit": "2026-11-09T00:37:42+00:00",
   "ultimos_commits": [
+   "aa9184f chore(inventario): regera inventario/ia apos execucao dos agentes de validacao",
    "5fa27f1 fix(inventario): remove INDEX.md e baseline.json do gating do cron semanal",
    "85a4d01 feat(inventario): scripts autonomos de estado real portados do Zapp Web V2 (#4)",
    "612fa03 fix(agentes): corrige gaps achados na auditoria de 5 agentes (#3)",
@@ -14,8 +15,7 @@
    "7128709 VibeDeploy: O app deu este erro em / quando eu usei: Warning: validateDOMNesting(. (3 arquivos)",
    "580966a Visual edit in Lovable",
    "3bfe26b chore(hermes): adiciona .hermes.md (regras da casa Hermes)",
-   "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)",
-   "2a8e3e7 merge: master para main"
+   "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -28,6 +28,18 @@
    },
    {
     "arquivo": "docs/agentes/mapa-repo.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "inventario/ia/baseline.json",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "inventario/ia/INDEX.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "inventario/ia/manifest.json",
     "mudancas": 3
    },
    {
@@ -51,19 +63,7 @@
     "mudancas": 2
    },
    {
-    "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 2
-   },
-   {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "inventario/ia/manifest.json",
     "mudancas": 2
    },
    {

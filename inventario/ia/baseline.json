@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "85a4d018e96210572c5fb0a0775a82e45d0389f2",
+  "commit": "5fa27f1c12edce13f1f909b98e340f33de76215a",
   "branch": "claude/fix-workflow-gating-baseline-261109-1200",
-  "data_commit": "2026-11-08T19:56:33-03:00",
+  "data_commit": "2026-11-09T00:34:50+00:00",
   "ultimos_commits": [
+   "5fa27f1 fix(inventario): remove INDEX.md e baseline.json do gating do cron semanal",
    "85a4d01 feat(inventario): scripts autonomos de estado real portados do Zapp Web V2 (#4)",
    "612fa03 fix(agentes): corrige gaps achados na auditoria de 5 agentes (#3)",
    "f11748a docs(agentes): registra preview deploy por branch no Vercel (#2)",
@@ -14,8 +15,7 @@
    "580966a Visual edit in Lovable",
    "3bfe26b chore(hermes): adiciona .hermes.md (regras da casa Hermes)",
    "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)",
-   "2a8e3e7 merge: master para main",
-   "b81fdbf feat: Migração Banco Lovable para Supabase Multiplixe"
+   "2a8e3e7 merge: master para main"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -39,11 +39,31 @@
     "mudancas": 3
    },
    {
+    "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 2
+   },
+   {
     "arquivo": "docs/agentes/banco.md",
     "mudancas": 2
    },
    {
     "arquivo": "docs/agentes/github-ci.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "inventario/ia/baseline.json",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "inventario/ia/hooks.json",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "inventario/ia/INDEX.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "inventario/ia/manifest.json",
     "mudancas": 2
    },
    {
@@ -55,7 +75,15 @@
     "mudancas": 2
    },
    {
+    "arquivo": "scripts/ci/ai-context.unit.mjs",
+    "mudancas": 2
+   },
+   {
     "arquivo": "scripts/ci/check-claude-md-integrity.mjs",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/ci/inventario-mudou.unit.mjs",
     "mudancas": 2
    },
    {
@@ -69,34 +97,6 @@
    {
     "arquivo": "supabase/.temp/linked-project.json",
     "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/ai-playbook-summarize/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/ai-quiz-generator/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/export-user-data/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/migrate-helper/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": ".agents/skills/multiplixe-v2/agents/openai.yaml",
-    "mudancas": 1
-   },
-   {
-    "arquivo": ".agents/skills/multiplixe-v2/SKILL.md",
-    "mudancas": 1
-   },
-   {
-    "arquivo": ".claude/scheduled_tasks.lock",
-    "mudancas": 1
    }
   ]
  },

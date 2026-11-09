@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `85a4d018e96210572c5fb0a0775a82e45d0389f2` · branch `claude/fix-workflow-gating-baseline-261109-1200` · 2026-11-08T19:56:33-03:00
+Commit: `5fa27f1c12edce13f1f909b98e340f33de76215a` · branch `claude/fix-workflow-gating-baseline-261109-1200` · 2026-11-09T00:34:50+00:00
 
 ## Como usar
 
@@ -123,11 +123,11 @@ Commit: `85a4d018e96210572c5fb0a0775a82e45d0389f2` · branch `claude/fix-workflo
 - `docs/agentes/mapa-repo.md` (3)
 - `scripts/ci/README.md` (3)
 - `supabase/config.toml` (3)
+- `.github/workflows/inventario-estado-semanal.yml` (2)
 - `docs/agentes/banco.md` (2)
 - `docs/agentes/github-ci.md` (2)
-- `package.json` (2)
-- `progress.txt` (2)
-- `scripts/ci/check-claude-md-integrity.mjs` (2)
+- `inventario/ia/baseline.json` (2)
+- `inventario/ia/hooks.json` (2)
 
 ## Scripts npm
 

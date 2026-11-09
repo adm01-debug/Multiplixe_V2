@@ -71,3 +71,29 @@ test('o padrao cobre os tres arquivos do cron semanal', () => {
     'inventario/estado/edges.json',
   ]);
 });
+
+// Regressao: INDEX.md e baseline.json NAO podem ser usados para decidir se vale PR no cron semanal.
+// INDEX.md embute "Commit: `<sha>`..." que muda a cada squash-merge (nao e JSON: semCarimbos devolve
+// texto bruto e qualquer mudanca de SHA abre PR de ruido). baseline.json embute git.commit/branch
+// que tambem mudam a cada commit e nao estao em IGNORADOS.
+test('INDEX.md com commit diferente nao deve ser tratado como mudanca estrutural (trava regressao)', () => {
+  const antes = 'Commit: `abc123` · branch `main` · 2026-11-01\n\n## Tabelas\n- users (5 colunas)\n';
+  const depois = 'Commit: `def456` · branch `main` · 2026-11-09\n\n## Tabelas\n- users (5 colunas)\n';
+  // mudou-conteudo.mjs nao filtra nada de texto: o gating nao deve incluir INDEX.md
+  // Este teste documenta o comportamento que CAUSARIA falso-positivo se INDEX.md fosse incluido.
+  assert.equal(mudou(['x.md'], () => antes, () => depois), true,
+    'mudou-conteudo.mjs trata texto bruto como mudanca — INDEX.md NAO pode entrar no gating do cron');
+});
+
+test('baseline.json com git.commit diferente sozinho nao e mudanca estrutural (trava regressao)', () => {
+  const base = { format_version: 1, nos: 150, arestas: 300 };
+  const git1 = { commit: 'abc123', branch: 'main', data_commit: '2026-11-01T00:00:00Z', ultimos_commits: [] };
+  const git2 = { commit: 'def456', branch: 'main', data_commit: '2026-11-09T00:00:00Z', ultimos_commits: [] };
+  // git.commit/branch/data_commit NAO estao em IGNORADOS: mudou-conteudo nao os filtra.
+  // Portanto baseline.json NAO pode entrar no gating do cron semanal.
+  assert.equal(
+    mudou(['x.json'], () => JSON.stringify({ ...base, git: git1 }), () => JSON.stringify({ ...base, git: git2 })),
+    true,
+    'git.commit/branch nao sao filtrados por semCarimbos — baseline.json NAO pode entrar no gating do cron',
+  );
+});

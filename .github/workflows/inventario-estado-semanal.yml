@@ -79,17 +79,21 @@ jobs:
         id: mudou
         # Compara o JSON sem os carimbos de data e sem a telemetria rolante de 7 dias, arquivo a
         # arquivo contra o HEAD. Filtrar linhas do diff nao serve: a data esta dentro do JSON.
+        #
+        # INDEX.md e baseline.json NAO entram aqui: INDEX.md nao e JSON (semCarimbos devolve o
+        # texto bruto, que muda a cada commit pela linha "Commit: `<sha>`...") e baseline.json
+        # embute git.commit/git.branch/git.data_commit que nao estao em IGNORADOS. Ambos sao
+        # regenerados e commitados via add-paths, so que nao usados para decidir se vale PR —
+        # senao o cron abriria PR de ruido toda semana mesmo sem nenhuma mudanca estrutural.
         run: |
           valor="$(node scripts/inventario/mudou-conteudo.mjs \
             inventario/estado/banco.json \
             inventario/estado/rotas.json \
             inventario/estado/edges.json \
             inventario/estado/schema-declarado.json \
-            inventario/ia/INDEX.md \
             inventario/ia/componentes.json \
             inventario/ia/hooks.json \
-            inventario/ia/grafo.json \
-            inventario/ia/baseline.json)"
+            inventario/ia/grafo.json)"
           echo "valor=$valor" >> "$GITHUB_OUTPUT"
           if [ "$valor" != "true" ]; then
             echo "Inventário sem mudança de conteúdo — nenhum PR a abrir."

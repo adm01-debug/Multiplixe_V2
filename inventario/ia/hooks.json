@@ -405,7 +405,7 @@
   },
   "useDados": {
    "arquivo": "scripts/ci/ai-context.unit.mjs",
-   "linhas": 197,
+   "linhas": 203,
    "tabelas": [
     "cursos"
    ],

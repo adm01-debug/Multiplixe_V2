@@ -2,20 +2,20 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "b5d3ada8382283fcc4cc6a2eca7c706ca80e547a",
-  "branch": "claude/feat-inventario-estado-261108-2221",
-  "data_commit": "2026-11-08T22:47:48+00:00",
+  "commit": "aa9184f368b80f0ceba46b04ae46cfdc0dd5f96d",
+  "branch": "claude/fix-workflow-gating-baseline-261109-1200",
+  "data_commit": "2026-11-09T00:37:42+00:00",
   "ultimos_commits": [
-   "b5d3ada feat(inventario): scripts autonomos de estado real portados do Zapp Web V2",
+   "aa9184f chore(inventario): regera inventario/ia apos execucao dos agentes de validacao",
+   "5fa27f1 fix(inventario): remove INDEX.md e baseline.json do gating do cron semanal",
+   "85a4d01 feat(inventario): scripts autonomos de estado real portados do Zapp Web V2 (#4)",
    "612fa03 fix(agentes): corrige gaps achados na auditoria de 5 agentes (#3)",
    "f11748a docs(agentes): registra preview deploy por branch no Vercel (#2)",
    "decacef chore(agentes): adota padrão AGENTS.md + docs/agentes (#1)",
    "7128709 VibeDeploy: O app deu este erro em / quando eu usei: Warning: validateDOMNesting(. (3 arquivos)",
    "580966a Visual edit in Lovable",
    "3bfe26b chore(hermes): adiciona .hermes.md (regras da casa Hermes)",
-   "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)",
-   "2a8e3e7 merge: master para main",
-   "b81fdbf feat: Migração Banco Lovable para Supabase Multiplixe"
+   "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -31,6 +31,18 @@
     "mudancas": 3
    },
    {
+    "arquivo": "inventario/ia/baseline.json",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "inventario/ia/INDEX.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "inventario/ia/manifest.json",
+    "mudancas": 3
+   },
+   {
     "arquivo": "scripts/ci/README.md",
     "mudancas": 3
    },
@@ -39,11 +51,19 @@
     "mudancas": 3
    },
    {
+    "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 2
+   },
+   {
     "arquivo": "docs/agentes/banco.md",
     "mudancas": 2
    },
    {
     "arquivo": "docs/agentes/github-ci.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "inventario/ia/hooks.json",
     "mudancas": 2
    },
    {
@@ -55,7 +75,15 @@
     "mudancas": 2
    },
    {
+    "arquivo": "scripts/ci/ai-context.unit.mjs",
+    "mudancas": 2
+   },
+   {
     "arquivo": "scripts/ci/check-claude-md-integrity.mjs",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/ci/inventario-mudou.unit.mjs",
     "mudancas": 2
    },
    {
@@ -69,41 +97,13 @@
    {
     "arquivo": "supabase/.temp/linked-project.json",
     "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/ai-playbook-summarize/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/ai-quiz-generator/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/export-user-data/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/functions/migrate-helper/index.ts",
-    "mudancas": 2
-   },
-   {
-    "arquivo": ".agents/skills/multiplixe-v2/agents/openai.yaml",
-    "mudancas": 1
-   },
-   {
-    "arquivo": ".agents/skills/multiplixe-v2/SKILL.md",
-    "mudancas": 1
-   },
-   {
-    "arquivo": ".claude/scheduled_tasks.lock",
-    "mudancas": 1
    }
   ]
  },
  "contagens": {
   "arquivos": 478,
   "arquivos_de_codigo": 401,
-  "linhas_de_codigo": 55217,
+  "linhas_de_codigo": 55249,
   "componentes": 218,
   "hooks": 99,
   "paginas": 24,

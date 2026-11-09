@@ -28,3 +28,29 @@ Achados reais do proprio inventario (nao corrigidos, nao foi o pedido):
 
 Pendente do dono: mergear a PR (contem .github/workflows/, que por AGENTS.md exige o dono) e, se
 quiser banco.json automatico, criar o secret SUPABASE_ACCESS_TOKEN no repo.
+
+## 2026-11-09 (esta sessao)
+Bug corrigido: INDEX.md e baseline.json eram passados para mudou-conteudo.mjs no cron semanal,
+causando PR de ruido toda segunda-feira (INDEX.md tem SHA do commit embutido, baseline.json tem
+git.commit/branch — ambos mudam a cada squash-merge). Ambos foram removidos do gating; continuam
+sendo regenerados e commitados via add-paths.
+
+Validacao adversarial completa (5 agentes): 73/73 testes passando (INVENTARIO_CHECK=1).
+- Agente 1 (parsers): APROVADO COM RESSALVAS — 3 bugs latentes (enum multiline, React.lazy, 2a
+  Routes) que nao triggerao com o Lovable gerando o codigo; nenhum critico.
+- Agente 2 (geradores): APROVADO COM RESSALVAS — determinismo OK, --check OK, achados ja
+  documentados (drift user_roles, prefetch /aula morto detectado mas nao corrigido).
+- Agente 3 (banco/seguranca): APROVADO COM RESSALVAS — sb_secret_ regex sem threshold de
+  comprimento (inconsistente com o teste que usa {8,}); rodaTodoDia nao filtra minuto/hora.
+- Agente 4 (guard): APROVADO COM RESSALVAS — 0 violacoes no repo real, sem bypass intencional;
+  4 gaps (concatenacao de string, scripts/ nao varrido, ratchet por-arquivo nao documentado).
+- Agente 5 (contexto IA + workflows): APROVADO — fix do gating confirmado, determinismo OK, zero
+  ciclos, 129ms, sem credenciais.
+
+PR #5 aberta: https://github.com/adm01-debug/Multiplixe_V2/pull/5
+Aguarda aprovacao do dono (toca .github/workflows/ — regra 8 do AGENTS.md).
+
+Achados nao corrigidos (nao foram o pedido desta sessao, proximas sessoes podem agir):
+- sb_secret_ regex em gerar-banco.mjs deveria ter threshold {8,} para alinhar com o teste
+- gerar-banco.mjs nao tem retry/backoff em 429 da Management API
+- gerar-rotas.mjs nao captura React.lazy() (apenas lazy() direto)

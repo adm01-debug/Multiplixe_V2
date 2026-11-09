@@ -1,22 +1,22 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-08T22:48:05.451Z",
- "commit": "b5d3ada8382283fcc4cc6a2eca7c706ca80e547a",
- "branch": "claude/feat-inventario-estado-261108-2221",
+ "gerado_em": "2026-11-09T00:38:52.609Z",
+ "commit": "aa9184f368b80f0ceba46b04ae46cfdc0dd5f96d",
+ "branch": "claude/fix-workflow-gating-baseline-261109-1200",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.4",
  "arquivos": {
-  "INDEX.md": "a1ec84799c8e6648",
-  "baseline.json": "b2005087bd43f850",
+  "INDEX.md": "9277df39016df347",
+  "baseline.json": "fbc0b151ddaf1f1a",
   "componentes.json": "22c6b1772a853f35",
   "grafo.json": "ea54f46d4ff6e6ca",
-  "hooks.json": "08af5b5879fe469c"
+  "hooks.json": "f3ce3a0942438908"
  },
  "contagens": {
   "arquivos": 478,
   "arquivos_de_codigo": 401,
-  "linhas_de_codigo": 55217,
+  "linhas_de_codigo": 55249,
   "componentes": 218,
   "hooks": 99,
   "paginas": 24,

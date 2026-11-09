@@ -33,7 +33,7 @@ Ler quando for confirmar um deploy, mexer em env var, domínio, secret ou edge f
 - As duas URLs públicas (`multiplixe-v2.vercel.app` e a do Lovable) respondem `000` pelo proxy desta sessão
   — **NÃO VERIFICADO** por HTTP daqui; confirme o deploy pelo MCP, não por `curl`.
 
-### Env vars do Vercel — passivo de segurança
+### Env vars do Vercel — estado atual
 
 O projeto tem **16 env vars, todas em `production`, todas vindas de uma integração**
 (`configurationId: icfg_l6F3AhnOcvXqyj1eMSD7Jpxb`), criadas junto com o projeto:
@@ -44,8 +44,13 @@ O projeto tem **16 env vars, todas em `production`, todas vindas de uma integra�
 
 - **Este projeto não tem serverless nem SSR** (Vite + React puro, build estático em `dist/`): nada no build
   lê essas variáveis. `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`, `SUPABASE_SECRET_KEY` e
-  `POSTGRES_*` são credenciais de back-end **sem uso aqui** — superfície exposta a quem tiver acesso ao
-  dashboard ou a um build malicioso. Remover é tarefa de "chame o dono" (toca segredo).
+  `POSTGRES_*` (10 vars no total) tiveram **valores zerados em 2026-11-09** via MCP Vercel — redução de
+  superfície sem remover o vínculo da integração. As 6 vars públicas/anon (`SUPABASE_URL`,
+  `SUPABASE_ANON_KEY`, `SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) foram mantidas.
+  Confirmação: `updatedAt` novo + `updatedBy: "Ieu7YwvvtAlt2uSDu3vA4kWS"` em cada ID (campo `value` sempre
+  mascarado `""` para `type:sensitive`, não serve como prova — use `updatedAt`). Remoção permanente do
+  vínculo de integração é "chame o dono" (toca settings do projeto Vercel).
 - As `NEXT_PUBLIC_*` são resto de template Next.js; o Vite só lê `VITE_*`.
 - **Não existe nenhuma `VITE_*` no Vercel:** o build usa o `.env` **versionado no repo**
   (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`). São chaves públicas

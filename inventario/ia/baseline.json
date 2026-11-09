@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "b5d3ada8382283fcc4cc6a2eca7c706ca80e547a",
-  "branch": "claude/feat-inventario-estado-261108-2221",
-  "data_commit": "2026-11-08T22:47:48+00:00",
+  "commit": "85a4d018e96210572c5fb0a0775a82e45d0389f2",
+  "branch": "claude/fix-workflow-gating-baseline-261109-1200",
+  "data_commit": "2026-11-08T19:56:33-03:00",
   "ultimos_commits": [
-   "b5d3ada feat(inventario): scripts autonomos de estado real portados do Zapp Web V2",
+   "85a4d01 feat(inventario): scripts autonomos de estado real portados do Zapp Web V2 (#4)",
    "612fa03 fix(agentes): corrige gaps achados na auditoria de 5 agentes (#3)",
    "f11748a docs(agentes): registra preview deploy por branch no Vercel (#2)",
    "decacef chore(agentes): adota padrão AGENTS.md + docs/agentes (#1)",
@@ -103,7 +103,7 @@
  "contagens": {
   "arquivos": 478,
   "arquivos_de_codigo": 401,
-  "linhas_de_codigo": 55217,
+  "linhas_de_codigo": 55249,
   "componentes": 218,
   "hooks": 99,
   "paginas": 24,

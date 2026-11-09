@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `b5d3ada8382283fcc4cc6a2eca7c706ca80e547a` · branch `claude/feat-inventario-estado-261108-2221` · 2026-11-08T22:47:48+00:00
+Commit: `85a4d018e96210572c5fb0a0775a82e45d0389f2` · branch `claude/fix-workflow-gating-baseline-261109-1200` · 2026-11-08T19:56:33-03:00
 
 ## Como usar
 
@@ -22,7 +22,7 @@ Commit: `b5d3ada8382283fcc4cc6a2eca7c706ca80e547a` · branch `claude/feat-invent
 | | |
 |---|---|
 | arquivos (codigo) | 478 (401) |
-| linhas de codigo | 55217 |
+| linhas de codigo | 55249 |
 | paginas / rotas | 24 / 24 |
 | componentes / hooks | 218 / 99 |
 | arquivos de teste | 36 |

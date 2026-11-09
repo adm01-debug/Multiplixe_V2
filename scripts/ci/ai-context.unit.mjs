@@ -173,13 +173,19 @@ test('arquivo binario, BOM, CRLF e nome com espaco nao derrubam a geracao', () =
 
 // ----------------------------------------------------------------- repo real
 test('repo real: o contexto commitado esta em dia (fora o gerado_em)', { skip: process.env.INVENTARIO_CHECK ? false : 'frescor do inventario e trabalho do cron semanal (inventario-estado-semanal.yml); rode com INVENTARIO_CHECK=1 para cobrar aqui' }, () => {
+  // INDEX.md e baseline.json sao excluidos da comparacao porque embutem git.commit/branch/data
+  // que mudam a cada squash-merge (mesmo sem mudanca estrutural). Sao regenerados pelo cron, nao
+  // precisam estar em dia no HEAD. Ver .github/workflows/inventario-estado-semanal.yml: secao
+  // "Decidir se vale PR" para o mesmo raciocinio no gating do cron.
+  const VOLATEIS = new Set(['INDEX.md', 'baseline.json']);
+  const semVolateis = (arqs) => Object.fromEntries(Object.entries(arqs).filter(([k]) => !VOLATEIS.has(k)));
   const commitado = path.join(RAIZ, 'inventario/ia');
   assert.ok(fs.existsSync(path.join(commitado, 'manifest.json')), 'rode node scripts/ai-context/gerar.mjs');
   const fresco = fs.mkdtempSync(path.join(os.tmpdir(), 'mpx-ctx-real-'));
   try {
     execFileSync(process.execPath, [GERADOR, '--out', fresco, '--quiet'], { cwd: RAIZ, encoding: 'utf8' });
-    const antes = JSON.parse(fs.readFileSync(path.join(commitado, 'manifest.json'), 'utf8')).arquivos;
-    const depois = JSON.parse(fs.readFileSync(path.join(fresco, 'manifest.json'), 'utf8')).arquivos;
+    const antes = semVolateis(JSON.parse(fs.readFileSync(path.join(commitado, 'manifest.json'), 'utf8')).arquivos);
+    const depois = semVolateis(JSON.parse(fs.readFileSync(path.join(fresco, 'manifest.json'), 'utf8')).arquivos);
     assert.deepEqual(depois, antes, 'inventario/ia desatualizado: rode node scripts/ai-context/gerar.mjs e commite');
   } finally { fs.rmSync(fresco, { recursive: true, force: true }); }
 });

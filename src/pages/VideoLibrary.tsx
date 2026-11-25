@@ -62,7 +62,7 @@ const VideoLibrary = () => {
       <DynamicSEO
         title="Biblioteca de Vídeos"
         description="Demos de produto e treinamentos rápidos para o time de vendas."
-        url="https://multiplixe.lovable.app/biblioteca-videos"
+        url="https://multiplixe-v2.vercel.app/biblioteca-videos"
       />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">

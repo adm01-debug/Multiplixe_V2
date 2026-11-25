@@ -16,7 +16,7 @@ interface DynamicSEOProps {
   };
 }
 
-const BASE_URL = 'https://multiplixe.lovable.app';
+const BASE_URL = 'https://multiplixe-v2.vercel.app';
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=630';
 
 const DynamicSEO = ({ 

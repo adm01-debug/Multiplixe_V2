@@ -62,7 +62,7 @@ const PlaybookDetail = () => {
       <DynamicSEO
         title={playbook.title}
         description={playbook.summary || `Playbook de vendas: ${playbook.title}`}
-        url={`https://multiplixe.lovable.app/playbook/${playbook.slug}`}
+        url={`https://multiplixe-v2.vercel.app/playbook/${playbook.slug}`}
         type="article"
       />
       <header className="sticky top-0 z-40 glass border-b border-border/50">

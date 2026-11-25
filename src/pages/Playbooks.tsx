@@ -33,7 +33,7 @@ const Playbooks = () => {
       <DynamicSEO
         title="Sales Playbooks"
         description="Biblioteca de scripts, objeções e processos de vendas para vendedores Promo Brindes."
-        url="https://multiplixe.lovable.app/playbooks"
+        url="https://multiplixe-v2.vercel.app/playbooks"
       />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">

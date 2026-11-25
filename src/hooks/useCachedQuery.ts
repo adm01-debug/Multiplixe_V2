@@ -7,7 +7,7 @@ export const useCourses = (filters?: { category?: string; level?: string }) => {
   return useQuery({
     queryKey: queryKeys.courses.list(filters),
     queryFn: async () => {
-      let query = supabase
+      const query = supabase
         .from('courses')
         .select(`
           *,

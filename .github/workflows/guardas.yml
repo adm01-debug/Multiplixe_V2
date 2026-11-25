@@ -1,15 +1,20 @@
 # docs:
 #   gatilho: push na main e pull request
 #   prova: nenhum .from()/.rpc() para objeto inexistente, instrucoes de agente inteiras,
-#          geradores passando nos proprios testes
+#          geradores passando nos proprios testes, TypeScript compilando sem erro
 #   falha: o check fica vermelho e diz qual comando rodar para corrigir
 #   avisa: so o status do check (nao abre issue nem PR)
 name: Guardas do repositório
 
-# So Node e git: nenhum dos guards usa dependencia npm, por isso nao ha install (o repo tem
-# package-lock.json e bun.lock ao mesmo tempo e trocar de gerenciador aqui seria ruido).
-# Lint, typecheck e build NAO entram aqui de proposito: quem publica e o Lovable/Vercel, e um
-# check pesado em cada commit do bot do Lovable custaria minuto de Actions sem mudar decisao.
+# Dois jobs, com necessidades diferentes:
+#   guardas   -> so Node e git, sem install (nenhum guard usa dependencia npm).
+#   typecheck -> precisa de `npm ci` porque compila o projeto com o tsc do devDependencies.
+#
+# O typecheck entrou porque `npm run build` e apenas `vite build`: o Vite descarta a tipagem sem
+# conferi-la, entao um erro de TypeScript atravessava a Vercel e so aparecia em producao.
+# Lint e build continuam fora de proposito: o deploy ja roda o build, e repetir isso aqui gastaria
+# minuto de Actions sem mudar decisao. O gerenciador e npm (`npm ci`) porque e ele quem valida
+# package-lock.json; bun.lock fica para uso local.
 #
 # FRESCOR do inventario tambem NAO e cobrado aqui, de proposito: o Lovable commita direto na main a
 # cada edicao de tela, e `rotas.json`/`inventario/ia` mudam junto com qualquer import — cobrar isso
@@ -35,6 +40,30 @@ defaults:
     shell: bash --noprofile --norc -euo pipefail {0}
 
 jobs:
+  typecheck:
+    name: TypeScript sem erros
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      # `npm ci` e nao `npm install`: falha se package-lock.json divergir do package.json.
+      - name: Instalar dependências
+        run: npm ci --no-audit --no-fund
+
+      # `--no-install` para usar o tsc do projeto e falhar em vez de baixar um compilador avulso.
+      - name: Typecheck
+        run: npx --no-install tsc --noEmit
+
   guardas:
     name: Inventário, uso do Supabase e instruções de agente
     runs-on: ubuntu-24.04

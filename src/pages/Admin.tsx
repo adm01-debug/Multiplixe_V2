@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
-import type { UserStat } from '@/components/admin/AdminUsersTab';
+import type { UserStat } from '@/components/admin/admin-users/types';
 
 // Lazy load tab contents
 const AdminCoursesTab = lazy(() => import('@/components/admin/AdminCoursesTab').catch((e) => { console.error('[Admin] Failed to load AdminCoursesTab', e); throw e; }));
@@ -79,22 +79,35 @@ const Admin = () => {
 
       if (coursesData) setCourses(coursesData);
 
-      const { data: xpData } = await supabase.from('user_xp').select('user_id, total_xp, current_level, created_at');
-      const { data: profilesData } = await supabase.from('profiles').select('user_id, full_name');
+      const { data: xpData } = await supabase
+              .from('user_xp')
+              .select('user_id, total_xp, current_level, xp_from_lessons, xp_from_courses, xp_from_streaks, xp_from_achievements, last_xp_earned_at, created_at');
+            const { data: profilesData } = await supabase
+              .from('profiles')
+              .select('user_id, full_name, email, is_active, deactivated_at, created_at');
+            const { data: rolesData } = await supabase.from('user_roles').select('user_id, role');
       const { data: lessonProgressData } = await supabase.from('user_lesson_progress').select('user_id, is_completed');
       const { data: courseProgressData } = await supabase.from('user_course_progress').select('user_id, progress_percentage');
 
-      const userStats: UserStat[] = (xpData || []).map(xp => {
-        const profile = profilesData?.find(p => p.user_id === xp.user_id);
+            const userStats: UserStat[] = (profilesData || []).map(profile => {
+              const xp = xpData?.find(x => x.user_id === profile.user_id);
         return {
-          user_id: xp.user_id,
-          email: '',
-          full_name: profile?.full_name || 'Usuário',
-          total_xp: xp.total_xp,
-          current_level: xp.current_level,
-          lessons_completed: lessonProgressData?.filter(l => l.user_id === xp.user_id && l.is_completed).length || 0,
-          courses_completed: courseProgressData?.filter(c => c.user_id === xp.user_id && c.progress_percentage === 100).length || 0,
-          created_at: xp.created_at,
+                user_id: profile.user_id,
+                email: profile.email || '',
+                full_name: profile.full_name || 'Usuário',
+                total_xp: xp?.total_xp || 0,
+                current_level: xp?.current_level || 1,
+                lessons_completed: lessonProgressData?.filter(l => l.user_id === profile.user_id && l.is_completed).length || 0,
+                courses_completed: courseProgressData?.filter(c => c.user_id === profile.user_id && c.progress_percentage === 100).length || 0,
+                created_at: profile.created_at || xp?.created_at || new Date().toISOString(),
+                is_active: profile.is_active ?? true,
+                deactivated_at: profile.deactivated_at ?? null,
+                roles: (rolesData || []).filter(r => r.user_id === profile.user_id).map(r => r.role),
+                xp_from_lessons: xp?.xp_from_lessons || 0,
+                xp_from_courses: xp?.xp_from_courses || 0,
+                xp_from_streaks: xp?.xp_from_streaks || 0,
+                xp_from_achievements: xp?.xp_from_achievements || 0,
+                last_xp_earned_at: xp?.last_xp_earned_at ?? null,
         };
       });
 
@@ -103,7 +116,7 @@ const Admin = () => {
       const { count: totalLessons } = await supabase.from('lessons').select('*', { count: 'exact', head: true });
 
       setStats({
-        totalUsers: xpData?.length || 0,
+              totalUsers: profilesData?.length || 0,
         totalCourses: coursesData?.length || 0,
         totalLessons: totalLessons || 0,
         totalXPEarned: xpData?.reduce((sum, u) => sum + u.total_xp, 0) || 0,
@@ -237,7 +250,7 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="users">
             <Suspense fallback={<TabFallback />}>
-              <AdminUsersTab users={users} loadingData={loadingData} />
+              <AdminUsersTab users={users} loadingData={loadingData} onRefresh={fetchData} />
             </Suspense>
           </TabsContent>
           <TabsContent value="quizzes">

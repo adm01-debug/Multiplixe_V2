@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-09T00:38:52.609Z",
- "commit": "aa9184f368b80f0ceba46b04ae46cfdc0dd5f96d",
- "branch": "claude/fix-workflow-gating-baseline-261109-1200",
+ "gerado_em": "2026-11-25T22:06:03.766Z",
+ "commit": "11fa47ca983dcd090cb4ca611f50853a52dca0a1",
+ "branch": "claude/feat-admin-gestao-usuarios-251125-1855",
  "gerador": "scripts/ai-context/gerar.mjs",
- "node": "v22.23.4",
+ "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "9277df39016df347",
-  "baseline.json": "fbc0b151ddaf1f1a",
-  "componentes.json": "22c6b1772a853f35",
-  "grafo.json": "ea54f46d4ff6e6ca",
-  "hooks.json": "f3ce3a0942438908"
+  "INDEX.md": "09fbbaeb39e0c18d",
+  "baseline.json": "70d4534223f08e90",
+  "componentes.json": "e8f4ae0ddf9f3d49",
+  "grafo.json": "f6c52924d8db87ed",
+  "hooks.json": "1b45cfde5cfb787d"
  },
  "contagens": {
-  "arquivos": 478,
-  "arquivos_de_codigo": 401,
-  "linhas_de_codigo": 55249,
-  "componentes": 218,
+  "arquivos": 491,
+  "arquivos_de_codigo": 405,
+  "linhas_de_codigo": 56122,
+  "componentes": 220,
   "hooks": 99,
   "paginas": 24,
   "testes": 36,
-  "edge_functions": 12,
+  "edge_functions": 13,
   "rotas": 24,
   "tabelas": 61,
-  "migrations": 49
+  "migrations": 53
  },
  "erros": []
 }

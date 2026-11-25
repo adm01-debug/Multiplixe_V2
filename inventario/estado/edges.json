@@ -2,9 +2,9 @@
   "format_version": 1,
   "fonte": "scripts/inventario/gerar-repo.mjs (le supabase/functions/, src/, supabase/migrations/ e supabase/config.toml)",
   "resumo": {
-    "edges": 12,
+    "edges": 13,
     "sem_chamador_no_repo": 5,
-    "segredos_distintos": 6
+    "segredos_distintos": 7
   },
   "sem_chamador_no_repo": [
     "cleanup-security-logs",
@@ -14,6 +14,7 @@
     "verify-mfa"
   ],
   "segredos_lidos_pelas_edges": [
+    "APP_PUBLIC_URL",
     "LOVABLE_API_KEY",
     "RESEND_API_KEY",
     "SUPABASE_ANON_KEY",
@@ -22,6 +23,27 @@
     "SUPABASE_URL"
   ],
   "edge_functions": {
+    "admin-user-actions": {
+      "linhas": 156,
+      "segredos_lidos": [
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "profiles",
+        "user_roles"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [
+          "src/components/admin/admin-users/UserActionsMenu.tsx"
+        ],
+        "migrations": [],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
     "ai-playbook-summarize": {
       "linhas": 76,
       "segredos_lidos": [
@@ -63,6 +85,7 @@
     "approve-password-reset": {
       "linhas": 178,
       "segredos_lidos": [
+        "APP_PUBLIC_URL",
         "RESEND_API_KEY",
         "SUPABASE_SERVICE_ROLE_KEY",
         "SUPABASE_URL"
@@ -76,7 +99,8 @@
       ],
       "chamada_em": {
         "src": [
-          "src/components/admin/PasswordResetApproval.tsx"
+          "src/components/admin/PasswordResetApproval.tsx",
+          "src/components/admin/admin-users/UserActionsMenu.tsx"
         ],
         "migrations": [],
         "outras_edges": []
@@ -151,6 +175,7 @@
     "generate-certificate": {
       "linhas": 211,
       "segredos_lidos": [
+        "APP_PUBLIC_URL",
         "SUPABASE_ANON_KEY",
         "SUPABASE_URL"
       ],
@@ -174,6 +199,7 @@
     "generate-sitemap": {
       "linhas": 72,
       "segredos_lidos": [
+        "APP_PUBLIC_URL",
         "SUPABASE_ANON_KEY",
         "SUPABASE_URL"
       ],

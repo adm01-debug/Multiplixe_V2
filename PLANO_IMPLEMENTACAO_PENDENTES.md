@@ -994,7 +994,7 @@ CREATE TABLE public.user_goals (
 
 ### 🛠️ MELHORIAS ADMINISTRATIVAS - 6 Pendentes
 
-#### ADMIN-002: Gestão de Usuários Avançada
+#### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Lista de usuários sem ações avançadas.
@@ -1007,6 +1007,14 @@ CREATE TABLE public.user_goals (
 4. Ver progresso detalhado do usuário
 5. Busca e filtros avançados
 ```
+
+**Entregue em 25/11/2026:**
+- Migration `20261125190500_admin_gestao_usuarios.sql`: `profiles.email` / `is_active` / `deactivated_at`, backfill a partir de `auth.users`, `handle_new_user` gravando e-mail e trigger `protect_profile_admin_columns` (usuário comum não altera e-mail/status/user_id nem reativa a própria conta).
+- Edge function `admin-user-actions` (`verify_jwt = true`, service role, checagem de papel admin, ban no GoTrue + signOut global): `deactivate` / `reactivate`.
+- `Admin.tsx`: agregação única com e-mail real, status e papéis (antes `email: ''` era hardcoded).
+- `AdminUsersTab`: colunas Papel/Status/Ações, filtros por papel e status, busca por nome e e-mail.
+- `UserActionsMenu`: resetar senha (reaproveita `password_reset_requests` + `approve-password-reset`), desativar/reativar, conceder/remover admin (protege auto-desativação e o último admin).
+- `UserProgressDialog`: XP por origem, nível e progresso por curso.
 
 ---
 

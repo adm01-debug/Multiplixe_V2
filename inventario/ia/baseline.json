@@ -2,28 +2,44 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "aa9184f368b80f0ceba46b04ae46cfdc0dd5f96d",
-  "branch": "claude/fix-workflow-gating-baseline-261109-1200",
-  "data_commit": "2026-11-09T00:37:42+00:00",
+  "commit": "11fa47ca983dcd090cb4ca611f50853a52dca0a1",
+  "branch": "claude/feat-admin-gestao-usuarios-251125-1855",
+  "data_commit": "2026-11-25T18:53:29-03:00",
   "ultimos_commits": [
-   "aa9184f chore(inventario): regera inventario/ia apos execucao dos agentes de validacao",
-   "5fa27f1 fix(inventario): remove INDEX.md e baseline.json do gating do cron semanal",
-   "85a4d01 feat(inventario): scripts autonomos de estado real portados do Zapp Web V2 (#4)",
-   "612fa03 fix(agentes): corrige gaps achados na auditoria de 5 agentes (#3)",
-   "f11748a docs(agentes): registra preview deploy por branch no Vercel (#2)",
-   "decacef chore(agentes): adota padrão AGENTS.md + docs/agentes (#1)",
-   "7128709 VibeDeploy: O app deu este erro em / quando eu usei: Warning: validateDOMNesting(. (3 arquivos)",
-   "580966a Visual edit in Lovable",
-   "3bfe26b chore(hermes): adiciona .hermes.md (regras da casa Hermes)",
-   "095d1da chore(agents): adiciona AGENTS.md padrao (contexto multi-agente)"
+   "11fa47c fix: bloqueia escrita e acesso anonimo na view quiz_options_public e revoga EXECUTE de anon nas funcoes SECURITY DEFINER (#23)",
+   "74074f1 feat: adiciona cabecalhos de seguranca no vercel.json (#22)",
+   "be0f3c6 fix: revoga execucao de sql arbitrario pelo role authenticated (mcp_exec) (#21)",
+   "bde494a fix: substitui URLs Lovable mortas pelo dominio oficial de producao (#20)",
+   "050d8ae chore: liga o typecheck no CI (#16)",
+   "083a202 fix: edge functions usam o dominio publico correto (#18)",
+   "59eb2e4 fix: adiciona SPA fallback na Vercel (#17)",
+   "f3fbda2 fix: aponta o projeto para o Supabase oficial e remove residuos do Lovable (#19)",
+   "aad3806 infra: versiona app_role, user_roles e has_role em migration (#15)",
+   "9c2ac87 fix: liga plugin typography e remove papaparse sem uso (#14)"
   ],
   "arquivos_mais_mudados_90d": [
+   {
+    "arquivo": "docs/agentes/lovable-vercel.md",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "inventario/ia/baseline.json",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "inventario/ia/INDEX.md",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "inventario/ia/manifest.json",
+    "mudancas": 4
+   },
    {
     "arquivo": "AGENTS.md",
     "mudancas": 3
    },
    {
-    "arquivo": "docs/agentes/lovable-vercel.md",
+    "arquivo": "docs/agentes/banco.md",
     "mudancas": 3
    },
    {
@@ -31,15 +47,11 @@
     "mudancas": 3
    },
    {
-    "arquivo": "inventario/ia/baseline.json",
+    "arquivo": "progress.txt",
     "mudancas": 3
    },
    {
-    "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/ia/manifest.json",
+    "arquivo": "scripts/ci/inventario-rotas.unit.mjs",
     "mudancas": 3
    },
    {
@@ -47,19 +59,35 @@
     "mudancas": 3
    },
    {
-    "arquivo": "supabase/config.toml",
+    "arquivo": "scripts/ci/supabase-usage-guard.unit.mjs",
     "mudancas": 3
+   },
+   {
+    "arquivo": "scripts/inventario/gerar-banco.mjs",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "scripts/inventario/gerar-rotas.mjs",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/guardas.yml",
+    "mudancas": 2
    },
    {
     "arquivo": ".github/workflows/inventario-estado-semanal.yml",
     "mudancas": 2
    },
    {
-    "arquivo": "docs/agentes/banco.md",
+    "arquivo": "docs/agentes/github-ci.md",
     "mudancas": 2
    },
    {
-    "arquivo": "docs/agentes/github-ci.md",
+    "arquivo": "docs/agentes/regras-dominio.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "inventario/estado/rotas.json",
     "mudancas": 2
    },
    {
@@ -69,49 +97,21 @@
    {
     "arquivo": "package.json",
     "mudancas": 2
-   },
-   {
-    "arquivo": "progress.txt",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/ai-context.unit.mjs",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/check-claude-md-integrity.mjs",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/inventario-mudou.unit.mjs",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "src/components/landing/Footer.tsx",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "src/index.css",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "supabase/.temp/linked-project.json",
-    "mudancas": 2
    }
   ]
  },
  "contagens": {
-  "arquivos": 478,
-  "arquivos_de_codigo": 401,
-  "linhas_de_codigo": 55249,
-  "componentes": 218,
+  "arquivos": 491,
+  "arquivos_de_codigo": 405,
+  "linhas_de_codigo": 56122,
+  "componentes": 220,
   "hooks": 99,
   "paginas": 24,
   "testes": 36,
-  "edge_functions": 12,
+  "edge_functions": 13,
   "rotas": 24,
   "tabelas": 61,
-  "migrations": 49
+  "migrations": 53
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -123,6 +123,7 @@
   "README.md": 1,
   "bun.lock": 1,
   "bun.lockb": 1,
+  "commitmsg.txt": 1,
   "components.json": 1,
   "docs/agentes": 5,
   "eslint.config.js": 1,
@@ -130,12 +131,13 @@
   "package-lock.json": 1,
   "package.json": 1,
   "postcss.config.js": 1,
+  "prbody.txt": 1,
   "progress.txt": 1,
   "scripts/ai-context": 1,
   "scripts/ci": 10,
   "scripts/lib": 2,
   "src/App.tsx": 1,
-  "src/components": 243,
+  "src/components": 246,
   "src/hooks": 53,
   "src/index.css": 1,
   "src/integrations": 3,
@@ -145,19 +147,22 @@
   "src/test": 36,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
-  "supabase/functions": 13,
-  "supabase/migrations": 49,
+  "supabase/functions": 14,
+  "supabase/migrations": 53,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
+  "tsconfig.app.tsbuildinfo": 1,
   "tsconfig.json": 1,
   "tsconfig.node.json": 1,
+  "tsconfig.node.tsbuildinfo": 1,
+  "vercel.json": 1,
   "vite.config.ts": 1,
   "vitest.config.ts": 1
  },
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 2823
+   "linhas": 2832
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -302,6 +307,7 @@
    "VITE_SUPABASE_URL"
   ],
   "usadas_no_codigo": [
+   "APP_PUBLIC_URL",
    "LOVABLE_API_KEY",
    "RESEND_API_KEY",
    "SUPABASE_ANON_KEY",
@@ -333,9 +339,9 @@
   "componentes_com_nome_duplicado": 3,
   "hooks_sem_uso": 28,
   "ciclos_de_import": 0,
-  "problemas_de_rota": 1,
+  "problemas_de_rota": 0,
   "edges_sem_chamador": 5,
-  "alertas_de_schema": 4
+  "alertas_de_schema": 3
  },
  "erros_do_gerador": []
 }

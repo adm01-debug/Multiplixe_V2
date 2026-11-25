@@ -1,24 +1,24 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 401,
- "arestas": 1039,
+ "nos": 405,
+ "arestas": 1054,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 118
+   "importado_por": 119
   },
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 89
+   "importado_por": 91
+  },
+  {
+   "arquivo": "src/hooks/useAuth.tsx",
+   "importado_por": 62
   },
   {
    "arquivo": "src/lib/utils.ts",
    "importado_por": 62
-  },
-  {
-   "arquivo": "src/hooks/useAuth.tsx",
-   "importado_por": 61
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -26,22 +26,22 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 50
+   "importado_por": 51
+  },
+  {
+   "arquivo": "src/components/ui/dialog.tsx",
+   "importado_por": 30
   },
   {
    "arquivo": "src/components/ui/input.tsx",
    "importado_por": 30
   },
   {
-   "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 29
+   "arquivo": "src/components/ui/progress.tsx",
+   "importado_por": 21
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 20
-  },
-  {
-   "arquivo": "src/components/ui/progress.tsx",
    "importado_por": 20
   },
   {
@@ -65,6 +65,10 @@
    "importado_por": 12
   },
   {
+   "arquivo": "src/components/ui/select.tsx",
+   "importado_por": 11
+  },
+  {
    "arquivo": "src/components/ui/tooltip.tsx",
    "importado_por": 11
   },
@@ -73,12 +77,8 @@
    "importado_por": 10
   },
   {
-   "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 10
-  },
-  {
    "arquivo": "src/components/ui/alert-dialog.tsx",
-   "importado_por": 9
+   "importado_por": 10
   },
   {
    "arquivo": "src/components/ui/tabs.tsx",
@@ -202,6 +202,7 @@
   "src/hooks/useStudyCalendar.ts",
   "src/hooks/useVideoKeyboard.ts",
   "src/hooks/useVideoShortcuts.ts",
+  "supabase/functions/admin-user-actions/index.ts",
   "supabase/functions/ai-playbook-summarize/index.ts",
   "supabase/functions/ai-quiz-generator/index.ts",
   "supabase/functions/approve-password-reset/index.ts",
@@ -435,9 +436,13 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/components/admin/AdminUsersTab.tsx": [
+   "src/components/admin/admin-users/UserActionsMenu.tsx",
+   "src/components/admin/admin-users/types.ts",
    "src/components/ui/badge.tsx",
    "src/components/ui/input.tsx",
+   "src/components/ui/select.tsx",
    "src/components/ui/table.tsx",
+   "src/hooks/useAuth.tsx",
    "src/hooks/useFuzzySearch.ts"
   ],
   "src/components/admin/AdminVideoEngagementWidget.tsx": [
@@ -625,6 +630,22 @@
    "src/components/admin/quiz-stats/exportUtils.ts",
    "src/components/admin/quiz-stats/useQuizStatsData.ts"
   ],
+  "src/components/admin/admin-users/UserActionsMenu.tsx": [
+   "src/components/admin/admin-users/UserProgressDialog.tsx",
+   "src/components/admin/admin-users/types.ts",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/dropdown-menu.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/admin-users/UserProgressDialog.tsx": [
+   "src/components/admin/admin-users/types.ts",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/progress.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/components/admin/admin-users/types.ts": [],
   "src/components/admin/password-reset/RequestStatusBadge.tsx": [
    "src/components/ui/badge.tsx"
   ],
@@ -1573,7 +1594,7 @@
   ],
   "src/pages/Admin.tsx": [
    "src/components/admin/AdminCoursesTab.tsx",
-   "src/components/admin/AdminUsersTab.tsx",
+   "src/components/admin/admin-users/types.ts",
    "src/components/ui/button.tsx",
    "src/components/ui/tabs.tsx",
    "src/hooks/useAdminRole.ts",
@@ -1942,6 +1963,7 @@
   "src/test/utils.test.ts": [
    "src/lib/utils.ts"
   ],
+  "supabase/functions/admin-user-actions/index.ts": [],
   "supabase/functions/ai-playbook-summarize/index.ts": [],
   "supabase/functions/ai-quiz-generator/index.ts": [],
   "supabase/functions/approve-password-reset/index.ts": [],
@@ -2018,6 +2040,7 @@
    "src/components/admin/AdminPlaybooksTab.tsx",
    "src/components/admin/AdminStatsTab.tsx",
    "src/components/admin/AdminTelemetryWidget.tsx",
+   "src/components/admin/AdminUsersTab.tsx",
    "src/components/admin/AdminVideosTab.tsx",
    "src/components/admin/AdminWorkflowsTab.tsx",
    "src/components/admin/LearningPathsManager.tsx",

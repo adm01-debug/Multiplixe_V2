@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 218,
+ "total": 220,
  "orfaos": [
   "src/components/accessibility/FontSizeControl.tsx",
   "src/components/accessibility/HighContrastToggle.tsx",
@@ -208,6 +208,40 @@
    "orfao": true
   },
   {
+   "arquivo": "src/components/admin/admin-users/UserActionsMenu.tsx",
+   "exports": [],
+   "linhas": 226,
+   "hooks": [
+    "useState"
+   ],
+   "tabelas": [
+    "password_reset_requests",
+    "user_roles"
+   ],
+   "edges": [
+    "admin-user-actions",
+    "approve-password-reset"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/admin-users/UserProgressDialog.tsx",
+   "exports": [],
+   "linhas": 160,
+   "hooks": [
+    "useEffect",
+    "useState"
+   ],
+   "tabelas": [
+    "courses",
+    "user_course_progress"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/admin/AdminAssessmentsTab.tsx",
    "exports": [],
    "linhas": 164,
@@ -334,9 +368,11 @@
   {
    "arquivo": "src/components/admin/AdminUsersTab.tsx",
    "exports": [],
-   "linhas": 91,
+   "linhas": 169,
    "hooks": [
+    "useAuth",
     "useFuzzySearch",
+    "useMemo",
     "useState"
    ],
    "tabelas": [],
@@ -2284,7 +2320,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 50,
+   "usado_por": 51,
    "orfao": false
   },
   {
@@ -2330,7 +2366,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 118,
+   "usado_por": 119,
    "orfao": false
   },
   {
@@ -2469,7 +2505,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 3,
+   "usado_por": 4,
    "orfao": false
   },
   {
@@ -2835,13 +2871,13 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 61,
+   "usado_por": 62,
    "orfao": false
   },
   {
    "arquivo": "src/pages/Admin.tsx",
    "exports": [],
-   "linhas": 277,
+   "linhas": 290,
    "hooks": [
     "useAdminRole",
     "useAuth",
@@ -2855,6 +2891,7 @@
     "profiles",
     "user_course_progress",
     "user_lesson_progress",
+    "user_roles",
     "user_xp"
    ],
    "edges": [],

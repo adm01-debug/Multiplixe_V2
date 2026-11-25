@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import QuizQuestionCard from './QuizQuestionCard';
 import AIQuizGeneratorModal, { type GeneratedQuestion } from './AIQuizGeneratorModal';
+import { quizSchema } from '@/lib/schemas';
 
 interface QuizOption {
   id?: string;
@@ -163,35 +164,35 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
   };
 
   const handleSave = async () => {
-    if (quiz.questions.length === 0) { toast.error('Adicione pelo menos uma questão'); return; }
-    for (let i = 0; i < quiz.questions.length; i++) {
-      const q = quiz.questions[i];
-      if (!q.question_text.trim()) { toast.error(`Questão ${i + 1} está sem texto`); return; }
-      if (q.options.filter(o => o.option_text.trim()).length < 2) { toast.error(`Questão ${i + 1} precisa de pelo menos 2 opções`); return; }
-      if (!q.options.some(o => o.is_correct)) { toast.error(`Questão ${i + 1} precisa ter uma resposta correta`); return; }
+    const parsed = quizSchema.safeParse(quiz);
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0];
+      const prefix = typeof issue.path[1] === 'number' ? `Questão ${issue.path[1] + 1} ` : '';
+      toast.error(`${prefix}${issue.message}`.trim());
+      return;
     }
+    const data = parsed.data;
 
     setLoading(true);
     try {
       if (existingQuizId) await supabase.from('quizzes').delete().eq('id', existingQuizId);
 
       const { data: newQuiz, error: quizError } = await supabase.from('quizzes').insert({
-        lesson_id: lessonId || null, course_id: courseId || null, title: quiz.title,
-        description: quiz.description || null, passing_score: quiz.passing_score,
-        xp_reward: quiz.xp_reward, time_limit_seconds: quiz.time_limit_seconds, cooldown_hours: quiz.cooldown_hours,
+        lesson_id: lessonId || null, course_id: courseId || null, title: data.title,
+        description: data.description || null, passing_score: data.passing_score,
+        xp_reward: data.xp_reward, time_limit_seconds: data.time_limit_seconds, cooldown_hours: data.cooldown_hours,
       }).select().single();
       if (quizError) throw quizError;
 
-      for (const question of quiz.questions) {
+      for (const question of data.questions) {
         const { data: newQuestion, error: questionError } = await supabase.from('quiz_questions').insert({
           quiz_id: newQuiz.id, question_text: question.question_text,
           explanation: question.explanation || null, order_index: question.order_index,
         }).select().single();
         if (questionError) throw questionError;
 
-        const validOptions = question.options.filter(o => o.option_text.trim());
         const { error: optionsError } = await supabase.from('quiz_options').insert(
-          validOptions.map(option => ({
+          question.options.map(option => ({
             question_id: newQuestion.id, option_text: option.option_text,
             is_correct: option.is_correct, order_index: option.order_index,
           }))

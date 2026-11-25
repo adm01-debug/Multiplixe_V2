@@ -74,3 +74,29 @@ conhecida; nunca cite a chave em chat, log ou PR.
 - Arquivos **gerados** (não editar à mão, o Lovable sobrescreve): `.env`,
   `src/integrations/supabase/client.ts`, `src/integrations/supabase/types.ts`,
   `src/integrations/lovable/index.ts`, `.lovable/plan.md`, `supabase/migrations/*`.
+
+## Segurança
+
+- **CSRF: não se aplica, e a razão precisa ficar registrada.** A sessão vive em `localStorage`
+  (`src/integrations/supabase/client.ts`, `auth.storage: localStorage`) e o token vai em
+  `Authorization: Bearer` colocado pelo JS do app — nenhuma credencial é enviada automaticamente
+  pelo navegador. Um site terceiro que faça `fetch` para o Supabase ou para uma edge function não
+  carrega o token do usuário e recebe `401`, então não existe requisição "autenticada por ambiente"
+  para forjar. Só há um cookie no app, `sidebar_state` (`src/components/ui/sidebar.tsx`), que guarda
+  preferência visual, é escrito (nunca lido) pelo cliente e não é consultado por servidor nenhum:
+  vazá-lo ou forjá-lo não muda permissão. Se algum dia a sessão passar a usar cookie, essa conclusão
+  cai e é preciso token anti-CSRF (`SameSite` + double-submit) antes de qualquer outra coisa.
+- **Headers HTTP de segurança**: definidos em `vercel.json` (`headers` em `/(.*)`) e já no ar —
+  `Content-Security-Policy`, `X-Content-Type-Options`, `X-Frame-Options: DENY`,
+  `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security`,
+  `Cross-Origin-Opener-Policy`. Alterar a CSP exige conferir o app publicado: o `connect-src` lista
+  `https://*.supabase.co` e `wss://*.supabase.co` (realtime); domínio novo de API só funciona depois
+  de entrar na lista.
+- **Validação de formulário**: Zod. `src/lib/salesEnablementSchemas.ts` (playbooks, vídeos,
+  onboarding, assessments), `src/lib/schemas.ts` (quiz — descarta opções em branco, exige 2 opções
+  preenchidas, 1 correta, limites de título/XP/cooldown), `zodResolver` em `CourseForm`/`LessonForm`
+  e Zod direto em `Auth`/`ForgotPassword`/`ResetPassword`. Tela nova que grava no banco entra com
+  schema — a validação do `handleSave` é a última linha, não a única.
+- **Edge function que escreve com `service_role`**: exige JWT do usuário e confere o papel em
+  `user_roles` antes de agir (padrão em `approve-password-reset` e `admin-user-actions`); `CORS` é
+  `*` porque a chamada é autenticada por header, não por cookie.

@@ -62,7 +62,7 @@ test('violacao registrada no baseline passa; a mesma em OUTRO arquivo quebra', (
 });
 
 test('storage.from e Array.from nao sao tabela', () => {
-  const dir = repoDeBrinquedo({ 'src/a.ts': "sb.storage.from('meu-bucket').upload(); Array.from('abc');\n" });
+  const dir = repoDeBrinquedo({ 'src/a.ts': "sb.storage.from('meu-bucket').upload(); Array.from('abc');\nArray\n  .from('abc');\n" });
   try { assert.equal(rodar(dir), 0); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 

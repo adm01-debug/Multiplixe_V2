@@ -9,10 +9,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import {
   extrairInventario, conferirOrigem, montarInventario, compararEdges, rodaTodoDia,
-  versoesDoRepo, PARECE_CREDENCIAL, PROJETO_OFICIAL, LIMIARES,
+  versoesDoRepo, PARECE_CREDENCIAL, PROJETO_OFICIAL, LIMIARES, RETRY, esperaDoRetry, chamarApi,
 } from '../inventario/gerar-banco.mjs';
 
 const RAIZ = path.resolve(import.meta.dirname, '..', '..');
@@ -130,6 +131,89 @@ test('rodaTodoDia entende agenda diaria, semanal e por segundo', () => {
   assert.equal(rodaTodoDia('0 9 * * 1'), false, 'semanal nao roda todo dia');
   assert.equal(rodaTodoDia('0 0 1 * *'), false, 'mensal nao roda todo dia');
   assert.equal(rodaTodoDia(''), false);
+});
+
+test('esperaDoRetry: 429 respeita Retry-After, 5xx faz backoff, 4xx desiste', () => {
+  assert.equal(esperaDoRetry(429, '2', 1), 2_000, 'Retry-After em segundos manda');
+  assert.equal(esperaDoRetry(429, null, 1), RETRY.baseMs, 'sem cabecalho cai no backoff');
+  assert.equal(esperaDoRetry(429, '0', 1), 0);
+  assert.equal(esperaDoRetry(503, null, 3), RETRY.baseMs * 4, 'backoff dobra a cada tentativa');
+  assert.equal(esperaDoRetry(500, null, 99), RETRY.maxMs, 'backoff tem teto');
+  assert.equal(esperaDoRetry(401, null, 1), null, 'erro do pedido nao se repete');
+  assert.equal(esperaDoRetry(404, null, 1), null);
+});
+
+// ------------------------------------------------- chamarApi contra servidor local
+// SUPABASE_API_URL existe exatamente para isto (gerar-banco.mjs:36): exercitar o retry
+// sem tocar na Management API de verdade.
+async function comServidorLocal(respostas, cenario) {
+  const vistas = [];
+  const servidor = http.createServer((req, res) => {
+    let corpo = '';
+    req.on('data', (pedaco) => { corpo += pedaco; });
+    req.on('end', () => {
+      vistas.push({ url: req.url, auth: req.headers.authorization, corpo });
+      const r = respostas[Math.min(vistas.length - 1, respostas.length - 1)];
+      res.writeHead(r.status, { 'Content-Type': 'application/json', ...(r.headers || {}) });
+      res.end(r.corpo ?? '{"ok":true}');
+    });
+  });
+  await new Promise((pronto) => servidor.listen(0, '127.0.0.1', pronto));
+
+  const antes = { ...process.env };
+  process.env.SUPABASE_API_URL = `http://127.0.0.1:${servidor.address().port}`;
+  process.env.SUPABASE_ACCESS_TOKEN = 'sbp_token_de_teste';
+  process.env.SUPABASE_PROJECT_REF = 'projeto-de-teste';
+  process.env.INVENTARIO_PERMITIR_OUTRO_PROJETO = '1';
+  try {
+    return await cenario(vistas);
+  } finally {
+    servidor.close();
+    for (const chave of ['SUPABASE_API_URL', 'SUPABASE_ACCESS_TOKEN', 'SUPABASE_PROJECT_REF', 'INVENTARIO_PERMITIR_OUTRO_PROJETO']) {
+      if (antes[chave] === undefined) delete process.env[chave]; else process.env[chave] = antes[chave];
+    }
+  }
+}
+
+test('chamarApi repete 429 e devolve a resposta que deu certo', async () => {
+  await comServidorLocal(
+    [{ status: 429, headers: { 'Retry-After': '0' } }, { status: 429, headers: { 'Retry-After': '0' } }, { status: 200, corpo: '{"deu":"certo"}' }],
+    async (vistas) => {
+      const corpo = { query: 'select 1' };
+      const saida = await chamarApi('/database/query/read-only', { method: 'POST', body: JSON.stringify(corpo) });
+      assert.deepEqual(saida, { deu: 'certo' });
+      assert.equal(vistas.length, 3, 'duas tentativas bloqueadas + a que passou');
+      assert.equal(vistas[2].auth, 'Bearer sbp_token_de_teste');
+      assert.equal(vistas[2].url, '/v1/projects/projeto-de-teste/database/query/read-only');
+      assert.equal(vistas[2].corpo, JSON.stringify(corpo), 'o corpo e reenviado igual');
+    },
+  );
+});
+
+test('chamarApi desiste depois de RETRY.tentativas e nao vaza o corpo do erro', async () => {
+  await comServidorLocal(
+    [{ status: 429, headers: { 'Retry-After': '0' } }],
+    async (vistas) => {
+      await assert.rejects(
+        chamarApi('/functions'),
+        (erro) => erro.message === 'Management API /functions respondeu HTTP 429',
+        'mensagem seca, sem nada do corpo',
+      );
+      assert.equal(vistas.length, RETRY.tentativas);
+    },
+  );
+
+  await comServidorLocal(
+    [{ status: 401, corpo: '{"message":"token sbp_vazado nao confere"}' }],
+    async (vistas) => {
+      await assert.rejects(
+        chamarApi('/functions'),
+        (erro) => erro.message === 'Management API /functions respondeu HTTP 401',
+        'erro do pedido falha na primeira',
+      );
+      assert.equal(vistas.length, 1, 'sem retry em 401');
+    },
+  );
 });
 
 test('PARECE_CREDENCIAL pega Bearer, JWT e sb_secret_', () => {

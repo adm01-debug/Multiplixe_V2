@@ -9,7 +9,8 @@
  *   1) Com token (o cron semanal faz isso):
  *        SUPABASE_ACCESS_TOKEN=... node scripts/inventario/gerar-banco.mjs
  *      Le pela Management API: POST /database/query/read-only (transacao so leitura) e GET
- *      /functions. Projeto fixo: gyqtndkjvwvtkfeaxtlv (supabase/config.toml:1). SUPABASE_PROJECT_REF
+ *      /functions. 429 e 5xx sao repetidos com backoff (honrando o Retry-After). Projeto fixo:
+ *      gyqtndkjvwvtkfeaxtlv (supabase/config.toml:1). SUPABASE_PROJECT_REF
  *      so troca para teste; qualquer outro valor exige INVENTARIO_PERMITIR_OUTRO_PROJETO=1.
  *   2) Sem token (nenhum agente desta sessao tem MCP do projeto — `docs/agentes/banco.md`):
  *      rodar `scripts/inventario/banco.sql` no SQL Editor do Lovable Cloud, salvar a resposta e
@@ -33,7 +34,13 @@ const SQL_PATH = path.join(RAIZ, 'scripts/inventario/banco.sql');
 const SAIDA = path.join(RAIZ, 'inventario/estado/banco.json');
 export const PROJETO_OFICIAL = 'gyqtndkjvwvtkfeaxtlv';
 // SUPABASE_API_URL so existe para o teste apontar um servidor local.
-const API = `${(process.env.SUPABASE_API_URL || 'https://api.supabase.com').replace(/\/$/, '')}/v1/projects`;
+const apiBase = () => `${(process.env.SUPABASE_API_URL || 'https://api.supabase.com').replace(/\/$/, '')}/v1/projects`;
+
+/**
+ * A Management API limita requisicoes (HTTP 429) e devolve 5xx em pico. Sem retry o cron semanal
+ * perde a semana inteira por um blip de segundos.
+ */
+export const RETRY = { tentativas: 4, baseMs: 1000, maxMs: 30_000 };
 
 /** Limiares dos alertas: o que um agente precisa saber antes de mexer no sistema. */
 export const LIMIARES = {
@@ -210,16 +217,36 @@ function projeto() {
   return ref;
 }
 
-async function chamarApi(caminho, init = {}) {
+/**
+ * Quanto esperar antes de repetir, em ms, ou null quando nao adianta insistir (erro do pedido).
+ * 429 respeita o Retry-After quando ele vem; 5xx e 429 sem cabecalho usam backoff exponencial.
+ */
+export function esperaDoRetry(status, retryAfter, tentativa) {
+  const exponencial = Math.min(RETRY.baseMs * 2 ** (tentativa - 1), RETRY.maxMs);
+  if (status === 429) {
+    // get('retry-after') devolve null quando o cabecalho falta: tratar como ausente, nao como 0,
+    // senao a repeticao vira metralhadora contra a API.
+    const bruto = String(retryAfter ?? '').trim();
+    const segundos = bruto === '' ? Number.NaN : Number(bruto);
+    return Number.isFinite(segundos) && segundos >= 0 ? Math.min(segundos * 1000, RETRY.maxMs) : exponencial;
+  }
+  return status >= 500 && status <= 599 ? exponencial : null;
+}
+
+export async function chamarApi(caminho, init = {}) {
   const token = process.env.SUPABASE_ACCESS_TOKEN?.trim();
-  const res = await fetch(`${API}/${encodeURIComponent(projeto())}${caminho}`, {
-    ...init,
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...(init.headers || {}) },
-    signal: AbortSignal.timeout(120_000),
-  });
-  // Nunca repassa o corpo do erro: pode ecoar cabecalho ou parte da consulta.
-  if (!res.ok) throw new Error(`Management API ${caminho} respondeu HTTP ${res.status}`);
-  return res.json();
+  for (let tentativa = 1; ; tentativa += 1) {
+    const res = await fetch(`${apiBase()}/${encodeURIComponent(projeto())}${caminho}`, {
+      ...init,
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...(init.headers || {}) },
+      signal: AbortSignal.timeout(120_000),
+    });
+    if (res.ok) return res.json();
+    const espera = tentativa < RETRY.tentativas ? esperaDoRetry(res.status, res.headers.get('retry-after'), tentativa) : null;
+    // Nunca repassa o corpo do erro: pode ecoar cabecalho ou parte da consulta.
+    if (espera === null) throw new Error(`Management API ${caminho} respondeu HTTP ${res.status}`);
+    await new Promise((resolver) => setTimeout(resolver, espera));
+  }
 }
 
 async function main(argv) {

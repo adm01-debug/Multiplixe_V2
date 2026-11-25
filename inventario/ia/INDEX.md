@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `11fa47ca983dcd090cb4ca611f50853a52dca0a1` · branch `claude/feat-admin-gestao-usuarios-251125-1855` · 2026-11-25T18:53:29-03:00
+Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-seguranca-validacao-quiz-e-doc-251125-2350` · 2026-11-25T19:07:35-03:00
 
 ## Como usar
 
@@ -21,11 +21,11 @@ Commit: `11fa47ca983dcd090cb4ca611f50853a52dca0a1` · branch `claude/feat-admin-
 
 | | |
 |---|---|
-| arquivos (codigo) | 491 (405) |
-| linhas de codigo | 56122 |
+| arquivos (codigo) | 493 (407) |
+| linhas de codigo | 56264 |
 | paginas / rotas | 24 / 24 |
 | componentes / hooks | 220 / 99 |
-| arquivos de teste | 36 |
+| arquivos de teste | 37 |
 | edge functions | 13 |
 | tabelas / migrations | 61 / 53 |
 
@@ -115,15 +115,15 @@ Commit: `11fa47ca983dcd090cb4ca611f50853a52dca0a1` · branch `claude/feat-admin-
 ## Mexido nos ultimos 90 dias
 
 - `docs/agentes/lovable-vercel.md` (5)
-- `inventario/ia/baseline.json` (4)
-- `inventario/ia/INDEX.md` (4)
-- `inventario/ia/manifest.json` (4)
+- `inventario/ia/baseline.json` (5)
+- `inventario/ia/INDEX.md` (5)
+- `inventario/ia/manifest.json` (5)
 - `AGENTS.md` (3)
 - `docs/agentes/banco.md` (3)
 - `docs/agentes/mapa-repo.md` (3)
+- `inventario/estado/rotas.json` (3)
+- `inventario/ia/hooks.json` (3)
 - `progress.txt` (3)
-- `scripts/ci/inventario-rotas.unit.mjs` (3)
-- `scripts/ci/README.md` (3)
 
 ## Scripts npm
 

@@ -706,7 +706,7 @@
    "exports": [
     "QuizManager"
    ],
-   "linhas": 282,
+   "linhas": 283,
    "hooks": [
     "useEffect",
     "useState"

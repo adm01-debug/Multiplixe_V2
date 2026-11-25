@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (56)
+## ⏳ MELHORIAS PENDENTES (53)
 
 ### 🎨 UX/UI - 9 Pendentes
 
@@ -700,50 +700,52 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### 🔒 SEGURANÇA - 3 Pendentes
+### 🔒 SEGURANÇA - 3 Concluídas (SEC-002, SEC-003, SEC-004)
 
-#### SEC-002: Validação de Input Completa
-**Prioridade:** 🔴 Alta  
-**Esforço:** 3h  
-**Descrição:** Validação com Zod apenas em Auth, parcial em outros forms.
+#### ✅ SEC-002: Validação de Input Completa — CONCLUÍDO
 
-**Implementação:**
-```
-1. Adicionar validação Zod em CourseForm
-2. Adicionar validação em LessonForm
-3. Adicionar validação em QuizManager
-4. Sanitizar inputs de texto rico (se houver)
-5. Criar schemas reutilizáveis em src/lib/schemas.ts
-```
+**Entregue em 25/11/2026**
 
----
+`CourseForm` e `LessonForm` já tinham `zodResolver`. O que faltava era o `QuizManager`, que só
+validava "sem texto", "< 2 opções" e "sem resposta correta" numa cadeia de `if` dentro do
+`handleSave`, e aceitava título vazio, `passing_score`/`xp_reward`/`cooldown` negativos e lista de
+opções sem teto.
 
-#### SEC-003: CSRF Protection Verificação
-**Prioridade:** 🟡 Média  
-**Esforço:** 1h  
-**Descrição:** Verificar proteção CSRF.
-
-**Implementação:**
-```
-1. Supabase RLS já protege via JWT
-2. Verificar tokens em mutations críticas
-3. Documentar proteção existente
-```
+- `src/lib/schemas.ts` (novo): `quizSchema`, `quizQuestionSchema` e constantes de limite
+  (`MAX_QUIZ_QUESTIONS = 50`, `MAX_QUIZ_OPTIONS = 10`).
+- `QuizManager.handleSave` passou a usar `safeParse` e a gravar o `parsed.data`, com o erro da
+  primeira issue prefixado por "Questão N " quando a issue é de uma questão.
+- Opção em branco continua sendo descartada (o formulário nasce com 4 linhas), agora dentro do
+  schema via `z.preprocess` — mesma regra de antes, explícita.
+- `src/test/quizSchemas.test.ts` (novo): 12 casos (payload válido, opções em branco descartadas,
+  < 2 opções, sem resposta correta, sem título, sem questões, questão sem texto, teto de opções,
+  `passing_score` fora de 0-100, XP/cooldown negativos, tempo limite fracionário).
 
 ---
 
-#### SEC-004: Headers de Segurança
-**Prioridade:** 🟡 Média  
-**Esforço:** 2h  
-**Descrição:** Verificar headers HTTP de segurança.
+#### ✅ SEC-003: CSRF Protection Verificação — CONCLUÍDO
 
-**Implementação:**
-```
-1. Verificar/Configurar CSP headers
-2. X-Content-Type-Options: nosniff
-3. X-Frame-Options: DENY
-4. Configurar em vercel.json ou _headers
-```
+**Entregue em 25/11/2026**
+
+Verificado no código: a sessão vive em `localStorage`
+(`src/integrations/supabase/client.ts`, `auth.storage: localStorage`) e o token é enviado em
+`Authorization: Bearer` pelo JS do app — nenhuma credencial viaja automaticamente com a requisição,
+então não há CSRF a explorar. O único cookie do app é `sidebar_state`
+(`src/components/ui/sidebar.tsx:68`), preferência visual escrita e nunca lida pelo cliente, que
+servidor nenhum consulta. Documentado em `docs/agentes/regras-dominio.md` > "Segurança", com a
+condição que invalidaria a conclusão (sessão passar a usar cookie).
+
+---
+
+#### ✅ SEC-004: Headers de Segurança — CONCLUÍDO
+
+**Entregue em 25/11/2026**
+
+Já aplicado por PR anterior e conferido **na produção** (resposta real de
+`https://multiplixe-v2.vercel.app/`): `Content-Security-Policy`, `X-Content-Type-Options: nosniff`,
+`X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`,
+`Strict-Transport-Security: max-age=31536000; includeSubDomains`. Fonte: `vercel.json` >
+`headers` para `/(.*)`.
 
 ---
 
@@ -1299,7 +1301,7 @@ CREATE TABLE public.webhook_endpoints (
 |----|----------|---------|
 | PERF-002 | Memoização de Componentes | 3h |
 | A11Y-001 | Labels em Inputs | 2h |
-| SEC-002 | Validação de Input Completa | 3h |
+| SEC-002 | Validação de Input Completa | ✅ 3h |
 | REF-006 | Error Boundary | 2h |
 | UI-011 | Modal Confirmação Saída | 2h |
 | FUNC-021 | Revisão de Quiz | 3h |
@@ -1317,7 +1319,7 @@ CREATE TABLE public.webhook_endpoints (
 | FUNC-012 | Metas de Aprendizado | 4h |
 | UI-015 | Avatar Upload | 4h |
 | GAME-004 | Conquistas Expandidas | 4h |
-| ADMIN-002 | Gestão de Usuários Avançada | 4h |
+| ADMIN-002 | Gestão de Usuários Avançada | ✅ 4h |
 | REF-002 | Layout Wrapper | 3h |
 | REF-004 | Tipos Centralizados | 2h |
 

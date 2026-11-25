@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 405,
- "arestas": 1054,
+ "nos": 407,
+ "arestas": 1056,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -606,7 +606,8 @@
    "src/components/ui/input.tsx",
    "src/components/ui/label.tsx",
    "src/components/ui/textarea.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/schemas.ts"
   ],
   "src/components/admin/QuizQuestionCard.tsx": [
    "src/components/ui/badge.tsx",
@@ -1582,6 +1583,7 @@
   "src/lib/queryPersister.ts": [],
   "src/lib/routePrefetch.ts": [],
   "src/lib/salesEnablementSchemas.ts": [],
+  "src/lib/schemas.ts": [],
   "src/lib/shareImage.ts": [],
   "src/lib/telemetry.ts": [
    "src/integrations/supabase/client.ts"
@@ -1925,6 +1927,9 @@
   "src/test/optimisticFavorites.test.ts": [],
   "src/test/performanceOptimizations.test.ts": [],
   "src/test/playbookCommentsHook.test.ts": [],
+  "src/test/quizSchemas.test.ts": [
+   "src/lib/schemas.ts"
+  ],
   "src/test/routeErrorBoundary.test.tsx": [
    "src/components/RouteErrorBoundary.tsx"
   ],

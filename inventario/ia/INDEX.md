@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `0e6daa7e6ddb01795b0478d5b123079f617c1f6e` · branch `claude/fix-skip-links-251126-2100` · 2026-11-25T20:32:41-03:00
+Commit: `1d3c4f4616f9d5a2656c4b62edfe603b02088dd5` · branch `claude/perf-memoizacao-251126-2140` · 2026-11-25T20:40:39-03:00
 
 ## Como usar
 
@@ -22,7 +22,7 @@ Commit: `0e6daa7e6ddb01795b0478d5b123079f617c1f6e` · branch `claude/fix-skip-li
 | | |
 |---|---|
 | arquivos (codigo) | 502 (416) |
-| linhas de codigo | 57355 |
+| linhas de codigo | 57367 |
 | paginas / rotas | 24 / 24 |
 | componentes / hooks | 221 / 101 |
 | arquivos de teste | 41 |
@@ -114,14 +114,14 @@ Commit: `0e6daa7e6ddb01795b0478d5b123079f617c1f6e` · branch `claude/fix-skip-li
 
 ## Mexido nos ultimos 90 dias
 
-- `inventario/ia/baseline.json` (8)
-- `inventario/ia/INDEX.md` (8)
-- `inventario/ia/manifest.json` (8)
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (6)
+- `inventario/ia/baseline.json` (9)
+- `inventario/ia/INDEX.md` (9)
+- `inventario/ia/manifest.json` (9)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (7)
+- `inventario/ia/componentes.json` (6)
+- `inventario/ia/grafo.json` (6)
 - `docs/agentes/lovable-vercel.md` (5)
 - `inventario/estado/rotas.json` (5)
-- `inventario/ia/componentes.json` (5)
-- `inventario/ia/grafo.json` (5)
 - `inventario/ia/hooks.json` (5)
 - `docs/agentes/mapa-repo.md` (4)
 

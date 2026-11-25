@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (48)
+## ⏳ MELHORIAS PENDENTES (47)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -192,9 +192,9 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-### ⚡ PERFORMANCE - 3 Pendentes
+### ⚡ PERFORMANCE - 2 Pendentes
 
-#### PERF-002: Memoização de Componentes
+#### PERF-002: Memoização de Componentes ✅ CONCLUÍDO
 **Prioridade:** 🔴 Alta  
 **Esforço:** 3h  
 **Descrição:** Componentes re-renderizam desnecessariamente.
@@ -206,6 +206,17 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 3. Usar useCallback para handlers passados como props
 4. Otimizar: Dashboard.tsx, Profile.tsx, Catalog.tsx
 5. Usar React DevTools Profiler para identificar re-renders
+```
+
+**Entrega (2026-11-25):**
+```
+- Auditoria: CourseCard, AchievementsGrid e VirtualizedCourseGrid já são React.memo;
+  Catalog já usa useMemo (matchesMap, filteredCourses) e useCallback nos handlers.
+- Gap real corrigido: Catalog recriava a lista mapeada passada ao VirtualizedCourseGrid
+  a cada render, anulando o memo do grid a cada tecla digitada na busca.
+  Agora é useMemo([filteredCourses]).
+- Dashboard/Profile: os cálculos são filtros O(n) sobre dezenas de itens e ficam após
+  early return (useMemo exigiria reordenar hooks); não há ganho mensurável.
 ```
 
 ---
@@ -1365,7 +1376,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
-| PERF-002 | Memoização de Componentes | 3h |
+| PERF-002 | Memoização de Componentes | ✅ 3h |
 | A11Y-001 | Labels em Inputs | ✅ 2h |
 | SEC-002 | Validação de Input Completa | ✅ 3h |
 | REF-006 | Error Boundary | 2h |
@@ -1427,7 +1438,7 @@ CREATE TABLE public.webhook_endpoints (
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
 | UX/UI | 8 | ~26h |
-| Performance | 3 | ~10h |
+| Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
 | Acessibilidade | 6 | ~13h |
 | Segurança | 3 | ~6h |
@@ -1437,7 +1448,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **51** | **~255h** |
+| **TOTAL PENDENTE** | **50** | **~252h** |
 
 ---
 

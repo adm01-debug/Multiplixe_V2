@@ -118,6 +118,18 @@ test('coletarChamadas registra alvo em variavel como nao conferido, nao como vio
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('coletarChamadas nao perde alvo montado com concatenacao nem template literal', () => {
+  const dir = repoDeBrinquedo({
+    'src/a.ts': "const id = 'x';\nsb.from('cursos_' + id).select();\nsb.from(`cursos_${id}`).select();\nsb.rpc('has_' + id);\n",
+  });
+  try {
+    const { chamadas, dinamicas } = coletarChamadas(dir, ['src']);
+    assert.deepEqual(chamadas, [], 'prefixo de concatenacao nao pode virar alvo conferido');
+    assert.equal(dinamicas.length, 3, 'as 3 chamadas montadas em runtime tem de aparecer nas nao resolvidas');
+    assert.equal(rodar(dir), 0, 'alvo montado em runtime nao pode inventar violacao');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 // ----------------------------------------------------------------- repo real
 test('repo real: nenhum .from()/.rpc() aponta para objeto que o repo nao declara', () => {
   assert.equal(main(['--root', RAIZ]), 0, 'rode node scripts/ci/supabase-usage-guard.mjs para ver o que quebrou');

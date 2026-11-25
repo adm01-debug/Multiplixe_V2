@@ -17,7 +17,7 @@ const STATIC_ROUTES = [
   "/avaliacoes",
 ];
 
-const SITE_URL = "https://learn-flow-forge-37.lovable.app";
+const SITE_URL = (Deno.env.get("APP_PUBLIC_URL") || "https://multiplixe-v2.vercel.app").replace(/\/+$/, "");
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {

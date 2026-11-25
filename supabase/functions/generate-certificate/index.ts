@@ -107,7 +107,7 @@ serve(async (req: Request): Promise<Response> => {
       throw new Error("Failed to issue certificate");
     }
 
-    const baseUrl = Deno.env.get("SUPABASE_URL")?.replace(".supabase.co", ".lovable.app") || "";
+    const baseUrl = (Deno.env.get("APP_PUBLIC_URL") || "https://multiplixe-v2.vercel.app").replace(/\/+$/, "");
     const verificationUrl = `${baseUrl}/verificar-certificado?code=${certificate.verification_code}`;
 
     const pdfContent = generateCertificatePDF({

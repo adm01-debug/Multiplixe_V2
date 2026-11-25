@@ -140,9 +140,10 @@
   {
    "arquivo": "src/components/accessibility/SkipLinks.tsx",
    "exports": [],
-   "linhas": 36,
+   "linhas": 75,
    "hooks": [
-    "useState"
+    "useCallback",
+    "useEffect"
    ],
    "tabelas": [],
    "edges": [],

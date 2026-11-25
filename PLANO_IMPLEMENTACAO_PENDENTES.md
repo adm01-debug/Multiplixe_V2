@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (49)
+## ⏳ MELHORIAS PENDENTES (48)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -600,7 +600,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 7 Pendentes
+### ♿ ACESSIBILIDADE - 6 Pendentes
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -659,7 +659,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-005: Skip Links
+#### A11Y-005: Skip Links ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 1h  
 **Descrição:** Não há skip link para conteúdo principal.
@@ -672,6 +672,16 @@ leitor de tela) e 17 só com `placeholder`.
 4. Visível apenas no focus
 ```
 
+**Entrega (2026-11-25):**
+```
+- SkipLinks.tsx já existia e estava em App.tsx, mas os alvos não existiam no DOM:
+  #navigation e #footer em nenhuma rota, #main-content em 4 de 24 páginas (os links
+  eram inertes). Agora cada atalho resolve o alvo (#id -> main/nav/footer -> role),
+  só é renderizado quando há alvo visível na página, e ao acionar aplica tabindex=-1
+  e move o foco (WCAG 2.4.1).
+- src/test/skipLinks.test.tsx: 6 casos (alvo presente, ausente, footer, sem landmarks,
+  foco + tabindex, prioridade do id canônico).
+```
 ---
 
 #### A11Y-006: Anúncios de Screen Reader
@@ -1391,7 +1401,7 @@ CREATE TABLE public.webhook_endpoints (
 | FUNC-013 | Activity Timeline | 4h |
 | PERF-003 | Paginação Catálogo | 3h |
 | SEO-006 | Core Web Vitals | 4h |
-| A11Y-005 | Skip Links | 1h |
+| A11Y-005 | Skip Links | ✅ 1h |
 | A11Y-008 | Reduced Motion | 2h |
 | UI-014 | Copiar Certificado | 1h |
 
@@ -1419,7 +1429,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 3 | ~10h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 7 | ~14h |
+| Acessibilidade | 6 | ~13h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1427,7 +1437,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **52** | **~256h** |
+| **TOTAL PENDENTE** | **51** | **~255h** |
 
 ---
 

@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "fc19895e73eb2acb094cbce037bedd0cea07179c",
-  "branch": "claude/feat-revisao-quiz-251126-2022",
-  "data_commit": "2026-11-25T20:21:52-03:00",
+  "commit": "0e6daa7e6ddb01795b0478d5b123079f617c1f6e",
+  "branch": "claude/fix-skip-links-251126-2100",
+  "data_commit": "2026-11-25T20:32:41-03:00",
   "ultimos_commits": [
+   "0e6daa7 feat: revisao de quiz apos a conclusao (FUNC-021) (#29)",
    "fc19895 fix: confirmacao de saida no quiz em andamento (UI-011) (#28)",
    "e954916 fix: nome acessivel em todos os campos de texto (A11Y-001) (#27)",
    "764adf2 feat: configuracoes da plataforma configuraveis no admin (ADMIN-007) (#26)",
@@ -14,28 +15,43 @@
    "11fa47c fix: bloqueia escrita e acesso anonimo na view quiz_options_public e revoga EXECUTE de anon nas funcoes SECURITY DEFINER (#23)",
    "74074f1 feat: adiciona cabecalhos de seguranca no vercel.json (#22)",
    "be0f3c6 fix: revoga execucao de sql arbitrario pelo role authenticated (mcp_exec) (#21)",
-   "bde494a fix: substitui URLs Lovable mortas pelo dominio oficial de producao (#20)",
-   "050d8ae chore: liga o typecheck no CI (#16)"
+   "bde494a fix: substitui URLs Lovable mortas pelo dominio oficial de producao (#20)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 7
+    "mudancas": 8
+   },
+   {
+    "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
+    "mudancas": 6
    },
    {
     "arquivo": "docs/agentes/lovable-vercel.md",
     "mudancas": 5
    },
    {
-    "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
+    "arquivo": "inventario/estado/rotas.json",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "inventario/ia/componentes.json",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "inventario/ia/grafo.json",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "inventario/ia/hooks.json",
     "mudancas": 5
    },
    {
@@ -47,19 +63,7 @@
     "mudancas": 4
    },
    {
-    "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "inventario/ia/hooks.json",
+    "arquivo": "inventario/estado/schema-declarado.json",
     "mudancas": 4
    },
    {
@@ -76,10 +80,6 @@
    },
    {
     "arquivo": "docs/agentes/github-ci.md",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/estado/schema-declarado.json",
     "mudancas": 3
    },
    {
@@ -101,13 +101,13 @@
   ]
  },
  "contagens": {
-  "arquivos": 501,
-  "arquivos_de_codigo": 415,
-  "linhas_de_codigo": 57268,
+  "arquivos": 502,
+  "arquivos_de_codigo": 416,
+  "linhas_de_codigo": 57355,
   "componentes": 221,
   "hooks": 101,
   "paginas": 24,
-  "testes": 40,
+  "testes": 41,
   "edge_functions": 13,
   "rotas": 24,
   "tabelas": 62,
@@ -142,7 +142,7 @@
   "src/lib": 14,
   "src/main.tsx": 1,
   "src/pages": 24,
-  "src/test": 40,
+  "src/test": 41,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,

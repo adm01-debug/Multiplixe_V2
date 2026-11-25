@@ -24,9 +24,14 @@ conhecida; nunca cite a chave em chat, log ou PR.
 
 ## Login e acesso
 
-- **Gate de domínio é só no cliente:** `src/pages/Auth.tsx:16` valida com zod que o e-mail termina em
-  `@promobrindes.com.br`. Não é RLS nem trigger — é validação de formulário.
-- Antes do `signIn`, o front chama a RPC `check_login_allowed({ p_email })` (`src/pages/Auth.tsx:45`), e o
+- **Gate de domínio é só no cliente:** `src/pages/Auth.tsx:39-41` monta o schema zod com
+  `createCorporateEmailSchema(allowedDomainsFrom(settings['allowed_email_domains']))`, validado em
+  `src/pages/Auth.tsx:70`. Não é RLS nem trigger — é validação de formulário.
+- A lista de domínios aceitos agora vem do banco (`platform_settings`, chave `allowed_email_domains`), editável
+  em Admin → Configurações; default `["promobrindes.com.br"]` em `src/lib/platformSettings.ts`. Por isso a
+  policy `platform_settings_select_anon_dominios` libera a leitura dessa chave para `anon`: o login precisa
+  validar antes de existir sessão. Trocar de provedor/e-mail corporativo é editar a chave, não o código.
+- Antes do `signIn`, o front chama a RPC `check_login_allowed({ p_email })` (`src/pages/Auth.tsx:55`), e o
   fluxo de falha usa `record_failed_login` / `reset_login_attempts` (tabelas `login_attempts`,
   `blocked_ips`, `whitelisted_ips`, `rate_limit_config`, `rate_limit_logs`).
 - OAuth (Google/Apple) passa pelo Lovable: `src/integrations/lovable/index.ts` chama

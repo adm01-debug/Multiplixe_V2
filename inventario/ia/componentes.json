@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 220,
+ "total": 221,
  "orfaos": [
   "src/components/accessibility/FontSizeControl.tsx",
   "src/components/accessibility/HighContrastToggle.tsx",
@@ -672,6 +672,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/admin/PlatformSettingsTab.tsx",
+   "exports": [
+    "PlatformSettingsTab"
+   ],
+   "linhas": 176,
+   "hooks": [
+    "useEffect",
+    "usePlatformSettings",
+    "useUpdatePlatformSettings"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/admin/quiz-stats/LowPerformanceAlerts.tsx",
    "exports": [],
    "linhas": 64,
@@ -706,9 +722,12 @@
    "exports": [
     "QuizManager"
    ],
-   "linhas": 283,
+   "linhas": 303,
    "hooks": [
     "useEffect",
+    "useMemo",
+    "usePlatformSettings",
+    "useRef",
     "useState"
    ],
    "tabelas": [
@@ -2366,7 +2385,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 119,
+   "usado_por": 120,
    "orfao": false
   },
   {
@@ -2569,7 +2588,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 30,
+   "usado_por": 31,
    "orfao": false
   },
   {
@@ -2877,7 +2896,7 @@
   {
    "arquivo": "src/pages/Admin.tsx",
    "exports": [],
-   "linhas": 290,
+   "linhas": 297,
    "hooks": [
     "useAdminRole",
     "useAuth",
@@ -2921,12 +2940,14 @@
   {
    "arquivo": "src/pages/Auth.tsx",
    "exports": [],
-   "linhas": 154,
+   "linhas": 164,
    "hooks": [
     "useAuth",
     "useCallback",
     "useEffect",
+    "useMemo",
     "useNavigate",
+    "usePlatformSettings",
     "useState"
    ],
    "tabelas": [],
@@ -3089,7 +3110,7 @@
   {
    "arquivo": "src/pages/LessonPlayer.tsx",
    "exports": [],
-   "linhas": 210,
+   "linhas": 214,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3097,7 +3118,9 @@
     "useCertificates",
     "useConfetti",
     "useEffect",
+    "useMemo",
     "useNavigate",
+    "usePlatformSettings",
     "usePomodoro",
     "useRef",
     "useState",

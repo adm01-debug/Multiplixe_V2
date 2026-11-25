@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   GraduationCap, ArrowLeft, Loader2, BookOpen, Users, BarChart3,
   ShieldAlert, TrendingUp, Zap, Trophy, Route, Shield, Target,
-  FileText, Video, Sparkles,
+  FileText, Video, Sparkles, Settings,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
@@ -29,6 +29,7 @@ const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmen
 const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap').catch((e) => { console.error('[Admin] Failed to load AdminEngagementHeatmap', e); throw e; }));
 const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention').catch((e) => { console.error('[Admin] Failed to load AdminCohortRetention', e); throw e; }));
 const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget').catch((e) => { console.error('[Admin] Failed to load AdminTelemetryWidget', e); throw e; }));
+const PlatformSettingsTab = lazy(() => import('@/components/admin/PlatformSettingsTab').catch((e) => { console.error('[Admin] Failed to load PlatformSettingsTab', e); throw e; }));
 
 interface PlatformStats {
   totalUsers: number;
@@ -215,6 +216,7 @@ const Admin = () => {
               <TabsTrigger value="permissions"><Shield className="h-4 w-4 mr-1.5 inline-block align-middle" />Permissões</TabsTrigger>
               <TabsTrigger value="analytics"><TrendingUp className="h-4 w-4 mr-1.5 inline-block align-middle" />Analytics</TabsTrigger>
               <TabsTrigger value="stats"><BarChart3 className="h-4 w-4 mr-1.5 inline-block align-middle" />Stats</TabsTrigger>
+              <TabsTrigger value="settings"><Settings className="h-4 w-4 mr-1.5 inline-block align-middle" />Configurações</TabsTrigger>
             </TabsList>
           </div>
 
@@ -278,6 +280,11 @@ const Admin = () => {
           <TabsContent value="stats">
             <Suspense fallback={<TabFallback />}>
               <AdminStatsTab stats={stats} courses={courses} users={users} />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="settings">
+            <Suspense fallback={<TabFallback />}>
+              <PlatformSettingsTab />
             </Suspense>
           </TabsContent>
         </Tabs>

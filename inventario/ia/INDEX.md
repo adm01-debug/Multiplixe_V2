@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-seguranca-validacao-quiz-e-doc-251125-2350` · 2026-11-25T19:07:35-03:00
+Commit: `439ae5b80b1ff525b5221f3fdd1a937667f0e904` · branch `claude/feat-plataforma-configuracoes-261125-1928` · 2026-11-25T19:23:07-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-segur
 
 | | |
 |---|---|
-| arquivos (codigo) | 493 (407) |
-| linhas de codigo | 56264 |
+| arquivos (codigo) | 498 (411) |
+| linhas de codigo | 56834 |
 | paginas / rotas | 24 / 24 |
-| componentes / hooks | 220 / 99 |
-| arquivos de teste | 37 |
+| componentes / hooks | 221 / 101 |
+| arquivos de teste | 38 |
 | edge functions | 13 |
-| tabelas / migrations | 61 / 53 |
+| tabelas / migrations | 62 / 54 |
 
 ## Divida medida
 
@@ -38,17 +38,17 @@ Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-segur
 | URL | arquivo | protegida | entradas na UI | tabelas | edges |
 |---|---|---|---|---|---|
 | `*` | src/pages/NotFound.tsx | nao | — | 0 | — |
-| `/` | src/pages/Index.tsx | nao | navegacao-no-codigo, prefetch | 33 | detect-new-device, export-user-data, generate-certificate |
-| `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 28 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
+| `/` | src/pages/Index.tsx | nao | navegacao-no-codigo, prefetch | 34 | detect-new-device, export-user-data, generate-certificate |
+| `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 29 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
 | `/admin/security` | src/pages/RateLimitDashboard.tsx | admin | prefetch | 5 | detect-new-device |
-| `/auth` | src/pages/Auth.tsx | nao | navegacao-no-codigo, prefetch | 0 | detect-new-device |
+| `/auth` | src/pages/Auth.tsx | nao | navegacao-no-codigo, prefetch | 1 | detect-new-device |
 | `/avaliacao/:id` | src/pages/AssessmentRunner.tsx | sim | — | 4 | detect-new-device |
 | `/avaliacoes` | src/pages/SkillAssessments.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | detect-new-device |
 | `/biblioteca-videos` | src/pages/VideoLibrary.tsx | sim | atalho-teclado, command-palette | 2 | — |
-| `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 32 | detect-new-device, export-user-data, generate-certificate |
+| `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 33 | detect-new-device, export-user-data, generate-certificate |
 | `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 13 | detect-new-device |
-| `/curso/:slug/aula/:lessonId` | src/pages/LessonPlayer.tsx | sim | prefetch | 16 | detect-new-device, generate-certificate |
-| `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 39 | detect-new-device, export-user-data, generate-certificate |
+| `/curso/:slug/aula/:lessonId` | src/pages/LessonPlayer.tsx | sim | prefetch | 17 | detect-new-device, generate-certificate |
+| `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 40 | detect-new-device, export-user-data, generate-certificate |
 | `/forgot-password` | src/pages/ForgotPassword.tsx | nao | navegacao-no-codigo, prefetch | 2 | — |
 | `/onboarding` | src/pages/SalesOnboarding.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo | 2 | detect-new-device |
 | `/onboarding/executar` | src/pages/OnboardingRuntime.tsx | sim | navegacao-no-codigo | 2 | detect-new-device |
@@ -58,8 +58,8 @@ Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-segur
 | `/ranking` | src/pages/Leaderboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 0 | detect-new-device |
 | `/reset-password` | src/pages/ResetPassword.tsx | nao | prefetch | 0 | — |
 | `/seguranca` | src/pages/SecurityDashboard.tsx | sim | command-palette, navegacao-no-codigo, prefetch | 9 | approve-password-reset, detect-new-device |
-| `/trilha/:slug` | src/pages/LearningPathDetail.tsx | sim | — | 32 | detect-new-device, export-user-data, generate-certificate |
-| `/trilhas` | src/pages/LearningPaths.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo, prefetch | 32 | detect-new-device, export-user-data, generate-certificate |
+| `/trilha/:slug` | src/pages/LearningPathDetail.tsx | sim | — | 33 | detect-new-device, export-user-data, generate-certificate |
+| `/trilhas` | src/pages/LearningPaths.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo, prefetch | 33 | detect-new-device, export-user-data, generate-certificate |
 | `/verificar-certificado` | src/pages/VerifyCertificate.tsx | nao | prefetch | 1 | generate-certificate |
 
 ## Edge functions
@@ -82,7 +82,7 @@ Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-segur
 
 ## Banco (declarado pelo repo)
 
-61 tabelas · 163 policies · 43 funcoes · 2 cron jobs · 1 bucket(s) · 53 migrations
+62 tabelas · 166 policies · 43 funcoes · 2 cron jobs · 1 bucket(s) · 54 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -101,29 +101,29 @@ Commit: `50eee4b2db5c23453eea5130544dd7c20f5bf7e1` · branch `claude/chore-segur
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (119)
-- `src/integrations/supabase/client.ts` (91)
+- `src/components/ui/button.tsx` (120)
+- `src/integrations/supabase/client.ts` (92)
 - `src/hooks/useAuth.tsx` (62)
 - `src/lib/utils.ts` (62)
 - `src/components/ui/card.tsx` (56)
 - `src/components/ui/badge.tsx` (51)
+- `src/components/ui/input.tsx` (31)
 - `src/components/ui/dialog.tsx` (30)
-- `src/components/ui/input.tsx` (30)
+- `src/components/ui/label.tsx` (21)
 - `src/components/ui/progress.tsx` (21)
-- `src/components/ui/label.tsx` (20)
 
 ## Mexido nos ultimos 90 dias
 
+- `inventario/ia/baseline.json` (6)
+- `inventario/ia/INDEX.md` (6)
+- `inventario/ia/manifest.json` (6)
 - `docs/agentes/lovable-vercel.md` (5)
-- `inventario/ia/baseline.json` (5)
-- `inventario/ia/INDEX.md` (5)
-- `inventario/ia/manifest.json` (5)
 - `AGENTS.md` (3)
 - `docs/agentes/banco.md` (3)
 - `docs/agentes/mapa-repo.md` (3)
+- `docs/agentes/regras-dominio.md` (3)
 - `inventario/estado/rotas.json` (3)
-- `inventario/ia/hooks.json` (3)
-- `progress.txt` (3)
+- `inventario/ia/componentes.json` (3)
 
 ## Scripts npm
 

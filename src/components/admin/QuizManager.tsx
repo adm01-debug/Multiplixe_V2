@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,8 @@ import { toast } from 'sonner';
 import QuizQuestionCard from './QuizQuestionCard';
 import AIQuizGeneratorModal, { type GeneratedQuestion } from './AIQuizGeneratorModal';
 import { quizSchema } from '@/lib/schemas';
+import { usePlatformSettings } from '@/hooks/usePlatformSettings';
+import { DEFAULT_QUIZ_DEFAULTS, QUIZ_DEFAULTS_KEY, quizDefaultsFrom } from '@/lib/platformSettings';
 
 interface QuizOption {
   id?: string;
@@ -43,13 +45,31 @@ interface QuizManagerProps {
 }
 
 export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) => {
+  const { settings, isLoading: settingsLoading } = usePlatformSettings();
+  const quizDefaults = useMemo(() => quizDefaultsFrom(settings[QUIZ_DEFAULTS_KEY]), [settings]);
   const [quiz, setQuiz] = useState<Quiz>({
-    title: 'Quiz da aula', description: '', passing_score: 90,
-    xp_reward: 50, time_limit_seconds: null, cooldown_hours: 24, questions: [],
+    title: 'Quiz da aula', description: '', passing_score: quizDefaults.passing_score,
+    xp_reward: quizDefaults.xp_reward, time_limit_seconds: null, cooldown_hours: quizDefaults.cooldown_hours, questions: [],
   });
   const [loading, setLoading] = useState(false);
   const [existingQuizId, setExistingQuizId] = useState<string | null>(null);
   const [aiOpen, setAiOpen] = useState(false);
+  const defaultsApplied = useRef(false);
+
+  useEffect(() => {
+    if (defaultsApplied.current || settingsLoading) return;
+    defaultsApplied.current = true;
+    if (existingQuizId) return;
+    setQuiz((prev) => {
+      const untouched =
+        prev.passing_score === DEFAULT_QUIZ_DEFAULTS.passing_score &&
+        prev.xp_reward === DEFAULT_QUIZ_DEFAULTS.xp_reward &&
+        prev.cooldown_hours === DEFAULT_QUIZ_DEFAULTS.cooldown_hours;
+      return untouched
+        ? { ...prev, passing_score: quizDefaults.passing_score, xp_reward: quizDefaults.xp_reward, cooldown_hours: quizDefaults.cooldown_hours }
+        : prev;
+    });
+  }, [settingsLoading, quizDefaults, existingQuizId]);
 
   const handleAIQuestions = (generated: GeneratedQuestion[]) => {
     setQuiz((prev) => {

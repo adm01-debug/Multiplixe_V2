@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,8 +12,13 @@ import { z } from 'zod';
 import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
 import AuthLeftPanel from '@/components/auth/AuthLeftPanel';
 import { GraduationCap, Mail, Lock, User, Loader2, Sparkles, ArrowRight, Eye, EyeOff, ShieldAlert } from 'lucide-react';
+import { usePlatformSettings } from '@/hooks/usePlatformSettings';
+import {
+  ALLOWED_EMAIL_DOMAINS_KEY,
+  allowedDomainsFrom,
+  createCorporateEmailSchema,
+} from '@/lib/platformSettings';
 
-const emailSchema = z.string().email('Email inválido').refine((email) => email.endsWith('@promobrindes.com.br'), 'Apenas emails @promobrindes.com.br são permitidos');
 const passwordSchema = z.string().min(8, 'A senha deve ter pelo menos 8 caracteres').regex(/[A-Z]/, 'Deve conter letra maiúscula').regex(/[a-z]/, 'Deve conter letra minúscula').regex(/[0-9]/, 'Deve conter número').regex(/[!@#$%^&*(),.?":{}|<>]/, 'Deve conter caractere especial');
 const fullNameSchema = z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100, 'Nome muito longo');
 
@@ -30,6 +35,11 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [lockoutSeconds, setLockoutSeconds] = useState(0);
   const [attemptCount, setAttemptCount] = useState(0);
+  const { settings } = usePlatformSettings();
+  const emailSchema = useMemo(
+    () => createCorporateEmailSchema(allowedDomainsFrom(settings[ALLOWED_EMAIL_DOMAINS_KEY])),
+    [settings],
+  );
 
   useEffect(() => { if (user) navigate('/dashboard'); }, [user, navigate]);
 

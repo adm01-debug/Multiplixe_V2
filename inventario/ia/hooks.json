@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 99,
+ "total": 101,
  "sem_uso": [
   "useAnnouncements",
   "useAuditLog",
@@ -74,6 +74,7 @@
   "usePWA",
   "usePasskeys",
   "usePlatformComparison",
+  "usePlatformSettings",
   "usePomodoro",
   "usePrefetch",
   "usePrefetchQuery",
@@ -91,6 +92,7 @@
   "useStreaks",
   "useStudyCalendar",
   "useThrottledCallback",
+  "useUpdatePlatformSettings",
   "useUserAchievementsCached",
   "useUserLearningPathProgressCached",
   "useUserPreferences",
@@ -949,6 +951,22 @@
    "usado_por": [],
    "coberto_por_teste": false
   },
+  "usePlatformSettings": {
+   "arquivo": "src/hooks/usePlatformSettings.ts",
+   "linhas": 72,
+   "tabelas": [
+    "platform_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/PlatformSettingsTab.tsx",
+    "src/components/admin/QuizManager.tsx",
+    "src/pages/Auth.tsx",
+    "src/pages/LessonPlayer.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "usePlaybook": {
    "arquivo": "src/hooks/usePlaybooks.ts",
    "linhas": 103,
@@ -1399,6 +1417,19 @@
     "src/pages/SalesOnboarding.tsx"
    ],
    "coberto_por_teste": true
+  },
+  "useUpdatePlatformSettings": {
+   "arquivo": "src/hooks/usePlatformSettings.ts",
+   "linhas": 72,
+   "tabelas": [
+    "platform_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/PlatformSettingsTab.tsx"
+   ],
+   "coberto_por_teste": false
   },
   "useUpdatePlaybookComment": {
    "arquivo": "src/hooks/usePlaybookComments.ts",

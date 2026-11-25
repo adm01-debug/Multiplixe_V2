@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "0e6daa7e6ddb01795b0478d5b123079f617c1f6e",
-  "branch": "claude/fix-skip-links-251126-2100",
-  "data_commit": "2026-11-25T20:32:41-03:00",
+  "commit": "1d3c4f4616f9d5a2656c4b62edfe603b02088dd5",
+  "branch": "claude/perf-memoizacao-251126-2140",
+  "data_commit": "2026-11-25T20:40:39-03:00",
   "ultimos_commits": [
+   "1d3c4f4 fix: skip links so apontam para alvos que existem (A11Y-005) (#30)",
    "0e6daa7 feat: revisao de quiz apos a conclusao (FUNC-021) (#29)",
    "fc19895 fix: confirmacao de saida no quiz em andamento (UI-011) (#28)",
    "e954916 fix: nome acessivel em todos os campos de texto (A11Y-001) (#27)",
@@ -14,24 +15,31 @@
    "618bc23 feat: gestao de usuarios avancada no admin (ADMIN-002) (#24)",
    "11fa47c fix: bloqueia escrita e acesso anonimo na view quiz_options_public e revoga EXECUTE de anon nas funcoes SECURITY DEFINER (#23)",
    "74074f1 feat: adiciona cabecalhos de seguranca no vercel.json (#22)",
-   "be0f3c6 fix: revoga execucao de sql arbitrario pelo role authenticated (mcp_exec) (#21)",
-   "bde494a fix: substitui URLs Lovable mortas pelo dominio oficial de producao (#20)"
+   "be0f3c6 fix: revoga execucao de sql arbitrario pelo role authenticated (mcp_exec) (#21)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
+    "mudancas": 7
+   },
+   {
+    "arquivo": "inventario/ia/componentes.json",
+    "mudancas": 6
+   },
+   {
+    "arquivo": "inventario/ia/grafo.json",
     "mudancas": 6
    },
    {
@@ -40,14 +48,6 @@
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 5
-   },
-   {
-    "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 5
-   },
-   {
-    "arquivo": "inventario/ia/grafo.json",
     "mudancas": 5
    },
    {
@@ -103,7 +103,7 @@
  "contagens": {
   "arquivos": 502,
   "arquivos_de_codigo": 416,
-  "linhas_de_codigo": 57355,
+  "linhas_de_codigo": 57367,
   "componentes": 221,
   "hooks": 101,
   "paginas": 24,

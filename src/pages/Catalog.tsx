@@ -74,6 +74,18 @@ const Catalog = () => {
       .map((result) => result.item);
   }, [fuzzySearchResults, selectedCategory, selectedLevel]);
 
+  const virtualizedCourses = useMemo(
+    () =>
+      filteredCourses.map((course) => ({
+        ...course,
+        duration_minutes: course.duration_minutes ?? 0,
+        level: course.level ?? 'Iniciante',
+        total_lessons: course.total_lessons ?? 0,
+        is_featured: course.is_featured ?? false,
+      })),
+    [filteredCourses]
+  );
+
   const handleSignOut = useCallback(async () => { await signOut(); navigate("/"); }, [signOut, navigate]);
   const handleClearAll = useCallback(() => { setSearchQuery(""); setSelectedCategory(null); setSelectedLevel(null); }, []);
   const handleToggleFilters = useCallback(() => setShowFilters((v) => !v), []);
@@ -152,7 +164,7 @@ const Catalog = () => {
           <CourseGridSkeleton count={8} />
         ) : filteredCourses.length > 0 ? (
           filteredCourses.length >= VIRTUALIZATION_THRESHOLD ? (
-            <VirtualizedCourseGrid courses={filteredCourses.map(c => ({ ...c, duration_minutes: c.duration_minutes ?? 0, level: c.level ?? 'Iniciante', total_lessons: c.total_lessons ?? 0, is_featured: c.is_featured ?? false }))} columns={4} />
+            <VirtualizedCourseGrid courses={virtualizedCourses} columns={4} />
           ) : (
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" variants={scaleUpContainerVariants} initial="hidden" animate="visible">
               {filteredCourses.map((course, index) => (

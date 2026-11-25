@@ -10,7 +10,7 @@
  *        SUPABASE_ACCESS_TOKEN=... node scripts/inventario/gerar-banco.mjs
  *      Le pela Management API: POST /database/query/read-only (transacao so leitura) e GET
  *      /functions. 429 e 5xx sao repetidos com backoff (honrando o Retry-After). Projeto fixo:
- *      gyqtndkjvwvtkfeaxtlv (supabase/config.toml:1). SUPABASE_PROJECT_REF
+ *      ywsblgsikhiscvpmopkp (supabase/config.toml:1). SUPABASE_PROJECT_REF
  *      so troca para teste; qualquer outro valor exige INVENTARIO_PERMITIR_OUTRO_PROJETO=1.
  *   2) Sem token (nenhum agente desta sessao tem MCP do projeto — `docs/agentes/banco.md`):
  *      rodar `scripts/inventario/banco.sql` no SQL Editor do Lovable Cloud, salvar a resposta e
@@ -32,7 +32,7 @@ import { carregarCorpus, edgesNoRepo } from './gerar-repo.mjs';
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SQL_PATH = path.join(RAIZ, 'scripts/inventario/banco.sql');
 const SAIDA = path.join(RAIZ, 'inventario/estado/banco.json');
-export const PROJETO_OFICIAL = 'gyqtndkjvwvtkfeaxtlv';
+export const PROJETO_OFICIAL = 'ywsblgsikhiscvpmopkp';
 // SUPABASE_API_URL so existe para o teste apontar um servidor local.
 const apiBase = () => `${(process.env.SUPABASE_API_URL || 'https://api.supabase.com').replace(/\/$/, '')}/v1/projects`;
 

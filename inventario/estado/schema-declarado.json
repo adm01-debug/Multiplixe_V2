@@ -5,24 +5,22 @@
   "resumo": {
     "tabelas": 61,
     "tabelas_no_types": 61,
-    "tabelas_nas_migrations": 60,
-    "colunas": 509,
+    "tabelas_nas_migrations": 61,
+    "colunas": 512,
     "views": 1,
-    "funcoes": 42,
+    "funcoes": 43,
     "funcoes_expostas_no_types": 32,
     "enums": 1,
-    "policies": 159,
+    "policies": 163,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 49,
-    "alertas": 4,
-    "problemas": 1
+    "migrations": 53,
+    "alertas": 3,
+    "problemas": 3
   },
   "drift": {
     "criterio": "types.ts (foto do banco) x replay das migrations (o que o repo pede)",
-    "so_no_types": [
-      "user_roles"
-    ],
+    "so_no_types": [],
     "so_nas_migrations": [],
     "referenciadas_sem_create": {
       "user_roles": "20260417174055_98fdd75f-e029-41b3-84a6-bf5c614eddc2.sql"
@@ -132,7 +130,7 @@
       "indices": 1,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
-        "src": 23,
+        "src": 24,
         "edges": 2
       }
     },
@@ -354,7 +352,7 @@
       "indices": 2,
       "criada_em": "20251231131344_ff80cabe-0c9b-4568-8af0-1be2b0ce283a.sql",
       "uso_no_codigo": {
-        "src": 2,
+        "src": 3,
         "edges": 2
       }
     },
@@ -465,17 +463,18 @@
     "profiles": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 7,
+      "colunas": 10,
       "rls": true,
       "policies": 3,
       "triggers": [
+        "protect_profile_admin_columns",
         "update_profiles_updated_at"
       ],
       "indices": 0,
       "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
       "uso_no_codigo": {
         "src": 20,
-        "edges": 3
+        "edges": 6
       }
     },
     "quiz_options": {
@@ -699,7 +698,7 @@
       "indices": 3,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
-        "src": 15,
+        "src": 16,
         "edges": 3
       }
     },
@@ -840,16 +839,16 @@
     },
     "user_roles": {
       "no_types": true,
-      "nas_migrations": false,
+      "nas_migrations": true,
       "colunas": 4,
-      "rls": null,
-      "policies": null,
+      "rls": true,
+      "policies": 4,
       "triggers": [],
-      "indices": null,
-      "criada_em": null,
+      "indices": 0,
+      "criada_em": "20261125150600_fechar_drift_app_role_user_roles.sql",
       "uso_no_codigo": {
-        "src": 0,
-        "edges": 3
+        "src": 2,
+        "edges": 4
       }
     },
     "user_sessions": {
@@ -1285,7 +1284,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
+      "criada_em": "20261125190500_admin_gestao_usuarios.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1313,9 +1312,9 @@
         "_user_id"
       ],
       "retorno": "boolean",
-      "security_definer": null,
-      "search_path": null,
-      "criada_em": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261125150600_fechar_drift_app_role_user_roles.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 1
@@ -1386,6 +1385,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20260417000433_54e30457-9157-4d86-b2bb-42c0a1f41dea.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "protect_profile_admin_columns": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261125190500_admin_gestao_usuarios.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1567,12 +1578,6 @@
   },
   "alertas": [
     {
-      "tipo": "tabela_so_no_types",
-      "detalhe": [
-        "user_roles"
-      ]
-    },
-    {
       "tipo": "tabela_sem_uso_no_codigo",
       "detalhe": [
         "password_reset_tokens",
@@ -1605,6 +1610,16 @@
       "tipo": "tabela_referenciada_sem_create",
       "id": "user_roles",
       "detalhe": "policy/trigger/indice em 20260417174055_98fdd75f-e029-41b3-84a6-bf5c614eddc2.sql mexe numa tabela que nenhuma migration do repo cria: o CREATE foi aplicado fora das migrations"
+    },
+    {
+      "tipo": "ddl_dinamico",
+      "id": "20261125183000_revogar_execucao_arbitraria_mcp_exec.sql",
+      "detalhe": "EXECUTE format(...) nao e rastreado pelo replay: do $$ declare f record; begin for f in select p.oid::regprocedure as sig from pg_proc p join pg_n"
+    },
+    {
+      "tipo": "ddl_dinamico",
+      "id": "20261125184800_hardening_grants_view_quiz_options_e_funcoes.sql",
+      "detalhe": "EXECUTE format(...) nao e rastreado pelo replay: do $$ declare f record; begin for f in select p.oid::regprocedure as sig from pg_proc p join pg_n"
     }
   ]
 }

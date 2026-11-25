@@ -6,6 +6,9 @@ verify_jwt = true
 [functions.approve-password-reset]
 verify_jwt = true
 
+[functions.admin-user-actions]
+verify_jwt = true
+
 [functions.detect-new-device]
 verify_jwt = false
 

@@ -190,6 +190,7 @@
     "src/components/CommandPalette.tsx",
     "src/components/ProtectedRoute.tsx",
     "src/components/activity/ActivityTimeline.tsx",
+    "src/components/admin/AdminUsersTab.tsx",
     "src/components/analytics/SkillRadarChart.tsx",
     "src/components/discussions/CourseDiscussions.tsx",
     "src/components/export/ExportProgress.tsx",
@@ -309,7 +310,7 @@
   },
   "useCoisa": {
    "arquivo": "scripts/ci/inventario-rotas.unit.mjs",
-   "linhas": 178,
+   "linhas": 212,
    "tabelas": [
     "direta",
     "tabela_a",

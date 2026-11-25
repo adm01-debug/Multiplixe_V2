@@ -92,6 +92,7 @@ describe("Component Architecture - Edge Functions", () => {
     "supabase/functions/detect-new-device/index.ts",
     "supabase/functions/send-security-alert/index.ts",
     "supabase/functions/approve-password-reset/index.ts",
+        "supabase/functions/admin-user-actions/index.ts",
     "supabase/functions/cleanup-security-logs/index.ts",
   ];
 

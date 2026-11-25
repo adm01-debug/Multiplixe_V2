@@ -74,6 +74,35 @@ describe("Edge Function Security - Input Validation", () => {
     });
   });
 
+  describe("admin-user-actions", () => {
+    const code = readFile("supabase/functions/admin-user-actions/index.ts");
+
+    it("should whitelist the supported actions", () => {
+      expect(code).toContain("validateInput");
+      expect(code).toContain("deactivate");
+      expect(code).toContain("reactivate");
+    });
+
+    it("should validate userId format", () => {
+      expect(code).toContain("UUID_RE");
+      expect(code).toMatch(/Invalid userId/);
+    });
+
+    it("should require the admin role server-side", () => {
+      expect(code).toContain("user_roles");
+      expect(code).toContain("Admin access required");
+    });
+
+    it("should block self-deactivation", () => {
+      expect(code).toContain("userId === user.id");
+    });
+
+    it("should ban the account in GoTrue instead of trusting the profile flag", () => {
+      expect(code).toContain("updateUserById");
+      expect(code).toContain("ban_duration");
+    });
+  });
+
   describe("cleanup-security-logs", () => {
     const code = readFile("supabase/functions/cleanup-security-logs/index.ts");
 
@@ -98,6 +127,7 @@ describe("Edge Function Security - CORS Configuration", () => {
     "supabase/functions/detect-new-device/index.ts",
     "supabase/functions/send-security-alert/index.ts",
     "supabase/functions/approve-password-reset/index.ts",
+        "supabase/functions/admin-user-actions/index.ts",
     "supabase/functions/cleanup-security-logs/index.ts",
   ];
 

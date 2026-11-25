@@ -208,6 +208,7 @@
         "user_lesson_progress",
         "user_mfa_settings",
         "user_quiz_attempts",
+        "user_roles",
         "user_sessions",
         "user_streaks",
         "user_xp",
@@ -228,7 +229,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 41,
+      "arquivos_lidos": 42,
       "hooks": [
         {
           "nome": "useAdminRole",
@@ -297,6 +298,8 @@
       ],
       "buckets": [],
       "edges": [
+        "admin-user-actions",
+        "approve-password-reset",
         "detect-new-device",
         "weekly-admin-digest"
       ],
@@ -316,6 +319,7 @@
         "lessons",
         "newsletter_subscriptions",
         "onboarding_workflows",
+        "password_reset_requests",
         "permissions",
         "playbooks",
         "profiles",
@@ -331,6 +335,7 @@
         "user_lesson_progress",
         "user_onboarding_progress",
         "user_quiz_attempts",
+        "user_roles",
         "user_xp",
         "user_xp_history"
       ],
@@ -720,6 +725,7 @@
         "user_lesson_progress",
         "user_mfa_settings",
         "user_quiz_attempts",
+        "user_roles",
         "user_sessions",
         "user_streaks",
         "user_xp",
@@ -1090,6 +1096,7 @@
         "user_mfa_settings",
         "user_onboarding_progress",
         "user_quiz_attempts",
+        "user_roles",
         "user_sessions",
         "user_streaks",
         "user_xp",
@@ -1701,6 +1708,7 @@
         "user_lesson_progress",
         "user_mfa_settings",
         "user_quiz_attempts",
+        "user_roles",
         "user_sessions",
         "user_streaks",
         "user_xp",
@@ -1888,6 +1896,7 @@
         "user_lesson_progress",
         "user_mfa_settings",
         "user_quiz_attempts",
+        "user_roles",
         "user_sessions",
         "user_streaks",
         "user_xp",

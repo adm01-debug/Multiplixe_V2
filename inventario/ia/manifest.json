@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-25T22:42:59.729Z",
- "commit": "439ae5b80b1ff525b5221f3fdd1a937667f0e904",
- "branch": "claude/feat-plataforma-configuracoes-261125-1928",
+ "gerado_em": "2026-11-25T23:27:15.112Z",
+ "commit": "fc19895e73eb2acb094cbce037bedd0cea07179c",
+ "branch": "claude/feat-revisao-quiz-251126-2022",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "0d7ce5bc24348099",
-  "baseline.json": "5db30364097900bb",
-  "componentes.json": "f1488d43a14b4d1c",
-  "grafo.json": "51a090e95aa1b681",
-  "hooks.json": "9e1b56d041931d09"
+  "INDEX.md": "847fbc4dc4bf3afe",
+  "baseline.json": "33f4cd5946ce010e",
+  "componentes.json": "45025e3baa7d5299",
+  "grafo.json": "fe808246309086ea",
+  "hooks.json": "70cb17dc8c2dc121"
  },
  "contagens": {
-  "arquivos": 498,
-  "arquivos_de_codigo": 411,
-  "linhas_de_codigo": 56834,
+  "arquivos": 501,
+  "arquivos_de_codigo": 415,
+  "linhas_de_codigo": 57268,
   "componentes": 221,
   "hooks": 101,
   "paginas": 24,
-  "testes": 38,
+  "testes": 40,
   "edge_functions": 13,
   "rotas": 24,
   "tabelas": 62,
-  "migrations": 54
+  "migrations": 55
  },
  "erros": []
 }

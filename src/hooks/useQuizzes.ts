@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { toast } from 'sonner';
+import type { QuizReviewPayload } from '@/lib/quizReview';
 
 interface QuizOption {
   id: string;
@@ -121,7 +122,7 @@ export const useQuizzes = () => {
   const submitQuizAttempt = useCallback(async (
     quiz: Quiz,
     answers: Record<string, string>
-  ): Promise<{ score: number; passed: boolean; xpEarned: number } | null> => {
+  ): Promise<{ score: number; passed: boolean; xpEarned: number; attemptId?: string } | null> => {
     if (!user) {
       toast.error('Você precisa estar logado para fazer o quiz');
       return null;
@@ -160,7 +161,7 @@ export const useQuizzes = () => {
         }
       }
 
-      const { error } = await supabase
+      const { data: savedAttempt, error } = await supabase
         .from('user_quiz_attempts')
         .insert({
           user_id: user.id,
@@ -170,14 +171,16 @@ export const useQuizzes = () => {
           passed,
           xp_earned: xpEarned,
           answers,
-        });
+              })
+              .select('id')
+              .single();
 
-      if (error) {
+            if (error || !savedAttempt) {
         toast.error('Erro ao salvar tentativa');
         return null;
       }
 
-      return { score: scorePercentage, passed, xpEarned };
+            return { score: scorePercentage, passed, xpEarned, attemptId: savedAttempt.id };
     } catch {
       toast.error('Erro ao processar quiz');
       return null;
@@ -186,11 +189,22 @@ export const useQuizzes = () => {
     }
   }, [user, addXP, fetchUserAttempts]);
 
+        const fetchQuizReview = useCallback(async (attemptId: string): Promise<QuizReviewPayload | null> => {
+          try {
+            const { data, error } = await supabase.rpc('get_quiz_review', { p_attempt_id: attemptId });
+            if (error || !data) return null;
+            return data as unknown as QuizReviewPayload;
+          } catch {
+            return null;
+          }
+        }, []);
+
   return {
     loading,
     fetchQuizForLesson,
     fetchQuizForCourse,
     fetchUserAttempts,
-    submitQuizAttempt
+          submitQuizAttempt,
+          fetchQuizReview
   };
 };

@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw, AlertTriangle, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useConfirmExit } from '@/hooks/useConfirmExit';
+import QuizReview from './QuizReview';
+import { buildQuizReview, type QuizReviewData, type QuizReviewPayload } from '@/lib/quizReview';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,16 +46,21 @@ interface Quiz {
 
 interface QuizPlayerProps {
   quiz: Quiz;
-  onComplete: (answers: Record<string, string>) => Promise<{ score: number; passed: boolean; xpEarned: number } | null>;
+  onComplete: (
+    answers: Record<string, string>
+  ) => Promise<{ score: number; passed: boolean; xpEarned: number; attemptId?: string } | null>;
   onClose: () => void;
   loading?: boolean;
+  /** Carrega a revisão (gabarito + explicações) de uma tentativa já gravada. */
+  onLoadReview?: (attemptId: string) => Promise<QuizReviewPayload | null>;
 }
 
-export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerProps) => {
+export const QuizPlayer = ({ quiz, onComplete, onClose, loading, onLoadReview }: QuizPlayerProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
-  const [result, setResult] = useState<{ score: number; passed: boolean; xpEarned: number } | null>(null);
+  const [result, setResult] = useState<{ score: number; passed: boolean; xpEarned: number; attemptId?: string } | null>(null);
+  const [review, setReview] = useState<QuizReviewData | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(quiz.time_limit_seconds);
   const [showExplanation, setShowExplanation] = useState(false);
 
@@ -98,6 +105,25 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
     return () => clearInterval(timer);
   }, [timeLeft, showResult]);
 
+  // Revisão pós-conclusão: o gabarito vem de get_quiz_review (RPC), nunca da view pública.
+  useEffect(() => {
+    const attemptId = result?.attemptId;
+    if (!showResult || !attemptId || !onLoadReview) return;
+
+    let active = true;
+    onLoadReview(attemptId)
+      .then((payload) => {
+        if (active) setReview(buildQuizReview(payload));
+      })
+      .catch(() => {
+        // Revisão é complementar: em falha, mantém a tela de resultado.
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [showResult, result?.attemptId, onLoadReview]);
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -126,9 +152,32 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
     setCurrentQuestionIndex(0);
     setShowResult(false);
     setResult(null);
+      setReview(null);
     setTimeLeft(quiz.time_limit_seconds);
     setShowExplanation(false);
   };
+
+    if (showResult && result && review) {
+      return (
+        <div className="w-full max-w-2xl mx-auto space-y-4">
+          {result.xpEarned > 0 && (
+            <div className="flex items-center justify-center gap-2 p-4 bg-primary/10 rounded-lg">
+              <Star className="w-6 h-6 text-primary" />
+              <span className="text-lg font-semibold">+{result.xpEarned} XP ganhos!</span>
+            </div>
+          )}
+          <QuizReview
+            questions={review.steps}
+            userAnswers={review.answers}
+            score={result.score}
+            totalQuestions={review.totalQuestions}
+            passed={result.passed}
+            onRetry={handleRetry}
+            onContinue={onClose}
+          />
+        </div>
+      );
+    }
 
   if (showResult && result) {
     return (

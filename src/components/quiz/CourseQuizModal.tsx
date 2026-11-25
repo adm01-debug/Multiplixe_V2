@@ -32,7 +32,7 @@ export const CourseQuizModal = ({
   onQuizPassed 
 }: CourseQuizModalProps) => {
   const { user } = useAuth();
-  const { fetchQuizForCourse, submitQuizAttempt, loading } = useQuizzes();
+  const { fetchQuizForCourse, submitQuizAttempt, fetchQuizReview, loading } = useQuizzes();
   const [quiz, setQuiz] = useState<any>(null);
   const [loadingQuiz, setLoadingQuiz] = useState(true);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -155,6 +155,7 @@ export const CourseQuizModal = ({
           <QuizPlayer
             quiz={quiz}
             onComplete={handleQuizComplete}
+            onLoadReview={fetchQuizReview}
             onClose={() => {
               setShowQuiz(false);
               if (hasPassedQuiz) {

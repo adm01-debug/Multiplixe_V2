@@ -6,7 +6,7 @@
     "protegidas": 18,
     "so_admin": 2,
     "entradas_na_ui": 111,
-    "hooks_distintos": 66,
+    "hooks_distintos": 67,
     "problemas": 0
   },
   "rotas": [
@@ -174,6 +174,7 @@
         "create_audit_log",
         "get_leaderboard",
         "get_platform_stats",
+        "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
@@ -712,6 +713,7 @@
         "complete_pomodoro_session",
         "create_audit_log",
         "get_leaderboard",
+        "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
@@ -768,11 +770,15 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 13,
+      "arquivos_lidos": 15,
       "hooks": [
         {
           "nome": "useAuth",
           "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useConfirmExit",
+          "arquivo": "src/hooks/useConfirmExit.ts"
         },
         {
           "nome": "useDiscussions",
@@ -794,6 +800,7 @@
       "rpcs": [
         "add_user_xp",
         "create_audit_log",
+        "get_quiz_review",
         "submit_quiz_attempt"
       ],
       "tabelas": [
@@ -825,7 +832,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 31,
+      "arquivos_lidos": 33,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -842,6 +849,10 @@
         {
           "nome": "useConfetti",
           "arquivo": "src/hooks/useConfetti.ts"
+        },
+        {
+          "nome": "useConfirmExit",
+          "arquivo": "src/hooks/useConfirmExit.ts"
         },
         {
           "nome": "useNotes",
@@ -882,6 +893,7 @@
         "check_and_award_achievements",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_quiz_review",
         "submit_quiz_attempt",
         "update_user_streak",
         "verify_certificate_by_code"
@@ -1085,6 +1097,7 @@
         "create_audit_log",
         "get_due_assessments",
         "get_leaderboard",
+        "get_quiz_review",
         "get_smart_recommendations",
         "get_user_rank",
         "has_role",
@@ -1710,6 +1723,7 @@
         "complete_pomodoro_session",
         "create_audit_log",
         "get_leaderboard",
+        "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
@@ -1903,6 +1917,7 @@
         "complete_pomodoro_session",
         "create_audit_log",
         "get_leaderboard",
+        "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
@@ -2627,6 +2642,13 @@
         "/onboarding/executar",
         "/trilha/:slug",
         "/trilhas"
+      ]
+    },
+    "useConfirmExit": {
+      "arquivo": "src/hooks/useConfirmExit.ts",
+      "rotas": [
+        "/curso/:slug",
+        "/curso/:slug/aula/:lessonId"
       ]
     },
     "useCourses": {

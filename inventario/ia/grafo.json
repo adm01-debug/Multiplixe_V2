@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 415,
- "arestas": 1079,
+ "nos": 416,
+ "arestas": 1080,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -1977,6 +1977,9 @@
   ],
   "src/test/shortcutsExpanded.test.ts": [
    "src/hooks/useGlobalShortcuts.ts"
+  ],
+  "src/test/skipLinks.test.tsx": [
+   "src/components/accessibility/SkipLinks.tsx"
   ],
   "src/test/sprintCoroacao.test.ts": [
    "src/hooks/useGlobalShortcuts.ts"

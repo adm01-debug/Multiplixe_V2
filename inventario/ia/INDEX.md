@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `fc19895e73eb2acb094cbce037bedd0cea07179c` · branch `claude/feat-revisao-quiz-251126-2022` · 2026-11-25T20:21:52-03:00
+Commit: `0e6daa7e6ddb01795b0478d5b123079f617c1f6e` · branch `claude/fix-skip-links-251126-2100` · 2026-11-25T20:32:41-03:00
 
 ## Como usar
 
@@ -21,11 +21,11 @@ Commit: `fc19895e73eb2acb094cbce037bedd0cea07179c` · branch `claude/feat-revisa
 
 | | |
 |---|---|
-| arquivos (codigo) | 501 (415) |
-| linhas de codigo | 57268 |
+| arquivos (codigo) | 502 (416) |
+| linhas de codigo | 57355 |
 | paginas / rotas | 24 / 24 |
 | componentes / hooks | 221 / 101 |
-| arquivos de teste | 40 |
+| arquivos de teste | 41 |
 | edge functions | 13 |
 | tabelas / migrations | 62 / 55 |
 
@@ -114,16 +114,16 @@ Commit: `fc19895e73eb2acb094cbce037bedd0cea07179c` · branch `claude/feat-revisa
 
 ## Mexido nos ultimos 90 dias
 
-- `inventario/ia/baseline.json` (7)
-- `inventario/ia/INDEX.md` (7)
-- `inventario/ia/manifest.json` (7)
+- `inventario/ia/baseline.json` (8)
+- `inventario/ia/INDEX.md` (8)
+- `inventario/ia/manifest.json` (8)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (6)
 - `docs/agentes/lovable-vercel.md` (5)
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (5)
+- `inventario/estado/rotas.json` (5)
+- `inventario/ia/componentes.json` (5)
+- `inventario/ia/grafo.json` (5)
+- `inventario/ia/hooks.json` (5)
 - `docs/agentes/mapa-repo.md` (4)
-- `docs/agentes/regras-dominio.md` (4)
-- `inventario/estado/rotas.json` (4)
-- `inventario/ia/componentes.json` (4)
-- `inventario/ia/grafo.json` (4)
 
 ## Scripts npm
 

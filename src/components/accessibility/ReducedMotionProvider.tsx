@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { MotionConfig } from "framer-motion";
 
 interface ReducedMotionContextType {
   prefersReducedMotion: boolean;
@@ -72,7 +73,9 @@ export const ReducedMotionProvider = ({ children }: ReducedMotionProviderProps) 
         shouldAnimate,
       }}
     >
-      {children}
+      <MotionConfig reducedMotion={shouldAnimate ? "never" : "always"}>
+        {children}
+      </MotionConfig>
     </ReducedMotionContext.Provider>
   );
 };

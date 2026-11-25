@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (50)
+## ⏳ MELHORIAS PENDENTES (49)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -240,7 +240,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-### 🚀 FUNCIONALIDADES - 14 Pendentes
+### 🚀 FUNCIONALIDADES - 13 Pendentes
 
 #### FUNC-002: Favoritar Cursos
 **Prioridade:** 🟡 Média  
@@ -542,6 +542,33 @@ CREATE TABLE public.user_goals (
 
 ---
 
+#### FUNC-021: Revisão de Quiz Após Conclusão ✅ CONCLUÍDO
+**Prioridade:** 🟡 Média  
+**Esforço:** 3h  
+**Descrição:** Usuário vê resultado mas não revisa respostas.
+
+**Implementação:**
+```
+1. Criar QuizReview.tsx
+2. Mostrar todas as respostas com explicações
+3. Destacar erros e acertos
+4. Link para revisar a aula relacionada
+5. Já temos campo 'explanation' em quiz_questions
+```
+
+**Entrega (2026-11-25):**
+```
+- QuizReview.tsx já existia no repo mas estava órfão; agora renderizado pelo QuizPlayer
+  após a conclusão (acertos/erros, explicação, opção correta, revisar aula, tentar novamente).
+- O gabarito não chega mais pelo cliente: quiz_options_public não expõe is_correct.
+  Criada RPC public.get_quiz_review(p_attempt_id uuid) SECURITY DEFINER, que só devolve
+  a tentativa do próprio auth.uid(); EXECUTE revogado de PUBLIC/anon.
+  Migration: supabase/migrations/20261125233000_quiz_review.sql (aplicada em produção).
+- src/lib/quizReview.ts: mapper do payload da RPC para QuizReview (testado em
+  src/test/quizReview.test.ts, 5 casos).
+- useQuizzes.submitQuizAttempt agora devolve attemptId (.select("id").single() no insert);
+  nova fetchQuizReview(attemptId). QuizCard e CourseQuizModal passam onLoadReview.
+```
 #### FUNC-021: Revisão de Quiz Após Conclusão
 **Prioridade:** 🟡 Média  
 **Esforço:** 3h  
@@ -1333,7 +1360,7 @@ CREATE TABLE public.webhook_endpoints (
 | SEC-002 | Validação de Input Completa | ✅ 3h |
 | REF-006 | Error Boundary | 2h |
 | UI-011 | Modal Confirmação Saída | ✅ 2h |
-| FUNC-021 | Revisão de Quiz | 3h |
+| FUNC-021 | Revisão de Quiz | ✅ 3h |
 | REF-001 | Componentização Header | 4h |
 
 ---
@@ -1391,7 +1418,7 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 8 | ~26h |
 | Performance | 3 | ~10h |
-| Funcionalidades | 14 | ~72h |
+| Funcionalidades | 13 | ~69h |
 | Acessibilidade | 7 | ~14h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
@@ -1400,7 +1427,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **53** | **~259h** |
+| **TOTAL PENDENTE** | **52** | **~256h** |
 
 ---
 

@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `439ae5b80b1ff525b5221f3fdd1a937667f0e904` · branch `claude/feat-plataforma-configuracoes-261125-1928` · 2026-11-25T19:23:07-03:00
+Commit: `fc19895e73eb2acb094cbce037bedd0cea07179c` · branch `claude/feat-revisao-quiz-251126-2022` · 2026-11-25T20:21:52-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `439ae5b80b1ff525b5221f3fdd1a937667f0e904` · branch `claude/feat-plataf
 
 | | |
 |---|---|
-| arquivos (codigo) | 498 (411) |
-| linhas de codigo | 56834 |
+| arquivos (codigo) | 501 (415) |
+| linhas de codigo | 57268 |
 | paginas / rotas | 24 / 24 |
 | componentes / hooks | 221 / 101 |
-| arquivos de teste | 38 |
+| arquivos de teste | 40 |
 | edge functions | 13 |
-| tabelas / migrations | 62 / 54 |
+| tabelas / migrations | 62 / 55 |
 
 ## Divida medida
 
@@ -82,14 +82,14 @@ Commit: `439ae5b80b1ff525b5221f3fdd1a937667f0e904` · branch `claude/feat-plataf
 
 ## Banco (declarado pelo repo)
 
-62 tabelas · 166 policies · 43 funcoes · 2 cron jobs · 1 bucket(s) · 54 migrations
+62 tabelas · 166 policies · 45 funcoes · 2 cron jobs · 1 bucket(s) · 55 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
 | `tabela_sem_uso_no_codigo` | password_reset_tokens, platform_stats_cache, playbook_views, saved_filters |
-| `funcao_sem_uso_no_codigo` | check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_user_permissions, has_permission, refresh_platform_stats, verify_path_certificate_by_code |
+| `funcao_sem_uso_no_codigo` | check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_user_permissions, has_permission, mcp_exec, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
 ### Cron
@@ -114,16 +114,16 @@ Commit: `439ae5b80b1ff525b5221f3fdd1a937667f0e904` · branch `claude/feat-plataf
 
 ## Mexido nos ultimos 90 dias
 
-- `inventario/ia/baseline.json` (6)
-- `inventario/ia/INDEX.md` (6)
-- `inventario/ia/manifest.json` (6)
+- `inventario/ia/baseline.json` (7)
+- `inventario/ia/INDEX.md` (7)
+- `inventario/ia/manifest.json` (7)
 - `docs/agentes/lovable-vercel.md` (5)
-- `AGENTS.md` (3)
-- `docs/agentes/banco.md` (3)
-- `docs/agentes/mapa-repo.md` (3)
-- `docs/agentes/regras-dominio.md` (3)
-- `inventario/estado/rotas.json` (3)
-- `inventario/ia/componentes.json` (3)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (5)
+- `docs/agentes/mapa-repo.md` (4)
+- `docs/agentes/regras-dominio.md` (4)
+- `inventario/estado/rotas.json` (4)
+- `inventario/ia/componentes.json` (4)
+- `inventario/ia/grafo.json` (4)
 
 ## Scripts npm
 

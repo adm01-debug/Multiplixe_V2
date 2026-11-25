@@ -2,37 +2,69 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "439ae5b80b1ff525b5221f3fdd1a937667f0e904",
-  "branch": "claude/feat-plataforma-configuracoes-261125-1928",
-  "data_commit": "2026-11-25T19:23:07-03:00",
+  "commit": "fc19895e73eb2acb094cbce037bedd0cea07179c",
+  "branch": "claude/feat-revisao-quiz-251126-2022",
+  "data_commit": "2026-11-25T20:21:52-03:00",
   "ultimos_commits": [
+   "fc19895 fix: confirmacao de saida no quiz em andamento (UI-011) (#28)",
+   "e954916 fix: nome acessivel em todos os campos de texto (A11Y-001) (#27)",
+   "764adf2 feat: configuracoes da plataforma configuraveis no admin (ADMIN-007) (#26)",
    "439ae5b chore: validacao Zod do quiz e registro dos achados de seguranca (#25)",
    "618bc23 feat: gestao de usuarios avancada no admin (ADMIN-002) (#24)",
    "11fa47c fix: bloqueia escrita e acesso anonimo na view quiz_options_public e revoga EXECUTE de anon nas funcoes SECURITY DEFINER (#23)",
    "74074f1 feat: adiciona cabecalhos de seguranca no vercel.json (#22)",
    "be0f3c6 fix: revoga execucao de sql arbitrario pelo role authenticated (mcp_exec) (#21)",
    "bde494a fix: substitui URLs Lovable mortas pelo dominio oficial de producao (#20)",
-   "050d8ae chore: liga o typecheck no CI (#16)",
-   "083a202 fix: edge functions usam o dominio publico correto (#18)",
-   "59eb2e4 fix: adiciona SPA fallback na Vercel (#17)",
-   "f3fbda2 fix: aponta o projeto para o Supabase oficial e remove residuos do Lovable (#19)"
+   "050d8ae chore: liga o typecheck no CI (#16)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "arquivo": "docs/agentes/lovable-vercel.md",
     "mudancas": 5
+   },
+   {
+    "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "docs/agentes/mapa-repo.md",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "docs/agentes/regras-dominio.md",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "inventario/estado/rotas.json",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "inventario/ia/componentes.json",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "inventario/ia/grafo.json",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "inventario/ia/hooks.json",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "scripts/ci/README.md",
+    "mudancas": 4
    },
    {
     "arquivo": "AGENTS.md",
@@ -43,27 +75,11 @@
     "mudancas": 3
    },
    {
-    "arquivo": "docs/agentes/mapa-repo.md",
+    "arquivo": "docs/agentes/github-ci.md",
     "mudancas": 3
    },
    {
-    "arquivo": "docs/agentes/regras-dominio.md",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/ia/hooks.json",
+    "arquivo": "inventario/estado/schema-declarado.json",
     "mudancas": 3
    },
    {
@@ -75,43 +91,27 @@
     "mudancas": 3
    },
    {
-    "arquivo": "scripts/ci/README.md",
-    "mudancas": 3
-   },
-   {
     "arquivo": "scripts/ci/supabase-usage-guard.unit.mjs",
     "mudancas": 3
    },
    {
     "arquivo": "scripts/inventario/gerar-banco.mjs",
     "mudancas": 3
-   },
-   {
-    "arquivo": "scripts/inventario/gerar-rotas.mjs",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "supabase/config.toml",
-    "mudancas": 3
-   },
-   {
-    "arquivo": ".github/workflows/guardas.yml",
-    "mudancas": 2
    }
   ]
  },
  "contagens": {
-  "arquivos": 498,
-  "arquivos_de_codigo": 411,
-  "linhas_de_codigo": 56834,
+  "arquivos": 501,
+  "arquivos_de_codigo": 415,
+  "linhas_de_codigo": 57268,
   "componentes": 221,
   "hooks": 101,
   "paginas": 24,
-  "testes": 38,
+  "testes": 40,
   "edge_functions": 13,
   "rotas": 24,
   "tabelas": 62,
-  "migrations": 54
+  "migrations": 55
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -123,7 +123,6 @@
   "README.md": 1,
   "bun.lock": 1,
   "bun.lockb": 1,
-  "commitmsg.txt": 1,
   "components.json": 1,
   "docs/agentes": 5,
   "eslint.config.js": 1,
@@ -131,24 +130,23 @@
   "package-lock.json": 1,
   "package.json": 1,
   "postcss.config.js": 1,
-  "prbody.txt": 1,
   "progress.txt": 1,
   "scripts/ai-context": 1,
-  "scripts/ci": 10,
+  "scripts/ci": 11,
   "scripts/lib": 2,
   "src/App.tsx": 1,
   "src/components": 247,
   "src/hooks": 54,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 13,
+  "src/lib": 14,
   "src/main.tsx": 1,
   "src/pages": 24,
-  "src/test": 38,
+  "src/test": 40,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 54,
+  "supabase/migrations": 55,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -162,7 +160,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 2856
+   "linhas": 2858
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -201,6 +199,10 @@
    "linhas": 351
   },
   {
+   "arquivo": "src/components/quiz/QuizPlayer.tsx",
+   "linhas": 351
+  },
+  {
    "arquivo": "src/components/onboarding/OnboardingTutorial.tsx",
    "linhas": 344
   },
@@ -230,7 +232,7 @@
   },
   {
    "arquivo": "src/components/quiz/CourseQuizModal.tsx",
-   "linhas": 314
+   "linhas": 315
   },
   {
    "arquivo": "src/components/admin/PermissionsManager.tsx",
@@ -255,10 +257,6 @@
   {
    "arquivo": "src/components/admin/LessonsManager.tsx",
    "linhas": 302
-  },
-  {
-   "arquivo": "src/components/PrefetchLink.tsx",
-   "linhas": 300
   }
  ],
  "qualidade": {
@@ -335,9 +333,9 @@
   "preview": "vite preview"
  },
  "alertas": {
-  "componentes_orfaos": 45,
+  "componentes_orfaos": 44,
   "componentes_com_nome_duplicado": 3,
-  "hooks_sem_uso": 28,
+  "hooks_sem_uso": 27,
   "ciclos_de_import": 0,
   "problemas_de_rota": 0,
   "edges_sem_chamador": 5,

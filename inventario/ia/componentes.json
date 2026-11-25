@@ -28,7 +28,6 @@
   "src/components/notifications/PushNotificationManager.tsx",
   "src/components/notifications/SmartReminders.tsx",
   "src/components/profile/AvatarUpload.tsx",
-  "src/components/quiz/QuizReview.tsx",
   "src/components/recommendations/RecommendationsWidget.tsx",
   "src/components/share/ShareAchievement.tsx",
   "src/components/social/StudyBuddies.tsx",
@@ -1962,7 +1961,7 @@
    "exports": [
     "CourseQuizModal"
    ],
-   "linhas": 314,
+   "linhas": 315,
    "hooks": [
     "useAuth",
     "useEffect",
@@ -1981,7 +1980,7 @@
    "exports": [
     "QuizCard"
    ],
-   "linhas": 177,
+   "linhas": 178,
    "hooks": [
     "useEffect",
     "useQuizzes",
@@ -1997,8 +1996,9 @@
    "exports": [
     "QuizPlayer"
    ],
-   "linhas": 299,
+   "linhas": 351,
    "hooks": [
+    "useConfirmExit",
     "useEffect",
     "useState"
    ],
@@ -2014,8 +2014,8 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/RankBadge.tsx",

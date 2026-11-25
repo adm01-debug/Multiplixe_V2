@@ -6,7 +6,6 @@
   "useAnnouncements",
   "useAuditLog",
   "useCoisa",
-  "useConfirmExit",
   "useCourseDetail",
   "useCourseNotes",
   "useDados",
@@ -42,7 +41,6 @@
   "useCategories",
   "useCertificates",
   "useCoisa",
-  "useConfirmExit",
   "useCourseDetail",
   "useCourseNotes",
   "useCourses",
@@ -349,8 +347,10 @@
    "tabelas": [],
    "rpcs": [],
    "edges": [],
-   "usado_por": [],
-   "coberto_por_teste": false
+   "usado_por": [
+    "src/components/quiz/QuizPlayer.tsx"
+   ],
+   "coberto_por_teste": true
   },
   "useCourseDetail": {
    "arquivo": "src/hooks/useCachedQuery.ts",
@@ -1105,7 +1105,7 @@
   },
   "useQuizzes": {
    "arquivo": "src/hooks/useQuizzes.ts",
-   "linhas": 197,
+   "linhas": 211,
    "tabelas": [
     "quiz_options_public",
     "quiz_questions",
@@ -1113,6 +1113,7 @@
     "user_quiz_attempts"
    ],
    "rpcs": [
+    "get_quiz_review",
     "submit_quiz_attempt"
    ],
    "edges": [],

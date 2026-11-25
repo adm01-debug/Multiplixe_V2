@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 62,
     "colunas": 517,
     "views": 1,
-    "funcoes": 43,
-    "funcoes_expostas_no_types": 32,
+    "funcoes": 45,
+    "funcoes_expostas_no_types": 34,
     "enums": 1,
     "policies": 166,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 54,
+    "migrations": 55,
     "alertas": 3,
     "problemas": 3
   },
@@ -1221,6 +1221,20 @@
         "edges": 0
       }
     },
+    "get_quiz_review": {
+      "exposta_no_types": true,
+      "args": [
+        "p_attempt_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261125233000_quiz_review.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_recommended_courses": {
       "exposta_no_types": true,
       "args": [
@@ -1367,6 +1381,21 @@
       "criada_em": "20251227184138_4ad9a23a-7ad3-416f-b230-12bd21a2f1f0.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "mcp_exec": {
+      "exposta_no_types": true,
+      "args": [
+        "max_rows",
+        "sql"
+      ],
+      "retorno": "Json",
+      "security_definer": null,
+      "search_path": null,
+      "criada_em": null,
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },
@@ -1610,6 +1639,7 @@
         "check_streak_risk_notifications",
         "get_user_permissions",
         "has_permission",
+        "mcp_exec",
         "refresh_platform_stats",
         "verify_path_certificate_by_code"
       ]

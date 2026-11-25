@@ -41,7 +41,7 @@ export const QuizCard = ({ lessonId, courseId, onComplete }: QuizCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasPassed, setHasPassed] = useState(false);
   const [bestScore, setBestScore] = useState<number | null>(null);
-  const { fetchQuizForLesson, fetchQuizForCourse, fetchUserAttempts, submitQuizAttempt, loading } = useQuizzes();
+  const { fetchQuizForLesson, fetchQuizForCourse, fetchUserAttempts, submitQuizAttempt, fetchQuizReview, loading } = useQuizzes();
 
   useEffect(() => {
     const loadQuiz = async () => {
@@ -165,6 +165,7 @@ export const QuizCard = ({ lessonId, courseId, onComplete }: QuizCardProps) => {
             <QuizPlayer
               quiz={quiz}
               onComplete={handleComplete}
+              onLoadReview={fetchQuizReview}
               onClose={handleClose}
               loading={loading}
             />

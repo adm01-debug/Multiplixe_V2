@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface QuizQuestion {
+export interface QuizQuestion {
   id: string;
   question_text: string;
   explanation?: string;
@@ -16,7 +16,7 @@ interface QuizQuestion {
   }[];
 }
 
-interface UserAnswer {
+export interface UserAnswer {
   questionId: string;
   selectedOptionId: string;
   isCorrect: boolean;

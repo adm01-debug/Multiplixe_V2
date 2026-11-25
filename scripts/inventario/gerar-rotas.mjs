@@ -168,7 +168,7 @@ export function lerRotas(raiz) {
   const arquivo = 'src/App.tsx';
   const texto = ler(raiz, arquivo);
   const abs = path.join(raiz, arquivo);
-  const lazy = Object.fromEntries([...texto.matchAll(/const\s+(\w+)\s*=\s*lazy\w*\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]\s*\)/g)]
+  const lazy = Object.fromEntries([...texto.matchAll(/const\s+(\w+)\s*=\s*(?:React\.)?lazy\w*\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]\s*\)/g)]
     .map((m) => [m[1], m[2]]));
   const corpo = texto.slice(texto.indexOf('<Routes>'), texto.indexOf('</Routes>'));
   return corpo.split(/<Route\b/).slice(1).map((pedaco) => {

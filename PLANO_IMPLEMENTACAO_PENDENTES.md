@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (47)
+## ⏳ MELHORIAS PENDENTES (46)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -580,20 +580,6 @@ CREATE TABLE public.user_goals (
 - useQuizzes.submitQuizAttempt agora devolve attemptId (.select("id").single() no insert);
   nova fetchQuizReview(attemptId). QuizCard e CourseQuizModal passam onLoadReview.
 ```
-#### FUNC-021: Revisão de Quiz Após Conclusão
-**Prioridade:** 🟡 Média  
-**Esforço:** 3h  
-**Descrição:** Usuário vê resultado mas não revisa respostas.
-
-**Implementação:**
-```
-1. Criar QuizReview.tsx
-2. Mostrar todas as respostas com explicações
-3. Destacar erros e acertos
-4. Link para revisar a aula relacionada
-5. Já temos campo 'explanation' em quiz_questions
-```
-
 ---
 
 #### FUNC-022: Compartilhar Conquistas
@@ -611,7 +597,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 6 Pendentes
+### ♿ ACESSIBILIDADE - 5 Pendentes
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -725,7 +711,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-008: Reduzir Animações
+#### A11Y-008: Reduzir Animações ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** Não respeita prefers-reduced-motion.
@@ -736,6 +722,22 @@ leitor de tela) e 17 só com `placeholder`.
 2. Desabilitar animações quando preferido
 3. Configurar framer-motion para respeitar preferência
 4. Manter animações essenciais (loading)
+```
+
+**Entrega (2026-11-26):**
+```
+- ReducedMotionProvider.tsx já existia (contexto useReducedMotion + SafeMotion + preferência
+  salva em localStorage) mas nunca era montado: o hook devolvia sempre shouldAnimate=true e
+  a classe .reduce-motion não tinha CSS nenhum. Trabalho parado de outro agente.
+- Montado em src/main.tsx em volta de <App /> (StrictMode > ReducedMotionProvider > App).
+- O provider agora envolve os filhos em <MotionConfig reducedMotion="user"|"always">, então
+  toda animação do framer-motion para quando o SO pede menos movimento ou o usuário ativa a
+  preferência.
+- src/index.css: media query prefers-reduced-motion e o bloco .reduce-motion zeram
+  animation/transition/scroll-behavior, mantendo spinner (.animate-spin/.animate-ping/
+  .animate-pulse/.animate-bounce e [role=progressbar] > *) rodando (WCAG 2.3.3).
+- src/test/reducedMotion.test.tsx (novo, 7 casos): preferência do sistema, preferência salva,
+  sistema sobrepondo o salvo, alternância com persistência e SafeMotion com/sem fallback.
 ```
 
 ---
@@ -1413,7 +1415,7 @@ CREATE TABLE public.webhook_endpoints (
 | PERF-003 | Paginação Catálogo | 3h |
 | SEO-006 | Core Web Vitals | 4h |
 | A11Y-005 | Skip Links | ✅ 1h |
-| A11Y-008 | Reduced Motion | 2h |
+| A11Y-008 | Reduced Motion | ✅ 2h |
 | UI-014 | Copiar Certificado | 1h |
 
 ---
@@ -1440,7 +1442,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 6 | ~13h |
+| Acessibilidade | 5 | ~11h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1448,7 +1450,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **50** | **~252h** |
+| **TOTAL PENDENTE** | **49** | **~250h** |
 
 ---
 

@@ -909,3 +909,48 @@
 #lovable-badge {
   display: none !important;
 }
+
+/* ============================================
+   REDUÇÃO DE MOVIMENTO — A11Y-008
+   Vale quando o sistema pede menos animação
+   (prefers-reduced-motion) ou quando o usuário
+   ativa a preferência (classe .reduce-motion).
+   Animações essenciais de carregamento seguem.
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-spin,
+  .animate-ping,
+  .animate-pulse,
+  .animate-bounce,
+  [role="progressbar"] > * {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.reduce-motion .animate-spin,
+.reduce-motion .animate-ping,
+.reduce-motion .animate-pulse,
+.reduce-motion .animate-bounce,
+.reduce-motion [role="progressbar"] > * {
+  animation-duration: 1s !important;
+  animation-iteration-count: infinite !important;
+}

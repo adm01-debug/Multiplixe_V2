@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw, AlertTriangle } from 'lucide-react';
+import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw, AlertTriangle, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useConfirmExit } from '@/hooks/useConfirmExit';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -55,7 +56,6 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
   const [result, setResult] = useState<{ score: number; passed: boolean; xpEarned: number } | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(quiz.time_limit_seconds);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const currentQuestion = quiz.quiz_questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.quiz_questions.length) * 100;
@@ -63,26 +63,12 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
   const hasAnswered = currentQuestion && answers[currentQuestion.id];
   const hasStartedQuiz = Object.keys(answers).length > 0;
 
-  // Prevent accidental page leave
-  useEffect(() => {
-    if (showResult) return;
+    const exitGuard = useConfirmExit({
+      enabled: hasStartedQuiz && !showResult,
+      message: 'Você tem um quiz em andamento. Se sair agora, seu progresso será perdido.',
+    });
 
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (hasStartedQuiz) {
-        e.preventDefault();
-        e.returnValue = 'Você tem um quiz em andamento. Tem certeza que deseja sair?';
-        return e.returnValue;
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [hasStartedQuiz, showResult]);
-
-  const handleConfirmExit = () => {
-    setShowExitConfirm(false);
-    onClose();
-  };
+    const requestExit = () => exitGuard.confirmNavigation(onClose);
 
   // Timer effect - uses ref to avoid stale closure
   const handleSubmitRef = useRef<() => void>(() => {});
@@ -199,16 +185,28 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between gap-2 mb-4">
           <Badge variant="outline">
             Questão {currentQuestionIndex + 1} de {quiz.quiz_questions.length}
           </Badge>
-          {timeLeft !== null && (
-            <Badge variant={timeLeft < 60 ? "destructive" : "secondary"} className="gap-1">
-              <Clock className="w-3 h-3" />
-              {formatTime(timeLeft)}
-            </Badge>
-          )}
+                  <div className="flex items-center gap-2">
+                    {timeLeft !== null && (
+                      <Badge variant={timeLeft < 60 ? "destructive" : "secondary"} className="gap-1">
+                        <Clock className="w-3 h-3" />
+                        {formatTime(timeLeft)}
+                      </Badge>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={requestExit}
+                      className="h-8 gap-1 text-muted-foreground hover:text-foreground"
+                      aria-label="Sair do quiz"
+                    >
+                      <X className="w-4 h-4" aria-hidden="true" />
+                      Sair
+                    </Button>
+                  </div>
         </div>
         <Progress value={progress} className="h-2" />
         <CardTitle className="mt-4 text-lg">{quiz.title}</CardTitle>
@@ -274,7 +272,12 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
         </div>
       </CardContent>
 
-      <AlertDialog open={showExitConfirm} onOpenChange={setShowExitConfirm}>
+      <AlertDialog
+              open={exitGuard.showDialog}
+        onOpenChange={(open) => {
+                if (!open) exitGuard.handleCancel();
+        }}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <div className="mx-auto w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center mb-2">
@@ -282,12 +285,12 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading }: QuizPlayerPro
             </div>
             <AlertDialogTitle className="text-center">Sair do Quiz?</AlertDialogTitle>
             <AlertDialogDescription className="text-center">
-              Você ainda não finalizou o quiz. Se sair agora, seu progresso será perdido e você precisará começar novamente.
+                          {exitGuard.message}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:justify-center">
             <AlertDialogCancel>Continuar Quiz</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmExit} className="bg-destructive hover:bg-destructive/90">
+            <AlertDialogAction onClick={exitGuard.handleConfirm} className="bg-destructive hover:bg-destructive/90">
               Sair mesmo assim
             </AlertDialogAction>
           </AlertDialogFooter>

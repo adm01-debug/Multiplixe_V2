@@ -44,9 +44,9 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (51)
+## ⏳ MELHORIAS PENDENTES (50)
 
-### 🎨 UX/UI - 9 Pendentes
+### 🎨 UX/UI - 8 Pendentes
 
 #### UI-004: Feedback Visual em Ações
 **Prioridade:** 🟡 Média  
@@ -107,18 +107,28 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-#### UI-011: Modal de Confirmação de Saída
-**Prioridade:** 🟡 Média  
-**Esforço:** 2h  
-**Descrição:** Usuário pode sair acidentalmente durante quiz ou vídeo.
+#### ✅ UI-011: Modal de Confirmação de Saída — CONCLUÍDO
 
-**Implementação:**
-```
-1. Usar beforeunload event
-2. Mostrar AlertDialog ao tentar sair
-3. Aplicar em QuizPlayer e LessonPlayer
-4. Hook: useConfirmExit.ts
-```
+**Entregue em 25/11/2026**
+
+O `QuizPlayer` já tinha o `AlertDialog` de saída e o `beforeunload`, mas **o diálogo nunca era
+aberto**: não existia botão que chamasse `setShowExitConfirm(true)`, e o `beforeunload` estava
+duplicado dentro do componente.
+
+- `src/hooks/useConfirmExit.ts` **já existia no repo, mas não era importado em lugar nenhum** (trabalho
+  parcial de outro agente). Foi reaproveitado como está — `confirmNavigation(ação)`, `handleConfirm`,
+  `handleCancel`, `showDialog` e `beforeunload` —, sem reescrever o hook.
+- `QuizPlayer`: botão **Sair** no cabeçalho (com `aria-label`) abre o diálogo de confirmação quando o
+  quiz já foi iniciado; o `AlertDialog` existente passou a ser controlado pelo hook (fim do
+  `beforeunload` duplicado).
+- `LessonPlayer` não entrou: o progresso do vídeo já é salvo em tempo real pelo `onProgress` do
+  `VideoPlayer` — sair não perde nada e confirmar a cada troca de aula atrapalharia a navegação.
+- O texto do `AlertDialog` passou a vir do `message` do próprio hook (uma fonte de verdade).
+- `src/test/useConfirmExit.test.tsx` (novo): 5 testes cobrindo navegação direta, confirmação,
+  cancelamento, registro/remoção do `beforeunload` e a mensagem — o hook estava sem nenhum teste.
+
+**Verificado:** `tsc -b` exit 0; `eslint` nos 3 arquivos exit 0; `vitest run` 38 arquivos / 391 testes
+passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
@@ -1322,7 +1332,7 @@ CREATE TABLE public.webhook_endpoints (
 | A11Y-001 | Labels em Inputs | ✅ 2h |
 | SEC-002 | Validação de Input Completa | ✅ 3h |
 | REF-006 | Error Boundary | 2h |
-| UI-011 | Modal Confirmação Saída | 2h |
+| UI-011 | Modal Confirmação Saída | ✅ 2h |
 | FUNC-021 | Revisão de Quiz | 3h |
 | REF-001 | Componentização Header | 4h |
 
@@ -1379,7 +1389,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 9 | ~28h |
+| UX/UI | 8 | ~26h |
 | Performance | 3 | ~10h |
 | Funcionalidades | 14 | ~72h |
 | Acessibilidade | 7 | ~14h |
@@ -1390,7 +1400,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **54** | **~261h** |
+| **TOTAL PENDENTE** | **53** | **~259h** |
 
 ---
 

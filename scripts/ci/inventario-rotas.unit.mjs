@@ -100,6 +100,22 @@ const App = () => (<Routes>
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('lazy tambem e lido na forma React.lazy(...)', () => {
+  const dir = repoDeBrinquedo();
+  try {
+    fs.writeFileSync(path.join(dir, 'src/App.tsx'), `
+const Dash = React.lazy(() => import("./pages/Dash"));
+const Secreta = lazy(() => import("./pages/Secreta"));
+const App = () => (<Routes>
+  <Route path="/" element={<Dash />} />
+  <Route path="/secreta" element={<Secreta />} />
+</Routes>);
+`);
+    const rotas = lerRotas(dir);
+    assert.deepEqual(rotas.map((r) => r.arquivo), ['src/pages/Dash.tsx', 'src/pages/Secreta.tsx']);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('extrairChamadas: storage.from e bucket, .from e tabela; constante do modulo resolve', () => {
   const c = extrairChamadas(`
 const TABELA = 'minha_tabela';

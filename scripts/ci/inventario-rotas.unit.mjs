@@ -116,6 +116,24 @@ const App = () => (<Routes>
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+    test('rotas de TODOS os blocos <Routes> entram no inventario', () => {
+      const dir = repoDeBrinquedo();
+      try {
+        fs.writeFileSync(path.join(dir, 'src/App.tsx'), `
+    const Dash = lazy(() => import("./pages/Dash"));
+    const Secreta = lazy(() => import("./pages/Secreta"));
+    const App = () => (<Routes>
+      <Route path="/publica" element={<Dash />} />
+    </Routes>);
+    const Admin = () => (<Routes>
+      <Route path="/admin/secreta" element={<Secreta />} />
+    </Routes>);
+    `);
+        const rotas = lerRotas(dir);
+        assert.deepEqual(rotas.map((r) => r.caminho), ['/admin/secreta', '/publica']);
+      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    });
+
 test('extrairChamadas: storage.from e bucket, .from e tabela; constante do modulo resolve', () => {
   const c = extrairChamadas(`
 const TABELA = 'minha_tabela';

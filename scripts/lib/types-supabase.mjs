@@ -139,10 +139,15 @@ export function lerTypes(caminho = CAMINHO_PADRAO, raiz = process.cwd()) {
   const enums = {};
   const corpoEnums = bloco(publico, 'Enums');
   if (corpoEnums) {
-    for (const m of corpoEnums.matchAll(/^\s{0,16}([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(.+?)\s*$/gm)) {
-      const valores = [...m[2].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
+    // O valor de um enum pode quebrar em varias linhas (`app_role:` e um `| "valor"` por linha),
+        // e ai o valor de cada linha tem so parte dos literais. Le do `nome:` ate o proximo `nome:`.
+        const chaves = [...corpoEnums.matchAll(/^\s{0,16}([A-Za-z_][A-Za-z0-9_]*)\s*:/gm)];
+        chaves.forEach((m, i) => {
+          const fim = i + 1 < chaves.length ? chaves[i + 1].index : corpoEnums.length;
+          const valor = corpoEnums.slice(m.index + m[0].length, fim);
+          const valores = [...valor.matchAll(/"([^"]+)"/g)].map((x) => x[1]);
       if (valores.length) enums[m[1]] = valores;
-    }
+        });
   }
 
   return { fonte: caminho, tabelas, views, funcoes, enums };

@@ -74,6 +74,18 @@ test('types.ts: tabelas, colunas, views, funcoes e enums', () => {
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+    test('types.ts: enum com valor quebrado em varias linhas', () => {
+      const types = TYPES_FIXTURE.replace(
+        'app_role: "admin" | "user"',
+        'app_role:\n        | "admin"\n        | "gestor"\n        | "user"',
+      );
+      const dir = repoDeBrinquedo({}, types);
+      try {
+        const s = lerTypes(undefined, dir);
+        assert.deepEqual(s.enums.app_role, ['admin', 'gestor', 'user']);
+      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    });
+
 test('types.ts: bloco/chavesDeNivel1/camposDe sao estaveis com objeto aninhado', () => {
   const corpo = bloco('a: { b: { c: 1 }, d: { e: 2 } }', 'a');
   assert.deepEqual(chavesDeNivel1(corpo).map((x) => x.nome), ['b', 'd']);

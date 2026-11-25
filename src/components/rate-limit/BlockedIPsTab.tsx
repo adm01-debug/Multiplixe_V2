@@ -63,12 +63,12 @@ const BlockedIPsTab = ({ blockedIPs, onBlockIP, onUnblockIP }: BlockedIPsTabProp
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Endereço IP</Label>
-                <Input placeholder="192.168.1.1" value={newIP} onChange={(e) => setNewIP(e.target.value)} />
+                <Label htmlFor="blocked-ip">Endereço IP</Label>
+                <Input id="blocked-ip" placeholder="192.168.1.1" value={newIP} onChange={(e) => setNewIP(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label>Motivo</Label>
-                <Input placeholder="Ex: Tentativas de força bruta" value={blockReason} onChange={(e) => setBlockReason(e.target.value)} />
+                <Label htmlFor="blocked-reason">Motivo</Label>
+                <Input id="blocked-reason" placeholder="Ex: Tentativas de força bruta" value={blockReason} onChange={(e) => setBlockReason(e.target.value)} />
               </div>
               <div className="flex items-center justify-between">
                 <Label>Bloqueio Permanente</Label>

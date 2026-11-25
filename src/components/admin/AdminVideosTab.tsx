@@ -69,13 +69,13 @@ const AdminVideosTab = () => {
           <DialogHeader><DialogTitle>{editing?.id ? 'Editar' : 'Novo'} Vídeo</DialogTitle></DialogHeader>
           {editing && (
             <div className="space-y-3">
-              <div><Label>Título</Label><Input value={editing.title || ''} onChange={e => setEditing({ ...editing, title: e.target.value })} /></div>
+              <div><Label htmlFor="video-title">Título</Label><Input id="video-title" value={editing.title || ''} onChange={e => setEditing({ ...editing, title: e.target.value })} /></div>
               <div><Label>Descrição</Label><Textarea value={editing.description || ''} onChange={e => setEditing({ ...editing, description: e.target.value })} rows={2} /></div>
-              <div><Label>URL do vídeo</Label><Input value={editing.video_url || ''} onChange={e => setEditing({ ...editing, video_url: e.target.value })} /></div>
-              <div><Label>URL da thumbnail</Label><Input value={editing.thumbnail_url || ''} onChange={e => setEditing({ ...editing, thumbnail_url: e.target.value })} /></div>
-              <div><Label>Categoria</Label><Input value={editing.category || ''} onChange={e => setEditing({ ...editing, category: e.target.value })} /></div>
-              <div><Label>Duração (segundos)</Label><Input type="number" value={editing.duration_seconds || 0} onChange={e => setEditing({ ...editing, duration_seconds: Number(e.target.value) })} /></div>
-              <div><Label>Tags (vírgula)</Label><Input value={Array.isArray(editing.tags) ? editing.tags.join(', ') : ''} onChange={e => setEditing({ ...editing, tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })} /></div>
+              <div><Label htmlFor="video-url">URL do vídeo</Label><Input id="video-url" value={editing.video_url || ''} onChange={e => setEditing({ ...editing, video_url: e.target.value })} /></div>
+              <div><Label htmlFor="video-thumbnail">URL da thumbnail</Label><Input id="video-thumbnail" value={editing.thumbnail_url || ''} onChange={e => setEditing({ ...editing, thumbnail_url: e.target.value })} /></div>
+              <div><Label htmlFor="video-category">Categoria</Label><Input id="video-category" value={editing.category || ''} onChange={e => setEditing({ ...editing, category: e.target.value })} /></div>
+              <div><Label htmlFor="video-duration">Duração (segundos)</Label><Input id="video-duration" type="number" value={editing.duration_seconds || 0} onChange={e => setEditing({ ...editing, duration_seconds: Number(e.target.value) })} /></div>
+              <div><Label htmlFor="video-tags">Tags (vírgula)</Label><Input id="video-tags" value={Array.isArray(editing.tags) ? editing.tags.join(', ') : ''} onChange={e => setEditing({ ...editing, tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })} /></div>
               <div className="flex items-center gap-2"><Switch checked={!!editing.is_published} onCheckedChange={v => setEditing({ ...editing, is_published: v })} /><Label>Publicado</Label></div>
               <Button onClick={handleSave} disabled={save.isPending} className="w-full">Salvar</Button>
             </div>

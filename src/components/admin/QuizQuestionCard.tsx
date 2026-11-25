@@ -54,7 +54,7 @@ const QuizQuestionCard = ({
               placeholder="Digite a pergunta..."
               className="mb-2"
             />
-            <Input
+            <Input aria-label="Explicação da resposta"
               value={question.explanation}
               onChange={(e) => onUpdateQuestion('explanation', e.target.value)}
               placeholder="Explicação (opcional)"
@@ -71,7 +71,7 @@ const QuizQuestionCard = ({
                 checked={option.is_correct}
                 onCheckedChange={(checked) => onUpdateOption(oIndex, 'is_correct', checked)}
               />
-              <Input
+              <Input aria-label="Texto da opção"
                 value={option.option_text}
                 onChange={(e) => onUpdateOption(oIndex, 'option_text', e.target.value)}
                 placeholder={`Opção ${oIndex + 1}`}

@@ -89,6 +89,7 @@ npm run guards
 | `inventario-mudou.unit.mjs` | o que faz o cron semanal abrir PR: carimbo de data e telemetria de 7 dias não contam, mudança estrutural conta |
 | `supabase-usage-guard.unit.mjs` | vermelho e verde do guard, ratchet, `--prune-obsolete`, e se o repo real está limpo hoje |
 | `ai-context.unit.mjs` | gerador de contexto rodando de verdade: determinismo, hashes do manifest, ciclo de import, dívida medida, e se `inventario/ia/` commitado está em dia |
+| `a11y-input-labels.unit.mjs` | auditor de `<Input>` sem nome acessível (`id` com `<Label htmlFor>` ou `aria-label`) e de `htmlFor` órfão: fixture com o `>` do `onChange={e => ...}` e o `src` real hoje |
 
 Cada arquivo mistura **fixture** (repo de brinquedo em `mkdtemp`, prova que o parser funciona) com
 **repo real** (prova que o arquivo commitado está sincronizado). Um parser que passa com fixture e

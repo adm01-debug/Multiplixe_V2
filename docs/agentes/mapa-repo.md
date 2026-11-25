@@ -34,7 +34,7 @@ em silêncio. Este arquivo cobre o que script nenhum sabe: por que as coisas est
 | `scripts/inventario/` | geradores do estado real: `gerar-rotas.mjs`, `gerar-repo.mjs` (edges), `gerar-schema.mjs` (types.ts + replay das migrations), `gerar-banco.mjs` + `banco.sql` (banco ao vivo, só leitura), `mudou-conteudo.mjs` |
 | `scripts/lib/` | parsers reusados: `types-supabase.mjs` (lê o `types.ts` gerado), `migrations-supabase.mjs` (replay de `supabase/migrations/`) |
 | `scripts/ai-context/gerar.mjs` | mapa do código para agentes → `inventario/ia/` (INDEX.md, componentes, hooks, grafo, baseline, manifest) |
-| `scripts/ci/` | guards: `check-claude-md-integrity.mjs`, `supabase-usage-guard.mjs` + `known-violations.json`, e os `*.unit.mjs` (`npm run guards`) |
+| `scripts/ci/` | guards: `check-claude-md-integrity.mjs`, `supabase-usage-guard.mjs` + `known-violations.json`, `a11y-input-labels.unit.mjs` e os `*.unit.mjs` (`npm run guards`) |
 | `.github/workflows/` | `guardas.yml` (push/PR) e `inventario-estado-semanal.yml` (segunda 10:23 UTC, abre PR com o inventário novo) |
 | `scripts/ci/` | `check-claude-md-integrity.mjs` (guard destas instruções) — ver `scripts/ci/README.md` |
 | `public/` | PWA (`manifest`, ícones), `favicon.ico`, assets da landing |

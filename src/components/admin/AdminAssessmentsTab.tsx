@@ -111,25 +111,25 @@ const AdminAssessmentsTab = () => {
           </DialogHeader>
           <div className="space-y-3 py-2">
             <div>
-              <Label>Título</Label>
-              <Input value={form.title || ''} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+              <Label htmlFor="assessment-title">Título</Label>
+              <Input id="assessment-title" value={form.title || ''} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
             </div>
             <div>
               <Label>Descrição</Label>
               <Textarea value={form.description || ''} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} />
             </div>
             <div>
-              <Label>Área de competência</Label>
-              <Input placeholder="Ex: Negociação, Prospecção, Fechamento" value={form.skill_area || ''} onChange={e => setForm(f => ({ ...f, skill_area: e.target.value }))} />
+              <Label htmlFor="assessment-skill">Área de competência</Label>
+              <Input id="assessment-skill" placeholder="Ex: Negociação, Prospecção, Fechamento" value={form.skill_area || ''} onChange={e => setForm(f => ({ ...f, skill_area: e.target.value }))} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label>Frequência (dias)</Label>
-                <Input type="number" min={1} value={form.frequency_days ?? 90} onChange={e => setForm(f => ({ ...f, frequency_days: parseInt(e.target.value) || 90 }))} />
+                <Label htmlFor="assessment-frequency">Frequência (dias)</Label>
+                <Input id="assessment-frequency" type="number" min={1} value={form.frequency_days ?? 90} onChange={e => setForm(f => ({ ...f, frequency_days: parseInt(e.target.value) || 90 }))} />
               </div>
               <div>
-                <Label>Nota de aprovação (%)</Label>
-                <Input type="number" min={0} max={100} value={form.passing_score ?? 70} onChange={e => setForm(f => ({ ...f, passing_score: parseInt(e.target.value) || 70 }))} />
+                <Label htmlFor="assessment-passing-score">Nota de aprovação (%)</Label>
+                <Input id="assessment-passing-score" type="number" min={0} max={100} value={form.passing_score ?? 70} onChange={e => setForm(f => ({ ...f, passing_score: parseInt(e.target.value) || 70 }))} />
               </div>
             </div>
             <div>

@@ -240,7 +240,7 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
                 value={watch('level')}
                 onValueChange={(value) => setValue('level', value as 'iniciante' | 'intermediario' | 'avancado')}
               >
-                <SelectTrigger>
+                <SelectTrigger id="level">
                   <SelectValue placeholder="Selecione o nível" />
                 </SelectTrigger>
                 <SelectContent>
@@ -257,7 +257,7 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
                 value={watch('category_id') || ''}
                 onValueChange={(value) => setValue('category_id', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="category_id">
                   <SelectValue placeholder="Selecione a categoria" />
                 </SelectTrigger>
                 <SelectContent>

@@ -62,7 +62,7 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
           >
             <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground" />
-              <Input
+              <Input aria-label="Buscar cursos, trilhas e temas"
                 ref={searchInputRef}
                 type="text"
                 placeholder="Buscar cursos, trilhas, temas..."

@@ -224,7 +224,7 @@ const DiscussionCard = ({
               )}
 
               <div className="p-4 pl-16 flex gap-2">
-                <Input
+                <Input aria-label="Escrever resposta"
                   placeholder="Escreva sua resposta..."
                   value={newReply}
                   onChange={(e) => setNewReply(e.target.value)}
@@ -313,8 +313,8 @@ const CourseDiscussions = ({ courseId, lessonId }: CourseDiscussionsProps) => {
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Título</label>
-                <Input
+                <label htmlFor="discussion-title" className="text-sm font-medium">Título</label>
+                <Input id="discussion-title"
                   placeholder="Resuma sua dúvida em uma frase..."
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}

@@ -25,7 +25,7 @@ const SkillAssessments = () => {
       <DynamicSEO
         title="Avaliações de Competência"
         description="Mantenha suas habilidades de vendas em dia com avaliações periódicas."
-        url="https://multiplixe.lovable.app/avaliacoes"
+        url="https://multiplixe-v2.vercel.app/avaliacoes"
       />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">

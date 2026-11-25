@@ -6,13 +6,13 @@ Plataforma interna de capacitação corporativa com gamificação, trilhas, play
 
 ## 🔗 Links
 
-- **Preview**: https://id-preview--2f75e52e-b953-4a0b-b20c-a844623f0b99.lovable.app
-- **Produção**: https://learn-flow-forge-37.lovable.app
+- **Produção**: https://multiplixe-v2.vercel.app
+- **Local**: http://localhost:5173
 
 ## 🛠 Stack
 
 - **Frontend**: React 18 · Vite 5 · TypeScript 5 · Tailwind CSS v3 · shadcn/ui
-- **Backend**: Lovable Cloud (Auth, Postgres com RLS, Storage, Edge Functions)
+- **Backend**: Supabase (Auth, Postgres com RLS, Storage, Edge Functions)
 - **Estado / Dados**: TanStack Query · Zustand
 - **UX**: framer-motion · canvas-confetti (lazy) · Fuse.js · react-helmet-async
 - **Qualidade**: Vitest · Testing Library · ESLint

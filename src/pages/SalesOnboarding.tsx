@@ -51,7 +51,7 @@ const SalesOnboarding = () => {
       <DynamicSEO
         title={`Onboarding: ${workflow.name}`}
         description={workflow.description || 'Plano de onboarding para novos vendedores.'}
-        url="https://multiplixe.lovable.app/onboarding"
+        url="https://multiplixe-v2.vercel.app/onboarding"
       />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">

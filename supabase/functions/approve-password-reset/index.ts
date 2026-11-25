@@ -91,7 +91,7 @@ serve(async (req: Request) => {
         type: "recovery",
         email: resetRequest.user_email,
         options: {
-          redirectTo: `${supabaseUrl.replace(".supabase.co", ".lovableproject.com")}/reset-password`,
+          redirectTo: `${Deno.env.get("APP_PUBLIC_URL") || "https://multiplixe-v2.vercel.app"}/reset-password`,
         },
       });
 

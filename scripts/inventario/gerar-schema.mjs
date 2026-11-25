@@ -12,7 +12,7 @@
  * Roda OFFLINE, sem credencial — e por isso que da para rodar em qualquer sessao de agente.
  *
  * O QUE ISTO NAO E (declarado de proposito, para o arquivo nao virar teatro): prova do banco ao
- * vivo. Nenhum agente desta sessao tem MCP do projeto oficial `gyqtndkjvwvtkfeaxtlv`
+ * vivo. Nenhum agente desta sessao tem MCP do projeto oficial `ywsblgsikhiscvpmopkp`
  * (`docs/agentes/banco.md`) e o Lovable tambem aplica DDL direto pelo painel, sem gerar migration.
  * O que esta aqui e "o que o repositorio declara"; divergencia entre as duas fontes aparece em
  * `drift`, e so o banco resolve quem esta certo (scripts/inventario/banco.sql).

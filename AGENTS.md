@@ -73,7 +73,7 @@ Responda sempre em PT-BR.
 - Fim: link da PR + estado.
 
 ## Banco — ler `docs/agentes/banco.md` antes de SQL, migration ou deploy
-- Oficial: projeto Supabase/Lovable Cloud **`gyqtndkjvwvtkfeaxtlv`** (`supabase/config.toml:1`).
+- Oficial: projeto Supabase/Lovable Cloud **`ywsblgsikhiscvpmopkp`** (`supabase/config.toml:1`).
 - **Nenhum MCP desta sessão aponta para ele** (checado: `SUPABASE - GESTÃO DE CLIENTES` =
   `pgxfvjmuubtbowutlide`, `SUPABASE - GESTÃO DE PRODUTOS` = `doufsxqlfjyuvxuezpln`, `SUPABASE - ZAPP WEB V2`
   = `tnnnlkbymytvtqngbbqh`). Sem MCP não há SQL por agente: diagnóstico de banco e qualquer DDL = **chame o

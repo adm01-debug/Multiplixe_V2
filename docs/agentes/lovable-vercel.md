@@ -7,7 +7,7 @@ Ler quando for confirmar um deploy, mexer em env var, domínio, secret ou edge f
 | Camada | Dono | Consequência para o agente |
 |---|---|---|
 | Código do front e das edges | **Lovable** (editor visual, bot `gpt-engineer-app[bot]`) commita direto na `main` | nunca edite os arquivos gerados; remoção de arquivo pode voltar no commit seguinte do Lovable (`docs/agentes/github-ci.md`) |
-| Banco, migrations, Auth, Storage | **Lovable Cloud** (projeto `gyqtndkjvwvtkfeaxtlv`) | DDL e secret de edge só pelo dono (`docs/agentes/banco.md`) |
+| Banco, migrations, Auth, Storage | **Lovable Cloud** (projeto `ywsblgsikhiscvpmopkp`) | DDL e secret de edge só pelo dono (`docs/agentes/banco.md`) |
 | Secrets das edge functions | **Lovable Cloud → Secrets** | nomes usados: `RESEND_API_KEY`, `LOVABLE_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_URL` |
 | Hospedagem do front | **Vercel**, projeto `multiplixe-v2` | merge na `main` = deploy de produção |
 

@@ -13,7 +13,7 @@ Ler quando mexer em login, papéis, XP/gamificação, certificado, segurança ou
 
 Histórico: o commit `a124f9f` (`security: remove migrate-helper edge function (exposes service_role key)`)
 apagou a função; o commit seguinte do Lovable (`580966a`) **trouxe de volta**. Se ela estiver publicada no
-projeto `gyqtndkjvwvtkfeaxtlv`, qualquer um com a chave do arquivo lê o `service_role` — acesso total ao
+projeto `ywsblgsikhiscvpmopkp`, qualquer um com a chave do arquivo lê o `service_role` — acesso total ao
 banco, ignorando RLS. **Publicada ou não: NÃO VERIFICADO** (sem MCP deste projeto,
 `docs/agentes/banco.md`).
 

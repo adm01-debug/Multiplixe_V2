@@ -16,7 +16,7 @@ Ler quando for rodar SQL, criar/aplicar migration ou entender a estrutura. Resum
 
 | O que | Valor |
 |---|---|
-| Projeto | **`gyqtndkjvwvtkfeaxtlv`** — `supabase/config.toml:1` (`project_id`) |
+| Projeto | **`ywsblgsikhiscvpmopkp`** — `supabase/config.toml:1` (`project_id`) |
 | Origem | **Lovable Cloud** (Supabase gerenciado pelo Lovable; Auth, Postgres+RLS, Storage, Edge Functions) |
 | Credenciais do front | `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` — o `.env` **está versionado** e é gerenciado pelo Lovable; não edite à mão |
 | Cliente | `src/integrations/supabase/client.ts` (gerado, com `persistSession` + `autoRefreshToken`) |
@@ -27,7 +27,7 @@ Ler quando for rodar SQL, criar/aplicar migration ou entender a estrutura. Resum
 
 Checado nesta sessão: `SUPABASE - GESTÃO DE CLIENTES` → `pgxfvjmuubtbowutlide`;
 `SUPABASE - GESTÃO DE PRODUTOS` → `doufsxqlfjyuvxuezpln`; `SUPABASE - ZAPP WEB V2 - MCP` →
-`tnnnlkbymytvtqngbbqh`. Nenhum é `gyqtndkjvwvtkfeaxtlv`. O plugin `rls-schema-explorer:supabase` não
+`tnnnlkbymytvtqngbbqh`. Nenhum é `ywsblgsikhiscvpmopkp`. O plugin `rls-schema-explorer:supabase` não
 conectou (`ERR_PROXY_TUNNEL`) e não foi possível saber para qual projeto aponta — **NÃO VERIFICADO**.
 
 Consequências práticas:
@@ -37,7 +37,7 @@ Consequências práticas:
 2. **Nunca** escreva nos bancos dos MCPs acima: são outros sistemas (CRM, Catálogo, Zapp Web V2). Nome
    parecido de MCP já causou escrita no banco errado em outro projeto — confira qual MCP carregou.
 3. Precisa de dado real? Peça ao dono a query pelo Lovable Cloud, ou peça que ele habilite um MCP apontando
-   para `gyqtndkjvwvtkfeaxtlv`.
+   para `ywsblgsikhiscvpmopkp`.
 
 ## Migrations
 

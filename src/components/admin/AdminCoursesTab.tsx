@@ -88,7 +88,7 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
       <div className="flex items-center justify-between gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Buscar cursos..." value={searchCourses} onChange={(e) => setSearchCourses(e.target.value)} className="pl-10" />
+          <Input aria-label="Buscar cursos" placeholder="Buscar cursos..." value={searchCourses} onChange={(e) => setSearchCourses(e.target.value)} className="pl-10" />
         </div>
         <Button onClick={() => { setEditingCourse(null); setCourseFormOpen(true); }}>
           <Plus className="h-4 w-4 mr-2" /> Novo Curso

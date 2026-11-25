@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (52)
+## ⏳ MELHORIAS PENDENTES (51)
 
 ### 🎨 UX/UI - 9 Pendentes
 
@@ -563,20 +563,32 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 8 Pendentes
+### ♿ ACESSIBILIDADE - 7 Pendentes
 
-#### A11Y-001: Labels em Todos os Inputs
-**Prioridade:** 🔴 Alta  
-**Esforço:** 2h  
-**Descrição:** Alguns inputs não têm labels associados.
+#### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
-**Implementação:**
-```
-1. Auditar todos os formulários
-2. Adicionar Label com htmlFor
-3. Usar aria-label onde visual label não é possível
-4. Foco em: Auth, Profile, CourseForm, LessonForm
-```
+**Entregue em 25/11/2026**
+
+Auditoria de todo o `src` (fora `src/components/ui`, que são primitivos shadcn) achou **39 campos sem
+nome acessível**: 22 com `<Label>` visual logo acima, mas sem `htmlFor`/`id` (o rótulo não chegava ao
+leitor de tela) e 17 só com `placeholder`.
+
+- 18 campos ganharam `id` + `<Label htmlFor>`: `AdminAssessmentsTab` (4), `AdminVideosTab` (6),
+  `AdminPlaybooksTab` (4), `AdminWorkflowsTab` (2), `BlockedIPsTab` (2), `WhitelistTab` (2),
+  `CourseDiscussions` (título da dúvida) e `GoalsWidget` (valor alvo).
+- 17 campos só com `placeholder` ganharam `aria-label` descritivo: buscas de admin (cursos, usuários,
+  país, IP, trilhas, recuperação de senha), `Playbooks`, `VideoLibrary`, `VerifyCertificate`,
+  `SearchOverlay`, `Footer` (newsletter), `QuizQuestionCard` (explicação e texto da opção),
+  `CourseDiscussions` (resposta) e os três campos do passo de workflow. O `SearchInput` repassa o
+  `placeholder` como nome acessível.
+- 4 `htmlFor` apontavam para id inexistente (`CourseForm` nível e categoria, `GeoBlockingManager`
+  país, `LearningPathForm` dificuldade) — os `<SelectTrigger>` ganharam o `id` correspondente.
+- `scripts/ci/a11y-input-labels.unit.mjs` (novo): guard de CI que falha se aparecer `<Input>` sem
+  `id`/`aria-label` ou `htmlFor` órfão, com testes do próprio auditor (inclusive o `>` do
+  `onChange={e => ...}`, que não fecha a tag). Roda no job `guardas`, via `node --test scripts/ci/*.unit.mjs`.
+
+**Verificado:** guard novo 8/8; suite de guards 88 testes (85 pass / 3 skip / 0 fail); `tsc -b` exit 0;
+`eslint` nos 22 arquivos sem erro novo.
 
 ---
 
@@ -1307,7 +1319,7 @@ CREATE TABLE public.webhook_endpoints (
 | ID | Melhoria | Esforço |
 |----|----------|---------|
 | PERF-002 | Memoização de Componentes | 3h |
-| A11Y-001 | Labels em Inputs | 2h |
+| A11Y-001 | Labels em Inputs | ✅ 2h |
 | SEC-002 | Validação de Input Completa | ✅ 3h |
 | REF-006 | Error Boundary | 2h |
 | UI-011 | Modal Confirmação Saída | 2h |
@@ -1370,7 +1382,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 9 | ~28h |
 | Performance | 3 | ~10h |
 | Funcionalidades | 14 | ~72h |
-| Acessibilidade | 8 | ~16h |
+| Acessibilidade | 7 | ~14h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1378,7 +1390,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **55** | **~263h** |
+| **TOTAL PENDENTE** | **54** | **~261h** |
 
 ---
 

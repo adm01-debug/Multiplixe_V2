@@ -84,7 +84,7 @@ const VideoLibrary = () => {
       <main className="container mx-auto px-4 py-8 space-y-6">
         <div className="relative max-w-2xl">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Buscar vídeos..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" />
+          <Input aria-label="Buscar vídeos" placeholder="Buscar vídeos..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" />
         </div>
 
         <div className="flex flex-wrap gap-2">

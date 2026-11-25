@@ -218,7 +218,7 @@ export function LearningPathForm({ open, onOpenChange, learningPath, onSuccess }
                 value={formData.difficulty_level}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, difficulty_level: value }))}
               >
-                <SelectTrigger>
+                <SelectTrigger id="difficulty_level">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

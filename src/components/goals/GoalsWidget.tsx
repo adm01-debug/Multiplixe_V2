@@ -119,8 +119,8 @@ const GoalsWidget = () => {
                 </Select>
               </div>
               <div>
-                <label className="text-sm font-medium mb-2 block">Valor Alvo</label>
-                <Input
+                <label htmlFor="goal-target-value" className="text-sm font-medium mb-2 block">Valor Alvo</label>
+                <Input id="goal-target-value"
                   type="number"
                   min="1"
                   value={targetValue}

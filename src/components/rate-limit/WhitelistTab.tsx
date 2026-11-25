@@ -56,12 +56,12 @@ const WhitelistTab = ({ whitelistedIPs, onWhitelistIP, onRemoveFromWhitelist }: 
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Endereço IP</Label>
-                <Input placeholder="192.168.1.1" value={newIP} onChange={(e) => setNewIP(e.target.value)} />
+                <Label htmlFor="whitelist-ip">Endereço IP</Label>
+                <Input id="whitelist-ip" placeholder="192.168.1.1" value={newIP} onChange={(e) => setNewIP(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label>Descrição</Label>
-                <Input placeholder="Ex: Servidor de monitoramento" value={whitelistDescription} onChange={(e) => setWhitelistDescription(e.target.value)} />
+                <Label htmlFor="whitelist-description">Descrição</Label>
+                <Input id="whitelist-description" placeholder="Ex: Servidor de monitoramento" value={whitelistDescription} onChange={(e) => setWhitelistDescription(e.target.value)} />
               </div>
             </div>
             <DialogFooter>

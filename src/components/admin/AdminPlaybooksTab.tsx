@@ -74,12 +74,12 @@ const AdminPlaybooksTab = () => {
           <DialogHeader><DialogTitle>{editing?.id ? 'Editar' : 'Novo'} Playbook</DialogTitle></DialogHeader>
           {editing && (
             <div className="space-y-3">
-              <div><Label>Título</Label><Input value={editing.title || ''} onChange={e => setEditing({ ...editing, title: e.target.value })} /></div>
-              <div><Label>Slug</Label><Input value={editing.slug || ''} onChange={e => setEditing({ ...editing, slug: e.target.value })} /></div>
-              <div><Label>Categoria</Label><Input value={editing.category || ''} onChange={e => setEditing({ ...editing, category: e.target.value })} /></div>
+              <div><Label htmlFor="playbook-title">Título</Label><Input id="playbook-title" value={editing.title || ''} onChange={e => setEditing({ ...editing, title: e.target.value })} /></div>
+              <div><Label htmlFor="playbook-slug">Slug</Label><Input id="playbook-slug" value={editing.slug || ''} onChange={e => setEditing({ ...editing, slug: e.target.value })} /></div>
+              <div><Label htmlFor="playbook-category">Categoria</Label><Input id="playbook-category" value={editing.category || ''} onChange={e => setEditing({ ...editing, category: e.target.value })} /></div>
               <div><Label>Resumo</Label><Textarea value={editing.summary || ''} onChange={e => setEditing({ ...editing, summary: e.target.value })} rows={2} /></div>
               <div><Label>Conteúdo (Markdown)</Label><Textarea value={editing.content || ''} onChange={e => setEditing({ ...editing, content: e.target.value })} rows={10} className="font-mono text-sm" /></div>
-              <div><Label>Tags (separadas por vírgula)</Label><Input value={Array.isArray(editing.tags) ? editing.tags.join(', ') : ''} onChange={e => setEditing({ ...editing, tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })} /></div>
+              <div><Label htmlFor="playbook-tags">Tags (separadas por vírgula)</Label><Input id="playbook-tags" value={Array.isArray(editing.tags) ? editing.tags.join(', ') : ''} onChange={e => setEditing({ ...editing, tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })} /></div>
               <div className="flex items-center gap-2"><Switch checked={!!editing.is_published} onCheckedChange={v => setEditing({ ...editing, is_published: v })} /><Label>Publicado</Label></div>
               <Button onClick={handleSave} disabled={save.isPending} className="w-full">Salvar</Button>
             </div>

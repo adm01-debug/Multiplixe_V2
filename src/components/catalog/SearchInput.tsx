@@ -9,7 +9,7 @@ interface SearchInputProps {
 
 const SearchInput = ({ value, onChange, placeholder = "Buscar cursos, instrutores...", className = "" }: SearchInputProps) => {
   return (
-    <Input
+    <Input aria-label={placeholder}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}

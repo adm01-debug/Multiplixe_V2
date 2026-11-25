@@ -70,4 +70,6 @@ Consequências:
   `AGENTS.md` + `CLAUDE.md` + `docs/agentes/*.md` encolher >30% (ou >50% em um arquivo) contra a base.
   Rode sempre que mexer em `AGENTS.md` ou `docs/agentes/`. Com `CLAUDE_MD_BASE=origin/main` compara com a
   `main`; sem a variável, com o `HEAD`.
-- Não há outro guard: `scripts/` só tem `ci/` (ver `scripts/ci/README.md`).
+- `node --test scripts/ci/*.unit.mjs` — `npm run guards`. Entre eles, `a11y-input-labels.unit.mjs` barra
+  `<Input>` novo sem nome acessível (`id` casado com `<Label htmlFor>` ou `aria-label`) e `htmlFor` órfão.
+  É o mesmo passo que o job `guardas` roda em `push`/PR — ver `scripts/ci/README.md`.

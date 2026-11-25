@@ -130,7 +130,7 @@ const GeoBlockingManager = () => {
             <div className="p-4 rounded-lg bg-muted/50"><div className="flex items-center gap-2 text-muted-foreground mb-1"><MapPin className="h-4 w-4" /><span className="text-sm">Países Ativos</span></div><p className="text-2xl font-bold text-emerald-500">{activeCount}</p></div>
           </div>
 
-          <div className="relative max-w-sm"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar país..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10" /></div>
+          <div className="relative max-w-sm"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /><Input aria-label="Buscar país" placeholder="Buscar país..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10" /></div>
 
           {filteredCountries.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground"><Globe className="h-12 w-12 mx-auto mb-3 opacity-50" /><p>Nenhum país na whitelist</p><p className="text-sm">Adicione países para permitir acesso geográfico</p></div>
@@ -161,7 +161,7 @@ const GeoBlockingManager = () => {
         <DialogContent>
           <DialogHeader><DialogTitle>Adicionar País Permitido</DialogTitle><DialogDescription>Usuários deste país poderão acessar a plataforma quando o bloqueio estiver ativo.</DialogDescription></DialogHeader>
           <div className="space-y-4 py-4">
-            <div className="space-y-2"><Label htmlFor="country">País *</Label><Select value={formData.country_code} onValueChange={(value) => setFormData({ ...formData, country_code: value })}><SelectTrigger><SelectValue placeholder="Selecione um país" /></SelectTrigger><SelectContent>{availableCountries.map((c) => (<SelectItem key={c.code} value={c.code}>{getFlagEmoji(c.code)} {c.name}</SelectItem>))}</SelectContent></Select></div>
+            <div className="space-y-2"><Label htmlFor="country">País *</Label><Select value={formData.country_code} onValueChange={(value) => setFormData({ ...formData, country_code: value })}><SelectTrigger id="country"><SelectValue placeholder="Selecione um país" /></SelectTrigger><SelectContent>{availableCountries.map((c) => (<SelectItem key={c.code} value={c.code}>{getFlagEmoji(c.code)} {c.name}</SelectItem>))}</SelectContent></Select></div>
             <div className="space-y-2"><Label htmlFor="reason">Observação (opcional)</Label><Textarea id="reason" value={formData.reason} onChange={(e) => setFormData({ ...formData, reason: e.target.value })} placeholder="Ex: Sede da empresa" /></div>
           </div>
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Cancelar</Button><Button onClick={handleAddCountry} disabled={saving}>{saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}Adicionar</Button></DialogFooter>

@@ -121,8 +121,8 @@ const AdminWorkflowsTab = () => {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div>
-              <Label>Nome</Label>
-              <Input value={form.name || ''} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+              <Label htmlFor="workflow-name">Nome</Label>
+              <Input id="workflow-name" value={form.name || ''} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
             </div>
             <div>
               <Label>Descrição</Label>
@@ -130,8 +130,8 @@ const AdminWorkflowsTab = () => {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label>Destinatário (role)</Label>
-                <Input value={form.role_target || 'sales'} onChange={e => setForm(f => ({ ...f, role_target: e.target.value }))} />
+                <Label htmlFor="workflow-role-target">Destinatário (role)</Label>
+                <Input id="workflow-role-target" value={form.role_target || 'sales'} onChange={e => setForm(f => ({ ...f, role_target: e.target.value }))} />
               </div>
               <div className="flex items-center gap-4 pt-6">
                 <div className="flex items-center gap-2">
@@ -168,13 +168,13 @@ const AdminWorkflowsTab = () => {
                           {STEP_TYPES.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
-                      <Input placeholder="Título" value={step.title} onChange={e => updateStep(idx, { title: e.target.value })} className="col-span-2" />
+                      <Input aria-label="Título do passo" placeholder="Título" value={step.title} onChange={e => updateStep(idx, { title: e.target.value })} className="col-span-2" />
                     </div>
                     <Button size="icon" variant="ghost" onClick={() => removeStep(idx)}><X className="h-4 w-4" /></Button>
                   </div>
                   <div className="grid grid-cols-2 gap-2 ml-8">
-                    <Input placeholder="ID do recurso (opcional)" value={step.resource_id || ''} onChange={e => updateStep(idx, { resource_id: e.target.value })} />
-                    <Input placeholder="URL (opcional)" value={step.resource_url || ''} onChange={e => updateStep(idx, { resource_url: e.target.value })} />
+                    <Input aria-label="ID do recurso do passo" placeholder="ID do recurso (opcional)" value={step.resource_id || ''} onChange={e => updateStep(idx, { resource_id: e.target.value })} />
+                    <Input aria-label="URL do recurso do passo" placeholder="URL (opcional)" value={step.resource_url || ''} onChange={e => updateStep(idx, { resource_url: e.target.value })} />
                   </div>
                   <div className="flex items-center gap-2 ml-8">
                     <Switch checked={step.required} onCheckedChange={v => updateStep(idx, { required: v })} />

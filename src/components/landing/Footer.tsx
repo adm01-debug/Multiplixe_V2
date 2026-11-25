@@ -176,7 +176,7 @@ const Footer = () => {
                 Receba notificações sobre novos cursos e trilhas
               </p>
               <form onSubmit={handleNewsletter} className="flex gap-2">
-                <Input
+                <Input aria-label="Seu e-mail para receber a newsletter"
                   type="email"
                   placeholder="seu.email@promobrindes.com.br"
                   value={email}

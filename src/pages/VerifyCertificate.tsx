@@ -74,7 +74,7 @@ export default function VerifyCertificate() {
           <Card className="mb-8">
             <CardContent className="pt-6">
               <div className="flex gap-3">
-                <Input
+                <Input aria-label="Código de verificação do certificado"
                   placeholder="Digite o código de verificação"
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}

@@ -210,7 +210,7 @@ const IPWhitelistManager = () => {
         <CardContent className="space-y-4">
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
+            <Input aria-label="Buscar por IP ou descrição"
               placeholder="Buscar por IP ou descrição..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

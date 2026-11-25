@@ -170,7 +170,9 @@ export function lerRotas(raiz) {
   const abs = path.join(raiz, arquivo);
   const lazy = Object.fromEntries([...texto.matchAll(/const\s+(\w+)\s*=\s*(?:React\.)?lazy\w*\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]\s*\)/g)]
     .map((m) => [m[1], m[2]]));
-  const corpo = texto.slice(texto.indexOf('<Routes>'), texto.indexOf('</Routes>'));
+  // O App pode ter mais de um bloco `<Routes>` (area publica e area logada, por exemplo): ler so o
+  // primeiro fazia as rotas dos outros sumirem do rotas.json sem nenhum aviso.
+  const corpo = [...texto.matchAll(/<Routes\b[^>]*>([\s\S]*?)<\/Routes>/g)].map((m) => m[1]).join('\n');
   return corpo.split(/<Route\b/).slice(1).map((pedaco) => {
     const caminho = (pedaco.match(/path=["']([^"']+)["']/) || [])[1];
     const redireciona = (pedaco.match(/<Navigate\s+to=["']([^"']+)["']/) || [])[1] ?? null;

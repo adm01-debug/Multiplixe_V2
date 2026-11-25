@@ -10,6 +10,14 @@
  * Ratchet: a divida que ja existe fica registrada em `scripts/ci/known-violations.json` e nao
  * quebra o build; violacao NOVA quebra. Entrada que nao existe mais vira aviso, e
  * `--prune-obsolete` reescreve o arquivo (o diff do baseline entra na PR para ser revisado).
+ * A chave do ratchet e `kind:alvo:arquivo` — a MESMA divida movida para outro arquivo conta como
+ * violacao nova (a entrada antiga so vira aviso de obsoleta), entao mover codigo reabre a divida.
+ *
+ * Escopo varrido: `src/` e `supabase/functions/`, arquivos .ts/.tsx/.js/.jsx que nao sao de teste.
+ * `scripts/` e `.mjs` ficam de fora de proposito (script de manutencao nao fala com o banco de
+ * producao). Chamada com alvo montado em runtime — variavel, concatenacao (`'t_' + id`) ou
+ * template literal (`` `t_${id}` ``) — entra na contagem de NAO CONFERIDAS: nao e aprovada nem
+ * reprovada, so fica visivel no resumo em vez de sumir sem ninguem ver.
  *
  * Uso:
  *   node scripts/ci/supabase-usage-guard.mjs
@@ -35,6 +43,9 @@ const EH_TESTE = /(\.test\.|\.spec\.|__tests__|\/test\/)/;
  */
 const RECEPTOR_ALHEIO = /(storage|Array|Object|Buffer|Int8Array|Uint8Array|Float64Array)\s*$/;
 
+/** Logo depois da aspa vem `+`: o "literal" e so o prefixo de uma concatenacao, nao e alvo. */
+const SEGUE_CONCAT = /^\s*\+/;
+
 export function listarArquivos(dir, acc = []) {
   if (!fs.existsSync(dir)) return acc;
   for (const e of fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
@@ -57,9 +68,11 @@ export function coletarChamadas(raiz, pastas = PASTAS) {
       const linhaDe = (i) => texto.slice(0, i).split('\n').length;
       for (const m of texto.matchAll(/\.from\(\s*(['"`])([A-Za-z0-9_-]+)\1/g)) {
         if (RECEPTOR_ALHEIO.test(texto.slice(Math.max(0, m.index - 40), m.index))) continue;
+        if (SEGUE_CONCAT.test(texto.slice(m.index + m[0].length))) continue;
         chamadas.push({ kind: 'table', alvo: m[2], arquivo, linha: linhaDe(m.index) });
       }
       for (const m of texto.matchAll(/\.rpc\(\s*(['"`])([A-Za-z0-9_]+)\1/g)) {
+        if (SEGUE_CONCAT.test(texto.slice(m.index + m[0].length))) continue;
         chamadas.push({ kind: 'rpc', alvo: m[2], arquivo, linha: linhaDe(m.index) });
       }
       // `.from(variavel)` / `.rpc(variavel)`: nao da para resolver com certeza, entra na contagem
@@ -67,6 +80,14 @@ export function coletarChamadas(raiz, pastas = PASTAS) {
       for (const m of texto.matchAll(/\.(from|rpc)\(\s*([A-Za-z_$][\w$.]*)\s*[,)]/g)) {
         if (RECEPTOR_ALHEIO.test(texto.slice(Math.max(0, m.index - 40), m.index))) continue;
         dinamicas.push({ kind: m[1] === 'from' ? 'table' : 'rpc', expressao: m[2], arquivo, linha: linhaDe(m.index) });
+      }
+      // Concatenacao (`'t_' + id`) e template literal (`\`t_${id}\``): as varreduras acima pedem
+      // literal puro ou identificador puro, entao estes casos nao casavam com nada e a chamada
+      // desaparecia sem virar violacao nem aparecer no resumo. Alvo continua desconhecido.
+      for (const m of texto.matchAll(/\.(from|rpc)\(\s*([`'"][^)]*?)[)\n]/g)) {
+        if (RECEPTOR_ALHEIO.test(texto.slice(Math.max(0, m.index - 40), m.index))) continue;
+        if (!m[2].includes('+') && !m[2].includes('${')) continue;
+        dinamicas.push({ kind: m[1] === 'from' ? 'table' : 'rpc', expressao: m[2].trim(), arquivo, linha: linhaDe(m.index) });
       }
     }
   }

@@ -17,17 +17,31 @@ export const routeModules: Record<string, () => Promise<unknown>> = {
   // Dynamic routes (matched by base segment)
   '/curso': () => import('@/pages/CourseDetail'),
   '/trilha': () => import('@/pages/LearningPathDetail'),
-  '/aula': () => import('@/pages/LessonPlayer'),
+    // Nested route whose chunk is not the one of its base segment (/curso)
+    '/curso/:slug/aula/:lessonId': () => import('@/pages/LessonPlayer'),
 };
 
 // Session-level cache of routes already prefetched
 const prefetchedRoutes = new Set<string>();
 
+// Matches a concrete path against the routeModules keys, treating ":param" as a wildcard
+function matchRoutePattern(segments: string[]): (() => Promise<unknown>) | undefined {
+  for (const [route, loader] of Object.entries(routeModules)) {
+    const pattern = route.split('/').filter(Boolean);
+    if (pattern.length !== segments.length) continue;
+    if (pattern.every((seg, i) => seg.startsWith(':') || seg === segments[i])) return loader;
+  }
+  return undefined;
+}
+
 export function prefetchRouteChunk(path: string): void {
   if (prefetchedRoutes.has(path)) return;
 
-  const basePath = '/' + path.split('/').filter(Boolean)[0];
-  const loader = routeModules[path] || routeModules[basePath];
+  const segments = path.split('/').filter(Boolean);
+  const basePath = '/' + (segments[0] ?? '');
+  // Exact path first, then the most specific pattern, then the base segment
+  const loader =
+    routeModules[path] || matchRoutePattern(segments) || routeModules[basePath];
   if (!loader) return;
 
   prefetchedRoutes.add(path);

@@ -7,7 +7,7 @@
     "so_admin": 2,
     "entradas_na_ui": 111,
     "hooks_distintos": 64,
-    "problemas": 1
+    "problemas": 0
   },
   "rotas": [
     {
@@ -791,7 +791,9 @@
       "so_admin": false,
       "com_parametro": true,
       "redireciona": null,
-      "entradas_na_ui": [],
+      "entradas_na_ui": [
+        "prefetch"
+      ],
       "arquivos_lidos": 29,
       "hooks": [
         {
@@ -2418,11 +2420,6 @@
     },
     {
       "origem": "prefetch",
-      "destino": "/aula",
-      "rotulo": null
-    },
-    {
-      "origem": "prefetch",
       "destino": "/auth",
       "rotulo": null
     },
@@ -2434,6 +2431,11 @@
     {
       "origem": "prefetch",
       "destino": "/curso",
+      "rotulo": null
+    },
+    {
+      "origem": "prefetch",
+      "destino": "/curso/:slug/aula/:lessonId",
       "rotulo": null
     },
     {
@@ -3034,11 +3036,5 @@
       ]
     }
   },
-  "problemas": [
-    {
-      "tipo": "entrada_ui_sem_rota",
-      "id": "/aula",
-      "detalhe": "prefetch -> /aula: chave de prefetch que nenhuma rota alcanca (prefetchRouteChunk casa o caminho inteiro ou o 1o segmento) — nunca aquece nada"
-    }
-  ]
+  "problemas": []
 }

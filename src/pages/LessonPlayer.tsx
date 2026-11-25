@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useConfetti } from "@/hooks/useConfetti";
@@ -8,6 +8,8 @@ import { useStreaks } from "@/hooks/useStreaks";
 import { useCertificates } from "@/hooks/useCertificates";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { usePomodoro } from "@/hooks/usePomodoro";
+import { usePlatformSettings } from "@/hooks/usePlatformSettings";
+import { xpRewardsFrom, XP_REWARDS_KEY } from "@/lib/platformSettings";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/player/VideoPlayer";
@@ -32,6 +34,8 @@ const LessonPlayer = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   const { fireLessonComplete, fireCourseComplete } = useConfetti();
   const { addXP, refetch: refetchXP } = useUserXP();
+  const { settings } = usePlatformSettings();
+  const xpRewards = useMemo(() => xpRewardsFrom(settings[XP_REWARDS_KEY]), [settings]);
   const { checkAchievements, newAchievements, dismissAchievement } = useAchievements();
   const { updateStreak, hasStudiedToday } = useStreaks();
   const { generateCertificate } = useCertificates();
@@ -127,15 +131,15 @@ const LessonPlayer = () => {
         if (!wasAlreadyCompleted && !celebratedLessons.current.has(currentLesson.id)) {
           celebratedLessons.current.add(currentLesson.id);
           const newCompletedCount = lessonsProgress.filter((p) => p.is_completed).length + 1;
-          if (newCompletedCount >= lessons.length) { fireCourseComplete(); await addXP(100, 'course'); toast.success("🏆 Parabéns! Você concluiu o curso! +100 XP", { duration: 5000 }); setShowCourseQuizModal(true); }
-          else { fireLessonComplete(); await addXP(25, 'lesson'); toast.success("🎉 Aula concluída! +25 XP Continue assim!"); }
+          if (newCompletedCount >= lessons.length) { fireCourseComplete(); await addXP(xpRewards.course_completed, 'course'); toast.success(`🏆 Parabéns! Você concluiu o curso! +${xpRewards.course_completed} XP`, { duration: 5000 }); setShowCourseQuizModal(true); }
+          else { fireLessonComplete(); await addXP(xpRewards.lesson_completed, 'lesson'); toast.success(`🎉 Aula concluída! +${xpRewards.lesson_completed} XP Continue assim!`); }
           await checkAchievements();
           if (!streakUpdatedToday.current && !hasStudiedToday) { streakUpdatedToday.current = true; const streakResult = await updateStreak(); if (streakResult && streakResult.streak_updated) setStreakCelebration({ newStreak: streakResult.new_streak, xpAwarded: streakResult.xp_awarded, isNewRecord: streakResult.is_new_record }); }
         }
         await updateCourseProgress();
       }
     } catch { /* Silent fail */ }
-  }, [user, currentLesson, course, lessonsProgress, lessons.length, fireCourseComplete, fireLessonComplete, addXP, checkAchievements, hasStudiedToday, updateStreak]);
+  }, [user, currentLesson, course, lessonsProgress, lessons.length, fireCourseComplete, fireLessonComplete, addXP, checkAchievements, hasStudiedToday, updateStreak, xpRewards]);
 
   const updateCourseProgress = async () => {
     if (!user || !course || lessons.length === 0) return;

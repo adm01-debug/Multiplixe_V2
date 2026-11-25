@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 61,
-    "tabelas_no_types": 61,
-    "tabelas_nas_migrations": 61,
-    "colunas": 512,
+    "tabelas": 62,
+    "tabelas_no_types": 62,
+    "tabelas_nas_migrations": 62,
+    "colunas": 517,
     "views": 1,
     "funcoes": 43,
     "funcoes_expostas_no_types": 32,
     "enums": 1,
-    "policies": 163,
+    "policies": 166,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 53,
+    "migrations": 54,
     "alertas": 3,
     "problemas": 3
   },
@@ -381,6 +381,22 @@
       "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "platform_settings": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 3,
+      "triggers": [
+        "platform_settings_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20261125200000_platform_settings.sql",
+      "uso_no_codigo": {
+        "src": 2,
         "edges": 0
       }
     },

@@ -6,7 +6,7 @@
     "protegidas": 18,
     "so_admin": 2,
     "entradas_na_ui": 111,
-    "hooks_distintos": 64,
+    "hooks_distintos": 66,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 67,
+      "arquivos_lidos": 69,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -106,6 +106,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         },
         {
           "nome": "usePomodoro",
@@ -193,6 +197,7 @@
         "newsletter_subscriptions",
         "notifications",
         "password_reset_requests",
+        "platform_settings",
         "pomodoro_sessions",
         "profiles",
         "quiz_options_public",
@@ -229,7 +234,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 42,
+      "arquivos_lidos": 46,
       "hooks": [
         {
           "nome": "useAdminRole",
@@ -264,6 +269,10 @@
           "arquivo": "src/hooks/useOnboardingWorkflow.ts"
         },
         {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
+        },
+        {
           "nome": "usePlaybooks",
           "arquivo": "src/hooks/usePlaybooks.ts"
         },
@@ -294,6 +303,10 @@
         {
           "nome": "useTrainingVideos",
           "arquivo": "src/hooks/useTrainingVideos.ts"
+        },
+        {
+          "nome": "useUpdatePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         }
       ],
       "buckets": [],
@@ -321,6 +334,7 @@
         "onboarding_workflows",
         "password_reset_requests",
         "permissions",
+        "platform_settings",
         "playbooks",
         "profiles",
         "quiz_performance_alerts",
@@ -406,11 +420,15 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 7,
+      "arquivos_lidos": 10,
       "hooks": [
         {
           "nome": "useAuth",
           "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         }
       ],
       "buckets": [],
@@ -423,7 +441,9 @@
         "record_failed_login",
         "reset_login_attempts"
       ],
-      "tabelas": [],
+      "tabelas": [
+        "platform_settings"
+      ],
       "imports_quebrados": []
     },
     {
@@ -560,7 +580,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 58,
+      "arquivos_lidos": 60,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -625,6 +645,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         },
         {
           "nome": "usePomodoro",
@@ -710,6 +734,7 @@
         "lessons",
         "notifications",
         "password_reset_requests",
+        "platform_settings",
         "pomodoro_sessions",
         "profiles",
         "quiz_options_public",
@@ -800,7 +825,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 29,
+      "arquivos_lidos": 31,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -821,6 +846,10 @@
         {
           "nome": "useNotes",
           "arquivo": "src/hooks/useNotes.ts"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         },
         {
           "nome": "usePomodoro",
@@ -862,6 +891,7 @@
         "certificates",
         "courses",
         "lessons",
+        "platform_settings",
         "pomodoro_sessions",
         "profiles",
         "quiz_options_public",
@@ -893,7 +923,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 82,
+      "arquivos_lidos": 84,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -978,6 +1008,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         },
         {
           "nome": "usePomodoro",
@@ -1076,6 +1110,7 @@
         "notifications",
         "onboarding_workflows",
         "password_reset_requests",
+        "platform_settings",
         "pomodoro_sessions",
         "profiles",
         "quiz_options_public",
@@ -1543,7 +1578,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 50,
+      "arquivos_lidos": 52,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1608,6 +1643,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         },
         {
           "nome": "usePomodoro",
@@ -1693,6 +1732,7 @@
         "lessons",
         "notifications",
         "password_reset_requests",
+        "platform_settings",
         "pomodoro_sessions",
         "profiles",
         "quiz_options_public",
@@ -1731,7 +1771,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 53,
+      "arquivos_lidos": 55,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1796,6 +1836,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "usePlatformSettings",
+          "arquivo": "src/hooks/usePlatformSettings.ts"
         },
         {
           "nome": "usePomodoro",
@@ -1881,6 +1925,7 @@
         "lessons",
         "notifications",
         "password_reset_requests",
+        "platform_settings",
         "pomodoro_sessions",
         "profiles",
         "quiz_options_public",
@@ -2789,6 +2834,19 @@
         "/seguranca"
       ]
     },
+    "usePlatformSettings": {
+      "arquivo": "src/hooks/usePlatformSettings.ts",
+      "rotas": [
+        "/",
+        "/admin",
+        "/auth",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
     "usePlaybook": {
       "arquivo": "src/hooks/usePlaybooks.ts",
       "rotas": [
@@ -2973,6 +3031,12 @@
       "rotas": [
         "/onboarding",
         "/onboarding/executar"
+      ]
+    },
+    "useUpdatePlatformSettings": {
+      "arquivo": "src/hooks/usePlatformSettings.ts",
+      "rotas": [
+        "/admin"
       ]
     },
     "useUpdatePlaybookComment": {

@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (53)
+## ⏳ MELHORIAS PENDENTES (52)
 
 ### 🎨 UX/UI - 9 Pendentes
 
@@ -994,7 +994,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-### 🛠️ MELHORIAS ADMINISTRATIVAS - 6 Pendentes
+### 🛠️ MELHORIAS ADMINISTRATIVAS - 5 Pendentes
 
 #### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -1083,7 +1083,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-#### ADMIN-007: Configurações da Plataforma
+#### ADMIN-007: Configurações da Plataforma — CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Configurações hardcoded.
@@ -1106,6 +1106,13 @@ CREATE TABLE public.platform_settings (
 4. Domínio de email permitido
 5. Interface de configuração no admin
 ```
+
+**Entregue em 25/11/2026:**
+- Migration `20261125200000_platform_settings.sql`: tabela `public.platform_settings` (key PK, value JSONB, description, updated_at, updated_by → `auth.users`), RLS habilitada com 3 policies — admin (`has_role`) escreve, autenticado lê tudo, `anon` lê apenas `allowed_email_domains` (o login valida o domínio antes de existir sessão) — trigger `update_updated_at_column` e grants. Seeds idempotentes com os valores que já eram usados no código: `allowed_email_domains = ["promobrindes.com.br"]`, `quiz_defaults = {passing_score: 90, xp_reward: 50, cooldown_hours: 24, time_limit_seconds: null}`, `xp_rewards = {lesson_completed: 25, course_completed: 100}`.
+- `src/lib/platformSettings.ts`: chaves, defaults, normalização de domínios, `createCorporateEmailSchema`, getters com clamp (`quizDefaultsFrom`, `xpRewardsFrom`) e schema Zod do formulário.
+- `Admin → Configurações` (`PlatformSettingsTab` + `usePlatformSettings`): edita domínios de e-mail, padrões de quiz novo e XP por ação; grava `updated_by`.
+- Consumo real: `Auth.tsx` (schema de e-mail do login/cadastro), `QuizManager.tsx` (defaults de quiz novo) e `LessonPlayer.tsx` (XP de aula/curso) leem `platform_settings` — trocar um valor no admin não exige deploy.
+- 15 testes em `src/test/platformSettings.test.ts`.
 
 ---
 
@@ -1367,11 +1374,11 @@ CREATE TABLE public.webhook_endpoints (
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
-| Administrativas | 6 | ~24h |
+| Administrativas | 5 | ~20h |
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **56** | **~267h** |
+| **TOTAL PENDENTE** | **55** | **~263h** |
 
 ---
 

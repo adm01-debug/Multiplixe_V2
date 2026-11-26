@@ -28,6 +28,7 @@ import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, Cert
 import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2, Globe, Link2, Info, Package } from 'lucide-react';
 import { toast } from 'sonner';
 import LanguageToggle from '@/components/LanguageToggle';
+import ThemeCustomizer from '@/components/ui/ThemeCustomizer';
 
 interface UserStats { totalLessonsCompleted: number; totalCoursesCompleted: number; totalCoursesInProgress: number; totalWatchedMinutes: number; memberSince: string; }
 interface Certificate { id: string; user_id: string; course_id: string; verification_code: string; issued_at: string; user_name: string; course_title: string; }
@@ -181,6 +182,7 @@ const Profile = () => {
               </Link>
             </div>
             <div className="flex items-center gap-2">
+              <ThemeCustomizer />
               <LanguageToggle />
               <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting} className="rounded-xl">
                               {exporting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />} Exportar dados

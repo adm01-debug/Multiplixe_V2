@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { PALETAS } from "@/lib/themePresets";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -115,3 +116,34 @@ describe.each([
     for (const [fg, bg, min] of UI) check(theme, "componente ui", fg, bg, min);
   });
 });
+
+/** Tokens da paleta no mesmo nome usado no CSS, para reaproveitar as checagens acima. */
+function tokensDaPaleta(paleta: (typeof PALETAS)[number]["claro"]): Record<string, string> {
+  return {
+    primary: paleta.primary,
+    "primary-hover": paleta.primaryHover,
+    "primary-foreground": paleta.primaryForeground,
+    secondary: paleta.secondary,
+    "secondary-foreground": paleta.secondaryForeground,
+    accent: paleta.accent,
+    "accent-foreground": paleta.accentForeground,
+    ring: paleta.ring,
+    "sidebar-primary": paleta.primary,
+    "sidebar-primary-foreground": paleta.primaryForeground,
+  };
+}
+
+describe.each(PALETAS.map((p) => [p.id, p] as const))(
+  "paleta %s mantem contraste WCAG AA",
+  (nome, paleta) => {
+    it("tema claro", () => {
+      const tema = { ...light, ...tokensDaPaleta(paleta.claro) };
+      for (const [fg, bg, min] of [...TEXT, ...AS_TEXT, ...UI]) check(tema, `paleta ${nome}`, fg, bg, min);
+    });
+
+    it("tema escuro", () => {
+      const tema = { ...dark, ...tokensDaPaleta(paleta.escuro) };
+      for (const [fg, bg, min] of [...TEXT, ...AS_TEXT, ...UI]) check(tema, `paleta ${nome}`, fg, bg, min);
+    });
+  }
+);

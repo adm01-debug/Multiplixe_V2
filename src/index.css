@@ -228,6 +228,138 @@
     --sidebar-border: 260 30% 18%;
     --sidebar-ring: 270 100% 70%;
   }
+
+  /* === PALETAS DE COR (UI-012) ===
+     O <html> recebe data-accent; a paleta padrao (violet) usa os valores de :root/.dark,
+     por isso so as demais paletas aparecem aqui. */
+
+  /* Paleta ocean */
+  :root[data-accent="ocean"] {
+    --primary: 200 91% 35%;
+    --primary-hover: 200 91% 29%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 180 82% 26%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 186 100% 36%;
+    --accent-foreground: 222 47% 11%;
+    --ring: 200 91% 40%;
+    --sidebar-primary: 200 91% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-ring: 200 91% 40%;
+    --gradient-primary: linear-gradient(135deg, hsl(200 91% 35%) 0%, hsl(186 100% 36%) 55%, hsl(180 82% 26%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(186 100% 36%) 0%, hsl(200 91% 35%) 100%);
+  }
+  .dark[data-accent="ocean"] {
+    --primary: 200 100% 62%;
+    --primary-hover: 200 100% 68%;
+    --primary-foreground: 250 30% 6%;
+    --secondary: 180 100% 55%;
+    --secondary-foreground: 250 30% 6%;
+    --accent: 186 100% 60%;
+    --accent-foreground: 0 0% 5%;
+    --ring: 200 100% 62%;
+    --sidebar-primary: 200 100% 62%;
+    --sidebar-primary-foreground: 250 30% 6%;
+    --sidebar-ring: 200 100% 62%;
+    --gradient-primary: linear-gradient(135deg, hsl(200 100% 62%) 0%, hsl(186 100% 60%) 55%, hsl(180 100% 55%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(186 100% 60%) 0%, hsl(200 100% 62%) 100%);
+  }
+
+  /* Paleta forest */
+  :root[data-accent="forest"] {
+    --primary: 152 72% 28%;
+    --primary-hover: 152 72% 23%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 120 55% 30%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 140 70% 30%;
+    --accent-foreground: 0 0% 100%;
+    --ring: 152 72% 34%;
+    --sidebar-primary: 152 72% 28%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-ring: 152 72% 34%;
+    --gradient-primary: linear-gradient(135deg, hsl(152 72% 28%) 0%, hsl(140 70% 30%) 55%, hsl(120 55% 30%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(140 70% 30%) 0%, hsl(152 72% 28%) 100%);
+  }
+  .dark[data-accent="forest"] {
+    --primary: 150 80% 55%;
+    --primary-hover: 150 80% 62%;
+    --primary-foreground: 160 40% 6%;
+    --secondary: 120 70% 55%;
+    --secondary-foreground: 160 40% 6%;
+    --accent: 140 85% 60%;
+    --accent-foreground: 0 0% 5%;
+    --ring: 150 80% 55%;
+    --sidebar-primary: 150 80% 55%;
+    --sidebar-primary-foreground: 160 40% 6%;
+    --sidebar-ring: 150 80% 55%;
+    --gradient-primary: linear-gradient(135deg, hsl(150 80% 55%) 0%, hsl(140 85% 60%) 55%, hsl(120 70% 55%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(140 85% 60%) 0%, hsl(150 80% 55%) 100%);
+  }
+
+  /* Paleta sunset */
+  :root[data-accent="sunset"] {
+    --primary: 20 88% 40%;
+    --primary-hover: 20 88% 34%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 355 75% 38%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 35 92% 38%;
+    --accent-foreground: 20 60% 8%;
+    --ring: 20 88% 42%;
+    --sidebar-primary: 20 88% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-ring: 20 88% 42%;
+    --gradient-primary: linear-gradient(135deg, hsl(20 88% 40%) 0%, hsl(35 92% 38%) 55%, hsl(355 75% 38%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(35 92% 38%) 0%, hsl(20 88% 40%) 100%);
+  }
+  .dark[data-accent="sunset"] {
+    --primary: 24 100% 60%;
+    --primary-hover: 24 100% 67%;
+    --primary-foreground: 20 60% 6%;
+    --secondary: 355 100% 65%;
+    --secondary-foreground: 20 60% 6%;
+    --accent: 38 100% 62%;
+    --accent-foreground: 0 0% 5%;
+    --ring: 24 100% 60%;
+    --sidebar-primary: 24 100% 60%;
+    --sidebar-primary-foreground: 20 60% 6%;
+    --sidebar-ring: 24 100% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(24 100% 60%) 0%, hsl(38 100% 62%) 55%, hsl(355 100% 65%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(38 100% 62%) 0%, hsl(24 100% 60%) 100%);
+  }
+
+  /* Paleta gold */
+  :root[data-accent="gold"] {
+    --primary: 38 92% 31%;
+    --primary-hover: 38 92% 25%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 28 80% 33%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 45 93% 38%;
+    --accent-foreground: 40 60% 8%;
+    --ring: 38 92% 34%;
+    --sidebar-primary: 38 92% 31%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-ring: 38 92% 34%;
+    --gradient-primary: linear-gradient(135deg, hsl(38 92% 31%) 0%, hsl(45 93% 38%) 55%, hsl(28 80% 33%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(45 93% 38%) 0%, hsl(38 92% 31%) 100%);
+  }
+  .dark[data-accent="gold"] {
+    --primary: 45 100% 58%;
+    --primary-hover: 45 100% 65%;
+    --primary-foreground: 40 60% 6%;
+    --secondary: 30 100% 60%;
+    --secondary-foreground: 40 60% 6%;
+    --accent: 48 100% 62%;
+    --accent-foreground: 0 0% 5%;
+    --ring: 45 100% 58%;
+    --sidebar-primary: 45 100% 58%;
+    --sidebar-primary-foreground: 40 60% 6%;
+    --sidebar-ring: 45 100% 58%;
+    --gradient-primary: linear-gradient(135deg, hsl(45 100% 58%) 0%, hsl(48 100% 62%) 55%, hsl(30 100% 60%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(48 100% 62%) 0%, hsl(45 100% 58%) 100%);
+  }
 }
 
 @layer base {

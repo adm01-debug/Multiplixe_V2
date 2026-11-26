@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+import { useOptionalAuth } from "@/hooks/useAuth";
+import { aplicarPaleta, normalizarPaleta, PALETA_PADRAO } from "@/lib/themePresets";
 
 interface UserPreferences {
   theme: "light" | "dark" | "system";
@@ -17,7 +18,7 @@ interface UserPreferences {
 
 const DEFAULT_PREFERENCES: UserPreferences = {
   theme: "system",
-  accentColor: "violet",
+  accentColor: PALETA_PADRAO,
   fontSize: "normal",
   reducedMotion: false,
   catalogView: "grid",
@@ -29,13 +30,14 @@ const DEFAULT_PREFERENCES: UserPreferences = {
 };
 
 export const useUserPreferences = () => {
-  const { user } = useAuth();
+  const user = useOptionalAuth()?.user;
   const [preferences, setPreferences] = useState<UserPreferences>(() => {
     // Load from localStorage first for immediate access
     const stored = localStorage.getItem("user-preferences");
     if (stored) {
       try {
-        return { ...DEFAULT_PREFERENCES, ...JSON.parse(stored) };
+        const salvas = { ...DEFAULT_PREFERENCES, ...JSON.parse(stored) };
+        return { ...salvas, accentColor: normalizarPaleta(salvas.accentColor) };
       } catch {
         return DEFAULT_PREFERENCES;
       }
@@ -44,6 +46,7 @@ export const useUserPreferences = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
 
   // Sync with server when user is logged in
   useEffect(() => {
@@ -138,7 +141,7 @@ function applyPreference<K extends keyof UserPreferences>(
       break;
 
     case "accentColor":
-      document.documentElement.setAttribute("data-accent", value as string);
+      aplicarPaleta(value as string);
       break;
   }
 }

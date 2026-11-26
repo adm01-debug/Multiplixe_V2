@@ -57,6 +57,25 @@ const dict = {
       afterEnd: "Há capítulo marcado depois do fim do vídeo. Confira o tempo de início.",
       duplicateStart: "Dois capítulos começam no mesmo segundo. Ajuste o início para não perder nenhum.",
     },
+    theme: {
+      title: "Aparência",
+      subtitle: "Escolha a paleta de cores que combina com você.",
+      customize: "Personalizar cores",
+      applied: "Paleta aplicada",
+      reset: "Voltar ao padrão",
+      resetDone: "Paleta padrão restaurada",
+      current: "Em uso",
+      presetViolet: "Roxo Neon",
+      presetVioletDesc: "Violeta com rosa e ciano: a identidade original.",
+      presetOcean: "Oceano",
+      presetOceanDesc: "Azul e ciano, mais calmo para ler por horas.",
+      presetForest: "Floresta",
+      presetForestDesc: "Verde esmeralda, menos fadiga visual.",
+      presetSunset: "Pôr do Sol",
+      presetSunsetDesc: "Laranja e vermelho, mais energia na tela.",
+      presetGold: "Dourado",
+      presetGoldDesc: "Âmbar com toque de conquista.",
+    },
     common: {
       search: "Buscar",
       loading: "Carregando...",
@@ -119,6 +138,25 @@ const dict = {
       remove: "Remove chapter",
       afterEnd: "A chapter starts after the end of the video. Check the start time.",
       duplicateStart: "Two chapters start at the same second. Adjust the start time so none is lost.",
+    },
+    theme: {
+      title: "Appearance",
+      subtitle: "Pick the color palette that suits you.",
+      customize: "Customize colors",
+      applied: "Palette applied",
+      reset: "Back to default",
+      resetDone: "Default palette restored",
+      current: "In use",
+      presetViolet: "Neon Purple",
+      presetVioletDesc: "Purple with pink and cyan: the original identity.",
+      presetOcean: "Ocean",
+      presetOceanDesc: "Blue and cyan, calmer for long reading.",
+      presetForest: "Forest",
+      presetForestDesc: "Emerald green, easier on the eyes.",
+      presetSunset: "Sunset",
+      presetSunsetDesc: "Orange and red, more energy on screen.",
+      presetGold: "Gold",
+      presetGoldDesc: "Amber with a sense of achievement.",
     },
     common: {
       search: "Search",
@@ -183,6 +221,25 @@ const dict = {
       afterEnd: "Hay un capítulo marcado después del final del video. Revisa el tiempo de inicio.",
       duplicateStart: "Dos capítulos empiezan en el mismo segundo. Ajusta el inicio para no perder ninguno.",
     },
+    theme: {
+      title: "Apariencia",
+      subtitle: "Elige la paleta de colores que va contigo.",
+      customize: "Personalizar colores",
+      applied: "Paleta aplicada",
+      reset: "Volver al estándar",
+      resetDone: "Paleta estándar restaurada",
+      current: "En uso",
+      presetViolet: "Morado Neón",
+      presetVioletDesc: "Morado con rosa y cian: la identidad original.",
+      presetOcean: "Océano",
+      presetOceanDesc: "Azul y cian, más tranquilo para leer por horas.",
+      presetForest: "Bosque",
+      presetForestDesc: "Verde esmeralda, menos fatiga visual.",
+      presetSunset: "Atardecer",
+      presetSunsetDesc: "Naranja y rojo, más energía en pantalla.",
+      presetGold: "Dorado",
+      presetGoldDesc: "Ámbar con toque de logro.",
+    },
     common: {
       search: "Buscar",
       loading: "Cargando...",
@@ -202,6 +259,7 @@ export type DictPath =
   | `dashboard.${keyof Dict["dashboard"]}`
   | `store.${keyof Dict["store"]}`
   | `chapters.${keyof Dict["chapters"]}`
+  | `theme.${keyof Dict["theme"]}`
   | `common.${keyof Dict["common"]}`;
 
 const listeners = new Set<(l: Locale) => void>();

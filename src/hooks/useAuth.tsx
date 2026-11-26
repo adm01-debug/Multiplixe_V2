@@ -134,3 +134,6 @@ export const useAuth = () => {
   }
   return context;
 };
+
+// Nao lanca quando nao existe AuthProvider: usado por componentes que tambem aparecem fora da area autenticada.
+export const useOptionalAuth = () => useContext(AuthContext) ?? null;

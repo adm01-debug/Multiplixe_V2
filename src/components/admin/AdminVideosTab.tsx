@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -55,8 +56,8 @@ const AdminVideosTab = () => {
                   <p className="text-xs text-muted-foreground">{v.category} · {v.view_count} views {!v.is_published && '· Rascunho'}</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="icon" aria-label="Editar vídeo" variant="ghost" onClick={() => setEditing(v)}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" aria-label="Excluir vídeo" variant="ghost" onClick={() => confirm('Excluir?') && del.mutate(v.id)}><Trash2 className="h-4 w-4" /></Button>
+                  <IconTooltip label="Editar vídeo"><Button size="icon" aria-label="Editar vídeo" variant="ghost" onClick={() => setEditing(v)}><Pencil className="h-4 w-4" /></Button></IconTooltip>
+                  <IconTooltip label="Excluir vídeo"><Button size="icon" aria-label="Excluir vídeo" variant="ghost" onClick={() => confirm('Excluir?') && del.mutate(v.id)}><Trash2 className="h-4 w-4" /></Button></IconTooltip>
                 </div>
               </CardContent>
             </Card>

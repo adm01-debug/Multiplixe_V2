@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
@@ -276,16 +277,15 @@ export function LearningPathsManager() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-1">
-                      <Button
+                      <IconTooltip label="Visualizar"><Button aria-label={"Visualizar"}
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8"
                         onClick={() => window.open(`/trilha/${path.slug}`, '_blank')}
-                        title="Visualizar"
                       >
                         <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button
+                      </Button></IconTooltip>
+                      <IconTooltip label="Gerenciar cursos"><Button aria-label={"Gerenciar cursos"}
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8"
@@ -293,11 +293,10 @@ export function LearningPathsManager() {
                           setSelectedPath(path);
                           setCoursesManagerOpen(true);
                         }}
-                        title="Gerenciar cursos"
                       >
                         <BookOpen className="h-4 w-4" />
-                      </Button>
-                      <Button
+                      </Button></IconTooltip>
+                      <IconTooltip label="Editar"><Button aria-label={"Editar"}
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8"
@@ -305,19 +304,17 @@ export function LearningPathsManager() {
                           setEditingPath(path);
                           setFormOpen(true);
                         }}
-                        title="Editar"
                       >
                         <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
+                      </Button></IconTooltip>
+                      <IconTooltip label="Excluir"><Button aria-label={"Excluir"}
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
                         onClick={() => setDeletingPath(path)}
-                        title="Excluir"
                       >
                         <Trash2 className="h-4 w-4" />
-                      </Button>
+                      </Button></IconTooltip>
                     </div>
                   </TableCell>
                 </TableRow>

@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -250,7 +251,7 @@ const IPWhitelistManager = () => {
                         {format(new Date(ip.created_at), "dd 'de' MMM, yyyy", { locale: ptBR })}
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button
+                        <IconTooltip label="Excluir IP permitido"><Button
                           variant="ghost"
                           size="icon" aria-label="Excluir IP permitido"
                           className="h-8 w-8 text-destructive hover:text-destructive"
@@ -260,7 +261,7 @@ const IPWhitelistManager = () => {
                           }}
                         >
                           <Trash2 className="h-4 w-4" />
-                        </Button>
+                        </Button></IconTooltip>
                       </TableCell>
                     </TableRow>
                   ))}

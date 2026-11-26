@@ -211,10 +211,10 @@ const Dashboard = () => {
   const completedCount = userProgress.filter(p => p.progress_percentage === 100).length;
 
   const stats: StatItem[] = [
-    { label: "Cursos em Andamento", value: inProgressCount, subtitle: "Continue de onde parou", icon: Play, gradient: "from-primary to-accent", glowColor: "shadow-primary/25" },
-    { label: "Cursos Concluídos", value: completedCount, subtitle: "Certificados conquistados", icon: Trophy, gradient: "from-amber-500 to-orange-500", glowColor: "shadow-amber-500/25" },
-    { label: "XP Total", value: totalXP, subtitle: "Pontos de experiência", icon: Zap, gradient: "from-emerald-500 to-teal-500", glowColor: "shadow-emerald-500/25" },
-    { label: "Sequência", value: `${currentStreak} ${currentStreak === 1 ? 'dia' : 'dias'}`, subtitle: isStreakAtRisk ? "⚠️ Em risco!" : "Mantenha o ritmo!", icon: Flame, gradient: "from-rose-500 to-pink-500", glowColor: "shadow-rose-500/25" }
+    { label: "Cursos em Andamento", value: inProgressCount, subtitle: "Continue de onde parou", icon: Play, gradient: "from-primary to-accent", glowColor: "shadow-primary/25", tooltip: "Cursos em que voc\u00ea come\u00e7ou mas ainda n\u00e3o concluiu" },
+    { label: "Cursos Concluídos", value: completedCount, subtitle: "Certificados conquistados", icon: Trophy, gradient: "from-amber-500 to-orange-500", glowColor: "shadow-amber-500/25", tooltip: "Cursos com 100% das aulas conclu\u00eddas" },
+    { label: "XP Total", value: totalXP, subtitle: "Pontos de experiência", icon: Zap, gradient: "from-emerald-500 to-teal-500", glowColor: "shadow-emerald-500/25", tooltip: "Soma de XP por aulas, cursos, conquistas e sequ\u00eancias" },
+    { label: "Sequência", value: `${currentStreak} ${currentStreak === 1 ? 'dia' : 'dias'}`, subtitle: isStreakAtRisk ? "⚠️ Em risco!" : "Mantenha o ritmo!", icon: Flame, gradient: "from-rose-500 to-pink-500", glowColor: "shadow-rose-500/25", tooltip: "Dias seguidos com pelo menos uma aula conclu\u00edda" }
   ];
 
   if (showWelcomeWizard) return <WelcomeWizard onComplete={handleOnboardingComplete} />;

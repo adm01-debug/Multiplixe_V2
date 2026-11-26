@@ -4,6 +4,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUserXP } from '@/hooks/useUserXP';
 import { useAchievements } from '@/hooks/useAchievements';
 import { useCertificates } from '@/hooks/useCertificates';
+import { useWallet } from '@/hooks/useWallet';
+import { categoryLabel } from '@/lib/store';
 import { supabase } from '@/integrations/supabase/client';
 import IconTooltip from '@/components/ui/icon-tooltip';
 import { Button } from '@/components/ui/button';
@@ -23,7 +25,7 @@ import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, CertificateCardSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
-import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2, Globe, Link2, Info } from 'lucide-react';
+import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2, Globe, Link2, Info, Package } from 'lucide-react';
 import { toast } from 'sonner';
 import LanguageToggle from '@/components/LanguageToggle';
 
@@ -36,6 +38,8 @@ const Profile = () => {
   const { userXP, totalXP, loading: loadingXP } = useUserXP();
   const { achievements, isUnlocked, unlockedCount, totalCount } = useAchievements();
   const { getUserCertificates } = useCertificates();
+  const { data: carteira } = useWallet();
+  const itensColecao = (carteira?.colecao ?? []).filter((item) => item.category !== 'power_up');
   const [stats, setStats] = useState<UserStats | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -264,6 +268,30 @@ const Profile = () => {
                 <section className="mb-12">
           <div className="flex items-center gap-4 mb-6"><div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20"><Award className="h-6 w-6 text-amber-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Certificados</h3><p className="text-sm text-muted-foreground">{certificates.length > 0 ? `${certificates.length} certificado${certificates.length !== 1 ? 's' : ''} emitido${certificates.length !== 1 ? 's' : ''}` : 'Complete cursos para receber certificados'}</p></div></div>
           {certificates.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{certificates.map((cert) => <CertificateCard key={cert.id} certificate={cert} />)}</div> : <div className="rounded-2xl border border-border/50 bg-card/50 neon-card"><EmptyState type="certificates" actionLabel="Explorar cursos" onAction={() => navigate('/catalogo')} /></div>}
+        </section>
+
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-sky-500/10 to-fuchsia-500/10 border border-sky-500/20"><Package className="h-6 w-6 text-sky-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Minha coleção</h3><p className="text-sm text-muted-foreground">{itensColecao.length > 0 ? `${itensColecao.length} ${itensColecao.length !== 1 ? 'itens' : 'item'} de avatar, tema ou cosmético` : 'Itens de avatar, tema e cosmético comprados na loja'}</p></div></div>
+            <Button variant="outline" size="sm" asChild><Link to="/loja">Abrir loja</Link></Button>
+          </div>
+          {itensColecao.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {itensColecao.map((item) => (
+                <div key={item.item_id} className="flex items-center gap-3 rounded-2xl border border-border/50 bg-card/50 neon-card p-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted text-xl">{item.icon || '🎁'}</div>
+                  <div className="min-w-0">
+                    <p className="font-semibold leading-tight truncate">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">{categoryLabel(item.category)}{item.quantidade > 1 ? ` · ${item.quantidade}x` : ''}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-border/50 bg-card/50 neon-card p-6 text-sm text-muted-foreground">
+              Você ainda não tem itens. Ganhe moedas estudando e troque na loja de recompensas.
+            </div>
+          )}
         </section>
 
         <section className="mb-12">

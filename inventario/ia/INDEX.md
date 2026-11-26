@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `53f669a45037fd0bbdfdd59a1215520f482fb12f` · branch `claude/feat-moeda-virtual-261126-0346` · 2026-11-26T03:45:56-03:00
+Commit: `6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed` · branch `claude/feat-moeda-virtual-261126-0346` · 2026-11-26T03:50:35-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `53f669a45037fd0bbdfdd59a1215520f482fb12f` · branch `claude/feat-moeda-
 
 | | |
 |---|---|
-| arquivos (codigo) | 584 (484) |
-| linhas de codigo | 67486 |
+| arquivos (codigo) | 585 (484) |
+| linhas de codigo | 67580 |
 | paginas / rotas | 27 / 27 |
 | componentes / hooks | 234 / 121 |
 | arquivos de teste | 77 |
 | edge functions | 13 |
-| tabelas / migrations | 69 / 68 |
+| tabelas / migrations | 69 / 69 |
 
 ## Divida medida
 
@@ -38,30 +38,30 @@ Commit: `53f669a45037fd0bbdfdd59a1215520f482fb12f` · branch `claude/feat-moeda-
 | URL | arquivo | protegida | entradas na UI | tabelas | edges |
 |---|---|---|---|---|---|
 | `*` | src/pages/NotFound.tsx | nao | — | 0 | — |
-| `/` | src/pages/Index.tsx | nao | navegacao-no-codigo, prefetch | 34 | detect-new-device, export-user-data, generate-certificate |
+| `/` | src/pages/Index.tsx | nao | navegacao-no-codigo, prefetch | 35 | detect-new-device, export-user-data, generate-certificate |
 | `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 36 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
 | `/admin/security` | src/pages/RateLimitDashboard.tsx | admin | prefetch | 5 | detect-new-device |
 | `/auth` | src/pages/Auth.tsx | nao | navegacao-no-codigo, prefetch | 1 | detect-new-device |
 | `/avaliacao/:id` | src/pages/AssessmentRunner.tsx | sim | — | 4 | detect-new-device |
 | `/avaliacoes` | src/pages/SkillAssessments.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | detect-new-device |
 | `/biblioteca-videos` | src/pages/VideoLibrary.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | — |
-| `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 33 | detect-new-device, export-user-data, generate-certificate |
+| `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 34 | detect-new-device, export-user-data, generate-certificate |
 | `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 13 | detect-new-device |
 | `/curso/:slug/aula/:lessonId` | src/pages/LessonPlayer.tsx | sim | prefetch | 17 | detect-new-device, generate-certificate |
 | `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 40 | detect-new-device, export-user-data, generate-certificate |
 | `/flashcards` | src/pages/Flashcards.tsx | sim | command-palette, navegacao-no-codigo | 1 | detect-new-device |
 | `/forgot-password` | src/pages/ForgotPassword.tsx | nao | navegacao-no-codigo, prefetch | 2 | — |
-| `/loja` | src/pages/Store.tsx | sim | command-palette, navegacao-no-codigo | 1 | detect-new-device |
+| `/loja` | src/pages/Store.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo | 1 | detect-new-device |
 | `/onboarding` | src/pages/SalesOnboarding.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo | 2 | detect-new-device |
 | `/onboarding/executar` | src/pages/OnboardingRuntime.tsx | sim | navegacao-no-codigo | 2 | detect-new-device |
-| `/perfil` | src/pages/Profile.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo, prefetch | 9 | detect-new-device, export-user-data, generate-certificate |
+| `/perfil` | src/pages/Profile.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo, prefetch | 10 | detect-new-device, export-user-data, generate-certificate |
 | `/playbook/:slug` | src/pages/PlaybookDetail.tsx | sim | — | 3 | ai-playbook-summarize, detect-new-device |
 | `/playbooks` | src/pages/Playbooks.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 1 | — |
 | `/ranking` | src/pages/Leaderboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 0 | detect-new-device |
 | `/reset-password` | src/pages/ResetPassword.tsx | nao | prefetch | 0 | — |
 | `/seguranca` | src/pages/SecurityDashboard.tsx | sim | command-palette, navegacao-no-codigo, prefetch | 9 | approve-password-reset, detect-new-device |
-| `/trilha/:slug` | src/pages/LearningPathDetail.tsx | sim | — | 33 | detect-new-device, export-user-data, generate-certificate |
-| `/trilhas` | src/pages/LearningPaths.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo, prefetch | 33 | detect-new-device, export-user-data, generate-certificate |
+| `/trilha/:slug` | src/pages/LearningPathDetail.tsx | sim | — | 34 | detect-new-device, export-user-data, generate-certificate |
+| `/trilhas` | src/pages/LearningPaths.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo, prefetch | 34 | detect-new-device, export-user-data, generate-certificate |
 | `/usuario/:id` | src/pages/PublicProfile.tsx | nao | — | 0 | — |
 | `/verificar-certificado` | src/pages/VerifyCertificate.tsx | nao | prefetch | 1 | generate-certificate |
 
@@ -85,7 +85,7 @@ Commit: `53f669a45037fd0bbdfdd59a1215520f482fb12f` · branch `claude/feat-moeda-
 
 ## Banco (declarado pelo repo)
 
-69 tabelas · 182 policies · 72 funcoes · 2 cron jobs · 1 bucket(s) · 68 migrations
+69 tabelas · 181 policies · 73 funcoes · 2 cron jobs · 1 bucket(s) · 69 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -118,15 +118,15 @@ Commit: `53f669a45037fd0bbdfdd59a1215520f482fb12f` · branch `claude/feat-moeda-
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (45)
-- `inventario/estado/schema-declarado.json` (14)
-- `src/integrations/supabase/types.ts` (14)
-- `inventario/ia/baseline.json` (11)
-- `inventario/ia/INDEX.md` (11)
-- `inventario/ia/manifest.json` (11)
-- `inventario/ia/componentes.json` (8)
-- `inventario/estado/rotas.json` (7)
-- `inventario/ia/grafo.json` (7)
-- `src/pages/Profile.tsx` (7)
+- `inventario/estado/schema-declarado.json` (15)
+- `src/integrations/supabase/types.ts` (15)
+- `inventario/ia/baseline.json` (12)
+- `inventario/ia/INDEX.md` (12)
+- `inventario/ia/manifest.json` (12)
+- `inventario/ia/componentes.json` (9)
+- `inventario/estado/rotas.json` (8)
+- `inventario/ia/grafo.json` (8)
+- `inventario/ia/hooks.json` (7)
 
 ## Scripts npm
 

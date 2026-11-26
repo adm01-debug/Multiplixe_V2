@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { categoryLabel, formatCoins, shortfall, type StoreCategory } from '@/lib/store';
+import { formatCoins, priceChangedNotice, type StoreCategory } from '@/lib/store';
 
 export interface WalletEntry {
   id: string;
@@ -75,6 +75,8 @@ export const useWallet = () => {
   return useQuery({
     queryKey: ['wallet', user?.id ?? null],
     enabled: !!user,
+    staleTime: 0,
+    refetchOnMount: 'always',
     queryFn: async (): Promise<Wallet> => {
       const { data, error } = await supabase.rpc('get_my_wallet');
       if (error) throw error;
@@ -119,18 +121,26 @@ export const useAdminStoreItems = () =>
     },
   });
 
+export interface PurchaseInput {
+  id: string;
+  /** Preco que o aluno viu na vitrine; usado para avisar se o catalogo mudou. */
+  expectedPrice?: number;
+}
+
 export const usePurchaseItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (itemId: string): Promise<PurchaseResult> => {
-      const { data, error } = await supabase.rpc('purchase_store_item', { p_item_id: itemId });
+    mutationFn: async (input: PurchaseInput): Promise<PurchaseResult> => {
+      const { data, error } = await supabase.rpc('purchase_store_item', { p_item_id: input.id });
       if (error) throw error;
       return (data ?? { ok: false, mensagem: 'Nao foi possivel concluir a compra' }) as unknown as PurchaseResult;
     },
-    onSuccess: (resultado) => {
+    onSuccess: (resultado, input) => {
       if (resultado.ok) {
         toast.success(resultado.mensagem);
+        const aviso = priceChangedNotice(input.expectedPrice, resultado.item?.price_coins);
+        if (aviso) toast.warning(aviso);
         void queryClient.invalidateQueries({ queryKey: ['wallet'] });
         void queryClient.invalidateQueries({ queryKey: ['store'] });
       } else {
@@ -234,11 +244,3 @@ export const useGrantCoins = () => {
     onError: () => toast.error('Nao foi possivel creditar moedas'),
   });
 };
-
-export const purchaseErrorMessage = (resultado: PurchaseResult): string =>
-  resultado.ok
-    ? resultado.mensagem
-    : `${resultado.mensagem}: faltam ${formatCoins(shortfall(resultado.coins ?? 0, resultado.preco ?? 0))}`;
-
-export const itemCategoryLabel = (item: Pick<StoreItem, 'category'>): string =>
-  categoryLabel(item.category);

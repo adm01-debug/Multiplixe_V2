@@ -1724,7 +1724,7 @@
   {
    "arquivo": "src/components/navigation/MobileBottomNav.tsx",
    "exports": [],
-   "linhas": 166,
+   "linhas": 168,
    "hooks": [
     "useLocation",
     "usePrefetchQuery",
@@ -3379,7 +3379,7 @@
   {
    "arquivo": "src/pages/Profile.tsx",
    "exports": [],
-   "linhas": 284,
+   "linhas": 312,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3387,7 +3387,8 @@
     "useEffect",
     "useNavigate",
     "useState",
-    "useUserXP"
+    "useUserXP",
+    "useWallet"
    ],
    "tabelas": [
     "profiles",
@@ -3490,7 +3491,7 @@
   {
    "arquivo": "src/pages/Store.tsx",
    "exports": [],
-   "linhas": 227,
+   "linhas": 268,
    "hooks": [
     "useMemo",
     "useNavigate",

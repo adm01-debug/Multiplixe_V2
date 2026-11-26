@@ -5,6 +5,7 @@ import {
   categoryLabel,
   formatCoins,
   formatNumber,
+  priceChangedNotice,
   shortfall,
   walletSourceLabel,
 } from '@/lib/store';
@@ -52,5 +53,14 @@ describe('loja de recompensas - regras de exibicao', () => {
     expect(walletSourceLabel('achievement')).toBe('Conquista desbloqueada');
     expect(walletSourceLabel(null)).toBe('Movimentacao');
     expect(walletSourceLabel('origem-desconhecida')).toBe('origem-desconhecida');
+  });
+
+  it('avisa quando o preco cobrado difere do preco visto na vitrine', () => {
+    expect(priceChangedNotice(150, 150)).toBeNull();
+    expect(priceChangedNotice(undefined, 150)).toBeNull();
+    expect(priceChangedNotice(150, null)).toBeNull();
+    expect(priceChangedNotice(150, 200)).toBe(
+      'O preco deste item mudou para 200 moedas e a compra foi pelo valor novo.',
+    );
   });
 });

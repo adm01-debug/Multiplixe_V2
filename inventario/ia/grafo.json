@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "nos": 484,
- "arestas": 1315,
+ "arestas": 1317,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -2044,8 +2044,10 @@
    "src/hooks/useAuth.tsx",
    "src/hooks/useCertificates.ts",
    "src/hooks/useUserXP.ts",
+   "src/hooks/useWallet.ts",
    "src/integrations/supabase/client.ts",
-   "src/lib/levelSystem.ts"
+   "src/lib/levelSystem.ts",
+   "src/lib/store.ts"
   ],
   "src/pages/PublicProfile.tsx": [
    "src/components/ui/avatar.tsx",

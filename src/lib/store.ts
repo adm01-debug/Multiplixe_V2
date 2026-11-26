@@ -39,6 +39,16 @@ export const canAfford = (coins: number, price: number): boolean => coins >= pri
 /** Quanto falta para comprar; 0 quando ja da para comprar. */
 export const shortfall = (coins: number, price: number): number => Math.max(0, price - coins);
 
+/** Aviso quando o preco cobrado difere do preco que o aluno viu na vitrine. */
+export const priceChangedNotice = (
+  precoVisto: number | undefined,
+  precoCobrado: number | null | undefined,
+): string | null => {
+  if (precoVisto === undefined || precoCobrado === null || precoCobrado === undefined) return null;
+  if (precoVisto === precoCobrado) return null;
+  return `O preco deste item mudou para ${formatCoins(precoCobrado)} e a compra foi pelo valor novo.`;
+};
+
 export const WALLET_SOURCE_LABEL: Record<string, string> = {
   xp: 'XP convertido',
   achievement: 'Conquista desbloqueada',

@@ -29,8 +29,18 @@ const formatarData = (valor: string | null) => {
 
 const Store = () => {
   const navigate = useNavigate();
-  const { data: carteira, isLoading: carregandoCarteira } = useWallet();
-  const { data: itens = [], isLoading: carregandoItens } = useStoreItems();
+  const {
+    data: carteira,
+    isLoading: carregandoCarteira,
+    isError: erroCarteira,
+    refetch: recarregarCarteira,
+  } = useWallet();
+  const {
+    data: itens = [],
+    isLoading: carregandoItens,
+    isError: erroItens,
+    refetch: recarregarItens,
+  } = useStoreItems();
   const comprar = usePurchaseItem();
   const [categoria, setCategoria] = useState<string>(TODAS);
 
@@ -46,7 +56,8 @@ const Store = () => {
     return STORE_CATEGORIES.filter((valor) => usadas.has(valor));
   }, [itens]);
 
-  const comprarItem = (item: StoreItem) => comprar.mutate(item.id);
+  const comprarItem = (item: StoreItem) =>
+    comprar.mutate({ id: item.id, expectedPrice: item.price_coins });
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,24 +77,50 @@ const Store = () => {
           </div>
         </div>
 
+        {(erroCarteira || erroItens) && (
+          <div
+            role="alert"
+            className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-destructive/40 bg-destructive/5 p-4 text-sm"
+          >
+            <span className="text-destructive">
+              {erroCarteira && erroItens
+                ? 'Nao foi possivel carregar sua carteira e os itens da loja.'
+                : erroCarteira
+                  ? 'Nao foi possivel carregar sua carteira.'
+                  : 'Nao foi possivel carregar os itens da loja.'}{' '}
+              Tente novamente em instantes.
+            </span>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                if (erroCarteira) void recarregarCarteira();
+                if (erroItens) void recarregarItens();
+              }}
+            >
+              Tentar novamente
+            </Button>
+          </div>
+        )}
+
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 p-4">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Meu saldo</p>
             <p className="mt-1 flex items-center gap-2 text-2xl font-bold text-amber-600 dark:text-amber-400">
               <Coins className="h-6 w-6" />
-              {carregandoCarteira ? '...' : formatCoins(coins)}
+              {carregandoCarteira ? '...' : erroCarteira ? '—' : formatCoins(coins)}
             </p>
           </div>
           <div className="rounded-2xl border border-border/60 bg-card/50 p-4">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Ganhei nesta semana</p>
             <p className="mt-1 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-              {carregandoCarteira ? '...' : formatCoins(carteira?.ganho_semana ?? 0)}
+              {carregandoCarteira ? '...' : erroCarteira ? '—' : formatCoins(carteira?.ganho_semana ?? 0)}
             </p>
           </div>
           <div className="rounded-2xl border border-border/60 bg-card/50 p-4">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Gastei nesta semana</p>
             <p className="mt-1 text-2xl font-bold text-rose-600 dark:text-rose-400">
-              {carregandoCarteira ? '...' : formatCoins(carteira?.gasto_semana ?? 0)}
+              {carregandoCarteira ? '...' : erroCarteira ? '—' : formatCoins(carteira?.gasto_semana ?? 0)}
             </p>
           </div>
         </div>
@@ -112,7 +149,7 @@ const Store = () => {
 
             {carregandoItens ? (
               <p className="text-sm text-muted-foreground">Carregando a loja...</p>
-            ) : catalogo.length === 0 ? (
+            ) : erroItens ? null : catalogo.length === 0 ? (
               <EmptyState
                 icon={ShoppingBag}
                 title="Nenhum item disponivel"
@@ -159,7 +196,9 @@ const Store = () => {
           </TabsContent>
 
           <TabsContent value="colecao" className="mt-4">
-            {(carteira?.colecao ?? []).length === 0 ? (
+            {erroCarteira ? (
+              <p className="text-sm text-muted-foreground">Nao foi possivel carregar sua colecao agora.</p>
+            ) : (carteira?.colecao ?? []).length === 0 ? (
               <EmptyState
                 icon={Package}
                 title="Sua coleção esta vazia"
@@ -186,7 +225,9 @@ const Store = () => {
           </TabsContent>
 
           <TabsContent value="extrato" className="mt-4">
-            {(carteira?.extrato ?? []).length === 0 ? (
+            {erroCarteira ? (
+              <p className="text-sm text-muted-foreground">Nao foi possivel carregar seu extrato agora.</p>
+            ) : (carteira?.extrato ?? []).length === 0 ? (
               <EmptyState
                 icon={Receipt}
                 title="Nenhuma movimentacao ainda"

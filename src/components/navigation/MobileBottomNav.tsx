@@ -6,7 +6,8 @@ import {
   BookOpen, 
   Trophy, 
   User,
-  Sparkles
+  Sparkles,
+  ShoppingBag
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserXP } from '@/hooks/useUserXP';
@@ -23,6 +24,7 @@ const MobileBottomNav = () => {
     { path: '/catalogo', label: t('nav.catalog'), icon: BookOpen },
     { path: '/onboarding', label: t('nav.onboarding'), icon: Sparkles },
     { path: '/ranking', label: t('nav.ranking'), icon: Trophy },
+    { path: '/loja', label: t('nav.store'), icon: ShoppingBag },
     { path: '/perfil', label: t('nav.profile'), icon: User },
   ];
 

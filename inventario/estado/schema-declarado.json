@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 69,
     "colunas": 586,
     "views": 1,
-    "funcoes": 72,
+    "funcoes": 73,
     "funcoes_expostas_no_types": 50,
     "enums": 1,
-    "policies": 182,
+    "policies": 181,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 68,
+    "migrations": 69,
     "alertas": 3,
     "problemas": 3
   },
@@ -743,7 +743,7 @@
       "nas_migrations": true,
       "colunas": 5,
       "rls": true,
-      "policies": 3,
+      "policies": 2,
       "triggers": [
         "trg_award_coins_from_achievement"
       ],
@@ -1020,6 +1020,7 @@
       "rls": true,
       "policies": 3,
       "triggers": [
+        "trg_guard_user_xp_coins",
         "update_user_xp_updated_at"
       ],
       "indices": 0,
@@ -1174,7 +1175,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261127140000_moeda_virtual.sql",
+      "criada_em": "20261127150000_moeda_virtual_hardening.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1634,6 +1635,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261126060000_multiplicador_xp.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "guard_user_xp_coins": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261127150000_moeda_virtual_hardening.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

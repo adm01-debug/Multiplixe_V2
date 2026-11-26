@@ -1,22 +1,22 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T06:50:18.500Z",
- "commit": "53f669a45037fd0bbdfdd59a1215520f482fb12f",
+ "gerado_em": "2026-11-26T07:12:20.987Z",
+ "commit": "6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed",
  "branch": "claude/feat-moeda-virtual-261126-0346",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "0b763d0b71bf2b0d",
-  "baseline.json": "e3041a164ab43460",
-  "componentes.json": "d5c777e774c3a19b",
-  "grafo.json": "00b34135c634e84c",
-  "hooks.json": "919b94de43e7a633"
+  "INDEX.md": "01649a21fecf7b9d",
+  "baseline.json": "7fb11c87fe061142",
+  "componentes.json": "644b98d191481c53",
+  "grafo.json": "f171219f2db3c912",
+  "hooks.json": "9c78c6926f9bcf1a"
  },
  "contagens": {
-  "arquivos": 584,
+  "arquivos": 585,
   "arquivos_de_codigo": 484,
-  "linhas_de_codigo": 67486,
+  "linhas_de_codigo": 67580,
   "componentes": 234,
   "hooks": 121,
   "paginas": 27,
@@ -24,7 +24,7 @@
   "edge_functions": 13,
   "rotas": 27,
   "tabelas": 69,
-  "migrations": 68
+  "migrations": 69
  },
  "erros": []
 }

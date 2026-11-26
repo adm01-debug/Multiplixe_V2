@@ -44,6 +44,7 @@ import {
   validarPedido,
   validarPerfilMentor,
 } from '@/lib/mentorship';
+import { SITE_URL } from '@/lib/constants';
 
 type Aba = 'mentores' | 'pedidos' | 'mentor';
 
@@ -271,7 +272,6 @@ const Mentorship = () => {
       seo={{
         title: "Mentoria entre colegas",
         description: "Encontre quem já domina o assunto e peça mentoria, ou ajude colegas compartilhando o que você sabe.",
-        url: "https://multiplixe-v2.vercel.app/mentoria",
       }}
       cabecalho={
         <PageHeader

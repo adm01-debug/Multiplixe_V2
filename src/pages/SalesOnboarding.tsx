@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useDefaultWorkflowProgress, useUpdateOnboardingProgress, type OnboardingStepType } from '@/hooks/useOnboardingWorkflow';
 import EmptyState from '@/components/SimpleEmptyState';
 import DynamicSEO from '@/components/seo/DynamicSEO';
+import { SITE_URL } from '@/lib/constants';
 
 const stepIcon: Record<OnboardingStepType, typeof Video> = {
   video: Video,
@@ -53,7 +54,7 @@ const SalesOnboarding = () => {
       seo={{
         title: `Onboarding: ${workflow.name}`,
         description: workflow.description || 'Plano de onboarding para novos vendedores.',
-        url: "https://multiplixe-v2.vercel.app/onboarding",
+        url: `${SITE_URL}/onboarding`,
       }}
       cabecalho={
         <PageHeader

@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useDueAssessments, useUserAssessmentResults, type DueAssessment } from '@/hooks/useSkillAssessments';
 import EmptyState from '@/components/SimpleEmptyState';
 import DynamicSEO from '@/components/seo/DynamicSEO';
+import { SITE_URL } from '@/lib/constants';
 
 const statusMap: Record<DueAssessment['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: typeof Target }> = {
   pending: { label: 'Nunca realizada', variant: 'secondary', icon: Target },
@@ -27,7 +28,7 @@ const SkillAssessments = () => {
       seo={{
         title: "Avaliações de Competência",
         description: "Mantenha suas habilidades de vendas em dia com avaliações periódicas.",
-        url: "https://multiplixe-v2.vercel.app/avaliacoes",
+        url: `${SITE_URL}/avaliacoes`,
       }}
       cabecalho={
         <PageHeader

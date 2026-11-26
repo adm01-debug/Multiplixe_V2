@@ -13,6 +13,7 @@ import DynamicSEO from '@/components/seo/DynamicSEO';
 import FlashcardPlayer from '@/components/flashcards/FlashcardPlayer';
 import { useFlashcardOverview, useFlashcardSession } from '@/hooks/useFlashcards';
 import { describeDue } from '@/lib/flashcardSrs';
+import { SITE_URL } from '@/lib/constants';
 
 const TODOS = 'todos';
 
@@ -46,7 +47,7 @@ const Flashcards = () => {
       seo={{
         title: "Flashcards de Revisão",
         description: "Revise o conteúdo dos cursos em cartões com repetição espaçada e ganhe XP.",
-        url: "https://multiplixe-v2.vercel.app/flashcards",
+        url: `${SITE_URL}/flashcards`,
       }}
       cabecalho={
         <PageHeader

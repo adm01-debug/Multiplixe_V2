@@ -51,10 +51,9 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (4)
+## ⏳ MELHORIAS PENDENTES (2)
 
-Cada categoria abaixo lista as seções com status; o que não tem `✅ CONCLUÍDO` é pendente: ADMIN-006, INT-001, INT-002 e INT-003 (4 itens, ~20h).
-Os 4 dependem de credencial/conta externa que só o dono do negócio pode fornecer — `RESEND_API_KEY` (ADMIN-006), webhook do Slack (INT-001) e apps OAuth do Google/Microsoft (INT-002 e INT-003) — confirmado em 2026-11-26 consultando os secrets do projeto Supabase: só existem as chaves `SUPABASE_*`.
+Cada categoria abaixo lista as seções com status; o que não tem `✅ CONCLUÍDO` é pendente: INT-002 e INT-003 (2 itens, ~10h), ambos bloqueados por app OAuth do Google/Microsoft que só o dono do negócio pode criar. ADMIN-006 (digest semanal) e INT-001 (Slack) já estão em produção — o que falta neles também é só cadastro do dono: a chave `RESEND_API_KEY` e a URL do Incoming Webhook do canal. Confirmado em 2026-11-26 consultando os secrets do projeto Supabase: só existem as chaves `SUPABASE_*`.
 
 ### 🎨 UX/UI - 0 Pendentes
 
@@ -1716,7 +1715,7 @@ O perfil só mostrava XP: não existia reputação social em lugar nenhum do có
 
 ---
 
-### 🛠️ MELHORIAS ADMINISTRATIVAS - 1 Pendente
+### 🛠️ MELHORIAS ADMINISTRATIVAS - 0 Pendentes
 
 #### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -1841,6 +1840,19 @@ A tabela de cursos do admin só tinha ações linha a linha (editar, publicar, d
 5. Configurar cron no Supabase
 ```
 
+**Status:** ✅ IMPLEMENTADO — envio de e-mail ainda bloqueado por credencial
+
+**O que já estava pronto (trabalho de agente anterior, confirmado em 2026-11-26):**
+- `supabase/functions/weekly-admin-digest/index.ts` (279 linhas, commitado em 18/04/2026): coleta as métricas da semana (novos usuários, XP, aulas e cursos concluídos, top cursos, sequências quebradas), monta o HTML e envia por Resend para os admins; aceita `{"dryRun": true}` para inspecionar o relatório sem enviar.
+- Cron `weekly-admin-digest` (`0 9 * * 1`) ativo no banco de produção.
+
+**Evidência (2026-11-26):**
+- `POST /functions/v1/weekly-admin-digest {"dryRun":true}` → HTTP 200 com números reais da janela de 7 dias (`newUsers`, `totalXP`, `lessonsCompleted`, `coursesCompleted`, `topCourses`, `brokenStreaks`).
+- Função `ACTIVE` no projeto de produção (`verify_jwt = false`).
+- **Bug corrigido nesta data:** a contagem de cursos concluídos filtrava `user_course_progress.updated_at`, coluna que não existe (42703) — o relatório saía sempre com 0 cursos e top cursos vazio. Corrigido para `completed_at` e redeployado (PR #102).
+
+**Pendência real:** cadastrar `RESEND_API_KEY` nos secrets do Supabase (a mesma chave que destrava os e-mails de `approve-password-reset` e `detect-new-device`). Sem ela a função responde `RESEND_API_KEY not configured`.
+
 ---
 
 #### ADMIN-007: Configurações da Plataforma — CONCLUÍDO
@@ -1932,7 +1944,7 @@ O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
 
 ---
 
-### 🔗 INTEGRAÇÕES - 1 Pendente
+### 🔗 INTEGRAÇÕES - 2 Pendentes
 
 #### INT-001: Integração com Slack
 **Prioridade:** 🟢 Baixa  
@@ -1946,6 +1958,22 @@ O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
 3. Ranking semanal no canal
 4. Configuração de webhook no admin
 ```
+
+**Status:** ✅ CONCLUÍDO — falta apenas cadastrar a URL do canal
+
+**O que foi feito (26/11/2026):**
+- Migration `20261129100000_int_001_slack_webhooks.sql`: coluna `webhook_endpoints.formato` (`generico` | `slack`) com CHECK, evento `ranking.semanal` em `webhook_eventos_suportados()`, payloads legíveis nos triggers de curso concluído, certificado e conquista, função `enfileirar_ranking_semanal()` (top 5 de XP dos últimos 7 dias) e cron `weekly-ranking-webhook` (`0 9 * * 1`).
+- `supabase/functions/webhook-dispatch/index.ts`: endpoint com formato `slack` recebe `{text, blocks}` em mrkdwn (um bloco por evento, com medalhas no ranking); em `generico` o JSON assinado continua idêntico ao de antes.
+- Admin → Webhooks: seletor de formato, evento "Ranking semanal" e selo do formato no cartão do endpoint.
+
+**Decisão de arquitetura:** a edge function `slack-webhook` prevista no plano não foi criada — o dispatcher existente já tinha retentativa, assinatura HMAC e log de entregas; o formato por endpoint reaproveita essa infraestrutura em vez de duplicá-la.
+
+**Evidência (2026-11-26):**
+- Migração aplicada em produção: coluna e CHECK presentes, `webhook_eventos_suportados()` com 5 eventos, cron ativo, triggers com os campos novos.
+- Ponta a ponta com sumidouro temporário: `ranking.semanal` e um `curso.concluido` sintético chegaram ao destino — Slack com `blocks` ("📚 Ana Souza concluiu o curso Vendas Consultivas" e ranking "🥇 *Abner Pereira 32* — 35 XP") e genérico no formato antigo `{id, dados, evento, ocorrido_em}` (sem regressão). Artefatos do teste removidos de produção (0 endpoints, 0 entregas, tabela de teste e função descartadas).
+- `webhook-dispatch` redeployada em produção (`ACTIVE`, versão 5); `src/test/adminWebhooks.test.tsx` 17/17; typecheck, inventário, guards e build verdes na PR #101.
+
+**Pendência real:** colar a URL do Incoming Webhook do canal no admin, com formato "Slack".
 
 ---
 
@@ -2214,11 +2242,11 @@ CREATE TABLE public.webhook_endpoints (
 | Segurança | 0 | — |
 | SEO | 0 | — |
 | Gamificação | 0 | — |
-| Administrativas | 1 | ~4h |
+| Administrativas | 0 | — |
 | Mobile | 0 | — |
-| Integração | 3 | ~16h |
+| Integração | 2 | ~10h |
 | Refatorações | 0 | — |
-| **TOTAL PENDENTE** | **4** | **~20h** |
+| **TOTAL PENDENTE** | **2** | **~10h** |
 
 ---
 

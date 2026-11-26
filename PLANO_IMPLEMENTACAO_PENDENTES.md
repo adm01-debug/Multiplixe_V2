@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (57)
+### ✅ Melhorias JÁ IMPLEMENTADAS (58)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (42)
+## ⏳ MELHORIAS PENDENTES (41)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1484,7 +1484,7 @@ CREATE TABLE public.platform_settings (
 
 ---
 
-### 📱 MOBILE - 2 Pendentes
+### 📱 MOBILE - 1 Pendente
 
 #### MOB-002: Gestos de Navegação
 **Prioridade:** 🟢 Baixa  
@@ -1501,7 +1501,7 @@ CREATE TABLE public.platform_settings (
 
 ---
 
-#### MOB-004: Modo Picture-in-Picture
+#### MOB-004: Modo Picture-in-Picture ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 3h  
 **Descrição:** Vídeo não suporta PiP.
@@ -1513,6 +1513,15 @@ CREATE TABLE public.platform_settings (
 3. Continuar vídeo minimizado
 4. Verificar suporte do navegador
 ```
+
+**Entregue em 26/11/2026**
+
+O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
+
+- `src/components/player/VideoControls.tsx`: botao de PiP (icone `PictureInPicture2`) ao lado da tela cheia, com `aria-pressed` e rotulo que muda entre "Assistir em picture-in-picture" e "Sair do picture-in-picture". O botao so aparece quando o navegador suporta.
+- `src/components/player/VideoPlayer.tsx`: detecta suporte (`document.pictureInPictureEnabled`) com fallback para o `webkitSetPresentationMode` do Safari, escuta `enterpictureinpicture`/`leavepictureinpicture` para refletir o estado e ganhou o atalho de teclado `p`. Falha da API (politica do navegador) nao quebra o player: o video segue inline.
+- `src/test/videoPiP.test.tsx` (novo, 4 casos): botao aparece e chama `requestPictureInPicture`, estado ativo ao entrar/sair, atalho `p` e ausencia do botao quando nao ha suporte.
+
 
 ---
 
@@ -1757,7 +1766,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **42** | **~195h** |
+| **TOTAL PENDENTE** | **41** | **~192h** |
 
 ---
 

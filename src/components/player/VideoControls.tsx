@@ -1,7 +1,7 @@
 import { Slider } from '@/components/ui/slider';
 import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
-  SkipBack, SkipForward, Settings, Gauge,
+  SkipBack, SkipForward, Settings, Gauge, PictureInPicture2,
 } from 'lucide-react';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
@@ -32,6 +32,8 @@ interface VideoControlsProps {
   playbackRate: number;
   isFullscreen: boolean;
   visible: boolean;
+    isPiPSupported: boolean;
+    isPiPActive: boolean;
   onTogglePlay: () => void;
   onSeek: (value: number[]) => void;
   onSkip: (seconds: number) => void;
@@ -39,12 +41,14 @@ interface VideoControlsProps {
   onToggleMute: () => void;
   onPlaybackRateChange: (rate: number) => void;
   onToggleFullscreen: () => void;
+    onTogglePiP: () => void;
 }
 
 const VideoControls = ({
   isPlaying, currentTime, duration, volume, isMuted, playbackRate,
   isFullscreen, visible, onTogglePlay, onSeek, onSkip,
   onVolumeChange, onToggleMute, onPlaybackRateChange, onToggleFullscreen,
+    isPiPSupported, isPiPActive, onTogglePiP,
 }: VideoControlsProps) => {
   const btnBase = "flex items-center justify-center rounded-lg transition-all duration-150 text-white/90 hover:text-white hover:bg-white/20 active:scale-95";
 
@@ -120,6 +124,19 @@ const VideoControls = ({
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {isPiPSupported && (
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePiP(); }}
+              className={`${btnBase} h-10 w-10 ${isPiPActive ? 'bg-primary/30' : ''}`}
+              aria-label={isPiPActive ? "Sair do picture-in-picture" : "Assistir em picture-in-picture"}
+              aria-pressed={isPiPActive}
+              title="Picture-in-picture (p)"
+            >
+              <PictureInPicture2 className="h-5 w-5" />
+            </button>
+          )}
 
           <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleFullscreen(); }} className={`${btnBase} h-10 w-10`} aria-label={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}>
             {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}

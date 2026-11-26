@@ -65,7 +65,7 @@ Consequências práticas:
   `pomodoro_sessions`), certificados (`certificates`, `learning_path_certificates`), social
   (`course_discussions`, `discussion_replies`, `discussion_votes`, `playbook_comments`, `user_notes`,
   `user_favorites`), segurança (`user_roles`, `permissions`, `role_permissions`, `audit_logs`,
-  `login_attempts`, `password_reset_requests`, `password_reset_tokens`, `rate_limit_config`,
+  `login_attempts`, `password_reset_requests`, `rate_limit_config`,
   `rate_limit_logs`, `blocked_ips`, `whitelisted_ips`, `geo_blocking_config`, `geo_countries`,
   `known_devices`, `security_alerts`, `user_mfa_settings`, `webauthn_credentials`, `user_sessions`),
   plataforma (`profiles`, `notifications`, `platform_stats_cache`, `saved_filters`,

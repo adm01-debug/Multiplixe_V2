@@ -117,16 +117,15 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   sessão em `aal1` e anuncia `aal2` como próximo nível. `src/components/security/MFAChallengeGate.tsx`
   (montado dentro do `AuthProvider` em `src/App.tsx`) bloqueia o app enquanto os níveis divergem e só
   libera após `mfa.verify`; a regra fica em `src/lib/mfaGate.ts`, coberta por `src/test/mfaGate.test.ts`.
-  Sem o gate o TOTP é decorativo: a senha já abriria todas as telas. A edge `verify-mfa` **não** eleva a
-  sessão do navegador (o nível AAL mora nos tokens do cliente), então a verificação do login é feita pelo
-  SDK e o carimbo em `user_mfa_settings.last_mfa_at` é gravado pelo próprio gate.
+  Sem o gate o TOTP é decorativo: a senha já abriria todas as telas. A verificação do login é feita pelo
+  SDK e o carimbo em `user_mfa_settings.last_mfa_at` é gravado pelo próprio gate. A edge `verify-mfa`, que
+  repetia essa verificação no servidor sem elevar a sessão, foi removida (nenhuma tela a chamava).
 - **Edge com `verify_jwt = false` não pode confiar no corpo**: `detect-new-device` lia `user_id`/`user_email`
   do JSON e gravava em `known_devices` e `security_alerts` — com a chave publicável qualquer um poderia
   registrar o próprio dispositivo como "conhecido" na conta de outra pessoa. Agora exige sessão
   (`verify_jwt = true`) e tira a identidade do token (`auth.getUser()`); o front envia só IP e user agent.
 - **Limpeza automática de logs de segurança**: `public.cleanup_old_security_logs()` apaga
-  `rate_limit_logs` (mais de 7 dias), `blocked_ips` expirados, `password_reset_tokens` usados ou
-  vencidos e `user_sessions` vencidas. Ela só roda porque existe o job `cleanup-security-logs` no
+  `rate_limit_logs` (mais de 7 dias), `blocked_ips` expirados e `user_sessions` vencidas. Ela só roda porque existe o job `cleanup-security-logs` no
   `pg_cron` (`20 3 * * *`, migration `20261126160000_agendar_limpeza_logs_seguranca.sql`); antes
   disso a função existia sem nenhum agendamento e nenhum chamador. A edge
   `cleanup-security-logs` é apenas um gatilho manual: exige sessão e papel `admin` em `user_roles`,

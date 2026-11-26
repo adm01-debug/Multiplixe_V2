@@ -77,7 +77,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-#### UI-008: Modo de Visualização de Cursos (Grid/Lista)
+#### UI-008: Modo de Visualização de Cursos (Grid/Lista) ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Catálogo só mostra cursos em grid.
@@ -88,6 +88,19 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 2. Criar CourseListItem.tsx para visão em lista
 3. Salvar preferência no localStorage
 4. Aplicar em Catalog.tsx
+```
+
+**Entrega (2026-11-26):**
+```text
+- ViewToggle.tsx e CourseListItem.tsx existiam completos e nunca eram renderizados por
+  nenhuma rota (orfaos). Montados no Catalog: botao de alternancia ao lado da contagem
+  de resultados e visao em lista reaproveitando o CourseListItem.
+- useViewMode ja persistia a escolha em localStorage (chave catalog-view); a preferencia
+  sobrevive a recarga e e aplicada na abertura da pagina.
+- Acessibilidade: os dois botoes do toggle ganharam aria-label e aria-pressed; a lista
+  usa role=list/listitem com rotulo "Lista de cursos".
+- src/test/catalogViewMode.test.tsx: 4 casos (inicia em grade, alterna para lista e
+  persiste, retoma a preferencia salva, volta para grade e persiste).
 ```
 
 ---
@@ -1588,7 +1601,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 7 | ~22h |
+| UX/UI | 6 | ~18h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 11 | ~61h |
 | Acessibilidade | 0 | — |
@@ -1599,7 +1612,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **40** | **~229h** |
+| **TOTAL PENDENTE** | **39** | **~225h** |
 
 ---
 

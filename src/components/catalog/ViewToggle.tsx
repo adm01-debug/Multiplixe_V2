@@ -19,6 +19,8 @@ const ViewToggle = ({ value, onChange, className = "" }: ViewToggleProps) => {
           <TooltipTrigger asChild>
             <button
               onClick={() => onChange("grid")}
+              aria-label="Visualização em grade"
+              aria-pressed={value === "grid"}
               className={`relative p-2 rounded-lg transition-colors ${
                 value === "grid" 
                   ? "text-primary" 
@@ -44,6 +46,8 @@ const ViewToggle = ({ value, onChange, className = "" }: ViewToggleProps) => {
           <TooltipTrigger asChild>
             <button
               onClick={() => onChange("list")}
+              aria-label="Visualização em lista"
+              aria-pressed={value === "list"}
               className={`relative p-2 rounded-lg transition-colors ${
                 value === "list" 
                   ? "text-primary" 

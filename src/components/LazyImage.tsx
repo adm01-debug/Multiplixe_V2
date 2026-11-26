@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, ImgHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { buildImageSrcSet } from '@/lib/imageSrcSet';
 
 interface LazyImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -25,6 +26,8 @@ const LazyImage = ({
   blurDataURL,
   eager = false,
   fetchPriority,
+  srcSet,
+  sizes,
   width,
   height,
   ...props
@@ -33,6 +36,9 @@ const LazyImage = ({
   const [isInView, setIsInView] = useState(eager);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLDivElement>(null);
+
+  const responsiveSrcSet = srcSet ?? buildImageSrcSet(src);
+  const responsiveSizes = sizes ?? (width ? `(min-width: 768px) ${width}px, 100vw` : undefined);
 
   useEffect(() => {
     if (eager) return;
@@ -139,6 +145,8 @@ const LazyImage = ({
             onError={() => setHasError(true)}
             loading={eager ? 'eager' : 'lazy'}
             decoding="async"
+            srcSet={responsiveSrcSet}
+            sizes={responsiveSizes}
             // @ts-expect-error - fetchpriority is a valid HTML attribute, React types lag
             fetchpriority={fetchPriority}
             {...props}

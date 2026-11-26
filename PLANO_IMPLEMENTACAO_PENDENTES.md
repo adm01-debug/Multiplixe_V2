@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (58)
+### ✅ Melhorias JÁ IMPLEMENTADAS (59)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (41)
+## ⏳ MELHORIAS PENDENTES (40)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -291,7 +291,7 @@ contagem total e os filtros de categoria/nivel sao client-side - seria regressao
 
 ---
 
-#### PERF-005: Otimização de Imagens
+#### PERF-005: Otimização de Imagens ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Thumbnails não são otimizados.
@@ -303,6 +303,17 @@ contagem total e os filtros de categoria/nivel sao client-side - seria regressao
 3. Implementar blur placeholder com base64 inline
 4. Usar loading="lazy" nativo em <img>
 ```
+
+**Entregue em 26/11/2026**
+
+O `LazyImage` ja tinha lazy loading, shimmer e blur placeholder, mas servia sempre a mesma imagem: um card de 192px baixava a foto de 800px. Nenhum CDN era aproveitado e nao havia `srcset`.
+
+- `src/lib/imageSrcSet.ts` (novo): `buildImageSrcSet(url)` monta o `srcset` so quando a URL ja expoe o parametro de largura (`w=` ou `width=`, estilo Unsplash/imgix — o formato de todos os thumbnails atuais). CDN desconhecido, caminho local, `data:`/`blob:` devolvem `undefined` e o browser continua no `src` original, sem risco de imagem quebrada.
+- `src/components/LazyImage.tsx`: usa o helper automaticamente e deriva `sizes` de `(min-width: 768px) <width>px, 100vw`; `srcSet` e `sizes` manuais continuam tendo prioridade.
+- `src/test/imageSrcSet.test.tsx` (novo, 7 casos): variantes geradas, largura maxima respeitada, CDN sem parametro, data URL, `width=` de outro CDN e as tres combinacoes no componente.
+
+Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixar 800px.
+
 
 ---
 
@@ -1766,7 +1777,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **41** | **~192h** |
+| **TOTAL PENDENTE** | **40** | **~188h** |
 
 ---
 

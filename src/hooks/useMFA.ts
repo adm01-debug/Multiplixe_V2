@@ -103,14 +103,24 @@ export const useMFA = () => {
 
       if (verifyError) throw verifyError;
 
-      // Atualizar configurações no banco
-      await supabase
+      // O fator ja existe no Auth apos o verify acima (sessao aal2). Se o registro no banco
+      // falhar, nao diga "ativado": o gate do login continua desligado.
+      const { error: erroRegistro } = await supabase
         .from('user_mfa_settings')
         .upsert({
           user_id: user.id,
           totp_enabled: true,
           updated_at: new Date().toISOString(),
         });
+
+      if (erroRegistro) {
+        toast({
+          title: 'Codigo aceito, mas o 2FA nao foi registrado',
+          description: 'Confirme o codigo novamente para concluir a ativacao.',
+          variant: 'destructive',
+        });
+        return false;
+      }
 
       toast({
         title: 'MFA ativado!',
@@ -138,6 +148,18 @@ export const useMFA = () => {
       const totpFactor = factors?.totp?.[0];
 
       if (totpFactor) {
+        // O GoTrue remove o fator com sessao aal1 (medido em 26/11/2026) e o banco nao alcanca
+        // o servico Auth: a checagem de segundo fator fica aqui, antes do unenroll.
+        const { data: nivel } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (nivel?.currentLevel !== 'aal2') {
+          toast({
+            title: 'Confirme o segundo fator',
+            description: 'Informe o codigo do autenticador antes de desativar o 2FA.',
+            variant: 'destructive',
+          });
+          return false;
+        }
+
         const { error } = await supabase.auth.mfa.unenroll({
           factorId: totpFactor.id,
         });
@@ -177,13 +199,17 @@ export const useMFA = () => {
       );
       const hashes = await Promise.all(codes.map(hashCodigoBackup));
 
-      await supabase
+      // Sem checar o erro, a tela mostrava codigos que nao foram salvos (a policy exige
+      // segundo fator e a gravacao podia ser recusada em silencio).
+      const { error: erroCofre } = await supabase
         .from('user_mfa_settings')
         .upsert({
           user_id: user.id,
           backup_codes: hashes,
           updated_at: new Date().toISOString(),
         });
+
+      if (erroCofre) throw erroCofre;
 
       await fetchSettings();
       return codes;

@@ -2934,6 +2934,95 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_deliveries: {
+        Row: {
+          created_at: string
+          endpoint_id: string
+          entregue_em: string | null
+          erro: string | null
+          evento: string
+          id: string
+          payload: Json
+          proxima_tentativa: string
+          resposta_status: number | null
+          status: string
+          tentativas: number
+        }
+        Insert: {
+          created_at?: string
+          endpoint_id: string
+          entregue_em?: string | null
+          erro?: string | null
+          evento: string
+          id?: string
+          payload?: Json
+          proxima_tentativa?: string
+          resposta_status?: number | null
+          status?: string
+          tentativas?: number
+        }
+        Update: {
+          created_at?: string
+          endpoint_id?: string
+          entregue_em?: string | null
+          erro?: string | null
+          evento?: string
+          id?: string
+          payload?: Json
+          proxima_tentativa?: string
+          resposta_status?: number | null
+          status?: string
+          tentativas?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_endpoint_id_fkey"
+            columns: ["endpoint_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_endpoints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_endpoints: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          eventos: string[]
+          id: string
+          is_active: boolean
+          nome: string
+          secret: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          eventos?: string[]
+          id?: string
+          is_active?: boolean
+          nome: string
+          secret?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          eventos?: string[]
+          id?: string
+          is_active?: boolean
+          nome?: string
+          secret?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       quiz_options_public: {
@@ -3082,6 +3171,10 @@ export type Database = {
       detalhar_reputacao: {
         Args: { p_user_id: string }
         Returns: Json
+      }
+      enfileirar_webhook: {
+        Args: { p_endpoint_id?: string; p_evento: string; p_payload?: Json }
+        Returns: number
       }
       get_admin_department_challenges: { Args: never; Returns: Json }
       get_active_seasonal_event: { Args: never; Returns: Json }

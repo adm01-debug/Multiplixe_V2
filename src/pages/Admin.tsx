@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   GraduationCap, ArrowLeft, Loader2, BookOpen, Users, BarChart3,
   ShieldAlert, TrendingUp, Zap, Trophy, Route, Shield, Target,
-  FileText, Video, Sparkles, Settings, Brain, ShoppingBag, Gift, CalendarDays,
+  FileText, Video, Sparkles, Settings, Brain, ShoppingBag, Gift, CalendarDays, Webhook,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
@@ -35,6 +35,7 @@ const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRe
 const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget').catch((e) => { console.error('[Admin] Failed to load AdminTelemetryWidget', e); throw e; }));
 const PlatformSettingsTab = lazy(() => import('@/components/admin/PlatformSettingsTab').catch((e) => { console.error('[Admin] Failed to load PlatformSettingsTab', e); throw e; }));
 const AdminAchievementsTab = lazy(() => import('@/components/admin/AdminAchievementsTab').catch((e) => { console.error('[Admin] Failed to load AdminAchievementsTab', e); throw e; }));
+const AdminWebhooksTab = lazy(() => import('@/components/admin/AdminWebhooksTab').catch((e) => { console.error('[Admin] Failed to load AdminWebhooksTab', e); throw e; }));
 
 interface PlatformStats {
   totalUsers: number;
@@ -223,6 +224,7 @@ const Admin = () => {
               <TabsTrigger value="missions"><Gift className="h-4 w-4 mr-1.5 inline-block align-middle" />Missões</TabsTrigger>
             <TabsTrigger value="events"><CalendarDays className="h-4 w-4 mr-1.5 inline-block align-middle" />Eventos</TabsTrigger>
               <TabsTrigger value="achievements"><Trophy className="h-4 w-4 mr-1.5 inline-block align-middle" />Conquistas</TabsTrigger>
+          <TabsTrigger value="webhooks"><Webhook className="h-4 w-4 mr-1.5 inline-block align-middle" />Webhooks</TabsTrigger>
               <TabsTrigger value="permissions"><Shield className="h-4 w-4 mr-1.5 inline-block align-middle" />Permissões</TabsTrigger>
               <TabsTrigger value="analytics"><TrendingUp className="h-4 w-4 mr-1.5 inline-block align-middle" />Analytics</TabsTrigger>
               <TabsTrigger value="stats"><BarChart3 className="h-4 w-4 mr-1.5 inline-block align-middle" />Stats</TabsTrigger>
@@ -295,6 +297,11 @@ const Admin = () => {
                         <AdminAchievementsTab />
                       </Suspense>
                     </TabsContent>
+                              <TabsContent value="webhooks">
+                                <Suspense fallback={<TabFallback />}>
+                                  <AdminWebhooksTab />
+                                </Suspense>
+                              </TabsContent>
           <TabsContent value="permissions">
             <Suspense fallback={<TabFallback />}>
               <PermissionsManager />

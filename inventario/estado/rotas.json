@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 114,
+    "hooks_distintos": 120,
     "problemas": 0
   },
   "rotas": [
@@ -268,7 +268,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 69,
+      "arquivos_lidos": 71,
       "hooks": [
         {
           "nome": "useAdminFlashcards",
@@ -289,6 +289,14 @@
         {
           "nome": "useAdminStoreItems",
           "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
+          "nome": "useAdminWebhooks",
+          "arquivo": "src/hooks/useAdminWebhooks.ts"
+        },
+        {
+          "nome": "useAlternarEndpoint",
+          "arquivo": "src/hooks/useAdminWebhooks.ts"
         },
         {
           "nome": "useAlternarEvento",
@@ -331,6 +339,10 @@
           "arquivo": "src/hooks/useOnboardingWorkflow.ts"
         },
         {
+          "nome": "useExcluirEndpoint",
+          "arquivo": "src/hooks/useAdminWebhooks.ts"
+        },
+        {
           "nome": "useExcluirEvento",
           "arquivo": "src/hooks/useAdminSeasonalEvents.ts"
         },
@@ -347,6 +359,10 @@
           "arquivo": "src/hooks/useWallet.ts"
         },
         {
+          "nome": "useLimparEntregas",
+          "arquivo": "src/hooks/useAdminWebhooks.ts"
+        },
+        {
           "nome": "useOnboardingWorkflows",
           "arquivo": "src/hooks/useOnboardingWorkflow.ts"
         },
@@ -361,6 +377,10 @@
         {
           "nome": "useQuizStatsData",
           "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts"
+        },
+        {
+          "nome": "useSalvarEndpoint",
+          "arquivo": "src/hooks/useAdminWebhooks.ts"
         },
         {
           "nome": "useSalvarEvento",
@@ -403,6 +423,10 @@
           "arquivo": "src/lib/i18n.ts"
         },
         {
+          "nome": "useTestarEndpoint",
+          "arquivo": "src/hooks/useAdminWebhooks.ts"
+        },
+        {
           "nome": "useToggleFlashcard",
           "arquivo": "src/hooks/useFlashcards.ts"
         },
@@ -429,6 +453,7 @@
       "rpcs": [
         "admin_grant_coins",
         "create_audit_log",
+        "enfileirar_webhook",
         "get_active_seasonal_event",
         "get_admin_department_challenges",
         "get_due_assessments",
@@ -481,7 +506,9 @@
         "user_roles",
         "user_streaks",
         "user_xp",
-        "user_xp_history"
+        "user_xp_history",
+        "webhook_deliveries",
+        "webhook_endpoints"
       ],
       "imports_quebrados": []
     },
@@ -3259,6 +3286,18 @@
         "/admin"
       ]
     },
+    "useAdminWebhooks": {
+      "arquivo": "src/hooks/useAdminWebhooks.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useAlternarEndpoint": {
+      "arquivo": "src/hooks/useAdminWebhooks.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useAlternarEvento": {
       "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
       "rotas": [
@@ -3461,6 +3500,12 @@
         "/dashboard"
       ]
     },
+    "useExcluirEndpoint": {
+      "arquivo": "src/hooks/useAdminWebhooks.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useExcluirEvento": {
       "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
       "rotas": [
@@ -3581,6 +3626,12 @@
         "/dashboard",
         "/trilha/:slug",
         "/trilhas"
+      ]
+    },
+    "useLimparEntregas": {
+      "arquivo": "src/hooks/useAdminWebhooks.ts",
+      "rotas": [
+        "/admin"
       ]
     },
     "useMFA": {
@@ -3801,6 +3852,12 @@
         "/mentoria"
       ]
     },
+    "useSalvarEndpoint": {
+      "arquivo": "src/hooks/useAdminWebhooks.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useSalvarEvento": {
       "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
       "rotas": [
@@ -3950,6 +4007,12 @@
       "rotas": [
         "/dashboard",
         "/perfil"
+      ]
+    },
+    "useTestarEndpoint": {
+      "arquivo": "src/hooks/useAdminWebhooks.ts",
+      "rotas": [
+        "/admin"
       ]
     },
     "useToast": {

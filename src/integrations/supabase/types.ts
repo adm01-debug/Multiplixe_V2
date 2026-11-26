@@ -323,6 +323,7 @@ export type Database = {
       }
       daily_challenges: {
         Row: {
+          challenge_period: string
           challenge_type: string
           created_at: string
           day_of_week: number | null
@@ -334,6 +335,7 @@ export type Database = {
           xp_reward: number
         }
         Insert: {
+          challenge_period?: string
           challenge_type: string
           created_at?: string
           day_of_week?: number | null
@@ -345,6 +347,7 @@ export type Database = {
           xp_reward?: number
         }
         Update: {
+          challenge_period?: string
           challenge_type?: string
           created_at?: string
           day_of_week?: number | null
@@ -2604,6 +2607,24 @@ export type Database = {
           rank: number
           total_xp: number
           user_id: string
+        }[]
+      }
+      get_my_challenges: {
+        Args: never
+        Returns: {
+          challenge_date: string
+          challenge_id: string
+          challenge_period: string
+          challenge_type: string
+          current_progress: number
+          description: string
+          ends_at: string
+          is_completed: boolean
+          progress_id: string
+          target_value: number
+          title: string
+          xp_claimed: boolean
+          xp_reward: number
         }[]
       }
       get_performance_comparison: {

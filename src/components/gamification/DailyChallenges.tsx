@@ -10,37 +10,64 @@ import {
   BookOpen,
   Loader2,
   Sparkles,
-  Timer
+  Timer,
+  GraduationCap,
+  Award,
+  Layers,
+  Sun,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useDailyChallenges } from '@/hooks/useDailyChallenges';
+import { useDailyChallenges, type ChallengeProgress } from '@/hooks/useDailyChallenges';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { useStreaks } from '@/hooks/useStreaks';
 
 const challengeIcons: Record<string, typeof Target> = {
   watch_lessons: BookOpen,
-  complete_quiz: Trophy,
+  complete_lessons: BookOpen,
   study_minutes: Clock,
   earn_xp: Zap,
+  complete_quiz: Trophy,
+  quiz_perfect_score: Trophy,
+  start_course: GraduationCap,
+  complete_course: GraduationCap,
+  complete_pomodoro: Timer,
+  earn_achievement: Award,
+  streak_days: Flame,
 };
 
-// Calculate time until midnight
 const getTimeUntilReset = () => {
   const now = new Date();
   const midnight = new Date();
   midnight.setHours(24, 0, 0, 0);
   const diff = midnight.getTime() - now.getTime();
-  
+
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  
+
   return { hours, minutes };
+};
+
+const getTimeUntilDate = (endsAt: string): { days: number; hours: number; minutes: number } => {
+  const target = endsAt ? new Date(endsAt).getTime() : NaN;
+
+  if (Number.isNaN(target)) {
+    return { days: 0, ...getTimeUntilReset() };
+  }
+
+  const diff = Math.max(target - Date.now(), 0);
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  return { days, hours, minutes };
 };
 
 const DailyChallenges = () => {
   const { 
     challenges, 
+    dailyChallenges,
+    weeklyChallenges,
     loading, 
     claiming, 
     claimReward, 
@@ -51,9 +78,7 @@ const DailyChallenges = () => {
   
   const { currentStreak } = useStreaks();
   const [timeUntilReset, setTimeUntilReset] = useState(getTimeUntilReset());
-  const [showCelebration, setShowCelebration] = useState(false);
 
-  // Update timer every minute
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeUntilReset(getTimeUntilReset());
@@ -61,19 +86,28 @@ const DailyChallenges = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Show celebration when all completed
+  const streakBonus = currentStreak 
+    ? Math.min(currentStreak * 5, 50)
+    : 0;
+
+  const dailyTotal = dailyChallenges.length;
+  const dailyCompleted = dailyChallenges.filter(c => c.is_completed).length;
+  const weeklyTotal = weeklyChallenges.length;
+  const weeklyCompleted = weeklyChallenges.filter(c => c.is_completed).length;
+  const dailyXP = dailyChallenges.reduce((acc, c) => acc + c.challenge.xp_reward, 0);
+  const weeklyXP = weeklyChallenges.reduce((acc, c) => acc + c.challenge.xp_reward, 0);
+  const bonusXP = Math.round(dailyXP * (streakBonus / 100));
+  const allDailyCompleted = dailyTotal > 0 && dailyCompleted === dailyTotal;
+
+  const [showCelebration, setShowCelebration] = useState(false);
+
   useEffect(() => {
-    if (completedCount === totalCount && totalCount > 0) {
+    if (allDailyCompleted) {
       setShowCelebration(true);
       const timer = setTimeout(() => setShowCelebration(false), 3000);
       return () => clearTimeout(timer);
     }
-  }, [completedCount, totalCount]);
-
-  // Calculate streak bonus multiplier
-  const streakBonus = currentStreak 
-    ? Math.min(currentStreak * 5, 50) // Max 50% bonus
-    : 0;
+  }, [allDailyCompleted]);
 
   if (loading) {
     return (
@@ -98,13 +132,143 @@ const DailyChallenges = () => {
     return null;
   }
 
-  const totalXP = challenges.reduce((acc, c) => acc + c.challenge.xp_reward, 0);
-  const bonusXP = Math.round(totalXP * (streakBonus / 100));
-  const allCompleted = completedCount === totalCount;
+  const renderChallenge = (challenge: ChallengeProgress, index: number) => {
+    const Icon = challengeIcons[challenge.challenge.challenge_type] || Target;
+    const progress = (challenge.current_progress / challenge.challenge.target_value) * 100;
+    const isCompleted = challenge.is_completed;
+    const canClaim = isCompleted && !challenge.xp_claimed && challenge.id.startsWith('pending-') === false;
+    const isClaiming = claiming === challenge.id;
+    const xpWithBonus = challenge.challenge.xp_reward + Math.round(challenge.challenge.xp_reward * (streakBonus / 100));
+
+    return (
+      <motion.div
+        key={challenge.challenge_id}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ delay: index * 0.05 }}
+        layout
+        className={cn(
+          'relative p-4 rounded-xl border transition-all duration-200',
+          isCompleted
+            ? 'bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20'
+            : 'bg-muted/30 border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5'
+        )}
+      >
+        <div className="flex items-start gap-4">
+          <motion.div 
+            className={cn(
+              'p-2.5 rounded-xl shrink-0 transition-colors relative',
+              isCompleted
+                ? 'bg-primary/20 text-primary'
+                : 'bg-muted text-muted-foreground'
+            )}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {isCompleted ? (
+              <CheckCircle2 className="h-5 w-5" />
+            ) : (
+              <Icon className="h-5 w-5" />
+            )}
+            {canClaim && (
+              <motion.div
+                className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              />
+            )}
+          </motion.div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h4 className={cn(
+                'font-semibold text-sm',
+                isCompleted ? 'text-primary' : 'text-foreground'
+              )}>
+                {challenge.challenge.title}
+              </h4>
+              {canClaim && (
+                <motion.span 
+                  className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 0.5, repeat: Infinity }}
+                >
+                  COLETAR
+                </motion.span>
+              )}
+              {challenge.challenge.challenge_period === 'weekly' && (
+                <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide rounded-full bg-primary/10 text-primary">
+                  Semanal
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground mb-2">
+              {challenge.challenge.description}
+            </p>
+
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                <motion.div
+                  className={cn(
+                    'h-full rounded-full relative',
+                    isCompleted
+                      ? 'bg-primary'
+                      : 'bg-gradient-to-r from-primary/60 to-primary'
+                  )}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min(progress, 100)}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+              <span className="text-xs font-bold text-muted-foreground shrink-0 tabular-nums">
+                {challenge.current_progress}/{challenge.challenge.target_value}
+              </span>
+            </div>
+          </div>
+
+          <div className="shrink-0">
+            {canClaim ? (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  size="sm"
+                  onClick={() => claimReward(challenge.id)}
+                  disabled={isClaiming}
+                  className="gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-amber-500/25"
+                >
+                  {isClaiming ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Gift className="h-4 w-4" />
+                      <span>+{xpWithBonus}</span>
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            ) : challenge.xp_claimed ? (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span>Coletado</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted text-muted-foreground text-sm">
+                <Zap className="h-4 w-4" />
+                <span>+{challenge.challenge.xp_reward}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
+  const weeklyCountdown = weeklyChallenges[0]?.ends_at
+    ? getTimeUntilDate(weeklyChallenges[0].ends_at)
+    : null;
 
   return (
     <div className="rounded-2xl border border-border bg-card/50 overflow-hidden relative">
-      {/* Celebration overlay */}
       <AnimatePresence>
         {showCelebration && (
           <motion.div
@@ -131,14 +295,13 @@ const DailyChallenges = () => {
               <p className="text-xl font-bold text-foreground">Todos Completos!</p>
               <div className="flex items-center gap-2 text-primary">
                 <Sparkles className="h-5 w-5" />
-                <span className="font-bold">+{totalXP + bonusXP} XP Total</span>
+                <span className="font-bold">+{dailyXP + bonusXP} XP Total</span>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Header */}
       <div className="p-6 pb-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -174,7 +337,7 @@ const DailyChallenges = () => {
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
               <Flame className="h-4 w-4 text-primary" />
               <span className="text-sm font-semibold text-primary">
-                +{totalXP} XP
+                +{dailyXP} XP hoje
               </span>
             </div>
             {streakBonus > 0 && (
@@ -189,170 +352,47 @@ const DailyChallenges = () => {
           </div>
         </div>
 
-        {/* Timer and progress */}
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Timer className="h-3.5 w-3.5" />
-            <span>Reinicia em {timeUntilReset.hours}h {timeUntilReset.minutes}m</span>
-          </div>
-          <span className="text-xs font-medium text-primary">
-            {Math.round((completedCount / totalCount) * 100)}%
-          </span>
-        </div>
+        {dailyTotal > 0 && (
+          <>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Timer className="h-3.5 w-3.5" />
+                <span>Reinicia em {timeUntilReset.hours}h {timeUntilReset.minutes}m</span>
+              </div>
+              <span className="text-xs font-medium text-primary">
+                {Math.round((dailyCompleted / dailyTotal) * 100)}%
+              </span>
+            </div>
 
-        {/* Overall progress */}
-        <div className="relative h-3 rounded-full bg-muted overflow-hidden">
-          <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${(completedCount / totalCount) * 100}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          />
-          {/* Shine effect */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-            animate={{ x: ['-100%', '200%'] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-          />
-        </div>
+            <div className="relative h-3 rounded-full bg-muted overflow-hidden">
+              <motion.div
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${(dailyCompleted / dailyTotal) * 100}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              />
+            </div>
+          </>
+        )}
       </div>
 
-      {/* Challenges list */}
       <div className="px-6 pb-6 space-y-3">
+        {dailyChallenges.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            Nenhum desafio diário ativo hoje. Volte amanhã!
+          </p>
+        )}
+
         <AnimatePresence mode="popLayout">
-          {challenges.map((challenge, index) => {
-            const Icon = challengeIcons[challenge.challenge.challenge_type] || Target;
-            const progress = (challenge.current_progress / challenge.challenge.target_value) * 100;
-            const isCompleted = challenge.is_completed;
-            const canClaim = isCompleted && !challenge.xp_claimed;
-            const isClaiming = claiming === challenge.id;
-            const xpWithBonus = challenge.challenge.xp_reward + Math.round(challenge.challenge.xp_reward * (streakBonus / 100));
-
-            return (
-              <motion.div
-                key={challenge.challenge_id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ delay: index * 0.05 }}
-                layout
-                className={cn(
-                  'relative p-4 rounded-xl border transition-all duration-200',
-                  isCompleted
-                    ? 'bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20'
-                    : 'bg-muted/30 border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5'
-                )}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Icon */}
-                  <motion.div 
-                    className={cn(
-                      'p-2.5 rounded-xl shrink-0 transition-colors relative',
-                      isCompleted
-                        ? 'bg-primary/20 text-primary'
-                        : 'bg-muted text-muted-foreground'
-                    )}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {isCompleted ? (
-                      <CheckCircle2 className="h-5 w-5" />
-                    ) : (
-                      <Icon className="h-5 w-5" />
-                    )}
-                    {canClaim && (
-                      <motion.div
-                        className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 1, repeat: Infinity }}
-                      />
-                    )}
-                  </motion.div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className={cn(
-                        'font-semibold text-sm',
-                        isCompleted ? 'text-primary' : 'text-foreground'
-                      )}>
-                        {challenge.challenge.title}
-                      </h4>
-                      {canClaim && (
-                        <motion.span 
-                          className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full"
-                          animate={{ scale: [1, 1.05, 1] }}
-                          transition={{ duration: 0.5, repeat: Infinity }}
-                        >
-                          COLETAR
-                        </motion.span>
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      {challenge.challenge.description}
-                    </p>
-
-                    {/* Progress bar */}
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
-                        <motion.div
-                          className={cn(
-                            'h-full rounded-full relative',
-                            isCompleted
-                              ? 'bg-primary'
-                              : 'bg-gradient-to-r from-primary/60 to-primary'
-                          )}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${Math.min(progress, 100)}%` }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      </div>
-                      <span className="text-xs font-bold text-muted-foreground shrink-0 tabular-nums">
-                        {challenge.current_progress}/{challenge.challenge.target_value}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Reward / Claim button */}
-                  <div className="shrink-0">
-                    {canClaim ? (
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button
-                          size="sm"
-                          onClick={() => claimReward(challenge.id)}
-                          disabled={isClaiming}
-                          className="gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-amber-500/25"
-                        >
-                          {isClaiming ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <>
-                              <Gift className="h-4 w-4" />
-                              <span>+{xpWithBonus}</span>
-                            </>
-                          )}
-                        </Button>
-                      </motion.div>
-                    ) : challenge.xp_claimed ? (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-medium">
-                        <CheckCircle2 className="h-4 w-4" />
-                        <span>Coletado</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted text-muted-foreground text-sm">
-                        <Zap className="h-4 w-4" />
-                        <span>+{challenge.challenge.xp_reward}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+          {dailyChallenges.map((challenge, index) => renderChallenge(challenge, index))}
         </AnimatePresence>
 
-        {/* All completed message */}
-        {allCompleted && (
+        {allDailyCompleted && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -360,12 +400,80 @@ const DailyChallenges = () => {
           >
             <div className="flex items-center justify-center gap-2 text-amber-500 font-semibold">
               <Trophy className="h-5 w-5" />
-              <span>Parabéns! Todos os desafios completados!</span>
+              <span>Parabéns! Todos os desafios diários completados!</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               Volte amanhã para novos desafios
             </p>
           </motion.div>
+        )}
+
+        {weeklyChallenges.length > 0 && (
+          <div className="pt-4 mt-2 border-t border-border">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-sky-500/10 to-indigo-500/10 border border-sky-500/20">
+                  <Sun className="h-5 w-5 text-sky-500" />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-lg text-foreground">
+                    Desafios Semanais
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {weeklyCompleted}/{weeklyTotal} completados
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-end gap-1">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+                  <Zap className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-semibold text-primary">
+                    +{weeklyXP} XP na semana
+                  </span>
+                </div>
+                {weeklyCountdown && (
+                  <span className="text-xs text-muted-foreground">
+                    {weeklyCountdown.days}d {weeklyCountdown.hours}h {weeklyCountdown.minutes}m restantes
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Layers className="h-3.5 w-3.5" />
+                <span>Reinicia na segunda-feira</span>
+              </div>
+              <span className="text-xs font-medium text-primary">
+                {Math.round((weeklyCompleted / weeklyTotal) * 100)}%
+              </span>
+            </div>
+
+            <div className="relative h-3 rounded-full bg-muted overflow-hidden mb-4">
+              <motion.div
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${(weeklyCompleted / weeklyTotal) * 100}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <AnimatePresence mode="popLayout">
+                {weeklyChallenges.map((challenge, index) => renderChallenge(challenge, index))}
+              </AnimatePresence>
+            </div>
+
+            {weeklyCompleted === weeklyTotal && (
+              <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-sky-500/10 to-indigo-500/10 border border-sky-500/20 text-center">
+                <div className="flex items-center justify-center gap-2 text-sky-500 font-semibold">
+                  <Trophy className="h-5 w-5" />
+                  <span>Semana perfeita! Todos os desafios semanais completados!</span>
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

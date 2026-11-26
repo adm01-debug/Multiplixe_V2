@@ -6,15 +6,15 @@
     "tabelas": 63,
     "tabelas_no_types": 63,
     "tabelas_nas_migrations": 63,
-    "colunas": 525,
+    "colunas": 526,
     "views": 1,
-    "funcoes": 49,
-    "funcoes_expostas_no_types": 37,
+    "funcoes": 53,
+    "funcoes_expostas_no_types": 38,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 61,
+    "migrations": 62,
     "alertas": 3,
     "problemas": 3
   },
@@ -137,14 +137,14 @@
     "daily_challenges": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 9,
+      "colunas": 10,
       "rls": true,
       "policies": 1,
       "triggers": [],
       "indices": 0,
       "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
       "uso_no_codigo": {
-        "src": 1,
+        "src": 0,
         "edges": 0
       }
     },
@@ -468,7 +468,9 @@
       "colunas": 7,
       "rls": true,
       "policies": 2,
-      "triggers": [],
+      "triggers": [
+        "refresh_challenges_after_pomodoro"
+      ],
       "indices": 2,
       "criada_em": "20251227191432_f0c5c527-6bc0-4b5d-9054-35014fedde57.sql",
       "uso_no_codigo": {
@@ -741,10 +743,10 @@
       "rls": true,
       "policies": 3,
       "triggers": [],
-      "indices": 0,
+      "indices": 1,
       "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
       "uso_no_codigo": {
-        "src": 2,
+        "src": 0,
         "edges": 0
       }
     },
@@ -799,6 +801,7 @@
       "rls": true,
       "policies": 3,
       "triggers": [
+        "refresh_challenges_after_lesson_progress",
         "trg_goals_after_lesson_progress",
         "update_user_lesson_progress_updated_at"
       ],
@@ -862,7 +865,9 @@
       "colunas": 10,
       "rls": true,
       "policies": 2,
-      "triggers": [],
+      "triggers": [
+        "refresh_challenges_after_quiz_attempt"
+      ],
       "indices": 1,
       "criada_em": "20251224144630_c94e702a-d64b-453f-a07c-82da51467186.sql",
       "uso_no_codigo": {
@@ -1018,6 +1023,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20260417001322_acd29c09-2a1b-40ff-8f7c-f3296f175093.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "challenge_bucket": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20261126050000_desafios_semanais.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1240,6 +1257,18 @@
       "criada_em": "20251224141530_ba1a8f0a-00bb-480b-a50b-6a38cb5a7c3c.sql",
       "uso_no_codigo": {
         "src": 3,
+        "edges": 0
+      }
+    },
+    "get_my_challenges": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126050000_desafios_semanais.sql",
+      "uso_no_codigo": {
+        "src": 1,
         "edges": 0
       }
     },
@@ -1522,6 +1551,18 @@
         "edges": 0
       }
     },
+    "refresh_challenge_progress": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126050000_desafios_semanais.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "refresh_platform_stats": {
       "exposta_no_types": true,
       "args": [],
@@ -1584,6 +1625,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261126010000_metas_progresso_real.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "trg_refresh_challenge_progress": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126050000_desafios_semanais.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1697,10 +1750,12 @@
     {
       "tipo": "tabela_sem_uso_no_codigo",
       "detalhe": [
+        "daily_challenges",
         "password_reset_tokens",
         "platform_stats_cache",
         "playbook_views",
-        "saved_filters"
+        "saved_filters",
+        "user_daily_challenge_progress"
       ]
     },
     {

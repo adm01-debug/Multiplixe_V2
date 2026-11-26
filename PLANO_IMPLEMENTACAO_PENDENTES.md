@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (36)
+## ⏳ MELHORIAS PENDENTES (35)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -248,7 +248,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-#### PERF-003: Paginação no Catálogo
+#### PERF-003: Paginação no Catálogo ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 3h  
 **Descrição:** Todos os cursos são carregados de uma vez.
@@ -260,6 +260,27 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 3. Mostrar 12 cursos por página inicialmente
 4. Usar useInfiniteQuery do React Query
 ```
+
+**Entrega (2026-11-26):**
+```text
+- useInfiniteScroll.ts existia completo e nunca era usado (orfao). O catalogo agora renderiza 12 cursos
+  por vez e libera o restante pelo botao "Carregar mais", pelo scroll da janela e por um sentinel
+  (IntersectionObserver com rootMargin) que funciona tambem dentro de containers com scroll proprio.
+- A lista completa continua em memoria: a contagem "N cursos encontrados", a busca com destaque
+  (fuse + searchMatches) e os filtros de categoria/nivel nao mudaram. A paginacao reduz so o que e
+  montado no DOM.
+- Na lista o ganho e direto (nao ha virtualizacao). Na grade com 20 ou mais cursos o
+  VirtualizedCourseGrid continua recebendo todos os cursos, porque tem scroll interno proprio e ja
+  monta apenas as linhas visiveis; paginar ali esconderia itens sem ganho de render.
+- O hook passou a limpar o setTimeout do carregamento no unmount (antes resolvia depois do teardown
+  nos testes e deixava a suite instavel).
+- Testes: src/test/catalogInfiniteScroll.test.tsx (4 casos: 12 de 25, carregar mais ate o fim, grade
+  virtualizada sem botao, busca continuando a filtrar a lista paginada). Suite: 54 arquivos / 467 testes.
+```
+
+Desvio consciente: o passo 1 do rascunho (limit/offset no servidor com useInfiniteQuery) nao foi
+aplicado porque o servidor passaria a devolver um subconjunto e a busca fuzzy com destaque, a
+contagem total e os filtros de categoria/nivel sao client-side - seria regressao funcional.
 
 ---
 
@@ -1608,7 +1629,7 @@ CREATE TABLE public.webhook_endpoints (
 | FUNC-003 | Notas nas Aulas | 6h |
 | FUNC-011 | Agenda de Estudos | 6h |
 | FUNC-013 | Activity Timeline | 4h |
-| PERF-003 | Paginação Catálogo | 3h |
+| PERF-003 | Paginação Catálogo | ✅ 3h |
 | SEO-006 | Core Web Vitals | 4h |
 | A11Y-005 | Skip Links | ✅ 1h |
 | A11Y-008 | Reduced Motion | ✅ 2h |
@@ -1636,7 +1657,7 @@ CREATE TABLE public.webhook_endpoints (
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
 | UX/UI | 6 | ~18h |
-| Performance | 2 | ~7h |
+| Performance | 1 | ~4h |
 | Funcionalidades | 9 | ~51h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
@@ -1646,7 +1667,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **37** | **~215h** |
+| **TOTAL PENDENTE** | **36** | **~212h** |
 
 ---
 

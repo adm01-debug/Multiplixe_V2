@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 interface UseInfiniteScrollOptions<T> {
   items: T[];
@@ -13,6 +13,10 @@ export const useInfiniteScroll = <T>({
 }: UseInfiniteScrollOptions<T>) => {
   const [displayedCount, setDisplayedCount] = useState(itemsPerPage);
   const [isLoading, setIsLoading] = useState(false);
+  const [sentinel, setSentinel] = useState<HTMLElement | null>(null);
+  const loadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const sentinelRef = useCallback((node: HTMLElement | null) => setSentinel(node), []);
 
   const displayedItems = items.slice(0, displayedCount);
   const hasMore = displayedCount < items.length;
@@ -22,9 +26,10 @@ export const useInfiniteScroll = <T>({
 
     setIsLoading(true);
     // Simulate loading delay for smooth UX
-    setTimeout(() => {
+    loadTimer.current = setTimeout(() => {
       setDisplayedCount((prev) => Math.min(prev + itemsPerPage, items.length));
       setIsLoading(false);
+      loadTimer.current = null;
     }, 300);
   }, [hasMore, isLoading, items.length, itemsPerPage]);
 
@@ -32,6 +37,13 @@ export const useInfiniteScroll = <T>({
   useEffect(() => {
     setDisplayedCount(itemsPerPage);
   }, [items.length, itemsPerPage]);
+
+  useEffect(
+    () => () => {
+      if (loadTimer.current) clearTimeout(loadTimer.current);
+    },
+    []
+  );
 
   // Infinite scroll handler
   useEffect(() => {
@@ -48,8 +60,25 @@ export const useInfiniteScroll = <T>({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore, threshold]);
 
+  // Sentinel observer: cobre containers com scroll proprio (a grade virtualizada),
+  // onde o evento de scroll da janela nunca dispara.
+  useEffect(() => {
+    if (!sentinel || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) loadMore();
+      },
+      { rootMargin: `${threshold}px` }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [sentinel, loadMore, threshold]);
+
   return {
     displayedItems,
+    sentinelRef,
     isLoading,
     hasMore,
     loadMore,

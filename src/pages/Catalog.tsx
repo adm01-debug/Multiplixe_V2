@@ -8,6 +8,8 @@ import { useFuzzySearchWithMatches } from "@/hooks/useFuzzySearch";
 import CacheIndicator from "@/components/ui/CacheIndicator";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/catalog/CourseCard";
+import CourseListItem from "@/components/catalog/CourseListItem";
+import ViewToggle, { useViewMode } from "@/components/catalog/ViewToggle";
 import CategoryFilter from "@/components/catalog/CategoryFilter";
 import LevelFilter from "@/components/catalog/LevelFilter";
 import SearchInput from "@/components/catalog/SearchInput";
@@ -87,6 +89,7 @@ const Catalog = () => {
   );
 
   const handleSignOut = useCallback(async () => { await signOut(); navigate("/"); }, [signOut, navigate]);
+  const [viewMode, setViewMode] = useViewMode();
   const handleClearAll = useCallback(() => { setSearchQuery(""); setSelectedCategory(null); setSelectedLevel(null); }, []);
   const handleToggleFilters = useCallback(() => setShowFilters((v) => !v), []);
   const loading = coursesLoading || categoriesLoading;
@@ -157,13 +160,43 @@ const Catalog = () => {
             <p className="text-sm text-muted-foreground"><span className="font-semibold text-foreground">{filteredCourses.length}</span> {filteredCourses.length === 1 ? "curso encontrado" : "cursos encontrados"}</p>
             <CacheIndicator isStale={isStale} isFetching={isFetching} showLabel onRefresh={handleRefresh} />
           </div>
+          <ViewToggle value={viewMode} onChange={setViewMode} />
         </div>
 
         {/* Course Grid */}
         {loading ? (
           <CourseGridSkeleton count={8} />
         ) : filteredCourses.length > 0 ? (
-          filteredCourses.length >= VIRTUALIZATION_THRESHOLD ? (
+          viewMode === "list" ? (
+            <motion.div
+              className="flex flex-col gap-4"
+              variants={scaleUpContainerVariants}
+              initial="hidden"
+              animate="visible"
+              role="list"
+              aria-label="Lista de cursos"
+            >
+              {filteredCourses.map((course, index) => (
+                <motion.div key={course.id} variants={scaleUpItemVariants} custom={index} role="listitem">
+                  <CourseListItem
+                    id={course.id}
+                    slug={course.slug}
+                    title={course.title}
+                    description={course.description}
+                    thumbnailUrl={course.thumbnail_url}
+                    durationMinutes={course.duration_minutes ?? 0}
+                    level={course.level ?? 'Iniciante'}
+                    instructorName={course.instructor_name}
+                    totalLessons={course.total_lessons ?? 0}
+                    categoryName={course.categories?.name}
+                    categoryColor={course.categories?.color || undefined}
+                    isFeatured={course.is_featured ?? false}
+                    searchMatches={debouncedSearch ? matchesMap.get(course.id) : undefined}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : filteredCourses.length >= VIRTUALIZATION_THRESHOLD ? (
             <VirtualizedCourseGrid courses={virtualizedCourses} columns={4} />
           ) : (
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" variants={scaleUpContainerVariants} initial="hidden" animate="visible">

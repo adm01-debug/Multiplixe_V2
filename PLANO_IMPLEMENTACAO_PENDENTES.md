@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (45)
+## ⏳ MELHORIAS PENDENTES (44)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -597,7 +597,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 4 Pendentes
+### ♿ ACESSIBILIDADE - 3 Pendentes
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -742,7 +742,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-009: Tamanho de Fonte Ajustável
+#### A11Y-009: Tamanho de Fonte Ajustável ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** Não há controle de tamanho de fonte.
@@ -753,6 +753,22 @@ leitor de tela) e 17 só com `placeholder`.
 2. Criar FontSizeControl.tsx (opcional)
 3. Salvar preferência
 4. Testar com zoom do navegador
+```
+
+**Entrega (2026-11-26):**
+```
+- FontSizeControl.tsx já existia (popover com slider 14-22px, presets e reset, grava em
+  localStorage["font-size-preference"] e aplica no <html>) mas nunca era renderizado.
+  Trabalho parado de outro agente.
+- Montado dentro de AccessibilityWidget.tsx, junto do HighContrastToggle, no mesmo wrapper
+  sempre montado: a preferência salva é aplicada no carregamento, com o painel fechado.
+- Auditoria de rem/em: nenhum font-size em px nos CSS e o Tailwind do projeto é rem, então
+  ajustar o font-size do <html> escala a interface inteira. Restam 7 text-[10px] fixos, todos
+  em rótulos decorativos (teclas de atalho do CommandPalette, badge de notificação e a tagline
+  "by Promo Brindes") — mantidos de propósito.
+- src/test/fontSize.test.tsx (novo, 8 casos): aplicação no load, ausência de preferência, valor
+  fora da faixa ignorado, aumentar/diminuir com persistência, preset, reset, widget revelando o
+  controle e preferência valendo com o painel fechado.
 ```
 
 ---
@@ -1460,7 +1476,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 4 | ~8h |
+| Acessibilidade | 3 | ~6h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1468,7 +1484,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **48** | **~247h** |
+| **TOTAL PENDENTE** | **47** | **~245h** |
 
 ---
 

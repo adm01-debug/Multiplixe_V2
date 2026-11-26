@@ -51,7 +51,9 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (13)
+## ⏳ MELHORIAS PENDENTES (10)
+
+Cada categoria abaixo lista as seções com status; o que não tem `✅ CONCLUÍDO` é pendente: FUNC-016, ADMIN-006, INT-001, INT-002, INT-003, INT-004, REF-001, REF-002, REF-004 e REF-005 (10 itens, ~44h).
 
 ### 🎨 UX/UI - 0 Pendentes
 
@@ -1370,7 +1372,7 @@ Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) 
 Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
-### 🎮 GAMIFICAÇÃO - 1 Pendente
+### 🎮 GAMIFICAÇÃO - 0 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -2149,16 +2151,16 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 0 | — |
 | Performance | 0 | — |
-| Funcionalidades | 3 | ~26h |
+| Funcionalidades | 1 | ~8h |
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
-| Gamificação | 2 | ~14h |
+| Gamificação | 0 | — |
 | Administrativas | 1 | ~4h |
-| Mobile | 1 | ~4h |
+| Mobile | 0 | — |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **15** | **~80h** |
+| **TOTAL PENDENTE** | **10** | **~44h** |
 
 ---
 

@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (43)
+## ⏳ MELHORIAS PENDENTES (42)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -712,7 +712,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-007: Textos Alternativos
+#### A11Y-007: Textos Alternativos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 2h  
 **Descrição:** Algumas imagens não têm alt text.
@@ -723,6 +723,20 @@ leitor de tela) e 17 só com `placeholder`.
 2. Adicionar alt descritivo
 3. Usar alt="" para imagens decorativas
 4. Verificar LazyImage.tsx
+```
+
+**Entrega (2026-11-26):**
+```
+- Auditoria de todas as <img> do src (21 ocorrências em 12 arquivos): nenhuma estava sem alt.
+  As decorativas já usavam alt="" corretamente (avatar do comentário, que tem o nome do autor
+  em texto ao lado; blur placeholder do LazyImage), e as de conteúdo recebem o título do curso
+  ou da trilha.
+- LazyImage.tsx: quando a imagem falha, a <img> (e o alt junto) era removida do DOM e sobrava
+  só um ícone decorativo — agora o estado de erro expõe role="img" aria-label={alt}, então o
+  texto alternativo continua disponível para leitores de tela. O placeholder de carregamento
+  ficou aria-hidden="true" para não ser anunciado.
+- src/test/lazyImage.test.tsx (novo, 4 casos): alt na imagem carregada, placeholder decorativo,
+  alt preservado no erro e imagem só inserida no DOM depois de entrar na viewport.
 ```
 
 ---
@@ -1500,7 +1514,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **46** | **~243h** |
+| **TOTAL PENDENTE** | **45** | **~241h** |
 
 ---
 

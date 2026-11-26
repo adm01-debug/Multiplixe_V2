@@ -62,13 +62,14 @@ const LazyImage = ({
       <AnimatePresence>
         {!isLoaded && (
           <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
             className={cn(
               'absolute inset-0 bg-gradient-to-r from-muted via-muted/50 to-muted',
               placeholderClassName
             )}
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            aria-hidden="true"
           >
             {/* Shimmer effect */}
             <motion.div
@@ -97,8 +98,12 @@ const LazyImage = ({
 
       {/* Error state */}
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
-          <div className="text-center text-muted-foreground">
+        <div
+          role="img"
+          aria-label={alt}
+          className="absolute inset-0 flex items-center justify-center bg-muted/50"
+        >
+          <div className="text-center text-muted-foreground" aria-hidden="true">
             <svg
               className="w-8 h-8 mx-auto mb-2 opacity-50"
               fill="none"

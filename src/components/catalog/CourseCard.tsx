@@ -5,6 +5,7 @@ import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react"
 import LazyImage from "@/components/LazyImage";
 import { memo, useCallback, useState } from "react";
 import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
+import FavoriteButton from "@/components/favorites/FavoriteButton";
 import type { FuseResultMatch } from "fuse.js";
 
 interface CourseCardProps {
@@ -37,6 +38,7 @@ const levelConfig: Record<string, { bg: string; text: string; icon: string }> = 
 };
 
 const CourseCard = memo(({
+  id,
   slug,
   title,
   description,
@@ -244,13 +246,17 @@ const CourseCard = memo(({
               </div>
             )}
 
-            {/* Progress indicator */}
-            {progress !== undefined && progress > 0 && (
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                <span className="text-sm font-bold text-primary">{progress}%</span>
-              </div>
-            )}
+            <div className="flex items-center gap-2">
+                          {/* Progress indicator */}
+                          {progress !== undefined && progress > 0 && (
+                            <div className="flex items-center gap-2">
+                              <TrendingUp className="h-4 w-4 text-primary" />
+                              <span className="text-sm font-bold text-primary">{progress}%</span>
+                            </div>
+                          )}
+
+                          <FavoriteButton courseId={id} size="sm" />
+                        </div>
           </div>
         </div>
       </motion.div>

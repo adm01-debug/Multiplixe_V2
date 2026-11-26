@@ -1587,7 +1587,7 @@ O aluno ganhava moeda (GAME-006) mas não tinha o que fazer com ela além de cos
 
 ---
 
-#### GAME-009: Seasonal Events
+#### GAME-009: Seasonal Events ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Não há eventos sazonais.
@@ -1599,6 +1599,22 @@ O aluno ganhava moeda (GAME-006) mas não tinha o que fazer com ela além de cos
 3. Conquistas exclusivas temporárias
 4. Decorações na UI (opcional)
 ```
+
+**Entregue em 26/11/2026**
+
+Os quatro itens foram entregues: o item 4 (decorações na UI) saiu como faixa temática do evento no topo do dashboard, com emoji e prazo.
+
+- `supabase/migrations/20261128200000_eventos_sazonais.sql` (aplicada em produção): tabela `seasonal_events` (`slug` único, título, descrição, emoji, `starts_at`/`ends_at` com check de janela invertida, `xp_multiplier numeric(4,2)` com check de 1 a 4, `is_active`, autor), índice por janela, RLS (leitura do evento ativo ou para admin, escrita só admin) e `anon` revogado. `active_seasonal_multiplier()` devolve o multiplicador do evento vigente e entra em `get_xp_multiplier(uuid)`; como `add_user_xp` já pagava XP por `get_xp_multiplier` (`20261126060000_multiplicador_xp.sql:95`, `20261128203000_add_user_xp_precisao.sql:26`), o bônus do evento vale para todo XP concedido. `get_active_seasonal_event()` entrega o evento à UI e `get_my_xp_multiplier()` expõe o multiplicador e o rótulo ao aluno.
+- `supabase/migrations/20261128220000_conquistas_sazonais.sql` (aplicada em produção): `achievements` ganha `starts_at`, `ends_at` e `seasonal_event_id` (FK → `seasonal_events`, `on delete set null`), check de janela invertida e índice por evento; `public.conquista_disponivel(uuid)` libera a conquista só dentro da janela própria **e**, havendo evento amarrado, quando o evento está ativo e dentro do período dele; `check_and_award_achievements` pula conquistas fora da janela.
+- `src/hooks/useSeasonalEvent.ts`, `src/hooks/useXpMultiplier.ts`, `src/hooks/useAdminSeasonalEvents.ts` e `src/components/gamification/SeasonalEventBanner.tsx` (renderizada em `src/pages/Dashboard.tsx:259`): faixa do evento com emoji, prazo e multiplicador; `src/components/gamification/DailyChallenges.tsx` mostra o bônus ativo na recompensa.
+- `src/components/admin/AdminEventsTab.tsx` + aba **Eventos sazonais** em `src/pages/Admin.tsx`: CRUD completo do evento (título, emoji, período, multiplicador, ativar/desativar).
+- `src/lib/achievementSeason.ts` + selos em `src/components/AchievementsGrid.tsx` e `src/components/admin/AdminAchievementsTab.tsx`: a conquista mostra se está aguardando, vigente, encerrada ou com prazo do evento, e o formulário do admin ganhou seletor de evento e datas de disponibilidade.
+- Datas de formulário passam por `src/lib/datetimeInput.ts` (`paraInputLocal`), corrigindo o horário local em `AdminEventsTab`/`AdminMissionsTab`.
+
+**Verificado de verdade (produção):** as duas migrations aplicadas; 18 asserções em transação revertida antes da segunda (vencida/futura/evento desligado indisponíveis, vigente e evento ativo disponíveis, concessão automática ignorando conquistas fora da janela, janela invertida e evento inexistente rejeitados); `get_my_xp_multiplier()` chamada como `authenticated` devolveu `multiplier 1.00` sem erro; `seasonal_events` com RLS `on` e 2 policies.
+
+- `tsc` 0 erros · `eslint` 0 nos arquivos tocados · `vitest` 26/26 nos testes da funcionalidade (`adminAchievements`, `conquistasSazonais`), 85 testes unitários de guarda · guard de Supabase 0 violações · `vite build` OK · inventário regenerado.
+- Produção serve os chunks `AdminEventsTab-CcZM90EQ.js`, `useSeasonalEvent-DkXjl7H3.js`, `datetimeInput-BivwnUDp.js` e `DailyChallenges-2RF23aEj.js` (PR #91), e `AdminAchievementsTab-CxZTTHiv.js` + `achievementSeason-DgIWenPn.js` (PR #92), conferidos baixando os arquivos de `https://multiplixe-v2.vercel.app/assets/`.
 
 ---
 
@@ -2137,12 +2153,12 @@ CREATE TABLE public.webhook_endpoints (
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
-| Gamificação | 3 | ~20h |
+| Gamificação | 2 | ~14h |
 | Administrativas | 1 | ~4h |
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **16** | **~86h** |
+| **TOTAL PENDENTE** | **15** | **~80h** |
 
 ---
 

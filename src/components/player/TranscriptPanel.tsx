@@ -28,8 +28,8 @@ export function TranscriptPanel({ transcript, currentSeconds, onSeek }: Transcri
     const elemento = refAtiva.current;
     if (!lista || !elemento) return;
 
-    // rola somente a lista: a posicao do video na pagina nao muda
-    const topo = elemento.offsetTop - lista.offsetTop;
+    // a lista e position:relative, entao offsetTop do item ja e relativo a ela
+    const topo = elemento.offsetTop;
     if (topo < lista.scrollTop || topo + elemento.offsetHeight > lista.scrollTop + lista.clientHeight) {
       lista.scrollTop = Math.max(0, topo - lista.clientHeight / 2 + elemento.offsetHeight / 2);
     }

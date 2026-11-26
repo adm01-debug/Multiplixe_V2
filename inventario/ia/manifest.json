@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T09:58:53.425Z",
- "commit": "9504633612032c0dabaa9e365a2d7e9c6f3e8bb2",
- "branch": "claude/feat-func-007-mentoria-261126-0658",
+ "gerado_em": "2026-11-26T10:30:58.675Z",
+ "commit": "a1fee212ece8a2840284c93edb9fd6ebf7c44669",
+ "branch": "claude/feat-func-017-transcricao-aula-2611280745",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "e5574c801c47993c",
-  "baseline.json": "e56df84c2dcd3082",
-  "componentes.json": "13748f4e66b14cda",
-  "grafo.json": "8c9771bcea5bd827",
-  "hooks.json": "2bdec8495102ae56"
+  "INDEX.md": "481a90d1a87b607c",
+  "baseline.json": "e31b3e634d9a1663",
+  "componentes.json": "dd79ea9af46e87f9",
+  "grafo.json": "925160443bc59d32",
+  "hooks.json": "dfa93da0ee41b159"
  },
  "contagens": {
-  "arquivos": 609,
-  "arquivos_de_codigo": 497,
-  "linhas_de_codigo": 70671,
-  "componentes": 236,
+  "arquivos": 613,
+  "arquivos_de_codigo": 500,
+  "linhas_de_codigo": 71062,
+  "componentes": 237,
   "hooks": 129,
   "paginas": 28,
-  "testes": 82,
+  "testes": 83,
   "edge_functions": 13,
   "rotas": 28,
   "tabelas": 71,
-  "migrations": 75
+  "migrations": 76
  },
  "erros": []
 }

@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 497,
- "arestas": 1375,
+ "nos": 500,
+ "arestas": 1385,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -30,7 +30,7 @@
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 37
+   "importado_por": 38
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
@@ -50,7 +50,7 @@
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 20
+   "importado_por": 21
   },
   {
    "arquivo": "src/components/ui/select.tsx",
@@ -77,6 +77,10 @@
    "importado_por": 13
   },
   {
+   "arquivo": "src/lib/i18n.ts",
+   "importado_por": 13
+  },
+  {
    "arquivo": "src/components/admin/quiz-stats/types.ts",
    "importado_por": 12
   },
@@ -90,10 +94,6 @@
   },
   {
    "arquivo": "src/components/ui/tabs.tsx",
-   "importado_por": 11
-  },
-  {
-   "arquivo": "src/lib/i18n.ts",
    "importado_por": 11
   },
   {
@@ -1169,6 +1169,12 @@
    "src/components/pomodoro/PomodoroTimer.tsx",
    "src/components/ui/button.tsx"
   ],
+  "src/components/player/TranscriptPanel.tsx": [
+   "src/components/ui/input.tsx",
+   "src/lib/chapters.ts",
+   "src/lib/i18n.ts",
+   "src/lib/transcricao.ts"
+  ],
   "src/components/player/VideoControls.tsx": [
    "src/components/ui/dropdown-menu.tsx",
    "src/components/ui/slider.tsx",
@@ -1826,6 +1832,7 @@
    "src/lib/i18n.ts"
   ],
   "src/lib/toastHelpers.ts": [],
+  "src/lib/transcricao.ts": [],
   "src/lib/utils.ts": [],
   "src/main.tsx": [
    "src/App.tsx",
@@ -2012,10 +2019,12 @@
    "src/components/player/FloatingProgress.tsx",
    "src/components/player/LessonPlayerHeader.tsx",
    "src/components/player/LessonPlayerSidebar.tsx",
+   "src/components/player/TranscriptPanel.tsx",
    "src/components/player/VideoPlayer.tsx",
    "src/components/quiz/CourseQuizModal.tsx",
    "src/components/quiz/QuizCard.tsx",
    "src/components/ui/button.tsx",
+   "src/components/ui/skeleton.tsx",
    "src/hooks/useAchievements.ts",
    "src/hooks/useAuth.tsx",
    "src/hooks/useCertificates.ts",
@@ -2027,6 +2036,7 @@
    "src/hooks/useUserXP.ts",
    "src/integrations/supabase/client.ts",
    "src/lib/chapters.ts",
+   "src/lib/i18n.ts",
    "src/lib/platformSettings.ts"
   ],
   "src/pages/Mentorship.tsx": [
@@ -2420,6 +2430,11 @@
   ],
   "src/test/toastHelpers.test.ts": [
    "src/lib/toastHelpers.ts"
+  ],
+  "src/test/transcricao.test.tsx": [
+   "src/components/player/TranscriptPanel.tsx",
+   "src/lib/i18n.ts",
+   "src/lib/transcricao.ts"
   ],
   "src/test/useConfetti.test.ts": [
    "src/hooks/useConfetti.ts"

@@ -772,6 +772,10 @@
           "arquivo": "src/hooks/useStudyCalendar.ts"
         },
         {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
+        },
+        {
           "nome": "useToast",
           "arquivo": "src/hooks/use-toast.ts"
         },
@@ -942,7 +946,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 39,
+      "arquivos_lidos": 41,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2066,6 +2070,10 @@
           "arquivo": "src/hooks/useStudyCalendar.ts"
         },
         {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
+        },
+        {
           "nome": "useToast",
           "arquivo": "src/hooks/use-toast.ts"
         },
@@ -2283,6 +2291,10 @@
         {
           "nome": "useStudyCalendar",
           "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
         },
         {
           "nome": "useToast",
@@ -3723,10 +3735,13 @@
       "arquivo": "src/lib/i18n.ts",
       "rotas": [
         "/",
+        "/catalogo",
         "/curso/:slug/aula/:lessonId",
         "/dashboard",
         "/loja",
-        "/perfil"
+        "/perfil",
+        "/trilha/:slug",
+        "/trilhas"
       ]
     },
     "useTelemetry": {

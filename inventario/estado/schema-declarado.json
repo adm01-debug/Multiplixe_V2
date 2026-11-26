@@ -6,7 +6,7 @@
     "tabelas": 71,
     "tabelas_no_types": 71,
     "tabelas_nas_migrations": 71,
-    "colunas": 618,
+    "colunas": 619,
     "views": 1,
     "funcoes": 86,
     "funcoes_expostas_no_types": 56,
@@ -14,7 +14,7 @@
     "policies": 186,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 75,
+    "migrations": 76,
     "alertas": 3,
     "problemas": 3
   },
@@ -298,7 +298,7 @@
     "lessons": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 11,
+      "colunas": 12,
       "rls": true,
       "policies": 1,
       "triggers": [
@@ -308,7 +308,7 @@
       "indices": 1,
       "criada_em": "20251224124233_69bd4579-c04e-42bf-b0b6-a2dbee94cd0b.sql",
       "uso_no_codigo": {
-        "src": 10,
+        "src": 11,
         "edges": 0
       }
     },

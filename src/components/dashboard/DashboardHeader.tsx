@@ -4,9 +4,11 @@ import NotificationBell from '@/components/NotificationBell';
 import CacheIndicator from '@/components/ui/CacheIndicator';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route, Brain } from 'lucide-react';
+import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route, Brain, ShoppingBag } from 'lucide-react';
 import LanguageToggle from '@/components/LanguageToggle';
 import { useT } from '@/lib/i18n';
+import { useWallet } from '@/hooks/useWallet';
+import { formatNumber } from '@/lib/store';
 
 interface Props {
   userName: string;
@@ -21,6 +23,7 @@ interface Props {
 const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetching, onRefreshCourses, onSignOut }: Props) => {
   const { prefetchCatalog, prefetchLearningPaths, prefetchLeaderboard } = usePrefetchQuery();
   const { t } = useT();
+  const { data: carteira } = useWallet();
 
   return (
     <header className="sticky top-0 z-50 glass neon-border">
@@ -59,6 +62,12 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
             </PrefetchLink>
             <PrefetchLink to="/flashcards" prefetch="intent" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
               <Brain className="h-4 w-4" />{t('nav.flashcards')}
+            </PrefetchLink>
+            <PrefetchLink to="/loja" prefetch="intent" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
+              <ShoppingBag className="h-4 w-4" />{t('nav.store')}
+              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                {formatNumber(carteira?.coins ?? 0)}
+              </span>
             </PrefetchLink>
             {isAdmin && (
               <PrefetchLink to="/admin" prefetch="intent" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">

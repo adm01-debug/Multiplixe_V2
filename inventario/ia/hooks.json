@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 113,
+ "total": 121,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -31,6 +31,7 @@
   "useAchievements",
   "useAdminFlashcards",
   "useAdminRole",
+  "useAdminStoreItems",
   "useAuditLog",
   "useAuth",
   "useAvatarUpload",
@@ -45,6 +46,7 @@
   "useDebouncedCallback",
   "useDebouncedValue",
   "useDeleteFlashcard",
+  "useDeleteStoreItem",
   "useDepartmentLeaderboard",
   "useDiscussions",
   "useFlashcardOverview",
@@ -52,6 +54,7 @@
   "useFuzzySearch",
   "useFuzzySearchWithMatches",
   "useFuzzySearchWithScore",
+  "useGrantCoins",
   "useInfiniteScroll",
   "useIsMobile",
   "useLeaderboard",
@@ -76,21 +79,25 @@
   "usePrefetch",
   "usePrefetchQuery",
   "usePublicProfile",
+  "usePurchaseItem",
   "usePushNotifications",
   "useQuizStatsData",
   "useQuizzes",
   "useRateLimitLogs",
   "useSaveFlashcard",
+  "useSaveStoreItem",
   "useSecurityAlerts",
   "useSessionRotation",
   "useSmartRecommendations",
   "useStableCallback",
   "useStableMemo",
+  "useStoreItems",
   "useStreaks",
   "useStudyCalendar",
   "useStudySchedule",
   "useThrottledCallback",
   "useToggleFlashcard",
+  "useToggleStoreItem",
   "useUpdatePlatformSettings",
   "useUserAchievementsCached",
   "useUserLearningPathProgressCached",
@@ -102,6 +109,7 @@
   "useVideoKeyboard",
   "useVideoShortcuts",
   "useViewMode",
+  "useWallet",
   "useXPHistory"
  ],
  "hooks": {
@@ -171,6 +179,23 @@
     "src/pages/Admin.tsx",
     "src/pages/Dashboard.tsx",
     "src/pages/SecurityDashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useAdminStoreItems": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminStoreTab.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -262,6 +287,7 @@
     "src/hooks/useUserPreferences.ts",
     "src/hooks/useUserSessions.ts",
     "src/hooks/useUserXP.ts",
+    "src/hooks/useWallet.ts",
     "src/hooks/useXPHistory.ts",
     "src/hooks/useXpMultiplier.ts",
     "src/pages/Admin.tsx",
@@ -575,6 +601,23 @@
    ],
    "coberto_por_teste": true
   },
+  "useDeleteStoreItem": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminStoreTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useDeleteTrainingVideo": {
    "arquivo": "src/hooks/useTrainingVideos.ts",
    "linhas": 95,
@@ -708,6 +751,7 @@
    "edges": [],
    "usado_por": [
     "src/components/admin/AdminCoursesTab.tsx",
+    "src/components/admin/AdminStoreTab.tsx",
     "src/components/admin/AdminUsersTab.tsx",
     "src/components/admin/GeoBlockingManager.tsx",
     "src/components/admin/IPWhitelistManager.tsx",
@@ -779,6 +823,23 @@
     "src/components/goals/GoalsWidget.tsx"
    ],
    "coberto_por_teste": true
+  },
+  "useGrantCoins": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminStoreTab.tsx"
+   ],
+   "coberto_por_teste": false
   },
   "useInfiniteScroll": {
    "arquivo": "src/hooks/useInfiniteScroll.ts",
@@ -1219,6 +1280,23 @@
    ],
    "coberto_por_teste": false
   },
+  "usePurchaseItem": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Store.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "usePushNotifications": {
    "arquivo": "src/hooks/usePushNotifications.ts",
    "linhas": 131,
@@ -1359,6 +1437,23 @@
    ],
    "coberto_por_teste": true
   },
+  "useSaveStoreItem": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminStoreTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useSaveTrainingVideo": {
    "arquivo": "src/hooks/useTrainingVideos.ts",
    "linhas": 95,
@@ -1459,6 +1554,23 @@
    "usado_por": [],
    "coberto_por_teste": false
   },
+  "useStoreItems": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Store.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useStreaks": {
    "arquivo": "src/hooks/useStreaks.ts",
    "linhas": 124,
@@ -1521,7 +1633,7 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 146,
+   "linhas": 149,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1566,6 +1678,23 @@
    "edges": [],
    "usado_por": [
     "src/components/admin/AdminFlashcardsTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useToggleStoreItem": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminStoreTab.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -1811,6 +1940,24 @@
    "edges": [],
    "usado_por": [
     "src/pages/Catalog.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useWallet": {
+   "arquivo": "src/hooks/useWallet.ts",
+   "linhas": 244,
+   "tabelas": [
+    "store_items"
+   ],
+   "rpcs": [
+    "admin_grant_coins",
+    "get_my_wallet",
+    "purchase_store_item"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/dashboard/DashboardHeader.tsx",
+    "src/pages/Store.tsx"
    ],
    "coberto_por_teste": false
   },

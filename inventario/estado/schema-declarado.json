@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 63,
     "colunas": 525,
     "views": 1,
-    "funcoes": 48,
-    "funcoes_expostas_no_types": 36,
+    "funcoes": 49,
+    "funcoes_expostas_no_types": 37,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 60,
+    "migrations": 61,
     "alertas": 3,
     "problemas": 3
   },
@@ -1182,6 +1182,21 @@
       "criada_em": "20260102115559_.sql",
       "uso_no_codigo": {
         "src": 0,
+        "edges": 0
+      }
+    },
+    "get_category_leaderboard": {
+      "exposta_no_types": true,
+      "args": [
+        "p_category_id",
+        "p_limit"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126040000_ranking_por_categoria.sql",
+      "uso_no_codigo": {
+        "src": 1,
         "edges": 0
       }
     },

@@ -7,9 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RankBadge from '@/components/RankBadge';
 import DepartmentLeaderboard from '@/components/leaderboard/DepartmentLeaderboard';
+import CategoryLeaderboard from '@/components/leaderboard/CategoryLeaderboard';
 import EmptyState from '@/components/EmptyState';
 import { LeaderboardSkeleton } from '@/components/skeletons/PageSkeletons';
-import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2 } from 'lucide-react';
+import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2, Award } from 'lucide-react';
 import { calculateUserLevel } from '@/lib/levelSystem';
 
 const periodOptions: { value: LeaderboardPeriod; label: string; icon: typeof Calendar }[] = [
@@ -112,7 +113,7 @@ const Leaderboard = () => {
       <main id="main-content" className="container mx-auto px-4 py-8 space-y-8">
         {/* Tabs: Individual vs Teams */}
         <Tabs defaultValue="individual" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
+          <TabsList className="grid w-full max-w-2xl grid-cols-3 mb-6">
             <TabsTrigger value="individual" className="gap-2">
               <Users className="h-4 w-4" />
               Individual
@@ -120,6 +121,10 @@ const Leaderboard = () => {
             <TabsTrigger value="teams" className="gap-2">
               <Building2 className="h-4 w-4" />
               Por Departamento
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="gap-2">
+              <Award className="h-4 w-4" />
+              Por Categoria
             </TabsTrigger>
           </TabsList>
 
@@ -242,6 +247,10 @@ const Leaderboard = () => {
 
           <TabsContent value="teams">
             <DepartmentLeaderboard limit={20} />
+          </TabsContent>
+
+          <TabsContent value="categories">
+            <CategoryLeaderboard limit={3} />
           </TabsContent>
         </Tabs>
       </main>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -99,10 +100,10 @@ const AdminWorkflowsTab = () => {
                     <p className="text-sm text-muted-foreground mt-1">{w.description || 'Sem descrição'}</p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="icon" aria-label="Editar workflow" variant="ghost" onClick={() => openEdit(w)}><Pencil className="h-4 w-4" /></Button>
-                    <Button size="icon" aria-label="Excluir workflow" variant="ghost" onClick={() => { if (confirm('Excluir workflow?')) del.mutate(w.id); }}>
+                    <IconTooltip label="Editar workflow"><Button size="icon" aria-label="Editar workflow" variant="ghost" onClick={() => openEdit(w)}><Pencil className="h-4 w-4" /></Button></IconTooltip>
+                    <IconTooltip label="Excluir workflow"><Button size="icon" aria-label="Excluir workflow" variant="ghost" onClick={() => { if (confirm('Excluir workflow?')) del.mutate(w.id); }}>
                       <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    </Button></IconTooltip>
                   </div>
                 </div>
               </CardHeader>
@@ -170,7 +171,7 @@ const AdminWorkflowsTab = () => {
                       </Select>
                       <Input aria-label="Título do passo" placeholder="Título" value={step.title} onChange={e => updateStep(idx, { title: e.target.value })} className="col-span-2" />
                     </div>
-                    <Button size="icon" aria-label="Remover etapa" variant="ghost" onClick={() => removeStep(idx)}><X className="h-4 w-4" /></Button>
+                    <IconTooltip label="Remover etapa"><Button size="icon" aria-label="Remover etapa" variant="ghost" onClick={() => removeStep(idx)}><X className="h-4 w-4" /></Button></IconTooltip>
                   </div>
                   <div className="grid grid-cols-2 gap-2 ml-8">
                     <Input aria-label="ID do recurso do passo" placeholder="ID do recurso (opcional)" value={step.resource_id || ''} onChange={e => updateStep(idx, { resource_id: e.target.value })} />

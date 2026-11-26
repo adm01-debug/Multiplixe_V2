@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -78,9 +79,9 @@ const QuizQuestionCard = ({
                 className={option.is_correct ? 'border-green-500' : ''}
               />
               {question.options.length > 2 && (
-                <Button variant="ghost" size="icon" aria-label="Remover opção" onClick={() => onRemoveOption(oIndex)}>
+                <IconTooltip label="Remover opção"><Button variant="ghost" size="icon" aria-label="Remover opção" onClick={() => onRemoveOption(oIndex)}>
                   <Trash2 className="w-4 h-4 text-muted-foreground" />
-                </Button>
+                </Button></IconTooltip>
               )}
             </div>
           ))}

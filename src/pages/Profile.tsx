@@ -5,6 +5,7 @@ import { useUserXP } from '@/hooks/useUserXP';
 import { useAchievements } from '@/hooks/useAchievements';
 import { useCertificates } from '@/hooks/useCertificates';
 import { supabase } from '@/integrations/supabase/client';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
@@ -22,7 +23,7 @@ import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, CertificateCardSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
-import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2, Globe, Link2 } from 'lucide-react';
+import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2, Globe, Link2, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import LanguageToggle from '@/components/LanguageToggle';
 
@@ -156,10 +157,10 @@ const Profile = () => {
   ];
 
   const statCards = [
-    { label: 'Aulas Concluídas', value: stats?.totalLessonsCompleted || 0, icon: CheckCircle, gradient: 'from-emerald-500 to-teal-500' },
-    { label: 'Cursos Concluídos', value: stats?.totalCoursesCompleted || 0, icon: Trophy, gradient: 'from-amber-500 to-orange-500' },
-    { label: 'Em Progresso', value: stats?.totalCoursesInProgress || 0, icon: TrendingUp, gradient: 'from-blue-500 to-cyan-500' },
-    { label: 'Minutos Assistidos', value: stats?.totalWatchedMinutes || 0, icon: Clock, gradient: 'from-purple-500 to-pink-500' },
+      { label: 'Aulas Conclu\u00eddas', value: stats?.totalLessonsCompleted || 0, icon: CheckCircle, gradient: 'from-emerald-500 to-teal-500', tooltip: 'Total de aulas marcadas como conclu\u00eddas' },
+      { label: 'Cursos Conclu\u00eddos', value: stats?.totalCoursesCompleted || 0, icon: Trophy, gradient: 'from-amber-500 to-orange-500', tooltip: 'Cursos com 100% das aulas conclu\u00eddas' },
+      { label: 'Em Progresso', value: stats?.totalCoursesInProgress || 0, icon: TrendingUp, gradient: 'from-blue-500 to-cyan-500', tooltip: 'Cursos come\u00e7ados e ainda n\u00e3o finalizados' },
+      { label: 'Minutos Assistidos', value: stats?.totalWatchedMinutes || 0, icon: Clock, gradient: 'from-purple-500 to-pink-500', tooltip: 'Tempo total de v\u00eddeo assistido nas aulas' },
   ];
 
   return (
@@ -240,7 +241,12 @@ const Profile = () => {
             {statCards.map((stat) => { const IC = stat.icon; return (
               <div key={stat.label} className="group relative p-6 rounded-2xl bg-card/80 border border-border/50 neon-card hover:-translate-y-1 transition-all duration-300">
                 <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}><IC className="h-6 w-6 text-white" /></div>
-                <div className="text-3xl font-display font-bold text-foreground mb-1">{stat.value}</div><p className="text-sm text-muted-foreground">{stat.label}</p>
+                            <div className="text-3xl font-display font-bold text-foreground mb-1">{stat.value}</div>
+                            <div className="flex items-center gap-1"><p className="text-sm text-muted-foreground">{stat.label}</p>
+                              <IconTooltip label={stat.tooltip}>
+                                <span className="text-muted-foreground/50 hover:text-primary transition-colors" aria-label={stat.tooltip}><Info className="h-3.5 w-3.5" /></span>
+                              </IconTooltip>
+                            </div>
               </div>
             ); })}
           </div>

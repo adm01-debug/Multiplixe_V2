@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
@@ -268,10 +269,10 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/curso/${course.slug}`)} title="Visualizar"><Eye className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setSelectedCourse(course); setLessonsManagerOpen(true); }} title="Gerenciar aulas"><Play className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setEditingCourse(course); setCourseFormOpen(true); }} title="Editar"><Edit className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" onClick={() => setDeletingCourse(course)} title="Excluir"><Trash2 className="h-4 w-4" /></Button>
+                      <IconTooltip label="Visualizar"><Button aria-label={"Visualizar"} variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/curso/${course.slug}`)}><Eye className="h-4 w-4" /></Button></IconTooltip>
+                      <IconTooltip label="Gerenciar aulas"><Button aria-label={"Gerenciar aulas"} variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setSelectedCourse(course); setLessonsManagerOpen(true); }}><Play className="h-4 w-4" /></Button></IconTooltip>
+                      <IconTooltip label="Editar"><Button aria-label={"Editar"} variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setEditingCourse(course); setCourseFormOpen(true); }}><Edit className="h-4 w-4" /></Button></IconTooltip>
+                      <IconTooltip label="Excluir"><Button aria-label={"Excluir"} variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" onClick={() => setDeletingCourse(course)}><Trash2 className="h-4 w-4" /></Button></IconTooltip>
                     </div>
                   </TableCell>
                 </TableRow>

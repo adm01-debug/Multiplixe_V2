@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -84,10 +85,10 @@ const AdminAssessmentsTab = () => {
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="icon" aria-label="Editar avaliação" variant="ghost" onClick={() => openEdit(a)}><Pencil className="h-4 w-4" /></Button>
-                    <Button size="icon" aria-label="Excluir avaliação" variant="ghost" onClick={() => { if (confirm('Excluir avaliação?')) del.mutate(a.id); }}>
+                    <IconTooltip label="Editar avaliação"><Button size="icon" aria-label="Editar avaliação" variant="ghost" onClick={() => openEdit(a)}><Pencil className="h-4 w-4" /></Button></IconTooltip>
+                    <IconTooltip label="Excluir avaliação"><Button size="icon" aria-label="Excluir avaliação" variant="ghost" onClick={() => { if (confirm('Excluir avaliação?')) del.mutate(a.id); }}>
                       <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    </Button></IconTooltip>
                   </div>
                 </div>
               </CardHeader>

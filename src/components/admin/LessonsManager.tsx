@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
@@ -230,7 +231,7 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center justify-center gap-1">
-                            <Button
+                            <IconTooltip label="Editar aula"><Button
                               variant="ghost"
                               size="icon" aria-label="Editar aula"
                               className="h-8 w-8"
@@ -240,15 +241,15 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
                               }}
                             >
                               <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
+                            </Button></IconTooltip>
+                            <IconTooltip label="Excluir aula"><Button
                               variant="ghost"
                               size="icon" aria-label="Excluir aula"
                               className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
                               onClick={() => setDeletingLesson(lesson)}
                             >
                               <Trash2 className="h-4 w-4" />
-                            </Button>
+                            </Button></IconTooltip>
                           </div>
                         </TableCell>
                       </TableRow>

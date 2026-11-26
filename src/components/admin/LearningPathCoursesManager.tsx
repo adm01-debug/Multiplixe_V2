@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import IconTooltip from '@/components/ui/icon-tooltip';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
@@ -275,7 +276,7 @@ export function LearningPathCoursesManager({
                       </div>
 
                       <div className="flex items-center gap-1">
-                        <Button
+                        <IconTooltip label="Mover curso para cima"><Button
                           variant="ghost"
                           size="icon" aria-label="Mover curso para cima"
                           className="h-8 w-8"
@@ -283,8 +284,8 @@ export function LearningPathCoursesManager({
                           disabled={index === 0 || saving}
                         >
                           <MoveUp className="h-4 w-4" />
-                        </Button>
-                        <Button
+                        </Button></IconTooltip>
+                        <IconTooltip label="Mover curso para baixo"><Button
                           variant="ghost"
                           size="icon" aria-label="Mover curso para baixo"
                           className="h-8 w-8"
@@ -292,8 +293,8 @@ export function LearningPathCoursesManager({
                           disabled={index === pathCourses.length - 1 || saving}
                         >
                           <MoveDown className="h-4 w-4" />
-                        </Button>
-                        <Button
+                        </Button></IconTooltip>
+                        <IconTooltip label="Remover curso da trilha"><Button
                           variant="ghost"
                           size="icon" aria-label="Remover curso da trilha"
                           className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
@@ -301,7 +302,7 @@ export function LearningPathCoursesManager({
                           disabled={saving}
                         >
                           <Trash2 className="h-4 w-4" />
-                        </Button>
+                        </Button></IconTooltip>
                       </div>
                     </div>
                   </CardContent>

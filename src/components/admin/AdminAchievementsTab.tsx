@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { Award, Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import IconTooltip from "@/components/ui/icon-tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -209,24 +210,28 @@ const AdminAchievementsTab = () => {
                     <TableCell className="text-sm">{row.xp_reward} XP</TableCell>
                     <TableCell className="text-sm">{unlockCounts[row.id] ?? 0}</TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => openEdit(row)}
-                        aria-label={`Editar ${row.name}`}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
-                        onClick={() => setDeleting(row)}
-                        aria-label={`Excluir ${row.name}`}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                                          <IconTooltip label={`Editar ${row.name}`}>
+                                            <Button
+                                              variant="ghost"
+                                              size="icon"
+                                              className="h-8 w-8"
+                                              onClick={() => openEdit(row)}
+                                              aria-label={`Editar ${row.name}`}
+                                            >
+                                              <Pencil className="h-4 w-4" />
+                                            </Button>
+                                          </IconTooltip>
+                                          <IconTooltip label={`Excluir ${row.name}`}>
+                                            <Button
+                                              variant="ghost"
+                                              size="icon"
+                                              className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                                              onClick={() => setDeleting(row)}
+                                              aria-label={`Excluir ${row.name}`}
+                                            >
+                                              <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                          </IconTooltip>
                     </TableCell>
                   </TableRow>
                 ))}

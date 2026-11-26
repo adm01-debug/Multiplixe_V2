@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (74)
+### ✅ Melhorias JÁ IMPLEMENTADAS (75)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,9 +44,9 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (25)
+## ⏳ MELHORIAS PENDENTES (24)
 
-### 🎨 UX/UI - 3 Pendentes
+### 🎨 UX/UI - 2 Pendentes
 
 #### UI-004: Feedback Visual em Ações ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -81,7 +81,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-#### UI-006: Tooltips Informativos
+#### UI-006: Tooltips Informativos ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** Faltam tooltips em ícones de ação.
@@ -92,6 +92,15 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 2. Locais: Dashboard stats, Profile stats, Admin actions
 3. Usar TooltipProvider já configurado
 ```
+
+**Status:** ✅ CONCLUÍDO
+
+- `src/components/ui/icon-tooltip.tsx` (novo): wrapper padrão de tooltip para ícone de ação. Traz o próprio `TooltipProvider` (funciona em diálogo, ilha e teste), aplica `aria-label` no gatilho e exibe o rótulo real — não só o `title` nativo do navegador.
+- **Ações de admin:** 21 botões de ícone em `AdminCoursesTab` (4), `LearningPathsManager` (4), `AdminWorkflowsTab` (3), `LearningPathCoursesManager` (3), `LessonsManager` (2), `AdminVideosTab` (2), `AdminPlaybooksTab` (2), `AdminAssessmentsTab` (2), `AdminAchievementsTab` (2), `QuizQuestionCard`, `IPWhitelistManager` e `GeoBlockingManager` passaram a usar o wrapper. Os `title=` antigos (dependiam do tooltip cinza do navegador) foram removidos e substituídos por `aria-label` explícito.
+- **Stats com explicação:** `DashboardStatsGrid` ganhou `tooltip` no `StatItem` e mostra um ícone de informação que explica a métrica; `Dashboard` explica os 4 cards (em andamento, concluídos, XP, sequência) e `Profile` os 4 do perfil (aulas, cursos, em progresso, minutos).
+- `src/test/iconTooltip.test.tsx` (novo, 2 casos): nome acessível + tooltip no gatilho e o card com ícone de informação. O teste de guarda `iconButtonLabels.test.ts` continua passando — nenhum botão de ícone ficou sem nome acessível.
+
+**Verificação:** `tsc -b --force` 0 · `eslint` 0 erros (3 warnings herdados de hooks) · suíte **72 arquivos / 555 testes** · guard de botões de ícone verde.
 
 ---
 
@@ -1976,7 +1985,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 3 | ~12h |
+| UX/UI | 2 | ~10h |
 | Performance | 1 | ~4h |
 | Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
@@ -1987,7 +1996,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **25** | **~136h** |
+| **TOTAL PENDENTE** | **24** | **~134h** |
 
 ---
 

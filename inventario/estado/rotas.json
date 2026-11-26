@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 104,
+    "hooks_distintos": 109,
     "problemas": 0
   },
   "rotas": [
@@ -268,11 +268,15 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 60,
+      "arquivos_lidos": 64,
       "hooks": [
         {
           "nome": "useAdminFlashcards",
           "arquivo": "src/hooks/useFlashcards.ts"
+        },
+        {
+          "nome": "useAdminMissions",
+          "arquivo": "src/hooks/useAdminMissions.ts"
         },
         {
           "nome": "useAdminRole",
@@ -281,6 +285,10 @@
         {
           "nome": "useAdminStoreItems",
           "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
+          "nome": "useAlternarMissao",
+          "arquivo": "src/hooks/useAdminMissions.ts"
         },
         {
           "nome": "useAuth",
@@ -315,6 +323,10 @@
           "arquivo": "src/hooks/useOnboardingWorkflow.ts"
         },
         {
+          "nome": "useExcluirMissao",
+          "arquivo": "src/hooks/useAdminMissions.ts"
+        },
+        {
           "nome": "useFuzzySearch",
           "arquivo": "src/hooks/useFuzzySearch.ts"
         },
@@ -337,6 +349,10 @@
         {
           "nome": "useQuizStatsData",
           "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts"
+        },
+        {
+          "nome": "useSalvarMissao",
+          "arquivo": "src/hooks/useAdminMissions.ts"
         },
         {
           "nome": "useSaveAssessment",
@@ -367,6 +383,10 @@
           "arquivo": "src/hooks/useSkillAssessments.ts"
         },
         {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
+        },
+        {
           "nome": "useToggleFlashcard",
           "arquivo": "src/hooks/useFlashcards.ts"
         },
@@ -393,14 +413,17 @@
       "rpcs": [
         "admin_grant_coins",
         "create_audit_log",
+        "get_admin_department_challenges",
         "get_due_assessments",
         "get_due_flashcards",
         "get_flashcard_overview",
         "get_leaderboard",
+        "get_my_department_challenges",
         "get_my_wallet",
         "has_role",
         "purchase_store_item",
         "register_playbook_view",
+        "resgatar_desafio_departamento",
         "review_flashcard"
       ],
       "tabelas": [
@@ -409,6 +432,7 @@
         "categories",
         "certificates",
         "courses",
+        "department_challenges",
         "flashcards",
         "learning_path_courses",
         "learning_paths",
@@ -1838,7 +1862,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 17,
+      "arquivos_lidos": 20,
       "hooks": [
         {
           "nome": "useAdminRole",
@@ -1853,6 +1877,10 @@
           "arquivo": "src/hooks/useCategoryLeaderboard.ts"
         },
         {
+          "nome": "useDepartmentChallenges",
+          "arquivo": "src/hooks/useDepartmentChallenges.ts"
+        },
+        {
           "nome": "useDepartmentLeaderboard",
           "arquivo": "src/hooks/useDepartmentLeaderboard.ts"
         },
@@ -1863,6 +1891,10 @@
         {
           "nome": "useLeague",
           "arquivo": "src/hooks/useLeague.ts"
+        },
+        {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
         }
       ],
       "buckets": [],
@@ -1874,10 +1906,12 @@
         "get_category_leaderboard",
         "get_department_leaderboard",
         "get_leaderboard",
+        "get_my_department_challenges",
         "get_my_league",
         "get_user_rank",
         "has_role",
-        "refresh_leagues"
+        "refresh_leagues",
+        "resgatar_desafio_departamento"
       ],
       "tabelas": [],
       "imports_quebrados": []
@@ -3169,6 +3203,12 @@
         "/admin"
       ]
     },
+    "useAdminMissions": {
+      "arquivo": "src/hooks/useAdminMissions.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useAdminRole": {
       "arquivo": "src/hooks/useAdminRole.ts",
       "rotas": [
@@ -3186,6 +3226,12 @@
     },
     "useAdminStoreItems": {
       "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useAlternarMissao": {
+      "arquivo": "src/hooks/useAdminMissions.ts",
       "rotas": [
         "/admin"
       ]
@@ -3354,6 +3400,12 @@
         "/admin"
       ]
     },
+    "useDepartmentChallenges": {
+      "arquivo": "src/hooks/useDepartmentChallenges.ts",
+      "rotas": [
+        "/ranking"
+      ]
+    },
     "useDepartmentLeaderboard": {
       "arquivo": "src/hooks/useDepartmentLeaderboard.ts",
       "rotas": [
@@ -3372,6 +3424,12 @@
       "rotas": [
         "/avaliacoes",
         "/dashboard"
+      ]
+    },
+    "useExcluirMissao": {
+      "arquivo": "src/hooks/useAdminMissions.ts",
+      "rotas": [
+        "/admin"
       ]
     },
     "useFavorites": {
@@ -3702,6 +3760,12 @@
         "/mentoria"
       ]
     },
+    "useSalvarMissao": {
+      "arquivo": "src/hooks/useAdminMissions.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useSaveAssessment": {
       "arquivo": "src/hooks/useSkillAssessments.ts",
       "rotas": [
@@ -3816,11 +3880,13 @@
       "arquivo": "src/lib/i18n.ts",
       "rotas": [
         "/",
+        "/admin",
         "/catalogo",
         "/curso/:slug/aula/:lessonId",
         "/dashboard",
         "/loja",
         "/perfil",
+        "/ranking",
         "/trilha/:slug",
         "/trilhas",
         "/usuario/:id"

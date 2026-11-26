@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 71,
-    "tabelas_no_types": 71,
-    "tabelas_nas_migrations": 71,
-    "colunas": 620,
+    "tabelas": 73,
+    "tabelas_no_types": 73,
+    "tabelas_nas_migrations": 73,
+    "colunas": 638,
     "views": 1,
-    "funcoes": 91,
-    "funcoes_expostas_no_types": 60,
+    "funcoes": 95,
+    "funcoes_expostas_no_types": 64,
     "enums": 1,
-    "policies": 187,
+    "policies": 190,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 78,
+    "migrations": 79,
     "alertas": 3,
     "problemas": 3
   },
@@ -161,6 +161,36 @@
       "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
       "uso_no_codigo": {
         "src": 0,
+        "edges": 0
+      }
+    },
+    "department_challenge_claims": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 5,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20261128180000_desafios_departamento.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "department_challenges": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 13,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "update_department_challenges_updated_at"
+      ],
+      "indices": 2,
+      "criada_em": "20261128180000_desafios_departamento.sql",
+      "uso_no_codigo": {
+        "src": 4,
         "edges": 0
       }
     },
@@ -543,7 +573,7 @@
         "trigger_recalcular_reputacao",
         "update_profiles_updated_at"
       ],
-      "indices": 0,
+      "indices": 1,
       "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
       "uso_no_codigo": {
         "src": 22,
@@ -1473,6 +1503,20 @@
         "edges": 1
       }
     },
+    "department_challenge_progresso": {
+      "exposta_no_types": true,
+      "args": [
+        "p_challenge_id"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128180000_desafios_departamento.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "detalhar_reputacao": {
       "exposta_no_types": true,
       "args": [
@@ -1509,6 +1553,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261126180000_quiz_adaptativo.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_admin_department_challenges": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128180000_desafios_departamento.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1620,6 +1676,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261126050000_desafios_semanais.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_my_department_challenges": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128180000_desafios_departamento.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -2193,6 +2261,20 @@
         "edges": 0
       }
     },
+    "resgatar_desafio_departamento": {
+      "exposta_no_types": true,
+      "args": [
+        "p_challenge_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128180000_desafios_departamento.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "respond_mentorship_request": {
       "exposta_no_types": true,
       "args": [
@@ -2385,6 +2467,7 @@
       "detalhe": [
         "coin_transactions",
         "daily_challenges",
+        "department_challenge_claims",
         "password_reset_tokens",
         "platform_stats_cache",
         "playbook_views",
@@ -2405,6 +2488,7 @@
         "check_due_assessment_notifications",
         "check_rate_limit",
         "check_streak_risk_notifications",
+        "department_challenge_progresso",
         "get_recommended_courses",
         "get_user_permissions",
         "has_permission",

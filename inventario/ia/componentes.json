@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 238,
+ "total": 240,
  "orfaos": [
   "src/components/admin/AdminTopPlaybooksWidget.tsx",
   "src/components/admin/AdminVideoEngagementWidget.tsx",
@@ -342,6 +342,23 @@
    "tabelas": [
     "lessons"
    ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/AdminMissionsTab.tsx",
+   "exports": [],
+   "linhas": 372,
+   "hooks": [
+    "useAdminMissions",
+    "useAlternarMissao",
+    "useExcluirMissao",
+    "useMemo",
+    "useSalvarMissao",
+    "useState"
+   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false
@@ -1270,6 +1287,19 @@
     "useEffect",
     "useState",
     "useXpMultiplier"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/gamification/DepartmentChallenges.tsx",
+   "exports": [],
+   "linhas": 174,
+   "hooks": [
+    "useDepartmentChallenges",
+    "useT"
    ],
    "tabelas": [],
    "edges": [],
@@ -2539,7 +2569,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 60,
+   "usado_por": 62,
    "orfao": false
   },
   {
@@ -2585,7 +2615,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 136,
+   "usado_por": 138,
    "orfao": false
   },
   {
@@ -2790,7 +2820,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 38,
+   "usado_por": 39,
    "orfao": false
   },
   {
@@ -2936,7 +2966,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 21,
+   "usado_por": 22,
    "orfao": false
   },
   {
@@ -2976,7 +3006,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 22,
+   "usado_por": 23,
    "orfao": false
   },
   {
@@ -3092,13 +3122,13 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 72,
+   "usado_por": 73,
    "orfao": false
   },
   {
    "arquivo": "src/pages/Admin.tsx",
    "exports": [],
-   "linhas": 318,
+   "linhas": 325,
    "hooks": [
     "useAdminRole",
     "useAuth",
@@ -3278,7 +3308,7 @@
   {
    "arquivo": "src/pages/Leaderboard.tsx",
    "exports": [],
-   "linhas": 271,
+   "linhas": 275,
    "hooks": [
     "useAuth",
     "useCallback",

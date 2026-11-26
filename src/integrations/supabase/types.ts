@@ -363,6 +363,78 @@ export type Database = {
         }
         Relationships: []
       }
+      department_challenge_claims: {
+        Row: {
+          challenge_id: string
+          claimed_at: string
+          id: string
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          challenge_id: string
+          claimed_at?: string
+          id?: string
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          challenge_id?: string
+          claimed_at?: string
+          id?: string
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: []
+      }
+      department_challenges: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          department: string | null
+          description: string | null
+          ends_at: string
+          id: string
+          is_active: boolean
+          metric: string
+          starts_at: string
+          target_value: number
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          description?: string | null
+          ends_at: string
+          id?: string
+          is_active?: boolean
+          metric?: string
+          starts_at?: string
+          target_value: number
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          description?: string | null
+          ends_at?: string
+          id?: string
+          is_active?: boolean
+          metric?: string
+          starts_at?: string
+          target_value?: number
+          title?: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       discussion_replies: {
         Row: {
           content: string
@@ -2945,10 +3017,19 @@ export type Database = {
         }
         Returns: string
       }
+      department_challenge_progresso: {
+        Args: { p_challenge_id: string }
+        Returns: {
+          membros: number
+          participantes: number
+          progresso: number
+        }[]
+      }
       detalhar_reputacao: {
         Args: { p_user_id: string }
         Returns: Json
       }
+      get_admin_department_challenges: { Args: never; Returns: Json }
       get_adaptive_quiz_plan: {
         Args: { p_limit?: number; p_quiz_id: string }
         Returns: Json
@@ -3270,8 +3351,13 @@ export type Database = {
       }
       get_mentors: { Args: { p_busca?: string }; Returns: Json }
       get_my_mentorship: { Args: never; Returns: Json }
+      get_my_department_challenges: { Args: never; Returns: Json }
       mentor_disponivel: { Args: { p_user_id: string }; Returns: boolean }
       recalcular_reputacao_perfil: { Args: never; Returns: undefined }
+      resgatar_desafio_departamento: {
+        Args: { p_challenge_id: string }
+        Returns: Json
+      }
       respond_mentorship_request: {
         Args: { p_id: string; p_nota?: string; p_status: string }
         Returns: Json

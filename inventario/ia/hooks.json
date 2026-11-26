@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 132,
+ "total": 137,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -31,8 +31,10 @@
   "useAchievements",
   "useActivatePowerup",
   "useAdminFlashcards",
+  "useAdminMissions",
   "useAdminRole",
   "useAdminStoreItems",
+  "useAlternarMissao",
   "useAuditLog",
   "useAuth",
   "useAvatarUpload",
@@ -48,8 +50,10 @@
   "useDebouncedValue",
   "useDeleteFlashcard",
   "useDeleteStoreItem",
+  "useDepartmentChallenges",
   "useDepartmentLeaderboard",
   "useDiscussions",
+  "useExcluirMissao",
   "useFlashcardOverview",
   "useFlashcardSession",
   "useFuzzySearch",
@@ -87,6 +91,7 @@
   "useQuizStatsData",
   "useQuizzes",
   "useRateLimitLogs",
+  "useSalvarMissao",
   "useSaveFlashcard",
   "useSaveStoreItem",
   "useSecurityAlerts",
@@ -178,6 +183,21 @@
    ],
    "coberto_por_teste": false
   },
+  "useAdminMissions": {
+   "arquivo": "src/hooks/useAdminMissions.ts",
+   "linhas": 120,
+   "tabelas": [
+    "department_challenges"
+   ],
+   "rpcs": [
+    "get_admin_department_challenges"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminMissionsTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useAdminRole": {
    "arquivo": "src/hooks/useAdminRole.ts",
    "linhas": 39,
@@ -212,6 +232,21 @@
    "edges": [],
    "usado_por": [
     "src/components/admin/AdminStoreTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useAlternarMissao": {
+   "arquivo": "src/hooks/useAdminMissions.ts",
+   "linhas": 120,
+   "tabelas": [
+    "department_challenges"
+   ],
+   "rpcs": [
+    "get_admin_department_challenges"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminMissionsTab.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -274,6 +309,7 @@
     "src/hooks/useAuditLog.ts",
     "src/hooks/useAvatarUpload.ts",
     "src/hooks/useDailyChallenges.ts",
+    "src/hooks/useDepartmentChallenges.ts",
     "src/hooks/useDiscussions.ts",
     "src/hooks/useFavorites.ts",
     "src/hooks/useFlashcards.ts",
@@ -664,6 +700,20 @@
    ],
    "coberto_por_teste": true
   },
+  "useDepartmentChallenges": {
+   "arquivo": "src/hooks/useDepartmentChallenges.ts",
+   "linhas": 138,
+   "tabelas": [],
+   "rpcs": [
+    "get_my_department_challenges",
+    "resgatar_desafio_departamento"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/gamification/DepartmentChallenges.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useDepartmentLeaderboard": {
    "arquivo": "src/hooks/useDepartmentLeaderboard.ts",
    "linhas": 39,
@@ -711,6 +761,21 @@
     "src/pages/SkillAssessments.tsx"
    ],
    "coberto_por_teste": true
+  },
+  "useExcluirMissao": {
+   "arquivo": "src/hooks/useAdminMissions.ts",
+   "linhas": 120,
+   "tabelas": [
+    "department_challenges"
+   ],
+   "rpcs": [
+    "get_admin_department_challenges"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminMissionsTab.tsx"
+   ],
+   "coberto_por_teste": false
   },
   "useFavorites": {
    "arquivo": "src/hooks/useFavorites.ts",
@@ -1532,6 +1597,21 @@
    ],
    "coberto_por_teste": true
   },
+  "useSalvarMissao": {
+   "arquivo": "src/hooks/useAdminMissions.ts",
+   "linhas": 120,
+   "tabelas": [
+    "department_challenges"
+   ],
+   "rpcs": [
+    "get_admin_department_challenges"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminMissionsTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useSaveAssessment": {
    "arquivo": "src/hooks/useSkillAssessments.ts",
    "linhas": 148,
@@ -1787,7 +1867,7 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 440,
+   "linhas": 543,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1795,11 +1875,13 @@
     "src/components/LanguageToggle.tsx",
     "src/components/admin/LessonForm.tsx",
     "src/components/dashboard/DashboardHeader.tsx",
+    "src/components/gamification/DepartmentChallenges.tsx",
     "src/components/navigation/MobileBottomNav.tsx",
     "src/components/player/ChaptersPanel.tsx",
     "src/components/player/TranscriptPanel.tsx",
     "src/components/profile/ReputacaoCard.tsx",
     "src/components/ui/ThemeCustomizer.tsx",
+    "src/hooks/useDepartmentChallenges.ts",
     "src/pages/Catalog.tsx",
     "src/pages/LessonPlayer.tsx",
     "src/pages/PublicProfile.tsx",

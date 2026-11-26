@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RankBadge from '@/components/RankBadge';
 import DepartmentLeaderboard from '@/components/leaderboard/DepartmentLeaderboard';
+import DepartmentChallenges from '@/components/gamification/DepartmentChallenges';
 import CategoryLeaderboard from '@/components/leaderboard/CategoryLeaderboard';
 import LeaguePanel from '@/components/leaderboard/LeaguePanel';
 import EmptyState from '@/components/EmptyState';
@@ -255,7 +256,10 @@ const Leaderboard = () => {
           </TabsContent>
 
           <TabsContent value="teams">
+            <div className="space-y-4">
             <DepartmentLeaderboard limit={20} />
+            <DepartmentChallenges limit={5} />
+          </div>
           </TabsContent>
 
           <TabsContent value="categories">

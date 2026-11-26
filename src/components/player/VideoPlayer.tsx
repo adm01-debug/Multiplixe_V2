@@ -35,6 +35,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showSpeedIndicator, setShowSpeedIndicator] = useState(false);
   const [showSkipIndicator, setShowSkipIndicator] = useState<{ direction: 'forward' | 'backward'; seconds: number } | null>(null);
+  const [isPiPSupported, setIsPiPSupported] = useState(false);
+  const [isPiPActive, setIsPiPActive] = useState(false);
 
   useImperativeHandle(ref, () => ({
     seek: (seconds: number) => {
@@ -155,6 +157,54 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
       : containerRef.current.requestFullscreen().catch(() => {});
   }, []);
 
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
+      const webkitVideo = video as unknown as {
+        webkitSupportsPresentationMode?: (mode: string) => boolean;
+      };
+      const supported =
+        document.pictureInPictureEnabled === true ||
+        (typeof webkitVideo.webkitSupportsPresentationMode === "function" &&
+          webkitVideo.webkitSupportsPresentationMode("picture-in-picture"));
+      setIsPiPSupported(!!supported);
+      const onEnter = () => setIsPiPActive(true);
+      const onLeave = () => setIsPiPActive(false);
+      video.addEventListener("enterpictureinpicture", onEnter);
+      video.addEventListener("leavepictureinpicture", onLeave);
+      return () => {
+        video.removeEventListener("enterpictureinpicture", onEnter);
+        video.removeEventListener("leavepictureinpicture", onLeave);
+      };
+    }, []);
+
+    const togglePiP = useCallback(async () => {
+      const video = videoRef.current;
+      if (!video) return;
+      try {
+        if (document.pictureInPictureElement) {
+          await document.exitPictureInPicture();
+          return;
+        }
+        if (typeof video.requestPictureInPicture === "function") {
+          await video.requestPictureInPicture();
+          return;
+        }
+        // Safari nao implementa a API padrao: usa presentation mode
+        const webkitVideo = video as unknown as {
+          webkitSetPresentationMode?: (mode: string) => void;
+          webkitPresentationMode?: string;
+        };
+        if (webkitVideo.webkitSetPresentationMode) {
+          webkitVideo.webkitSetPresentationMode(
+            webkitVideo.webkitPresentationMode === "picture-in-picture" ? "inline" : "picture-in-picture",
+          );
+        }
+      } catch {
+        // o navegador pode recusar (sem gesto do usuario ou por politica); o video continua inline
+      }
+    }, []);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
     const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
@@ -168,6 +218,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
       case 'arrowdown': e.preventDefault(); handleVolumeChange([Math.max(0, volume - 0.1)]); break;
       case 'm': e.preventDefault(); toggleMute(); break;
       case 'f': e.preventDefault(); toggleFullscreen(); break;
+      case 'p': e.preventDefault(); if (isPiPSupported) void togglePiP(); break;
       case '0': case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9':
         e.preventDefault();
@@ -176,7 +227,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
       case ',': { e.preventDefault(); const idx = playbackRates.indexOf(playbackRate); if (idx > 0) handlePlaybackRateChange(playbackRates[idx - 1]); break; }
       case '.': { e.preventDefault(); const idx = playbackRates.indexOf(playbackRate); if (idx < playbackRates.length - 1) handlePlaybackRateChange(playbackRates[idx + 1]); break; }
     }
-  }, [togglePlay, toggleMute, toggleFullscreen, handleSkip, handleVolumeChange, handlePlaybackRateChange, volume, duration, playbackRate]);
+  }, [togglePlay, toggleMute, toggleFullscreen, togglePiP, isPiPSupported, handleSkip, handleVolumeChange, handlePlaybackRateChange, volume, duration, playbackRate]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -208,9 +259,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
         isPlaying={isPlaying} currentTime={currentTime} duration={duration}
         volume={volume} isMuted={isMuted} playbackRate={playbackRate}
         isFullscreen={isFullscreen} visible={controlsVisible}
+                isPiPSupported={isPiPSupported} isPiPActive={isPiPActive}
         onTogglePlay={togglePlay} onSeek={handleSeek} onSkip={handleSkip}
         onVolumeChange={handleVolumeChange} onToggleMute={toggleMute}
         onPlaybackRateChange={handlePlaybackRateChange} onToggleFullscreen={toggleFullscreen}
+                onTogglePiP={togglePiP}
       />
     </div>
   );

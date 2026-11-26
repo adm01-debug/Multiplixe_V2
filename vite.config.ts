@@ -22,7 +22,6 @@ export default defineConfig(({ mode }) => ({
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'supabase-vendor': ['@supabase/supabase-js'],
           'query-vendor': ['@tanstack/react-query'],
-          'chart-vendor': ['recharts'],
           'motion-vendor': ['framer-motion'],
           'ui-vendor': [
             '@radix-ui/react-dialog',

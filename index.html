@@ -22,12 +22,13 @@
     <link rel="preconnect" href="https://ywsblgsikhiscvpmopkp.supabase.co" crossorigin>
     <link rel="dns-prefetch" href="https://ywsblgsikhiscvpmopkp.supabase.co">
 
-    <!-- Fonts: Inter (body) + Plus Jakarta Sans (headings) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"></noscript>
+    <!-- Fonts: self-hosted (Outfit + Space Grotesk) em /fonts, sem CSS externo bloqueando o render -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/outfit-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/space-grotesk-latin.woff2" crossorigin>
+
+    <!-- Preconnect: imagens de capa dos cursos -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
     
     <title>MULTIPLIXE by Promo Brindes - Plataforma de Treinamento Corporativo</title>
     <meta name="description" content="Plataforma de treinamento corporativo via streaming. Desenvolva sua equipe com cursos de alta qualidade, trilhas personalizadas e certificações." />

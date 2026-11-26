@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (60)
+### ✅ Melhorias JÁ IMPLEMENTADAS (61)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (39)
+## ⏳ MELHORIAS PENDENTES (38)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1386,7 +1386,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-### 🛠️ MELHORIAS ADMINISTRATIVAS - 4 Pendentes
+### 🛠️ MELHORIAS ADMINISTRATIVAS - 3 Pendentes
 
 #### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -1428,7 +1428,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-#### ADMIN-004: Bulk Actions
+#### ADMIN-004: Bulk Actions ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Ações apenas individuais.
@@ -1440,6 +1440,17 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 3. Atribuir categoria em massa
 4. Excluir em massa (com confirmação)
 ```
+
+**Entregue em 26/11/2026**
+
+A tabela de cursos do admin só tinha ações linha a linha (editar, publicar, destacar, excluir): despublicar uma turma inteira ou mover 20 cursos de categoria exigia 20 cliques e 20 recarregamentos.
+
+- `src/components/admin/AdminCoursesTab.tsx`: checkbox por curso (com `aria-label` "Selecionar <título>") e checkbox "Selecionar todos os cursos" no cabeçalho, que age sobre a lista filtrada (respeita busca, status, nível e categoria ativos).
+- Barra de ações em massa, exibida só com seleção ativa: contagem de selecionados, Publicar, Despublicar, Destacar, Remover destaque, Select de categoria (carregado de `categories`) + Aplicar, Excluir e Limpar seleção.
+- `applyBulkUpdate` faz `update(patch).in('id', selectedIds)`, aplica o mesmo patch na lista local (tela responde na hora) e limpa a seleção; erro do banco mostra toast e mantém a seleção para nova tentativa.
+- Excluir em massa abre confirmação (`AlertDialog`) com a quantidade selecionada e o aviso de que aulas, quizzes e progresso vão junto; o `delete().in('id', ...)` só roda no "Excluir N".
+- `src/test/adminBulkActions.test.tsx` (novo, 3 casos): selecionar todos + publicar em massa (patch e ids exatos, seleção limpa depois), exclusão apenas após confirmar no diálogo e "Limpar seleção" sem tocar no banco.
+
 
 ---
 
@@ -1790,7 +1801,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **39** | **~185h** |
+| **TOTAL PENDENTE** | **38** | **~181h** |
 
 ---
 

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { CHAVE_EVENTO_SAZONAL } from '@/hooks/useSeasonalEvent';
+import { t } from '@/lib/i18n';
 
 export interface EventoAdmin {
   id: string;
@@ -101,10 +102,10 @@ export const useSalvarEvento = () => {
       return data.id;
     },
     onSuccess: (_id, variaveis) => {
-      toast.success(variaveis.id ? 'Evento atualizado' : 'Evento criado');
+      toast.success(variaveis.id ? t('eventsAdmin.saved') : t('eventsAdmin.created'));
       invalidar(queryClient);
     },
-    onError: (erro) => toast.error(`Não foi possível salvar o evento: ${(erro as Error).message}`),
+    onError: (erro) => toast.error(`${t('eventsAdmin.saveError')}: ${(erro as Error).message}`),
   });
 };
 
@@ -122,7 +123,7 @@ export const useAlternarEvento = () => {
     onSuccess: () => {
       invalidar(queryClient);
     },
-    onError: (erro) => toast.error(`Não foi possível ligar ou desligar o evento: ${(erro as Error).message}`),
+    onError: (erro) => toast.error(`${t('eventsAdmin.toggleError')}: ${(erro as Error).message}`),
   });
 };
 
@@ -135,9 +136,9 @@ export const useExcluirEvento = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success('Evento excluído');
+      toast.success(t('eventsAdmin.deleted'));
       invalidar(queryClient);
     },
-    onError: (erro) => toast.error(`Não foi possível excluir o evento: ${(erro as Error).message}`),
+    onError: (erro) => toast.error(`${t('eventsAdmin.deleteError')}: ${(erro as Error).message}`),
   });
 };

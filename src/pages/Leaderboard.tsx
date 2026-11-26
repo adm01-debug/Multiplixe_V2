@@ -12,7 +12,9 @@ import CategoryLeaderboard from '@/components/leaderboard/CategoryLeaderboard';
 import LeaguePanel from '@/components/leaderboard/LeaguePanel';
 import EmptyState from '@/components/EmptyState';
 import { LeaderboardSkeleton } from '@/components/skeletons/PageSkeletons';
-import { ArrowLeft, Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2, Award, Shield } from 'lucide-react';
+import { Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2, Award, Shield } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { calculateUserLevel } from '@/lib/levelSystem';
 
 const periodOptions: { value: LeaderboardPeriod; label: string; icon: typeof Calendar }[] = [
@@ -53,66 +55,44 @@ const Leaderboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        {/* Header */}
-        <header className="sticky top-0 z-50 glass border-b border-border/50">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon" aria-label="Voltar"
-                onClick={() => navigate(-1)}
-                className="hover:bg-primary/10"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500">
-                  <Trophy className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold neon-text">Ranking</h1>
-                  <p className="text-sm text-muted-foreground">Carregando...</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-        <main className="container mx-auto px-4 py-8">
-          <LeaderboardSkeleton />
-        </main>
-      </div>
+      <AppLayout
+        cabecalho={
+          <PageHeader
+            titulo="Ranking"
+            subtitulo="Carregando..."
+            icone={Trophy}
+            gradiente="from-yellow-500 to-amber-500"
+            nivel={50}
+            onVoltar={() => navigate(-1)}
+            ariaVoltar="Voltar"
+            classeVoltar="hover:bg-primary/10"
+            classeTitulo="neon-text"
+          />
+        }
+      >
+        <LeaderboardSkeleton />
+      </AppLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon" aria-label="Voltar"
-              onClick={() => navigate(-1)}
-              className="hover:bg-primary/10"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500">
-                <Trophy className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold neon-text">Ranking</h1>
-                <p className="text-sm text-muted-foreground">Top jogadores {getPeriodLabel()}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main id="main-content" className="container mx-auto px-4 py-8 space-y-8">
+    <AppLayout
+      cabecalho={
+        <PageHeader
+          titulo="Ranking"
+          subtitulo={`Top jogadores ${getPeriodLabel()}`}
+          icone={Trophy}
+          gradiente="from-yellow-500 to-amber-500"
+          nivel={50}
+          onVoltar={() => navigate(-1)}
+          ariaVoltar="Voltar"
+          classeVoltar="hover:bg-primary/10"
+          classeTitulo="neon-text"
+        />
+      }
+      idConteudo="main-content"
+      classeConteudo="space-y-8"
+    >
         {/* Tabs: Individual vs Teams */}
         <Tabs defaultValue="individual" className="w-full">
           <TabsList className="grid w-full max-w-2xl grid-cols-2 md:grid-cols-4 mb-6">
@@ -266,8 +246,7 @@ const Leaderboard = () => {
             <CategoryLeaderboard limit={3} />
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+    </AppLayout>
   );
 };
 

@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen, Search, Eye, Tag } from 'lucide-react';
+import { BookOpen, Search, Eye, Tag } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +15,7 @@ import DynamicSEO from '@/components/seo/DynamicSEO';
 
 const Playbooks = () => {
   const navigate = useNavigate();
-  const { data: playbooks = [], isLoading } = usePlaybooks();
+    const { data: playbooks = [], isLoading } = usePlaybooks();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<string>('all');
 
@@ -29,30 +31,22 @@ const Playbooks = () => {
   const results = useFuzzySearch(filtered, ['title', 'summary', 'tags', 'category'], search);
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title="Sales Playbooks"
-        description="Biblioteca de scripts, objeções e processos de vendas para vendedores Promo Brindes."
-        url="https://multiplixe-v2.vercel.app/playbooks"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500">
-              <BookOpen className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">Sales Playbooks</h1>
-              <p className="text-sm text-muted-foreground">Scripts, objeções e processos</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 space-y-6">
+    <AppLayout
+      seo={{
+        title: "Sales Playbooks",
+        description: "Biblioteca de scripts, objeções e processos de vendas para vendedores Promo Brindes.",
+        url: "https://multiplixe-v2.vercel.app/playbooks",
+      }}
+      cabecalho={
+        <PageHeader
+          titulo="Sales Playbooks"
+          subtitulo="Scripts, objeções e processos"
+          icone={BookOpen}
+          gradiente="from-blue-500 to-cyan-500"
+        />
+      }
+      classeConteudo="space-y-6"
+    >
         <div className="relative max-w-2xl">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input aria-label="Buscar playbooks"
@@ -118,8 +112,7 @@ const Playbooks = () => {
             ))}
           </div>
         )}
-      </main>
-    </div>
+          </AppLayout>
   );
 };
 

@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, Circle, ExternalLink, Sparkles, Video, BookOpen, Target } from 'lucide-react';
+import { CheckCircle2, Circle, ExternalLink, Sparkles, Video, BookOpen, Target } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -19,7 +21,7 @@ const stepIcon: Record<OnboardingStepType, typeof Video> = {
 
 const SalesOnboarding = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useDefaultWorkflowProgress();
+    const { data, isLoading } = useDefaultWorkflowProgress();
   const update = useUpdateOnboardingProgress();
 
   if (isLoading) {
@@ -47,30 +49,22 @@ const SalesOnboarding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title={`Onboarding: ${workflow.name}`}
-        description={workflow.description || 'Plano de onboarding para novos vendedores.'}
-        url="https://multiplixe-v2.vercel.app/onboarding"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500">
-              <Sparkles className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">{workflow.name}</h1>
-              <p className="text-sm text-muted-foreground">{workflow.description || 'Seu plano de onboarding'}</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 max-w-3xl space-y-6">
+    <AppLayout
+      seo={{
+        title: `Onboarding: ${workflow.name}`,
+        description: workflow.description || 'Plano de onboarding para novos vendedores.',
+        url: "https://multiplixe-v2.vercel.app/onboarding",
+      }}
+      cabecalho={
+        <PageHeader
+          titulo={workflow.name}
+          subtitulo={workflow.description || 'Seu plano de onboarding'}
+          icone={Sparkles}
+          gradiente="from-emerald-500 to-teal-500"
+        />
+      }
+      classeConteudo="max-w-3xl space-y-6"
+    >
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -116,8 +110,7 @@ const SalesOnboarding = () => {
             );
           })}
         </div>
-      </main>
-    </div>
+          </AppLayout>
   );
 };
 

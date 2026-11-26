@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Check, Inbox, MessageSquare, Search, Send, UserCheck, Users, X } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { Check, Inbox, MessageSquare, Search, Send, UserCheck, Users, X } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -176,8 +178,7 @@ const CartaoPedido = ({ pedido, lado, nota, onNota, onResponder, processando }: 
 );
 
 const Mentorship = () => {
-  const navigate = useNavigate();
-  const [params, setParams] = useSearchParams();
+    const [params, setParams] = useSearchParams();
   const [busca, setBusca] = useState('');
   const [aba, setAba] = useState<Aba>(() => {
     const pedida = params.get('aba') as Aba | null;
@@ -265,30 +266,23 @@ const Mentorship = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title="Mentoria entre colegas"
-        description="Encontre quem já domina o assunto e peça mentoria, ou ajude colegas compartilhando o que você sabe."
-        url="https://multiplixe-v2.vercel.app/mentoria"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-500">
-              <UserCheck className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">Mentoria</h1>
-              <p className="text-sm text-muted-foreground">Peça ajuda a quem já domina o assunto — ou ajude quem está começando</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 space-y-6">
+        <>
+      <AppLayout
+      seo={{
+        title: "Mentoria entre colegas",
+        description: "Encontre quem já domina o assunto e peça mentoria, ou ajude colegas compartilhando o que você sabe.",
+        url: "https://multiplixe-v2.vercel.app/mentoria",
+      }}
+      cabecalho={
+        <PageHeader
+          titulo="Mentoria"
+          subtitulo="Peça ajuda a quem já domina o assunto — ou ajude quem está começando"
+          icone={UserCheck}
+          gradiente="from-sky-500 to-indigo-500"
+        />
+      }
+      classeConteudo="space-y-6"
+    >
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { titulo: 'Mentores disponíveis', valor: mentores.length, icon: Users },
@@ -495,8 +489,7 @@ const Mentorship = () => {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-
+  
       <Dialog open={!!mentorAlvo} onOpenChange={aberto => { if (!aberto) setMentorAlvo(null); }}>
         <DialogContent>
           <DialogHeader>
@@ -542,7 +535,8 @@ const Mentorship = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+      </AppLayout>
+    </>
   );
 };
 

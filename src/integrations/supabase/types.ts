@@ -1148,6 +1148,7 @@ export type Database = {
           full_name: string | null
           id: string
           is_active: boolean
+          is_public: boolean
           updated_at: string
           user_id: string
         }
@@ -1160,6 +1161,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_active?: boolean
+          is_public?: boolean
           updated_at?: string
           user_id: string
         }
@@ -1172,6 +1174,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_active?: boolean
+          is_public?: boolean
           updated_at?: string
           user_id?: string
         }
@@ -2632,6 +2635,10 @@ export type Database = {
       }
       get_my_xp_multiplier: {
         Args: never
+        Returns: Json
+      }
+      get_public_profile: {
+        Args: { p_user_id: string }
         Returns: Json
       }
       get_performance_comparison: {

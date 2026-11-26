@@ -44,6 +44,7 @@ const Profile = lazy(() => import("./pages/Profile"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const Admin = lazy(() => import("./pages/Admin"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
+const PublicProfile = lazy(() => import("./pages/PublicProfile"));
 const LearningPaths = lazy(() => import("./pages/LearningPaths"));
 const LearningPathDetail = lazy(() => import("./pages/LearningPathDetail"));
 const RateLimitDashboard = lazy(() => import("./pages/RateLimitDashboard"));
@@ -131,6 +132,7 @@ const App = () => (
                     <Route path="/admin/security" element={<RouteErrorBoundary routeName="Segurança Admin"><ProtectedRoute requireAdmin><RateLimitDashboard /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/seguranca" element={<RouteErrorBoundary routeName="Segurança"><ProtectedRoute><SecurityDashboard /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/verificar-certificado" element={<RouteErrorBoundary routeName="Verificar Certificado"><VerifyCertificate /></RouteErrorBoundary>} />
+                    <Route path="/usuario/:id" element={<RouteErrorBoundary routeName="Perfil Público"><PublicProfile /></RouteErrorBoundary>} />
                     <Route path="/playbooks" element={<RouteErrorBoundary routeName="Playbooks"><ProtectedRoute><Playbooks /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/playbook/:slug" element={<RouteErrorBoundary routeName="Playbook"><ProtectedRoute><PlaybookDetail /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/biblioteca-videos" element={<RouteErrorBoundary routeName="Biblioteca de Vídeos"><ProtectedRoute><VideoLibrary /></ProtectedRoute></RouteErrorBoundary>} />

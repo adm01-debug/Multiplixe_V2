@@ -6,6 +6,7 @@ import { useAchievements } from '@/hooks/useAchievements';
 import { useCertificates } from '@/hooks/useCertificates';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import LevelProgress from '@/components/LevelProgress';
 import { CertificateCard } from '@/components/CertificateCard';
@@ -21,7 +22,7 @@ import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, CertificateCardSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
-import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2 } from 'lucide-react';
+import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2, Globe, Link2 } from 'lucide-react';
 import { toast } from 'sonner';
 import LanguageToggle from '@/components/LanguageToggle';
 
@@ -40,6 +41,8 @@ const Profile = () => {
   const [loadingStats, setLoadingStats] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+    const [isPublic, setIsPublic] = useState(false);
+    const [savingVisibility, setSavingVisibility] = useState(false);
 
   useEffect(() => { if (!loading && !user) navigate('/auth'); }, [user, loading, navigate]);
 
@@ -51,7 +54,7 @@ const Profile = () => {
         const [lessonsRes, coursesRes, profileRes, userCertificates] = await Promise.all([
           supabase.from('user_lesson_progress').select('is_completed, watched_seconds').eq('user_id', user.id),
           supabase.from('user_course_progress').select('progress_percentage').eq('user_id', user.id),
-          supabase.from('profiles').select('created_at, avatar_url').eq('user_id', user.id).maybeSingle(),
+          supabase.from('profiles').select('created_at, avatar_url, is_public').eq('user_id', user.id).maybeSingle(),
           getUserCertificates(user.id),
         ]);
         setStats({
@@ -63,6 +66,7 @@ const Profile = () => {
         });
         setCertificates(userCertificates);
         setAvatarUrl(profileRes.data?.avatar_url ?? null);
+        setIsPublic(Boolean(profileRes.data?.is_public));
       } catch { /* Silent fail */ } finally { setLoadingStats(false); }
     };
     fetchStats();
@@ -101,6 +105,32 @@ const Profile = () => {
         setExporting(false);
     }
   };
+
+        const handleTogglePublic = async (next: boolean) => {
+          if (!user || savingVisibility) return;
+          const previous = isPublic;
+          setSavingVisibility(true);
+          setIsPublic(next);
+          const { error } = await supabase.from('profiles').update({ is_public: next }).eq('user_id', user.id);
+          if (error) {
+            setIsPublic(previous);
+            toast.error('Não foi possível atualizar a visibilidade do perfil');
+          } else {
+            toast.success(next ? 'Perfil público ativado' : 'Perfil agora é privado');
+          }
+          setSavingVisibility(false);
+        };
+
+        const handleCopyPublicLink = async () => {
+          if (!user) return;
+          const url = `${window.location.origin}/usuario/${user.id}`;
+          try {
+            await navigator.clipboard.writeText(url);
+            toast.success('Link do perfil copiado');
+          } catch {
+            toast.error('Não foi possível copiar o link');
+          }
+        };
 
   if (loading || loadingXP) {
     return (
@@ -159,6 +189,31 @@ const Profile = () => {
 
       <main id="main-content" className="container mx-auto px-4 py-8">
         <ProfileHeader userName={userName} userEmail={userEmail} totalXP={totalXP} levelIcon={userLevel.currentLevel.icon} levelNumber={userLevel.currentLevel.level} memberSinceDate={memberSinceDate} avatarUrl={avatarUrl} onAvatarChange={setAvatarUrl} />
+
+        <section className="mb-12">
+          <div className="rounded-2xl bg-card/80 border border-border/50 p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20 self-start">
+              <Globe className="h-6 w-6 text-violet-500" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-display font-bold text-foreground">Perfil público</h3>
+              <p className="text-sm text-muted-foreground">
+                Mostra seu nome, nível, XP, sequência, conquistas e cursos concluídos em um link que qualquer pessoa pode abrir. E-mail nunca é exibido.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              {isPublic && (
+                <Button variant="outline" size="sm" onClick={handleCopyPublicLink} className="rounded-xl" disabled={savingVisibility}>
+                  <Link2 className="h-4 w-4 mr-2" /> Copiar link
+                </Button>
+              )}
+              <div className="flex items-center gap-2">
+                {savingVisibility && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+                <Switch checked={isPublic} onCheckedChange={handleTogglePublic} disabled={savingVisibility} aria-label="Ativar perfil público" />
+              </div>
+            </div>
+          </div>
+        </section>
         <section className="mb-12"><LevelProgress totalXP={totalXP} /></section>
         <Suspense fallback={null}><PersonalImpactWidget /></Suspense>
 

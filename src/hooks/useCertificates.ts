@@ -14,6 +14,7 @@ interface Certificate {
   issued_at: string;
   user_name: string;
   course_title: string;
+  kind?: 'curso' | 'trilha';
 }
 
 interface CertificateWithPDF extends Certificate {
@@ -79,19 +80,37 @@ export function useCertificates() {
       const { data, error: fetchError } = await supabase
         .rpc('verify_certificate_by_code', { p_code: code });
 
-      if (fetchError || !data || data.length === 0) {
+      if (!fetchError && data && data.length > 0) {
+        const row = data[0];
+        return {
+          id: row.verification_code,
+          user_id: '',
+          course_id: '',
+          verification_code: row.verification_code,
+          issued_at: row.issued_at,
+          user_name: row.user_name,
+          course_title: row.course_title,
+          kind: 'curso',
+        };
+      }
+
+      const { data: pathData, error: pathError } = await supabase
+        .rpc('verify_path_certificate_by_code', { p_code: code });
+
+      if (pathError || !pathData || pathData.length === 0) {
         return null;
       }
 
-      const row = data[0];
+      const pathRow = pathData[0];
       return {
-        id: row.verification_code,
+        id: pathRow.verification_code,
         user_id: '',
         course_id: '',
-        verification_code: row.verification_code,
-        issued_at: row.issued_at,
-        user_name: row.user_name,
-        course_title: row.course_title,
+        verification_code: pathRow.verification_code,
+        issued_at: pathRow.issued_at,
+        user_name: pathRow.user_name,
+        course_title: pathRow.path_title,
+        kind: 'trilha',
       };
     } catch {
       return null;

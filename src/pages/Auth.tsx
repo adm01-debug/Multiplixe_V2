@@ -17,6 +17,7 @@ import {
   ALLOWED_EMAIL_DOMAINS_KEY,
   allowedDomainsFrom,
   createCorporateEmailSchema,
+  mensagemErroCadastro,
 } from '@/lib/platformSettings';
 
 const passwordSchema = z.string().min(8, 'A senha deve ter pelo menos 8 caracteres').regex(/[A-Z]/, 'Deve conter letra maiúscula').regex(/[a-z]/, 'Deve conter letra minúscula').regex(/[0-9]/, 'Deve conter número').regex(/[!@#$%^&*(),.?":{}|<>]/, 'Deve conter caractere especial');
@@ -36,10 +37,11 @@ const Auth = () => {
   const [lockoutSeconds, setLockoutSeconds] = useState(0);
   const [attemptCount, setAttemptCount] = useState(0);
   const { settings } = usePlatformSettings();
-  const emailSchema = useMemo(
-    () => createCorporateEmailSchema(allowedDomainsFrom(settings[ALLOWED_EMAIL_DOMAINS_KEY])),
+  const allowedDomains = useMemo(
+    () => allowedDomainsFrom(settings[ALLOWED_EMAIL_DOMAINS_KEY]),
     [settings],
   );
+  const emailSchema = useMemo(() => createCorporateEmailSchema(allowedDomains), [allowedDomains]);
 
   useEffect(() => { if (user) navigate('/dashboard'); }, [user, navigate]);
 
@@ -106,7 +108,7 @@ const Auth = () => {
     setLoading(true);
     const { error } = await signUp(email, password, fullName);
     setLoading(false);
-    if (error) { toast.error(error.message.includes('User already registered') ? 'Este email já está cadastrado.' : 'Erro ao criar conta.'); }
+    if (error) { toast.error(mensagemErroCadastro(error.message, allowedDomains)); }
     else toast.success('Conta criada com sucesso!');
   };
 

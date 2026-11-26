@@ -24,9 +24,13 @@ conhecida; nunca cite a chave em chat, log ou PR.
 
 ## Login e acesso
 
-- **Gate de domínio é só no cliente:** `src/pages/Auth.tsx:39-41` monta o schema zod com
-  `createCorporateEmailSchema(allowedDomainsFrom(settings['allowed_email_domains']))`, validado em
-  `src/pages/Auth.tsx:70`. Não é RLS nem trigger — é validação de formulário.
+- **Gate de dom?nio no banco (desde 26/11/2026):** o cadastro passa pelo auth hook `before_user_created`
+  (`public.bloquear_cadastro_fora_do_dominio`, migration `20261129110000_gate_dominio_signup.sql`, declarado em
+  `supabase/config.toml`), que recusa email fora de `platform_settings.allowed_email_domains`. Antes disso a regra
+  existia **s?** no formul?rio (`src/pages/Auth.tsx`, schema zod `createCorporateEmailSchema(allowedDomainsFrom(...))`)
+  e a API p?blica de signup (`disable_signup = false`) aceitava qualquer email ? com a policy
+  "Authenticated users can view lessons" (`USING true`), qualquer conta rec?m-criada lia todo o conte?do.
+  Ao mexer em login, mantenha os dois lados: o do banco ? o que vale.
 - A lista de domínios aceitos agora vem do banco (`platform_settings`, chave `allowed_email_domains`), editável
   em Admin → Configurações; default `["promobrindes.com.br"]` em `src/lib/platformSettings.ts`. Por isso a
   policy `platform_settings_select_anon_dominios` libera a leitura dessa chave para `anon`: o login precisa

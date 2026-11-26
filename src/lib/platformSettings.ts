@@ -86,6 +86,13 @@ export const domainListMessage = (domains: string[]): string => {
   return `Apenas emails ${allowed.map((domain) => `@${domain}`).join(', ')} são permitidos`;
 };
 
+/** Mensagem para o erro de cadastro devolvido pelo Supabase Auth (auth hook before_user_created). */
+export const mensagemErroCadastro = (mensagem: string, domains: string[]): string => {
+  if (mensagem.includes('User already registered')) return 'Este email já está cadastrado.';
+  if (mensagem.includes('Cadastro restrito')) return `Cadastro restrito. ${domainListMessage(domains)}.`;
+  return 'Erro ao criar conta.';
+};
+
 /** Schema de e-mail da tela de login/cadastro, alimentado por platform_settings. */
 export const createCorporateEmailSchema = (domains: string[]) =>
   z

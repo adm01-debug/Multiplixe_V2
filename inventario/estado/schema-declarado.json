@@ -6,7 +6,7 @@
     "tabelas": 69,
     "tabelas_no_types": 69,
     "tabelas_nas_migrations": 69,
-    "colunas": 586,
+    "colunas": 587,
     "views": 1,
     "funcoes": 73,
     "funcoes_expostas_no_types": 50,
@@ -14,7 +14,7 @@
     "policies": 181,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 69,
+    "migrations": 70,
     "alertas": 3,
     "problemas": 3
   },
@@ -1016,7 +1016,7 @@
     "user_xp": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 13,
+      "colunas": 14,
       "rls": true,
       "policies": 3,
       "triggers": [
@@ -1175,7 +1175,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261127150000_moeda_virtual_hardening.sql",
+      "criada_em": "20261127160000_moeda_virtual_nao_retroativa.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

@@ -38,7 +38,7 @@ const Profile = () => {
   const { userXP, totalXP, loading: loadingXP } = useUserXP();
   const { achievements, isUnlocked, unlockedCount, totalCount } = useAchievements();
   const { getUserCertificates } = useCertificates();
-  const { data: carteira } = useWallet();
+  const { data: carteira, isLoading: carregandoColecao, isError: erroColecao } = useWallet();
   const itensColecao = (carteira?.colecao ?? []).filter((item) => item.category !== 'power_up');
   const [stats, setStats] = useState<UserStats | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -272,10 +272,16 @@ const Profile = () => {
 
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-sky-500/10 to-fuchsia-500/10 border border-sky-500/20"><Package className="h-6 w-6 text-sky-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Minha coleção</h3><p className="text-sm text-muted-foreground">{itensColecao.length > 0 ? `${itensColecao.length} ${itensColecao.length !== 1 ? 'itens' : 'item'} de avatar, tema ou cosmético` : 'Itens de avatar, tema e cosmético comprados na loja'}</p></div></div>
+            <div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-sky-500/10 to-fuchsia-500/10 border border-sky-500/20"><Package className="h-6 w-6 text-sky-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Minha coleção</h3><p className="text-sm text-muted-foreground">{carregandoColecao ? 'Carregando seus itens...' : erroColecao ? 'Não foi possível carregar seus itens agora' : itensColecao.length > 0 ? `${itensColecao.length} ${itensColecao.length !== 1 ? 'itens' : 'item'} de avatar, tema ou cosmético` : 'Itens de avatar, tema e cosmético comprados na loja'}</p></div></div>
             <Button variant="outline" size="sm" asChild><Link to="/loja">Abrir loja</Link></Button>
           </div>
-          {itensColecao.length > 0 ? (
+          {carregandoColecao || erroColecao ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-[76px] rounded-2xl border border-border/50 bg-card/50 animate-pulse" />
+              ))}
+            </div>
+          ) : itensColecao.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {itensColecao.map((item) => (
                 <div key={item.item_id} className="flex items-center gap-3 rounded-2xl border border-border/50 bg-card/50 neon-card p-4">

@@ -2553,6 +2553,7 @@ export type Database = {
       user_xp: {
         Row: {
           coins: number
+          coins_xp_remainder: number
           created_at: string
           current_level: number
           id: string
@@ -2568,6 +2569,7 @@ export type Database = {
         }
         Insert: {
           coins?: number
+          coins_xp_remainder?: number
           created_at?: string
           current_level?: number
           id?: string
@@ -2583,6 +2585,7 @@ export type Database = {
         }
         Update: {
           coins?: number
+          coins_xp_remainder?: number
           created_at?: string
           current_level?: number
           id?: string

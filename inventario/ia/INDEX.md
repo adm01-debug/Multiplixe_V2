@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed` · branch `claude/feat-moeda-virtual-261126-0346` · 2026-11-26T03:50:35-03:00
+Commit: `a67a922f0e1510eb1b97da4a000cc0b1978c293c` · branch `claude/feat-moeda-virtual-261126-0346` · 2026-11-26T04:12:40-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed` · branch `claude/feat-moeda-
 
 | | |
 |---|---|
-| arquivos (codigo) | 585 (484) |
-| linhas de codigo | 67580 |
+| arquivos (codigo) | 586 (484) |
+| linhas de codigo | 67589 |
 | paginas / rotas | 27 / 27 |
 | componentes / hooks | 234 / 121 |
 | arquivos de teste | 77 |
 | edge functions | 13 |
-| tabelas / migrations | 69 / 69 |
+| tabelas / migrations | 69 / 70 |
 
 ## Divida medida
 
@@ -85,7 +85,7 @@ Commit: `6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed` · branch `claude/feat-moeda-
 
 ## Banco (declarado pelo repo)
 
-69 tabelas · 181 policies · 73 funcoes · 2 cron jobs · 1 bucket(s) · 69 migrations
+69 tabelas · 181 policies · 73 funcoes · 2 cron jobs · 1 bucket(s) · 70 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -118,15 +118,15 @@ Commit: `6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed` · branch `claude/feat-moeda-
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (45)
-- `inventario/estado/schema-declarado.json` (15)
+- `inventario/estado/schema-declarado.json` (16)
 - `src/integrations/supabase/types.ts` (15)
-- `inventario/ia/baseline.json` (12)
-- `inventario/ia/INDEX.md` (12)
-- `inventario/ia/manifest.json` (12)
-- `inventario/ia/componentes.json` (9)
-- `inventario/estado/rotas.json` (8)
-- `inventario/ia/grafo.json` (8)
-- `inventario/ia/hooks.json` (7)
+- `inventario/ia/baseline.json` (13)
+- `inventario/ia/INDEX.md` (13)
+- `inventario/ia/manifest.json` (13)
+- `inventario/ia/componentes.json` (10)
+- `inventario/estado/rotas.json` (9)
+- `inventario/ia/grafo.json` (9)
+- `inventario/ia/hooks.json` (8)
 
 ## Scripts npm
 

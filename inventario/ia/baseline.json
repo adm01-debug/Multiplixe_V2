@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "6a1bffbc22c801062364e34bb7c9ff9e4ceed7ed",
+  "commit": "a67a922f0e1510eb1b97da4a000cc0b1978c293c",
   "branch": "claude/feat-moeda-virtual-261126-0346",
-  "data_commit": "2026-11-26T03:50:35-03:00",
+  "data_commit": "2026-11-26T04:12:40-03:00",
   "ultimos_commits": [
+   "a67a922 fix: proteger saldo de moedas e corrigir conversao de XP (GAME-006)",
    "6a1bffb feat: moeda virtual, carteira e loja de recompensas (GAME-006)",
    "53f669a chore: marcar GAME-003 (ligas semanais) como concluido no plano (#71)",
    "5c62c2e feat: ligas semanais com promocao e rebaixamento (GAME-003) (#70)",
@@ -14,8 +15,7 @@
    "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)",
    "6b9fbfc feat: quiz adaptativo com niveis de dificuldade (FUNC-020) (#66)",
    "53e46c3 feat: tooltips informativos nas ações de admin e nos cards de estatística (UI-006) (#65)",
-   "84e8d50 feat: indicador de cache agora avisa quando o usuário está offline (UI-016) (#64)",
-   "d69ec91 feat: importação de cursos por CSV no admin (ADMIN-005) (#63)"
+   "84e8d50 feat: indicador de cache agora avisa quando o usuário está offline (UI-016) (#64)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -24,7 +24,7 @@
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
@@ -32,35 +32,35 @@
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "src/pages/Profile.tsx",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "src/pages/Admin.tsx",
@@ -101,9 +101,9 @@
   ]
  },
  "contagens": {
-  "arquivos": 585,
+  "arquivos": 586,
   "arquivos_de_codigo": 484,
-  "linhas_de_codigo": 67580,
+  "linhas_de_codigo": 67589,
   "componentes": 234,
   "hooks": 121,
   "paginas": 27,
@@ -111,7 +111,7 @@
   "edge_functions": 13,
   "rotas": 27,
   "tabelas": 69,
-  "migrations": 69
+  "migrations": 70
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -147,7 +147,7 @@
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 69,
+  "supabase/migrations": 70,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -161,7 +161,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3270
+   "linhas": 3273
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -252,12 +252,12 @@
    "linhas": 318
   },
   {
-   "arquivo": "src/components/quiz/CourseQuizModal.tsx",
-   "linhas": 315
+   "arquivo": "src/pages/Profile.tsx",
+   "linhas": 318
   },
   {
-   "arquivo": "src/components/admin/AdminFlashcardsTab.tsx",
-   "linhas": 314
+   "arquivo": "src/components/quiz/CourseQuizModal.tsx",
+   "linhas": 315
   }
  ],
  "qualidade": {

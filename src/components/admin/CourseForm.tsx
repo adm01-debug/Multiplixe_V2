@@ -34,7 +34,12 @@ const courseSchema = z.object({
   is_published: z.boolean(),
   is_featured: z.boolean(),
   category_id: z.string().optional(),
-  video_preview_url: z.union([z.string().url('URL inválida'), z.literal('')]).optional(),
+  video_preview_url: z
+    .union([
+      z.literal(''),
+      z.string().url('URL inválida').regex(/^https:\/\//i, 'Use uma URL que comece com https://'),
+    ])
+    .optional(),
 });
 
 type CourseFormData = z.infer<typeof courseSchema>;

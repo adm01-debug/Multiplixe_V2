@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `1d3c4f4616f9d5a2656c4b62edfe603b02088dd5` · branch `claude/perf-memoizacao-251126-2140` · 2026-11-25T20:40:39-03:00
+Commit: `85cd87a5dbd870f459539f039774c870585574a3` · branch `claude/feat-ligas-semanais-261126-0333` · 2026-11-26T03:34:02-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `1d3c4f4616f9d5a2656c4b62edfe603b02088dd5` · branch `claude/perf-memoiz
 
 | | |
 |---|---|
-| arquivos (codigo) | 502 (416) |
-| linhas de codigo | 57367 |
-| paginas / rotas | 24 / 24 |
-| componentes / hooks | 221 / 101 |
-| arquivos de teste | 41 |
+| arquivos (codigo) | 578 (479) |
+| linhas de codigo | 66405 |
+| paginas / rotas | 26 / 24 |
+| componentes / hooks | 232 / 113 |
+| arquivos de teste | 76 |
 | edge functions | 13 |
-| tabelas / migrations | 62 / 55 |
+| tabelas / migrations | 66 / 67 |
 
 ## Divida medida
 
@@ -44,15 +44,15 @@ Commit: `1d3c4f4616f9d5a2656c4b62edfe603b02088dd5` · branch `claude/perf-memoiz
 | `/auth` | src/pages/Auth.tsx | nao | navegacao-no-codigo, prefetch | 1 | detect-new-device |
 | `/avaliacao/:id` | src/pages/AssessmentRunner.tsx | sim | — | 4 | detect-new-device |
 | `/avaliacoes` | src/pages/SkillAssessments.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | detect-new-device |
-| `/biblioteca-videos` | src/pages/VideoLibrary.tsx | sim | atalho-teclado, command-palette | 2 | — |
+| `/biblioteca-videos` | src/pages/VideoLibrary.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | — |
 | `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 33 | detect-new-device, export-user-data, generate-certificate |
 | `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 13 | detect-new-device |
 | `/curso/:slug/aula/:lessonId` | src/pages/LessonPlayer.tsx | sim | prefetch | 17 | detect-new-device, generate-certificate |
-| `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 40 | detect-new-device, export-user-data, generate-certificate |
+| `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 41 | detect-new-device, export-user-data, generate-certificate |
 | `/forgot-password` | src/pages/ForgotPassword.tsx | nao | navegacao-no-codigo, prefetch | 2 | — |
 | `/onboarding` | src/pages/SalesOnboarding.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo | 2 | detect-new-device |
 | `/onboarding/executar` | src/pages/OnboardingRuntime.tsx | sim | navegacao-no-codigo | 2 | detect-new-device |
-| `/perfil` | src/pages/Profile.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo, prefetch | 7 | detect-new-device, export-user-data, generate-certificate |
+| `/perfil` | src/pages/Profile.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo, prefetch | 9 | detect-new-device, export-user-data, generate-certificate |
 | `/playbook/:slug` | src/pages/PlaybookDetail.tsx | sim | — | 3 | ai-playbook-summarize, detect-new-device |
 | `/playbooks` | src/pages/Playbooks.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 1 | — |
 | `/ranking` | src/pages/Leaderboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 0 | detect-new-device |
@@ -82,14 +82,14 @@ Commit: `1d3c4f4616f9d5a2656c4b62edfe603b02088dd5` · branch `claude/perf-memoiz
 
 ## Banco (declarado pelo repo)
 
-62 tabelas · 166 policies · 45 funcoes · 2 cron jobs · 1 bucket(s) · 55 migrations
+66 tabelas · 178 policies · 66 funcoes · 2 cron jobs · 1 bucket(s) · 67 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
-| `tabela_sem_uso_no_codigo` | password_reset_tokens, platform_stats_cache, playbook_views, saved_filters |
-| `funcao_sem_uso_no_codigo` | check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_user_permissions, has_permission, mcp_exec, refresh_platform_stats, verify_path_certificate_by_code |
+| `tabela_sem_uso_no_codigo` | daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues |
+| `funcao_sem_uso_no_codigo` | check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
 ### Cron
@@ -101,29 +101,29 @@ Commit: `1d3c4f4616f9d5a2656c4b62edfe603b02088dd5` · branch `claude/perf-memoiz
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (120)
-- `src/integrations/supabase/client.ts` (92)
-- `src/hooks/useAuth.tsx` (62)
-- `src/lib/utils.ts` (62)
-- `src/components/ui/card.tsx` (56)
-- `src/components/ui/badge.tsx` (51)
-- `src/components/ui/input.tsx` (31)
-- `src/components/ui/dialog.tsx` (30)
-- `src/components/ui/label.tsx` (21)
-- `src/components/ui/progress.tsx` (21)
+- `src/components/ui/button.tsx` (132)
+- `src/integrations/supabase/client.ts` (102)
+- `src/hooks/useAuth.tsx` (68)
+- `src/lib/utils.ts` (67)
+- `src/components/ui/card.tsx` (64)
+- `src/components/ui/badge.tsx` (57)
+- `src/components/ui/input.tsx` (35)
+- `src/components/ui/dialog.tsx` (34)
+- `src/components/ui/label.tsx` (24)
+- `src/components/ui/progress.tsx` (22)
 
 ## Mexido nos ultimos 90 dias
 
-- `inventario/ia/baseline.json` (9)
-- `inventario/ia/INDEX.md` (9)
-- `inventario/ia/manifest.json` (9)
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (7)
-- `inventario/ia/componentes.json` (6)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (44)
+- `inventario/estado/schema-declarado.json` (14)
+- `src/integrations/supabase/types.ts` (14)
+- `inventario/ia/baseline.json` (10)
+- `inventario/ia/INDEX.md` (10)
+- `inventario/ia/manifest.json` (10)
+- `inventario/ia/componentes.json` (7)
+- `src/pages/Profile.tsx` (7)
+- `inventario/estado/rotas.json` (6)
 - `inventario/ia/grafo.json` (6)
-- `docs/agentes/lovable-vercel.md` (5)
-- `inventario/estado/rotas.json` (5)
-- `inventario/ia/hooks.json` (5)
-- `docs/agentes/mapa-repo.md` (4)
 
 ## Scripts npm
 

@@ -2,11 +2,11 @@
   "format_version": 1,
   "fonte": "scripts/inventario/gerar-rotas.mjs (le src/App.tsx, CommandPalette, MobileBottomNav, useGlobalShortcuts, routePrefetch e os imports de cada pagina)",
   "resumo": {
-    "rotas": 24,
-    "protegidas": 18,
+    "rotas": 26,
+    "protegidas": 19,
     "so_admin": 2,
-    "entradas_na_ui": 117,
-    "hooks_distintos": 74,
+    "entradas_na_ui": 120,
+    "hooks_distintos": 85,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 71,
+      "arquivos_lidos": 73,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -184,6 +184,7 @@
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_platform_stats",
         "get_quiz_review",
@@ -247,8 +248,12 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 46,
+      "arquivos_lidos": 57,
       "hooks": [
+        {
+          "nome": "useAdminFlashcards",
+          "arquivo": "src/hooks/useFlashcards.ts"
+        },
         {
           "nome": "useAdminRole",
           "arquivo": "src/hooks/useAdminRole.ts"
@@ -258,8 +263,16 @@
           "arquivo": "src/hooks/useAuth.tsx"
         },
         {
+          "nome": "useCourses",
+          "arquivo": "src/hooks/useCachedQuery.ts"
+        },
+        {
           "nome": "useDeleteAssessment",
           "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useDeleteFlashcard",
+          "arquivo": "src/hooks/useFlashcards.ts"
         },
         {
           "nome": "useDeletePlaybook",
@@ -298,6 +311,10 @@
           "arquivo": "src/hooks/useSkillAssessments.ts"
         },
         {
+          "nome": "useSaveFlashcard",
+          "arquivo": "src/hooks/useFlashcards.ts"
+        },
+        {
           "nome": "useSavePlaybook",
           "arquivo": "src/hooks/usePlaybooks.ts"
         },
@@ -312,6 +329,10 @@
         {
           "nome": "useSkillAssessments",
           "arquivo": "src/hooks/useSkillAssessments.ts"
+        },
+        {
+          "nome": "useToggleFlashcard",
+          "arquivo": "src/hooks/useFlashcards.ts"
         },
         {
           "nome": "useTrainingVideos",
@@ -332,18 +353,25 @@
       "rpcs": [
         "create_audit_log",
         "get_due_assessments",
+        "get_due_flashcards",
+        "get_flashcard_overview",
+        "get_leaderboard",
         "has_role",
-        "register_playbook_view"
+        "register_playbook_view",
+        "review_flashcard"
       ],
       "tabelas": [
+        "achievements",
         "audit_logs",
         "categories",
         "certificates",
         "courses",
+        "flashcards",
         "learning_path_courses",
         "learning_paths",
         "lessons",
         "newsletter_subscriptions",
+        "notifications",
         "onboarding_workflows",
         "password_reset_requests",
         "permissions",
@@ -357,12 +385,15 @@
         "skill_assessments",
         "training_video_views",
         "training_videos",
+        "user_achievements",
         "user_assessment_results",
         "user_course_progress",
+        "user_learning_path_progress",
         "user_lesson_progress",
         "user_onboarding_progress",
         "user_quiz_attempts",
         "user_roles",
+        "user_streaks",
         "user_xp",
         "user_xp_history"
       ],
@@ -594,7 +625,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 65,
+      "arquivos_lidos": 68,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -737,6 +768,7 @@
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_quiz_review",
         "get_user_rank",
@@ -795,7 +827,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 15,
+      "arquivos_lidos": 16,
       "hooks": [
         {
           "nome": "useAnnouncements",
@@ -829,6 +861,7 @@
       "rpcs": [
         "add_user_xp",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_quiz_review",
         "submit_quiz_attempt"
       ],
@@ -861,7 +894,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 33,
+      "arquivos_lidos": 35,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -926,6 +959,7 @@
         "check_and_award_achievements",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_quiz_review",
         "submit_quiz_attempt",
         "update_user_streak",
@@ -968,7 +1002,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 94,
+      "arquivos_lidos": 98,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1133,6 +1167,10 @@
         {
           "nome": "useViewMode",
           "arquivo": "src/components/catalog/ViewToggle.tsx"
+        },
+        {
+          "nome": "useXpMultiplier",
+          "arquivo": "src/hooks/useXpMultiplier.ts"
         }
       ],
       "buckets": [],
@@ -1148,8 +1186,11 @@
         "claim_daily_challenge_reward",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_due_assessments",
         "get_leaderboard",
+        "get_my_challenges",
+        "get_my_xp_multiplier",
         "get_quiz_review",
         "get_smart_recommendations",
         "get_user_rank",
@@ -1169,7 +1210,6 @@
         "categories",
         "certificates",
         "courses",
-        "daily_challenges",
         "learning_path_certificates",
         "learning_path_courses",
         "learning_paths",
@@ -1191,7 +1231,6 @@
         "user_achievements",
         "user_assessment_results",
         "user_course_progress",
-        "user_daily_challenge_progress",
         "user_favorites",
         "user_goals",
         "user_learning_path_progress",
@@ -1204,6 +1243,49 @@
         "user_streaks",
         "user_xp",
         "whitelisted_ips"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/flashcards",
+      "rotulo_tecnico": "Flashcards",
+      "componente": "Flashcards",
+      "arquivo": "src/pages/Flashcards.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "command-palette",
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 9,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useFlashcardOverview",
+          "arquivo": "src/hooks/useFlashcards.ts"
+        },
+        {
+          "nome": "useFlashcardSession",
+          "arquivo": "src/hooks/useFlashcards.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "get_due_flashcards",
+        "get_flashcard_overview",
+        "review_flashcard"
+      ],
+      "tabelas": [
+        "flashcards"
       ],
       "imports_quebrados": []
     },
@@ -1338,7 +1420,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 29,
+      "arquivos_lidos": 34,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1359,6 +1441,10 @@
         {
           "nome": "useDepartmentLeaderboard",
           "arquivo": "src/hooks/useDepartmentLeaderboard.ts"
+        },
+        {
+          "nome": "usePerformanceComparison",
+          "arquivo": "src/hooks/usePerformanceComparison.ts"
         },
         {
           "nome": "useT",
@@ -1390,6 +1476,7 @@
         "check_and_award_achievements",
         "create_audit_log",
         "get_department_leaderboard",
+        "get_performance_comparison",
         "get_xp_history",
         "verify_certificate_by_code"
       ],
@@ -1519,11 +1606,19 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 11,
+      "arquivos_lidos": 17,
       "hooks": [
+        {
+          "nome": "useAdminRole",
+          "arquivo": "src/hooks/useAdminRole.ts"
+        },
         {
           "nome": "useAuth",
           "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useCategoryLeaderboard",
+          "arquivo": "src/hooks/useCategoryLeaderboard.ts"
         },
         {
           "nome": "useDepartmentLeaderboard",
@@ -1532,6 +1627,10 @@
         {
           "nome": "useLeaderboard",
           "arquivo": "src/hooks/useLeaderboard.ts"
+        },
+        {
+          "nome": "useLeague",
+          "arquivo": "src/hooks/useLeague.ts"
         }
       ],
       "buckets": [],
@@ -1540,9 +1639,13 @@
       ],
       "rpcs": [
         "create_audit_log",
+        "get_category_leaderboard",
         "get_department_leaderboard",
         "get_leaderboard",
-        "get_user_rank"
+        "get_my_league",
+        "get_user_rank",
+        "has_role",
+        "refresh_leagues"
       ],
       "tabelas": [],
       "imports_quebrados": []
@@ -1658,7 +1761,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 54,
+      "arquivos_lidos": 56,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1801,6 +1904,7 @@
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_quiz_review",
         "get_user_rank",
@@ -1864,7 +1968,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 57,
+      "arquivos_lidos": 60,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2007,6 +2111,7 @@
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_quiz_review",
         "get_user_rank",
@@ -2056,6 +2161,31 @@
       "imports_quebrados": []
     },
     {
+      "caminho": "/usuario/:id",
+      "rotulo_tecnico": "Perfil Público",
+      "componente": "PublicProfile",
+      "arquivo": "src/pages/PublicProfile.tsx",
+      "protegida": false,
+      "so_admin": false,
+      "com_parametro": true,
+      "redireciona": null,
+      "entradas_na_ui": [],
+      "arquivos_lidos": 3,
+      "hooks": [
+        {
+          "nome": "usePublicProfile",
+          "arquivo": "src/hooks/usePublicProfile.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [],
+      "rpcs": [
+        "get_public_profile"
+      ],
+      "tabelas": [],
+      "imports_quebrados": []
+    },
+    {
       "caminho": "/verificar-certificado",
       "rotulo_tecnico": "Verificar Certificado",
       "componente": "VerifyCertificate",
@@ -2067,7 +2197,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 3,
+      "arquivos_lidos": 4,
       "hooks": [
         {
           "nome": "useCertificates",
@@ -2147,6 +2277,11 @@
       "origem": "command-palette",
       "destino": "/dashboard",
       "rotulo": "Dashboard"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/flashcards",
+      "rotulo": "Flashcards de Revisão"
     },
     {
       "origem": "command-palette",
@@ -2252,6 +2387,11 @@
       "origem": "navegacao-no-codigo",
       "destino": "/",
       "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/",
+      "rotulo": "src/pages/PublicProfile.tsx"
     },
     {
       "origem": "navegacao-no-codigo",
@@ -2406,11 +2546,6 @@
     {
       "origem": "navegacao-no-codigo",
       "destino": "/catalogo",
-      "rotulo": "src/components/recommendations/RecommendationsWidget.tsx"
-    },
-    {
-      "origem": "navegacao-no-codigo",
-      "destino": "/catalogo",
       "rotulo": "src/pages/CourseDetail.tsx"
     },
     {
@@ -2476,6 +2611,11 @@
     {
       "origem": "navegacao-no-codigo",
       "destino": "/dashboard",
+      "rotulo": "src/pages/Flashcards.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
       "rotulo": "src/pages/LearningPaths.tsx"
     },
     {
@@ -2512,6 +2652,11 @@
       "origem": "navegacao-no-codigo",
       "destino": "/dashboard",
       "rotulo": "src/pages/VideoLibrary.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/flashcards",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
     },
     {
       "origem": "navegacao-no-codigo",
@@ -2693,6 +2838,12 @@
         "/playbook/:slug"
       ]
     },
+    "useAdminFlashcards": {
+      "arquivo": "src/hooks/useFlashcards.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useAdminRole": {
       "arquivo": "src/hooks/useAdminRole.ts",
       "rotas": [
@@ -2702,6 +2853,7 @@
         "/catalogo",
         "/dashboard",
         "/playbook/:slug",
+        "/ranking",
         "/seguranca",
         "/trilha/:slug",
         "/trilhas"
@@ -2727,6 +2879,7 @@
         "/curso/:slug",
         "/curso/:slug/aula/:lessonId",
         "/dashboard",
+        "/flashcards",
         "/onboarding",
         "/onboarding/executar",
         "/perfil",
@@ -2751,6 +2904,12 @@
         "/dashboard",
         "/trilha/:slug",
         "/trilhas"
+      ]
+    },
+    "useCategoryLeaderboard": {
+      "arquivo": "src/hooks/useCategoryLeaderboard.ts",
+      "rotas": [
+        "/ranking"
       ]
     },
     "useCertificates": {
@@ -2789,6 +2948,7 @@
       "arquivo": "src/hooks/useCachedQuery.ts",
       "rotas": [
         "/",
+        "/admin",
         "/catalogo",
         "/dashboard",
         "/trilha/:slug",
@@ -2821,6 +2981,12 @@
     },
     "useDeleteAssessment": {
       "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useDeleteFlashcard": {
+      "arquivo": "src/hooks/useFlashcards.ts",
       "rotas": [
         "/admin"
       ]
@@ -2879,6 +3045,18 @@
         "/trilhas"
       ]
     },
+    "useFlashcardOverview": {
+      "arquivo": "src/hooks/useFlashcards.ts",
+      "rotas": [
+        "/flashcards"
+      ]
+    },
+    "useFlashcardSession": {
+      "arquivo": "src/hooks/useFlashcards.ts",
+      "rotas": [
+        "/flashcards"
+      ]
+    },
     "useFuzzySearch": {
       "arquivo": "src/hooks/useFuzzySearch.ts",
       "rotas": [
@@ -2923,6 +3101,12 @@
         "/ranking",
         "/trilha/:slug",
         "/trilhas"
+      ]
+    },
+    "useLeague": {
+      "arquivo": "src/hooks/useLeague.ts",
+      "rotas": [
+        "/ranking"
       ]
     },
     "useLearningPaths": {
@@ -3000,6 +3184,12 @@
         "/seguranca"
       ]
     },
+    "usePerformanceComparison": {
+      "arquivo": "src/hooks/usePerformanceComparison.ts",
+      "rotas": [
+        "/perfil"
+      ]
+    },
     "usePlatformSettings": {
       "arquivo": "src/hooks/usePlatformSettings.ts",
       "rotas": [
@@ -3052,6 +3242,12 @@
         "/trilhas"
       ]
     },
+    "usePublicProfile": {
+      "arquivo": "src/hooks/usePublicProfile.ts",
+      "rotas": [
+        "/usuario/:id"
+      ]
+    },
     "usePushNotifications": {
       "arquivo": "src/hooks/usePushNotifications.ts",
       "rotas": [
@@ -3100,6 +3296,12 @@
     },
     "useSaveAssessment": {
       "arquivo": "src/hooks/useSkillAssessments.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useSaveFlashcard": {
+      "arquivo": "src/hooks/useFlashcards.ts",
       "rotas": [
         "/admin"
       ]
@@ -3208,6 +3410,12 @@
         "/trilhas"
       ]
     },
+    "useToggleFlashcard": {
+      "arquivo": "src/hooks/useFlashcards.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useTrainingVideos": {
       "arquivo": "src/hooks/useTrainingVideos.ts",
       "rotas": [
@@ -3305,6 +3513,12 @@
       "arquivo": "src/hooks/useXPHistory.ts",
       "rotas": [
         "/perfil"
+      ]
+    },
+    "useXpMultiplier": {
+      "arquivo": "src/hooks/useXpMultiplier.ts",
+      "rotas": [
+        "/dashboard"
       ]
     }
   },

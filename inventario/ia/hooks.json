@@ -1,9 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 101,
+ "total": 113,
  "sem_uso": [
-  "useAnnouncements",
   "useAuditLog",
   "useCoisa",
   "useCourseDetail",
@@ -11,7 +10,6 @@
   "useDados",
   "useDebouncedCallback",
   "useFuzzySearchWithScore",
-  "useInfiniteScroll",
   "useLeaderboardCached",
   "useLearningPathDetail",
   "useLiveAnnouncer",
@@ -22,66 +20,67 @@
   "useReducedMotion",
   "useStableCallback",
   "useStableMemo",
-  "useStudyCalendar",
   "useThrottledCallback",
   "useUserAchievementsCached",
   "useUserStreakCached",
   "useUserXPCached",
   "useVideoKeyboard",
-  "useVideoShortcuts",
-  "useViewMode"
+  "useVideoShortcuts"
  ],
  "sem_teste": [
   "useAchievements",
+  "useAdminFlashcards",
   "useAdminRole",
-  "useAnnouncements",
   "useAuditLog",
   "useAuth",
   "useAvatarUpload",
   "useCategories",
+  "useCategoryLeaderboard",
   "useCertificates",
   "useCoisa",
   "useCourseDetail",
-  "useCourseNotes",
   "useCourses",
   "useDados",
   "useDailyChallenges",
   "useDebouncedCallback",
   "useDebouncedValue",
+  "useDeleteFlashcard",
   "useDepartmentLeaderboard",
   "useDiscussions",
+  "useFlashcardOverview",
+  "useFlashcardSession",
   "useFuzzySearch",
   "useFuzzySearchWithMatches",
   "useFuzzySearchWithScore",
-  "useGoals",
   "useInfiniteScroll",
   "useIsMobile",
   "useLeaderboard",
   "useLeaderboardCached",
+  "useLeague",
   "useLearningPathDetail",
   "useLearningPaths",
   "useLearningPathsList",
   "useLevelUp",
-  "useLiveAnnouncer",
   "useMFA",
   "useMemoizedSelector",
-  "useNotes",
   "useNotifications",
   "useNotificationsCached",
   "useOnboardingTutorial",
+  "useOnlineStatus",
   "usePWA",
   "usePasskeys",
+  "usePerformanceComparison",
   "usePlatformComparison",
   "usePlatformSettings",
   "usePomodoro",
   "usePrefetch",
   "usePrefetchQuery",
+  "usePublicProfile",
   "usePushNotifications",
   "useQuizStatsData",
   "useQuizzes",
   "useRateLimitLogs",
-  "useRecommendations",
-  "useReducedMotion",
+  "useSaveFlashcard",
   "useSecurityAlerts",
   "useSessionRotation",
   "useSmartRecommendations",
@@ -89,7 +88,9 @@
   "useStableMemo",
   "useStreaks",
   "useStudyCalendar",
+  "useStudySchedule",
   "useThrottledCallback",
+  "useToggleFlashcard",
   "useUpdatePlatformSettings",
   "useUserAchievementsCached",
   "useUserLearningPathProgressCached",
@@ -106,7 +107,7 @@
  "hooks": {
   "useAchievements": {
    "arquivo": "src/hooks/useAchievements.ts",
-   "linhas": 177,
+   "linhas": 178,
    "tabelas": [
     "achievements",
     "user_achievements"
@@ -136,6 +137,23 @@
    ],
    "coberto_por_teste": true
   },
+  "useAdminFlashcards": {
+   "arquivo": "src/hooks/useFlashcards.ts",
+   "linhas": 310,
+   "tabelas": [
+    "flashcards"
+   ],
+   "rpcs": [
+    "get_due_flashcards",
+    "get_flashcard_overview",
+    "review_flashcard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminFlashcardsTab.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useAdminRole": {
    "arquivo": "src/hooks/useAdminRole.ts",
    "linhas": 39,
@@ -146,6 +164,7 @@
    "edges": [],
    "usado_por": [
     "src/components/ProtectedRoute.tsx",
+    "src/components/leaderboard/LeaguePanel.tsx",
     "src/components/playbooks/PlaybookComments.tsx",
     "src/hooks/useRateLimitLogs.ts",
     "src/hooks/useSecurityAlerts.ts",
@@ -157,12 +176,14 @@
   },
   "useAnnouncements": {
    "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
-   "linhas": 112,
+   "linhas": 111,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
-   "usado_por": [],
-   "coberto_por_teste": false
+   "usado_por": [
+    "src/components/quiz/QuizPlayer.tsx"
+   ],
+   "coberto_por_teste": true
   },
   "useAuditLog": {
    "arquivo": "src/hooks/useAuditLog.ts",
@@ -190,10 +211,12 @@
     "src/components/CommandPalette.tsx",
     "src/components/ProtectedRoute.tsx",
     "src/components/activity/ActivityTimeline.tsx",
+    "src/components/admin/AdminFlashcardsTab.tsx",
     "src/components/admin/AdminUsersTab.tsx",
     "src/components/analytics/SkillRadarChart.tsx",
     "src/components/discussions/CourseDiscussions.tsx",
     "src/components/export/ExportProgress.tsx",
+    "src/components/favorites/FavoritesSection.tsx",
     "src/components/feedback/FeedbackWidget.tsx",
     "src/components/gamification/WeeklyGoalTracker.tsx",
     "src/components/notifications/SmartReminders.tsx",
@@ -212,31 +235,35 @@
     "src/hooks/useDailyChallenges.ts",
     "src/hooks/useDiscussions.ts",
     "src/hooks/useFavorites.ts",
+    "src/hooks/useFlashcards.ts",
     "src/hooks/useGoals.ts",
     "src/hooks/useLeaderboard.ts",
+    "src/hooks/useLeague.ts",
     "src/hooks/useLearningPaths.ts",
     "src/hooks/useMFA.ts",
     "src/hooks/useNotes.ts",
     "src/hooks/useNotifications.ts",
     "src/hooks/useOnboardingWorkflow.ts",
     "src/hooks/usePasskeys.ts",
+    "src/hooks/usePerformanceComparison.ts",
     "src/hooks/usePlatformComparison.ts",
     "src/hooks/usePlaybookComments.ts",
     "src/hooks/usePomodoro.ts",
     "src/hooks/usePushNotifications.ts",
     "src/hooks/useQuizzes.ts",
     "src/hooks/useRateLimitLogs.ts",
-    "src/hooks/useRecommendations.ts",
     "src/hooks/useSecurityAlerts.ts",
     "src/hooks/useSessionRotation.ts",
     "src/hooks/useSkillAssessments.ts",
     "src/hooks/useSmartRecommendations.ts",
     "src/hooks/useStreaks.ts",
     "src/hooks/useStudyCalendar.ts",
+    "src/hooks/useStudySchedule.ts",
     "src/hooks/useUserPreferences.ts",
     "src/hooks/useUserSessions.ts",
     "src/hooks/useUserXP.ts",
     "src/hooks/useXPHistory.ts",
+    "src/hooks/useXpMultiplier.ts",
     "src/pages/Admin.tsx",
     "src/pages/Auth.tsx",
     "src/pages/Catalog.tsx",
@@ -287,9 +314,22 @@
    ],
    "coberto_por_teste": false
   },
+  "useCategoryLeaderboard": {
+   "arquivo": "src/hooks/useCategoryLeaderboard.ts",
+   "linhas": 77,
+   "tabelas": [],
+   "rpcs": [
+    "get_category_leaderboard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/leaderboard/CategoryLeaderboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "useCertificates": {
    "arquivo": "src/hooks/useCertificates.ts",
-   "linhas": 119,
+   "linhas": 115,
    "tabelas": [
     "certificates"
    ],
@@ -381,7 +421,7 @@
    "rpcs": [],
    "edges": [],
    "usado_por": [],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useCourses": {
    "arquivo": "src/hooks/useCachedQuery.ts",
@@ -401,6 +441,8 @@
    ],
    "edges": [],
    "usado_por": [
+    "src/components/admin/AdminFlashcardsTab.tsx",
+    "src/components/calendar/StudySchedulePanel.tsx",
     "src/pages/Catalog.tsx",
     "src/pages/Dashboard.tsx"
    ],
@@ -423,13 +465,11 @@
   },
   "useDailyChallenges": {
    "arquivo": "src/hooks/useDailyChallenges.ts",
-   "linhas": 173,
-   "tabelas": [
-    "daily_challenges",
-    "user_daily_challenge_progress"
-   ],
+   "linhas": 160,
+   "tabelas": [],
    "rpcs": [
-    "claim_daily_challenge_reward"
+    "claim_daily_challenge_reward",
+    "get_my_challenges"
    ],
    "edges": [],
    "usado_por": [
@@ -488,6 +528,23 @@
     "src/components/admin/AdminAssessmentsTab.tsx"
    ],
    "coberto_por_teste": true
+  },
+  "useDeleteFlashcard": {
+   "arquivo": "src/hooks/useFlashcards.ts",
+   "linhas": 310,
+   "tabelas": [
+    "flashcards"
+   ],
+   "rpcs": [
+    "get_due_flashcards",
+    "get_flashcard_overview",
+    "review_flashcard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminFlashcardsTab.tsx"
+   ],
+   "coberto_por_teste": false
   },
   "useDeletePlaybook": {
    "arquivo": "src/hooks/usePlaybooks.ts",
@@ -604,9 +661,44 @@
    "edges": [],
    "usado_por": [
     "src/components/favorites/FavoriteButton.tsx",
+    "src/components/favorites/FavoritesSection.tsx",
     "src/pages/Dashboard.tsx"
    ],
    "coberto_por_teste": true
+  },
+  "useFlashcardOverview": {
+   "arquivo": "src/hooks/useFlashcards.ts",
+   "linhas": 310,
+   "tabelas": [
+    "flashcards"
+   ],
+   "rpcs": [
+    "get_due_flashcards",
+    "get_flashcard_overview",
+    "review_flashcard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Flashcards.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useFlashcardSession": {
+   "arquivo": "src/hooks/useFlashcards.ts",
+   "linhas": 310,
+   "tabelas": [
+    "flashcards"
+   ],
+   "rpcs": [
+    "get_due_flashcards",
+    "get_flashcard_overview",
+    "review_flashcard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Flashcards.tsx"
+   ],
+   "coberto_por_teste": false
   },
   "useFuzzySearch": {
    "arquivo": "src/hooks/useFuzzySearch.ts",
@@ -675,24 +767,28 @@
   },
   "useGoals": {
    "arquivo": "src/hooks/useGoals.ts",
-   "linhas": 182,
+   "linhas": 154,
    "tabelas": [
     "user_goals"
    ],
-   "rpcs": [],
+   "rpcs": [
+    "recalculate_user_goals"
+   ],
    "edges": [],
    "usado_por": [
     "src/components/goals/GoalsWidget.tsx"
    ],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useInfiniteScroll": {
    "arquivo": "src/hooks/useInfiniteScroll.ts",
-   "linhas": 60,
+   "linhas": 88,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
-   "usado_por": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx"
+   ],
    "coberto_por_teste": false
   },
   "useIsMobile": {
@@ -738,6 +834,20 @@
    ],
    "edges": [],
    "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useLeague": {
+   "arquivo": "src/hooks/useLeague.ts",
+   "linhas": 93,
+   "tabelas": [],
+   "rpcs": [
+    "get_my_league",
+    "refresh_leagues"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/leaderboard/LeaguePanel.tsx"
+   ],
    "coberto_por_teste": false
   },
   "useLearningPathDetail": {
@@ -813,12 +923,12 @@
   },
   "useLiveAnnouncer": {
    "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
-   "linhas": 112,
+   "linhas": 111,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useMFA": {
    "arquivo": "src/hooks/useMFA.ts",
@@ -855,7 +965,7 @@
    "usado_por": [
     "src/components/notes/NotesPanel.tsx"
    ],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useNotifications": {
    "arquivo": "src/hooks/useNotifications.ts",
@@ -915,6 +1025,17 @@
    ],
    "coberto_por_teste": true
   },
+  "useOnlineStatus": {
+   "arquivo": "src/hooks/useOnlineStatus.ts",
+   "linhas": 28,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/ui/CacheIndicator.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "usePWA": {
    "arquivo": "src/hooks/usePWA.ts",
    "linhas": 76,
@@ -936,6 +1057,19 @@
    "edges": [],
    "usado_por": [
     "src/components/security/PasskeyManager.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "usePerformanceComparison": {
+   "arquivo": "src/hooks/usePerformanceComparison.ts",
+   "linhas": 40,
+   "tabelas": [],
+   "rpcs": [
+    "get_performance_comparison"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/analytics/PerformanceComparisonWidget.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -1068,8 +1202,20 @@
     "src/components/dashboard/SmartRecommendations.tsx",
     "src/components/learning-paths/LearningPathCard.tsx",
     "src/components/learning-paths/LearningPathCourseItem.tsx",
-    "src/components/navigation/MobileBottomNav.tsx",
-    "src/components/recommendations/RecommendationsWidget.tsx"
+    "src/components/navigation/MobileBottomNav.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "usePublicProfile": {
+   "arquivo": "src/hooks/usePublicProfile.ts",
+   "linhas": 73,
+   "tabelas": [],
+   "rpcs": [
+    "get_public_profile"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/PublicProfile.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -1105,7 +1251,7 @@
   },
   "useQuizzes": {
    "arquivo": "src/hooks/useQuizzes.ts",
-   "linhas": 211,
+   "linhas": 273,
    "tabelas": [
     "quiz_options_public",
     "quiz_questions",
@@ -1113,6 +1259,7 @@
     "user_quiz_attempts"
    ],
    "rpcs": [
+    "get_adaptive_quiz_plan",
     "get_quiz_review",
     "submit_quiz_attempt"
    ],
@@ -1140,29 +1287,14 @@
    ],
    "coberto_por_teste": false
   },
-  "useRecommendations": {
-   "arquivo": "src/hooks/useRecommendations.ts",
-   "linhas": 68,
-   "tabelas": [
-    "courses"
-   ],
-   "rpcs": [
-    "get_recommended_courses"
-   ],
-   "edges": [],
-   "usado_por": [
-    "src/components/recommendations/RecommendationsWidget.tsx"
-   ],
-   "coberto_por_teste": false
-  },
   "useReducedMotion": {
    "arquivo": "src/components/accessibility/ReducedMotionProvider.tsx",
-   "linhas": 97,
+   "linhas": 100,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useRegisterPlaybookView": {
    "arquivo": "src/hooks/usePlaybooks.ts",
@@ -1194,6 +1326,23 @@
     "src/components/admin/AdminAssessmentsTab.tsx"
    ],
    "coberto_por_teste": true
+  },
+  "useSaveFlashcard": {
+   "arquivo": "src/hooks/useFlashcards.ts",
+   "linhas": 310,
+   "tabelas": [
+    "flashcards"
+   ],
+   "rpcs": [
+    "get_due_flashcards",
+    "get_flashcard_overview",
+    "review_flashcard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminFlashcardsTab.tsx"
+   ],
+   "coberto_por_teste": false
   },
   "useSavePlaybook": {
    "arquivo": "src/hooks/usePlaybooks.ts",
@@ -1321,7 +1470,6 @@
    ],
    "edges": [],
    "usado_por": [
-    "src/components/gamification/DailyChallenges.tsx",
     "src/pages/Dashboard.tsx",
     "src/pages/LessonPlayer.tsx"
    ],
@@ -1337,7 +1485,22 @@
    ],
    "rpcs": [],
    "edges": [],
-   "usado_por": [],
+   "usado_por": [
+    "src/pages/Dashboard.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useStudySchedule": {
+   "arquivo": "src/hooks/useStudySchedule.ts",
+   "linhas": 109,
+   "tabelas": [
+    "study_schedule"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/calendar/StudySchedulePanel.tsx"
+   ],
    "coberto_por_teste": false
   },
   "useSubmitAssessment": {
@@ -1358,7 +1521,7 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 143,
+   "linhas": 146,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1387,6 +1550,23 @@
    "rpcs": [],
    "edges": [],
    "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useToggleFlashcard": {
+   "arquivo": "src/hooks/useFlashcards.ts",
+   "linhas": 310,
+   "tabelas": [
+    "flashcards"
+   ],
+   "rpcs": [
+    "get_due_flashcards",
+    "get_flashcard_overview",
+    "review_flashcard"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminFlashcardsTab.tsx"
+   ],
    "coberto_por_teste": false
   },
   "useTrainingVideos": {
@@ -1625,11 +1805,13 @@
   },
   "useViewMode": {
    "arquivo": "src/components/catalog/ViewToggle.tsx",
-   "linhas": 88,
+   "linhas": 92,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
-   "usado_por": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx"
+   ],
    "coberto_por_teste": false
   },
   "useXPHistory": {
@@ -1645,6 +1827,19 @@
     "src/components/profile/PersonalImpactWidget.tsx"
    ],
    "coberto_por_teste": false
+  },
+  "useXpMultiplier": {
+   "arquivo": "src/hooks/useXpMultiplier.ts",
+   "linhas": 77,
+   "tabelas": [],
+   "rpcs": [
+    "get_my_xp_multiplier"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/gamification/DailyChallenges.tsx"
+   ],
+   "coberto_por_teste": true
   }
  }
 }

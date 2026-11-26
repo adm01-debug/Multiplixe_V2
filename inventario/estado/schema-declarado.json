@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 63,
-    "tabelas_no_types": 63,
-    "tabelas_nas_migrations": 63,
-    "colunas": 532,
+    "tabelas": 65,
+    "tabelas_no_types": 65,
+    "tabelas_nas_migrations": 65,
+    "colunas": 554,
     "views": 1,
-    "funcoes": 61,
-    "funcoes_expostas_no_types": 41,
+    "funcoes": 64,
+    "funcoes_expostas_no_types": 44,
     "enums": 1,
-    "policies": 170,
+    "policies": 176,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 65,
+    "migrations": 66,
     "alertas": 3,
     "problemas": 3
   },
@@ -178,6 +178,22 @@
         "edges": 0
       }
     },
+    "flashcards": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "update_flashcards_updated_at"
+      ],
+      "indices": 2,
+      "criada_em": "20261127090000_flashcards_srs.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
     "geo_blocking_config": {
       "no_types": true,
       "nas_migrations": true,
@@ -278,7 +294,7 @@
       "indices": 1,
       "criada_em": "20251224124233_69bd4579-c04e-42bf-b0b6-a2dbee94cd0b.sql",
       "uso_no_codigo": {
-        "src": 9,
+        "src": 10,
         "edges": 0
       }
     },
@@ -761,6 +777,22 @@
       "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
       "uso_no_codigo": {
         "src": 3,
+        "edges": 0
+      }
+    },
+    "user_flashcard_progress": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 12,
+      "rls": true,
+      "policies": 4,
+      "triggers": [
+        "update_user_flashcard_progress_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20261127090000_flashcards_srs.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },
@@ -1260,6 +1292,33 @@
         "edges": 0
       }
     },
+    "get_due_flashcards": {
+      "exposta_no_types": true,
+      "args": [
+        "p_course_id",
+        "p_limit"
+      ],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127090000_flashcards_srs.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_flashcard_overview": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127090000_flashcards_srs.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_leaderboard": {
       "exposta_no_types": true,
       "args": [
@@ -1692,6 +1751,21 @@
         "edges": 0
       }
     },
+    "review_flashcard": {
+      "exposta_no_types": true,
+      "args": [
+        "p_flashcard_id",
+        "p_grade"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127090000_flashcards_srs.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "submit_quiz_attempt": {
       "exposta_no_types": true,
       "args": [
@@ -1856,7 +1930,8 @@
         "platform_stats_cache",
         "playbook_views",
         "saved_filters",
-        "user_daily_challenge_progress"
+        "user_daily_challenge_progress",
+        "user_flashcard_progress"
       ]
     },
     {

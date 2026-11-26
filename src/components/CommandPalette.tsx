@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator,
 } from "@/components/ui/command";
-import { Moon, Sun, LogOut, BookOpen, FileText, Video, Route, LayoutDashboard, Trophy, User, Sparkles, Target, ShieldAlert } from "lucide-react";
+import { Moon, Sun, LogOut, BookOpen, FileText, Video, Route, LayoutDashboard, Trophy, User, Sparkles, Target, ShieldAlert, Brain } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
@@ -26,6 +26,7 @@ const QUICK_PAGES: QuickPage[] = [
   { id: "video-library", title: "Biblioteca de Vídeos", url: "/biblioteca-videos", icon: Video },
   { id: "onboarding", title: "Onboarding", url: "/onboarding", icon: Sparkles },
   { id: "assessments", title: "Avaliações", url: "/avaliacoes", icon: Target },
+  { id: "flashcards", title: "Flashcards de Revisão", url: "/flashcards", icon: Brain },
   { id: "security", title: "Segurança", url: "/seguranca", icon: ShieldAlert },
 ];
 

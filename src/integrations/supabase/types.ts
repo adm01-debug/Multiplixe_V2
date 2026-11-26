@@ -19,6 +19,7 @@ export type Database = {
           category: string
           created_at: string
           description: string
+          ends_at: string | null
           gradient: string | null
           icon: string
           id: string
@@ -27,13 +28,16 @@ export type Database = {
                   requirement_category: string | null
           requirement_type: string
           requirement_value: number
+          seasonal_event_id: string | null
           slug: string
+          starts_at: string | null
           xp_reward: number
         }
         Insert: {
           category?: string
           created_at?: string
           description: string
+          ends_at?: string | null
           gradient?: string | null
           icon?: string
           id?: string
@@ -42,13 +46,16 @@ export type Database = {
                   requirement_category?: string | null
           requirement_type: string
           requirement_value?: number
+          seasonal_event_id?: string | null
           slug: string
+          starts_at?: string | null
           xp_reward?: number
         }
         Update: {
           category?: string
           created_at?: string
           description?: string
+          ends_at?: string | null
           gradient?: string | null
           icon?: string
           id?: string
@@ -57,7 +64,9 @@ export type Database = {
                   requirement_category?: string | null
           requirement_type?: string
           requirement_value?: number
+          seasonal_event_id?: string | null
           slug?: string
+          starts_at?: string | null
           xp_reward?: number
         }
         Relationships: []

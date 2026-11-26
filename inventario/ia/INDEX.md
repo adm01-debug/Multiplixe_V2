@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `c61df0c22bae7d582e041bc18f6b1650720710d6` · branch `claude/feat-game-009-eventos-sazonais-261126-1056` · 2026-11-26T11:20:43-03:00
+Commit: `c040ae5e88e011d97ea387fd54ead071621a0e7f` · branch `claude/feat-game-009-conquistas-sazonais-261126-1145` · 2026-11-26T11:37:40-03:00
 
 ## Como usar
 
@@ -21,17 +21,17 @@ Commit: `c61df0c22bae7d582e041bc18f6b1650720710d6` · branch `claude/feat-game-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 631 (521) |
-| linhas de codigo | 74080 |
+| arquivos (codigo) | 636 (523) |
+| linhas de codigo | 74486 |
 | paginas / rotas | 28 / 28 |
 | componentes / hooks | 242 / 142 |
-| arquivos de teste | 90 |
+| arquivos de teste | 91 |
 | edge functions | 13 |
-| tabelas / migrations | 74 / 81 |
+| tabelas / migrations | 74 / 82 |
 
 ## Divida medida
 
-`: any`: 2 · `console.log`: 14 · `@ts-ignore`: 1 · `eslint-disable`: 2 · TODO/FIXME: 5 · arquivos > 500 linhas: 5
+`: any`: 2 · `console.log`: 14 · `@ts-ignore`: 1 · `eslint-disable`: 2 · TODO/FIXME: 5 · arquivos > 500 linhas: 6
 
 ## Rotas
 
@@ -86,7 +86,7 @@ Commit: `c61df0c22bae7d582e041bc18f6b1650720710d6` · branch `claude/feat-game-0
 
 ## Banco (declarado pelo repo)
 
-74 tabelas · 192 policies · 99 funcoes · 2 cron jobs · 1 bucket(s) · 81 migrations
+74 tabelas · 192 policies · 100 funcoes · 2 cron jobs · 1 bucket(s) · 82 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -119,15 +119,15 @@ Commit: `c61df0c22bae7d582e041bc18f6b1650720710d6` · branch `claude/feat-game-0
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (54)
-- `inventario/estado/schema-declarado.json` (23)
 - `src/integrations/supabase/types.ts` (23)
-- `inventario/ia/baseline.json` (22)
-- `inventario/ia/INDEX.md` (22)
-- `inventario/ia/manifest.json` (22)
-- `inventario/ia/componentes.json` (19)
-- `inventario/ia/grafo.json` (18)
-- `inventario/estado/rotas.json` (17)
-- `inventario/ia/hooks.json` (17)
+- `inventario/estado/schema-declarado.json` (22)
+- `inventario/ia/baseline.json` (21)
+- `inventario/ia/INDEX.md` (21)
+- `inventario/ia/manifest.json` (21)
+- `inventario/ia/componentes.json` (18)
+- `inventario/ia/grafo.json` (17)
+- `inventario/estado/rotas.json` (16)
+- `inventario/ia/hooks.json` (16)
 
 ## Scripts npm
 

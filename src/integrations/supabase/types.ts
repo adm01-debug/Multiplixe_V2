@@ -1077,33 +1077,6 @@ export type Database = {
         }
         Relationships: []
       }
-      password_reset_tokens: {
-        Row: {
-          created_at: string | null
-          expires_at: string
-          id: string
-          token: string
-          used_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          expires_at: string
-          id?: string
-          token: string
-          used_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          expires_at?: string
-          id?: string
-          token?: string
-          used_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       permissions: {
         Row: {
           action: string
@@ -3139,6 +3112,10 @@ export type Database = {
           session_id: string
           xp_earned: number
         }[]
+      }
+      consumir_codigo_backup: {
+        Args: { p_hash: string }
+        Returns: boolean
       }
       create_audit_log: {
         Args: {

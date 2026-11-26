@@ -7,7 +7,6 @@ import {
   TAMANHO_CODIGO_BACKUP,
   gerarCodigoBackup,
   hashCodigoBackup,
-  indiceCodigoBackup,
 } from '@/lib/backupCodes';
 
 interface MFASettings {
@@ -243,35 +242,18 @@ export const useMFA = () => {
   };
 
   /**
-   * Consome um codigo de backup: confere o hash guardado, apaga o codigo da lista
-   * (uso unico) e carimba o segundo fator em `last_mfa_at`. Falso quando nao confere.
+   * Consome um codigo de backup: a funcao `consumir_codigo_backup` confere o hash,
+   * apaga o codigo da lista (uso unico) e carimba o segundo fator em `last_mfa_at`.
+   * Roda no banco porque a linha de `user_mfa_settings` exige segundo fator para escrita.
+   * Falso quando o codigo nao confere.
    */
   const consumeBackupCode = async (code: string): Promise<boolean> => {
     if (!user) return false;
 
-    const { data, error } = await supabase
-      .from('user_mfa_settings')
-      .select('backup_codes')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (error) return false;
-
-    const hashes = data?.backup_codes ?? [];
     const hash = await hashCodigoBackup(code);
+    const { data, error } = await supabase.rpc('consumir_codigo_backup', { p_hash: hash });
 
-    if (indiceCodigoBackup(hash, hashes) === -1) return false;
-
-    const { error: erroUpdate } = await supabase
-      .from('user_mfa_settings')
-      .update({
-        backup_codes: hashes.filter((h) => h !== hash),
-        last_mfa_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('user_id', user.id);
-
-    if (erroUpdate) return false;
+    if (error || data !== true) return false;
 
     await fetchSettings();
     return true;

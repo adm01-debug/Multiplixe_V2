@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 76,
-    "tabelas_no_types": 76,
-    "tabelas_nas_migrations": 76,
-    "colunas": 675,
+    "tabelas": 75,
+    "tabelas_no_types": 75,
+    "tabelas_nas_migrations": 75,
+    "colunas": 669,
     "views": 1,
-    "funcoes": 108,
-    "funcoes_expostas_no_types": 66,
+    "funcoes": 110,
+    "funcoes_expostas_no_types": 67,
     "enums": 1,
-    "policies": 198,
-    "cron_jobs": 4,
+    "policies": 196,
+    "cron_jobs": 5,
     "buckets": 1,
-    "migrations": 85,
+    "migrations": 91,
     "alertas": 3,
     "problemas": 3
   },
@@ -139,7 +139,7 @@
       "nas_migrations": true,
       "colunas": 16,
       "rls": true,
-      "policies": 1,
+      "policies": 2,
       "triggers": [
         "audit_courses_changes",
         "trigger_notify_new_course",
@@ -442,20 +442,6 @@
         "edges": 2
       }
     },
-    "password_reset_tokens": {
-      "no_types": true,
-      "nas_migrations": true,
-      "colunas": 6,
-      "rls": true,
-      "policies": 1,
-      "triggers": [],
-      "indices": 1,
-      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
-      "uso_no_codigo": {
-        "src": 0,
-        "edges": 0
-      }
-    },
     "permissions": {
       "no_types": true,
       "nas_migrations": true,
@@ -697,7 +683,7 @@
       "indices": 4,
       "criada_em": "20260102115559_.sql",
       "uso_no_codigo": {
-        "src": 0,
+        "src": 3,
         "edges": 0
       }
     },
@@ -973,15 +959,15 @@
       "nas_migrations": true,
       "colunas": 10,
       "rls": true,
-      "policies": 7,
+      "policies": 5,
       "triggers": [
         "update_user_mfa_settings_updated_at"
       ],
       "indices": 0,
       "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
       "uso_no_codigo": {
-        "src": 4,
-        "edges": 1
+        "src": 5,
+        "edges": 0
       }
     },
     "user_notes": {
@@ -1072,7 +1058,7 @@
       "criada_em": "20261125150600_fechar_drift_app_role_user_roles.sql",
       "uso_no_codigo": {
         "src": 2,
-        "edges": 4
+        "edges": 6
       }
     },
     "user_sessions": {
@@ -1504,7 +1490,7 @@
       "retorno": "undefined",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20251231120511_bf27f23f-7641-4168-b524-6a00ddbbad8d.sql",
+      "criada_em": "20261126194500_remover_legado_verify_mfa_e_password_reset_tokens.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 1
@@ -1547,6 +1533,20 @@
       "criada_em": "20261127180000_powerups.sql",
       "uso_no_codigo": {
         "src": 0,
+        "edges": 0
+      }
+    },
+    "consumir_codigo_backup": {
+      "exposta_no_types": true,
+      "args": [
+        "p_hash"
+      ],
+      "retorno": "boolean",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126200500_acao_sensivel_exige_segundo_fator.sql",
+      "uso_no_codigo": {
+        "src": 1,
         "edges": 0
       }
     },
@@ -2444,6 +2444,18 @@
         "edges": 0
       }
     },
+    "segundo_fator_verificado": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126200500_acao_sensivel_exige_segundo_fator.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "set_seasonal_events_updated_at": {
       "exposta_no_types": false,
       "args": null,
@@ -2654,6 +2666,11 @@
     ]
   },
   "cron": {
+    "cleanup-security-logs": {
+      "agenda": "20 3 * * *",
+      "chama_edge": null,
+      "definido_em": "20261126160000_agendar_limpeza_logs_seguranca.sql"
+    },
     "refresh-platform-stats": {
       "agenda": "0 * * * *",
       "chama_edge": null,
@@ -2688,10 +2705,8 @@
         "coin_transactions",
         "daily_challenges",
         "department_challenge_claims",
-        "password_reset_tokens",
         "platform_stats_cache",
         "playbook_views",
-        "saved_filters",
         "user_daily_challenge_progress",
         "user_flashcard_progress",
         "user_leagues",

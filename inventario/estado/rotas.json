@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 109,
+    "hooks_distintos": 114,
     "problemas": 0
   },
   "rotas": [
@@ -268,7 +268,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 64,
+      "arquivos_lidos": 67,
       "hooks": [
         {
           "nome": "useAdminFlashcards",
@@ -283,8 +283,16 @@
           "arquivo": "src/hooks/useAdminRole.ts"
         },
         {
+          "nome": "useAdminSeasonalEvents",
+          "arquivo": "src/hooks/useAdminSeasonalEvents.ts"
+        },
+        {
           "nome": "useAdminStoreItems",
           "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
+          "nome": "useAlternarEvento",
+          "arquivo": "src/hooks/useAdminSeasonalEvents.ts"
         },
         {
           "nome": "useAlternarMissao",
@@ -323,6 +331,10 @@
           "arquivo": "src/hooks/useOnboardingWorkflow.ts"
         },
         {
+          "nome": "useExcluirEvento",
+          "arquivo": "src/hooks/useAdminSeasonalEvents.ts"
+        },
+        {
           "nome": "useExcluirMissao",
           "arquivo": "src/hooks/useAdminMissions.ts"
         },
@@ -349,6 +361,10 @@
         {
           "nome": "useQuizStatsData",
           "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts"
+        },
+        {
+          "nome": "useSalvarEvento",
+          "arquivo": "src/hooks/useAdminSeasonalEvents.ts"
         },
         {
           "nome": "useSalvarMissao",
@@ -413,6 +429,7 @@
       "rpcs": [
         "admin_grant_coins",
         "create_audit_log",
+        "get_active_seasonal_event",
         "get_admin_department_challenges",
         "get_due_assessments",
         "get_due_flashcards",
@@ -448,6 +465,7 @@
         "quiz_performance_alerts",
         "quizzes",
         "role_permissions",
+        "seasonal_events",
         "security_alerts",
         "skill_assessments",
         "store_items",
@@ -1107,7 +1125,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 103,
+      "arquivos_lidos": 105,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1230,6 +1248,10 @@
           "arquivo": "src/hooks/useRateLimitLogs.ts"
         },
         {
+          "nome": "useSeasonalEvent",
+          "arquivo": "src/hooks/useSeasonalEvent.ts"
+        },
+        {
           "nome": "useSecurityAlerts",
           "arquivo": "src/hooks/useSecurityAlerts.ts"
         },
@@ -1308,6 +1330,7 @@
         "claim_daily_challenge_reward",
         "complete_pomodoro_session",
         "create_audit_log",
+        "get_active_seasonal_event",
         "get_adaptive_quiz_plan",
         "get_due_assessments",
         "get_leaderboard",
@@ -3224,8 +3247,20 @@
         "/trilhas"
       ]
     },
+    "useAdminSeasonalEvents": {
+      "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useAdminStoreItems": {
       "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useAlternarEvento": {
+      "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
       "rotas": [
         "/admin"
       ]
@@ -3424,6 +3459,12 @@
       "rotas": [
         "/avaliacoes",
         "/dashboard"
+      ]
+    },
+    "useExcluirEvento": {
+      "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+      "rotas": [
+        "/admin"
       ]
     },
     "useExcluirMissao": {
@@ -3760,6 +3801,12 @@
         "/mentoria"
       ]
     },
+    "useSalvarEvento": {
+      "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useSalvarMissao": {
       "arquivo": "src/hooks/useAdminMissions.ts",
       "rotas": [
@@ -3800,6 +3847,12 @@
       "arquivo": "src/hooks/useOnboardingWorkflow.ts",
       "rotas": [
         "/admin"
+      ]
+    },
+    "useSeasonalEvent": {
+      "arquivo": "src/hooks/useSeasonalEvent.ts",
+      "rotas": [
+        "/dashboard"
       ]
     },
     "useSecurityAlerts": {

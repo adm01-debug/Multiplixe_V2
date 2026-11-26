@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T12:57:18.100Z",
- "commit": "24fca8300c1b79e5c57852ea98a858a33457c714",
+ "gerado_em": "2026-11-26T13:54:33.869Z",
+ "commit": "95bd7ca1c7d81e5c4127363622565f2c8e9dfd1e",
  "branch": "main",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "8c63509c25d95226",
-  "baseline.json": "7d7e8c0a022ffa65",
-  "componentes.json": "64f2b7944805b65b",
-  "grafo.json": "293ccb58574f1b94",
-  "hooks.json": "b9ad180b20d84c9f"
+  "INDEX.md": "1cf8ba8e75d53cf7",
+  "baseline.json": "1c7cb0a195f2905a",
+  "componentes.json": "e070daf583c97656",
+  "grafo.json": "d754037baa891532",
+  "hooks.json": "4c3112adbc71d780"
  },
  "contagens": {
-  "arquivos": 628,
-  "arquivos_de_codigo": 512,
-  "linhas_de_codigo": 73006,
-  "componentes": 240,
-  "hooks": 137,
+  "arquivos": 636,
+  "arquivos_de_codigo": 517,
+  "linhas_de_codigo": 73847,
+  "componentes": 242,
+  "hooks": 142,
   "paginas": 28,
-  "testes": 87,
+  "testes": 88,
   "edge_functions": 13,
   "rotas": 28,
-  "tabelas": 73,
-  "migrations": 79
+  "tabelas": 74,
+  "migrations": 80
  },
  "erros": []
 }

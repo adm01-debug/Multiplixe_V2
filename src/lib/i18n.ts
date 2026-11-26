@@ -101,6 +101,19 @@ const dict = {
       level3: "Mentor",
       level4: "Referência",
     },
+    events: {
+      title: "Evento sazonal",
+      subtitle: "Bônus por tempo limitado",
+      xpBonus: "XP extra",
+      multiplier: "Multiplicador",
+      deadline: "Termina em",
+      days: "dias",
+      day: "dia",
+      today: "último dia",
+      loading: "Carregando evento...",
+      error: "Não foi possível carregar o evento agora.",
+      retry: "Tentar de novo",
+    },
     missions: {
       title: "Missões do time",
       subtitle: "Objetivo coletivo do seu departamento",
@@ -260,6 +273,19 @@ const dict = {
       level2: "Contributor",
       level3: "Mentor",
       level4: "Reference",
+    },
+    events: {
+      title: "Seasonal event",
+      subtitle: "Limited-time bonus",
+      xpBonus: "Extra XP",
+      multiplier: "Multiplier",
+      deadline: "Ends in",
+      days: "days",
+      day: "day",
+      today: "last day",
+      loading: "Loading event...",
+      error: "We could not load the event right now.",
+      retry: "Try again",
     },
     missions: {
       title: "Team missions",
@@ -421,6 +447,19 @@ const dict = {
       level3: "Mentor",
       level4: "Referencia",
     },
+    events: {
+      title: "Evento de temporada",
+      subtitle: "Bono por tiempo limitado",
+      xpBonus: "XP extra",
+      multiplier: "Multiplicador",
+      deadline: "Termina en",
+      days: "días",
+      day: "día",
+      today: "último día",
+      loading: "Cargando evento...",
+      error: "No pudimos cargar el evento ahora.",
+      retry: "Intentar de nuevo",
+    },
     missions: {
       title: "Misiones del equipo",
       subtitle: "Objetivo colectivo de tu departamento",
@@ -497,6 +536,7 @@ export type DictPath =
   | `gestures.${keyof Dict["gestures"]}`
   | `theme.${keyof Dict["theme"]}`
   | `reputation.${keyof Dict["reputation"]}`
+  | `events.${keyof Dict["events"]}`
   | `missions.${keyof Dict["missions"]}`
   | `common.${keyof Dict["common"]}`;
 

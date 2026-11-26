@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (67)
+### ✅ Melhorias JÁ IMPLEMENTADAS (68)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (32)
+## ⏳ MELHORIAS PENDENTES (31)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1254,9 +1254,9 @@ Nada a implementar neste item.
 
 ---
 
-### 🎮 GAMIFICAÇÃO - 9 Pendentes
+### 🎮 GAMIFICAÇÃO - 8 Pendentes
 
-#### GAME-002: Desafios Semanais
+#### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Não há desafios semanais (apenas diários).
@@ -1268,6 +1268,25 @@ Nada a implementar neste item.
 3. "Complete um curso", "Mantenha streak de 5 dias"
 4. Recompensas maiores
 ```
+
+**Entregue em 26/11/2026**
+
+O sistema de desafios era decorativo: `user_daily_challenge_progress` estava **vazia (0 linhas)**. O `updateProgress` do hook não era chamado por nenhum componente, nenhuma função ou trigger do banco mexia no progresso e a tabela nem tinha a chave única que o próprio `upsert` do front usava em `onConflict` — os desafios apareciam sempre com 0/N e não existia desafio semanal.
+
+- `supabase/migrations/20261126050000_desafios_semanais.sql` (nova, já aplicada em produção):
+  - coluna `daily_challenges.challenge_period` (`daily`/`weekly`, default `daily`, com check);
+  - índice único `(user_id, challenge_id, challenge_date)` em `user_daily_challenge_progress`, que faltava para o upsert do front;
+  - `public.refresh_challenge_progress(uuid)` (SECURITY DEFINER): recalcula o progresso de cada desafio ativo a partir do histórico real do aluno (aulas concluídas, `watched_seconds`, `pomodoro_sessions`, `user_xp_history`, `user_quiz_attempts`, `user_course_progress`, `user_achievements`, `user_streaks`) e faz upsert preservando `xp_claimed`; o diário usa o bucket `current_date` e o semanal, `date_trunc('week', current_date)` (segunda-feira);
+  - `public.get_my_challenges()` (SECURITY DEFINER, `auth.uid()`): recalcula e devolve desafios + progresso + prazo (`ends_at`); `execute` revogado de `public`/`anon`, liberado só para `authenticated`;
+  - triggers em `user_lesson_progress`, `user_quiz_attempts` e `pomodoro_sessions` mantendo o progresso quente;
+  - 4 desafios semanais novos: 10 aulas (200 XP), 1 curso (300 XP), streak de 5 dias (250 XP) e 3 quizzes (200 XP).
+- `src/hooks/useDailyChallenges.ts`: o progresso passa a vir do RPC (antes o front tentava gravar e nunca conseguia); o `updateProgress` morto foi removido; separa diários e semanais; recarrega ao voltar o foco na janela.
+- `src/components/gamification/DailyChallenges.tsx`: seção **Desafios Semanais** com contagem própria, XP da semana e contagem regressiva até segunda-feira; ícones para os 11 tipos de desafio (antes só 4) e selo "Semanal" no card.
+- `src/integrations/supabase/types.ts` e `inventario/estado/schema-declarado.json` regenerados (63 tabelas / 53 funções).
+- `src/test/dailyChallenges.test.tsx` (novo, 5 casos).
+
+**Verificado de verdade (produção, transação com ROLLBACK):** aluno sintético com 2 aulas concluídas hoje (900s cada) + 1 sessão de pomodoro de 25 min → `get_my_challenges()` devolveu 12 desafios com progresso real: "Primeira Vitória" 1/1 concluído, "Maratonista do Dia" 2/3, "Foco Total" 1/1, "Semana de Foco" 2/10 e "Quiz Master da Semana" 0/3, com prazos corretos (diário 27/11 00:00, semanal 30/11 00:00 = segunda-feira). Antes disso a tabela de progresso tinha 0 linhas.
+- `tsc -b --force` 0 erros · eslint limpo nos arquivos tocados · guard de Supabase 368 chamadas / 0 violações · suíte 67 arquivos / 531 testes verdes.
 
 ---
 
@@ -1882,7 +1901,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **32** | **~160h** |
+| **TOTAL PENDENTE** | **31** | **~156h** |
 
 ---
 

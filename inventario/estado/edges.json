@@ -2,7 +2,7 @@
   "format_version": 1,
   "fonte": "scripts/inventario/gerar-repo.mjs (le supabase/functions/, src/, supabase/migrations/ e supabase/config.toml)",
   "resumo": {
-    "edges": 13,
+    "edges": 14,
     "sem_chamador_no_repo": 5,
     "segredos_distintos": 7
   },
@@ -272,6 +272,26 @@
       },
       "declarada_no_config": false,
       "sem_chamador": true
+    },
+    "webhook-dispatch": {
+      "linhas": 152,
+      "segredos_lidos": [
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "webhook_deliveries"
+      ],
+      "rpcs": [],
+      "chamada_em": {
+        "src": [],
+        "migrations": [
+          "supabase/migrations/20261129090000_webhooks_eventos.sql"
+        ],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
     },
     "weekly-admin-digest": {
       "linhas": 280,

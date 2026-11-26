@@ -23,6 +23,9 @@ import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import NotesPanel from "@/components/notes/NotesPanel";
 import ChaptersPanel from "@/components/player/ChaptersPanel";
+import VideoOfflineControls from "@/components/player/VideoOfflineControls";
+import { useVideoOffline } from "@/hooks/useVideoOffline";
+import { armazenamentoOffline, sincronizarProgresso, type RegistroProgresso } from "@/lib/videoOffline";
 import { TranscriptPanel } from "@/components/player/TranscriptPanel";
 import { parseChapters } from "@/lib/chapters";
 import { useSwipeHorizontal } from "@/hooks/useGestosMobile";
@@ -160,6 +163,35 @@ const LessonPlayer = () => {
   const handleVideoTimeUpdate = useCallback((seconds: number) => { videoTimeRef.current = seconds; setVideoSeconds((anterior) => (Math.floor(anterior) === Math.floor(seconds) ? anterior : seconds)); }, []);
   const getVideoTime = useCallback(() => videoTimeRef.current, []);
   const chapters = useMemo(() => parseChapters(currentLesson?.chapters), [currentLesson?.chapters]);
+  const aulaOffline = useMemo(
+    () => (currentLesson ? { id: currentLesson.id, titulo: currentLesson.title, videoUrl: currentLesson.video_url } : null),
+    [currentLesson],
+  );
+  const offline = useVideoOffline(aulaOffline);
+  const tRef = useRef(t);
+  tRef.current = t;
+  const avisoOffline = useRef(false);
+
+  const salvarProgressoAula = useCallback(async (registro: RegistroProgresso) => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) return false;
+    try {
+      const { error } = await supabase.from("user_lesson_progress").upsert(registro, { onConflict: "user_id,lesson_id" });
+      return !error;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  useEffect(() => {
+    const sincronizar = async () => {
+      if (typeof navigator !== "undefined" && !navigator.onLine) return;
+      const { enviados } = await sincronizarProgresso(salvarProgressoAula);
+      if (enviados > 0) toast.success(tRef.current("offline.sincronizado"));
+    };
+    void sincronizar();
+    window.addEventListener("online", sincronizar);
+    return () => window.removeEventListener("online", sincronizar);
+  }, [salvarProgressoAula]);
   const handleSeekToVideoTime = useCallback((seconds: number) => { playerRef.current?.seek(seconds); }, []);
 
   const handleProgress = useCallback(async (currentTime: number, duration: number) => {
@@ -167,8 +199,13 @@ const LessonPlayer = () => {
     const jaConcluida = lessonsProgress.find((p) => p.lesson_id === currentLesson.id)?.is_completed ?? false;
     const isCompleted = jaConcluida || currentTime / duration >= 0.9;
     try {
-      const { error } = await supabase.from("user_lesson_progress").upsert({ user_id: user.id, lesson_id: currentLesson.id, course_id: course.id, last_position_seconds: Math.floor(currentTime), watched_seconds: Math.floor(currentTime), is_completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null }, { onConflict: "user_id,lesson_id" });
-      if (!error && isCompleted) {
+          const registro: RegistroProgresso = { user_id: user.id, lesson_id: currentLesson.id, course_id: course.id, last_position_seconds: Math.floor(currentTime), watched_seconds: Math.floor(currentTime), is_completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null };
+          const salvou = await salvarProgressoAula(registro);
+          if (!salvou) {
+            await armazenamentoOffline.guardarProgresso(registro);
+            if (!avisoOffline.current) { avisoOffline.current = true; toast.message(tRef.current("offline.pendente")); }
+          }
+          if (salvou && isCompleted) {
         const wasAlreadyCompleted = lessonsProgress.find((p) => p.lesson_id === currentLesson.id)?.is_completed;
         setLessonsProgress((prev) => { const existing = prev.find((p) => p.lesson_id === currentLesson.id); if (existing) return prev.map((p) => p.lesson_id === currentLesson.id ? { ...p, is_completed: true } : p); return [...prev, { lesson_id: currentLesson.id, is_completed: true, last_position_seconds: Math.floor(currentTime) }]; });
         if (!wasAlreadyCompleted && !celebratedLessons.current.has(currentLesson.id)) {
@@ -182,7 +219,7 @@ const LessonPlayer = () => {
         await updateCourseProgress();
       }
     } catch { /* Silent fail */ }
-  }, [user, currentLesson, course, lessonsProgress, lessons.length, fireCourseComplete, fireLessonComplete, addXP, checkAchievements, hasStudiedToday, updateStreak, xpRewards]);
+  }, [user, currentLesson, course, lessonsProgress, lessons.length, fireCourseComplete, fireLessonComplete, addXP, checkAchievements, hasStudiedToday, updateStreak, xpRewards, salvarProgressoAula]);
 
   const updateCourseProgress = async () => {
     if (!user || !course || lessons.length === 0) return;
@@ -222,10 +259,24 @@ const LessonPlayer = () => {
           <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar && !focusMode ? 'lg:mr-80 xl:mr-96' : ''}`}>
             <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`} {...gestosAula}>
               <div className="rounded-2xl overflow-hidden shadow-2xl mb-6">
-                {currentLesson.video_url ? <VideoPlayer ref={playerRef} src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} onTimeUpdate={handleVideoTimeUpdate} initialPosition={currentProgress?.last_position_seconds || 0} chapters={chapters} /> : (
+                {currentLesson.video_url ? <VideoPlayer ref={playerRef} src={offline.urlReproducao ?? currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} onTimeUpdate={handleVideoTimeUpdate} initialPosition={currentProgress?.last_position_seconds || 0} chapters={chapters} /> : (
                   <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 flex flex-col items-center justify-center gap-4"><div className="p-6 bg-card/50 backdrop-blur-sm rounded-full"><Play className="h-12 w-12 text-muted-foreground" /></div><p className="text-muted-foreground font-medium">Vídeo não disponível</p></div>
                 )}
               </div>
+
+                              <VideoOfflineControls
+                                online={offline.online}
+                                baixando={offline.baixando}
+                                percentual={offline.percentual}
+                                baixado={offline.baixado}
+                                podeBaixar={Boolean(currentLesson.video_url) && offline.podeBaixar}
+                                aoBaixar={() => void offline.baixar()}
+                                aoCancelar={offline.cancelar}
+                                aoRemover={() => void offline.remover()}
+                                totalBaixadas={offline.videos.length}
+                                tamanhoTotal={offline.totalFormatado}
+                                aoLimparTudo={() => void offline.limpar()}
+                              />
 
               <ChaptersPanel chapters={chapters} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
               {currentLesson?.id && transcriptEstado === "carregando" ? (

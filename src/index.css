@@ -246,8 +246,8 @@
     --sidebar-primary: 200 91% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-ring: 200 91% 40%;
-    --gradient-primary: linear-gradient(135deg, hsl(200 91% 35%) 0%, hsl(186 100% 36%) 55%, hsl(180 82% 26%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(186 100% 36%) 0%, hsl(200 91% 35%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(200 91% 35%) 0%, hsl(186 100% 28%) 55%, hsl(180 82% 26%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(186 100% 28%) 0%, hsl(200 91% 35%) 100%);
   }
   .dark[data-accent="ocean"] {
     --primary: 200 100% 62%;
@@ -310,8 +310,8 @@
     --sidebar-primary: 20 88% 40%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-ring: 20 88% 42%;
-    --gradient-primary: linear-gradient(135deg, hsl(20 88% 40%) 0%, hsl(35 92% 38%) 55%, hsl(355 75% 38%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(35 92% 38%) 0%, hsl(20 88% 40%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(20 88% 40%) 0%, hsl(35 92% 34%) 55%, hsl(355 75% 38%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(35 92% 34%) 0%, hsl(20 88% 40%) 100%);
   }
   .dark[data-accent="sunset"] {
     --primary: 24 100% 60%;
@@ -342,8 +342,8 @@
     --sidebar-primary: 38 92% 31%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-ring: 38 92% 34%;
-    --gradient-primary: linear-gradient(135deg, hsl(38 92% 31%) 0%, hsl(45 93% 38%) 55%, hsl(28 80% 33%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(45 93% 38%) 0%, hsl(38 92% 31%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(38 92% 31%) 0%, hsl(45 93% 30%) 55%, hsl(28 80% 33%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(45 93% 30%) 0%, hsl(38 92% 31%) 100%);
   }
   .dark[data-accent="gold"] {
     --primary: 45 100% 58%;

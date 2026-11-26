@@ -1,9 +1,10 @@
 import { beforeEach, beforeAll, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import fs from "node:fs";
 import path from "node:path";
 import { PALETAS, PALETA_PADRAO, aplicarPaleta, normalizarPaleta, paletaPorId, aplicarPaletaSalva, CHAVE_PREFERENCIAS } from "@/lib/themePresets";
 import ThemeCustomizer from "@/components/ui/ThemeCustomizer";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 const sucesso = vi.fn();
 vi.mock("sonner", () => ({ toast: { success: (...a: unknown[]) => sucesso(...a), error: vi.fn() } }));
@@ -200,5 +201,27 @@ describe("boot da paleta salva", () => {
     expect(aplicarPaletaSalva()).toBe(PALETA_PADRAO);
     localStorage.setItem(CHAVE_PREFERENCIAS, JSON.stringify({ accentColor: "rosa-choque" }));
     expect(aplicarPaletaSalva()).toBe(PALETA_PADRAO);
+  });
+});
+
+describe("preferencias do usuario", () => {
+  it("trocar uma preferencia nao regrava o que outra tela acabou de mudar", async () => {
+    const acoes: { updatePreference: (k: string, v: unknown) => Promise<void> } = {
+      updatePreference: async () => {},
+    };
+    function Sonda() {
+      const { updatePreference } = useUserPreferences();
+      acoes.updatePreference = updatePreference as (k: string, v: unknown) => Promise<void>;
+      return null;
+    }
+    render(<Sonda />);
+    // outra tela (ex.: o perfil) grava a paleta nova depois que esta ja montou
+    localStorage.setItem(CHAVE_PREFERENCIAS, JSON.stringify({ accentColor: "gold", focusMode: false }));
+    await act(async () => {
+      await acoes.updatePreference("focusMode", true);
+    });
+    const salvo = JSON.parse(localStorage.getItem(CHAVE_PREFERENCIAS) || "{}");
+    expect(salvo.accentColor).toBe("gold");
+    expect(salvo.focusMode).toBe(true);
   });
 });

@@ -29,21 +29,22 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   focusMode: false,
 };
 
+/** Preferencias salvas no navegador (usado no boot e antes de gravar uma troca).
+ *  Ler sempre o armazenamento evita que uma tela sobrescreva o que outra acabou de mudar. */
+function lerSalvas(): UserPreferences {
+  try {
+    const bruto = localStorage.getItem("user-preferences");
+    if (!bruto) return DEFAULT_PREFERENCES;
+    const salvas = { ...DEFAULT_PREFERENCES, ...JSON.parse(bruto) };
+    return { ...salvas, accentColor: normalizarPaleta(salvas.accentColor) };
+  } catch {
+    return DEFAULT_PREFERENCES;
+  }
+}
+
 export const useUserPreferences = () => {
   const user = useOptionalAuth()?.user;
-  const [preferences, setPreferences] = useState<UserPreferences>(() => {
-    // Load from localStorage first for immediate access
-    const stored = localStorage.getItem("user-preferences");
-    if (stored) {
-      try {
-        const salvas = { ...DEFAULT_PREFERENCES, ...JSON.parse(stored) };
-        return { ...salvas, accentColor: normalizarPaleta(salvas.accentColor) };
-      } catch {
-        return DEFAULT_PREFERENCES;
-      }
-    }
-    return DEFAULT_PREFERENCES;
-  });
+  const [preferences, setPreferences] = useState<UserPreferences>(lerSalvas);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -80,7 +81,7 @@ export const useUserPreferences = () => {
       key: K,
       value: UserPreferences[K]
     ) => {
-      const newPreferences = { ...preferences, [key]: value };
+      const newPreferences = { ...lerSalvas(), [key]: value };
       setPreferences(newPreferences);
       localStorage.setItem("user-preferences", JSON.stringify(newPreferences));
 
@@ -99,7 +100,7 @@ export const useUserPreferences = () => {
         }
       }
     },
-    [preferences, user?.id]
+    [user?.id]
   );
 
   const resetPreferences = useCallback(() => {

@@ -147,3 +147,34 @@ describe.each(PALETAS.map((p) => [p.id, p] as const))(
     });
   }
 );
+
+/** Pontos de `--gradient-*` de um bloco de paleta, no formato hsl do proprio CSS. */
+function pontosDoGradiente(seletorPaleta: string, variavel: string): string[] {
+  const re = new RegExp(seletorPaleta.replace(/[[\]]/g, "\\$&") + "\\s*{([\\s\\S]*?)}");
+  const alvo = css.match(re);
+  expect(alvo, `${seletorPaleta} ausente em src/index.css`).toBeTruthy();
+  const linha = alvo![1].match(new RegExp(variavel + ":\\s*([^;]+);"));
+  expect(linha, `${variavel} ausente em ${seletorPaleta}`).toBeTruthy();
+  return [...linha![1].matchAll(/hsl\((\d+) (\d+)% (\d+)%\)/g)].map((m) => `${m[1]} ${m[2]}% ${m[3]}%`);
+}
+
+const BRANCO = "0 0% 100%";
+
+describe("gradientes das paletas com texto branco (.btn-gradient)", () => {
+  it.each(["ocean", "forest", "sunset", "gold"])(
+    "paleta %s: todo ponto do gradiente claro suporta texto branco (AA)",
+    (paleta) => {
+      for (const variavel of ["--gradient-primary", "--gradient-secondary"]) {
+        const pontos = pontosDoGradiente(`:root[data-accent="${paleta}"]`, variavel);
+        expect(pontos.length, `${paleta} ${variavel} sem pontos`).toBeGreaterThan(1);
+        for (const ponto of pontos) {
+          const ratio = contrast(BRANCO, ponto);
+          expect(
+            ratio,
+            `${paleta} ${variavel} hsl(${ponto}) com texto branco = ${ratio.toFixed(2)} (minimo 4.5)`
+          ).toBeGreaterThanOrEqual(4.5);
+        }
+      }
+    }
+  );
+});

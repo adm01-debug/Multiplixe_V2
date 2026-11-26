@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (86)
+### ✅ Melhorias JÁ IMPLEMENTADAS (87)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -33,6 +33,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 | FUNC-008 | Modo de Estudo Focado/Pomodoro (PomodoroTimer) | ✅ Implementado |
 | FUNC-018 | Velocidade de Vídeo Personalizada | ✅ Implementado |
 | GAME-001 | Desafios Diários (DailyChallenges.tsx) | ✅ Implementado |
+| GAME-012 | Sistema de Reputação (ReputacaoCard, detalhar_reputacao) | ✅ Implementado |
 | MOB-001 | PWA Completo (manifest.json, sw.js) | ✅ Implementado |
 | MOB-003 | Bottom Navigation (MobileBottomNav.tsx) | ✅ Implementado |
 | MOB-002 | Gestos Mobile (useGestosMobile.ts, swipe e pull-to-refresh) | ✅ Implementado |
@@ -1368,7 +1369,7 @@ Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) 
 Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
-### 🎮 GAMIFICAÇÃO - 3 Pendentes
+### 🎮 GAMIFICAÇÃO - 2 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1643,7 +1644,7 @@ O ranking só existia global (individual) e por departamento. Não havia como ve
 
 ---
 
-#### GAME-012: Sistema de Reputação
+#### GAME-012: Sistema de Reputação ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Apenas XP, sem reputação social.
@@ -1655,6 +1656,18 @@ O ranking só existia global (individual) e por departamento. Não havia como ve
 3. Responder perguntas dá reputação
 4. Mostrar no perfil
 ```
+
+**Entregue em 26/11/2026**
+
+O perfil só mostrava XP: não existia reputação social em lugar nenhum do código.
+
+- `supabase/migrations/20261128160000_reputacao.sql`: coluna `profiles.reputation integer not null default 0` com `check (reputation >= 0)`; `detalhar_reputacao(uuid)` (voto a favor +1, voto contra −1, resposta dada +2, resposta aceita +5, voto do próprio autor e resposta na própria discussão fora da conta, piso zero), `calcular_reputacao`, `recalcular_reputacao_perfil` (trigger `before update` em `profiles`) e `atualizar_reputacao` com triggers em `discussion_votes`, `discussion_replies` e `course_discussions`; `get_public_profile` passou a devolver `reputation`.
+- `supabase/migrations/20261128170000_reputacao_endurecimento.sql`: quem abriu a discussão — e só ele — marca a resposta aceita (policy de `update` em `discussion_replies` + trigger `proteger_marcacao_resposta`, com `42501` para auto-aceite e para o dono reescrever texto de terceiro); `atualizar_reputacao` trava a linha do perfil (`for update`) antes de recalcular, para dois votos simultâneos não gravarem total velho.
+- `src/lib/reputacao.ts` (Iniciante 0, Colaborador 25, Mentor 100, Referência 300), `src/hooks/useReputacao.ts` e `src/components/profile/ReputacaoCard.tsx` (total, nível, progresso, votos recebidos, votos contra, respostas, respostas aceitas e como pontuar), com textos nos três dicionários de `src/lib/i18n.ts`, `staleTime: 0` e invalidação do cache ao votar, responder e marcar resposta.
+- `src/pages/Profile.tsx` e `src/pages/PublicProfile.tsx`: card no próprio perfil e selo de nível + card numérico no perfil público.
+
+**Verificado de verdade (produção, transação com ROLLBACK):** 20 asserções na migration base (resposta +2, voto a favor +1, voto contra −1, aceite levando a 8, auto-voto ignorado, piso zero, exclusão em cascata zerando a conta) e 7 no endurecimento (autor não-admin bloqueado com `42501`, dono marcando a resposta de outra pessoa, dono sem poder reescrever texto alheio, reputação 7 → 2 ao desmarcar). Ambas aplicadas em seguida em produção.
+- `tsc` 0 erros · `eslint` 0 · `vitest` 10/10 em `src/test/reputacao.test.tsx` · guard de Supabase 0 violações · 85 testes unitários · `vite build` OK · produção serve a reputação nos chunks `reputacao-*.js` e `Profile-*.js` (PR #87).
 
 ---
 

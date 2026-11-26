@@ -4,6 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useFuzzySearchWithMatches } from "@/hooks/useFuzzySearch";
 import CacheIndicator from "@/components/ui/CacheIndicator";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ import { Loader2, Search, Filter, ChevronDown } from "lucide-react";
 import type { FuseResultMatch } from "fuse.js";
 
 const VIRTUALIZATION_THRESHOLD = 20;
+const COURSES_PER_PAGE = 12;
 
 interface Category {
   id: string; name: string; slug: string; description: string | null; icon: string | null; color: string | null;
@@ -93,6 +95,17 @@ const Catalog = () => {
   const handleClearAll = useCallback(() => { setSearchQuery(""); setSelectedCategory(null); setSelectedLevel(null); }, []);
   const handleToggleFilters = useCallback(() => setShowFilters((v) => !v), []);
   const loading = coursesLoading || categoriesLoading;
+
+  const {
+    displayedItems: pagedCourses,
+    hasMore,
+    isLoading: loadingMore,
+    loadMore,
+    sentinelRef,
+    totalCount,
+    displayedCount,
+  } = useInfiniteScroll({ items: filteredCourses, itemsPerPage: COURSES_PER_PAGE });
+  const paginates = viewMode === "list" || filteredCourses.length < VIRTUALIZATION_THRESHOLD;
 
   if (authLoading) {
     return (
@@ -176,7 +189,7 @@ const Catalog = () => {
               role="list"
               aria-label="Lista de cursos"
             >
-              {filteredCourses.map((course, index) => (
+              {pagedCourses.map((course, index) => (
                 <motion.div key={course.id} variants={scaleUpItemVariants} custom={index} role="listitem">
                   <CourseListItem
                     id={course.id}
@@ -200,7 +213,7 @@ const Catalog = () => {
             <VirtualizedCourseGrid courses={virtualizedCourses} columns={4} />
           ) : (
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" variants={scaleUpContainerVariants} initial="hidden" animate="visible">
-              {filteredCourses.map((course, index) => (
+              {pagedCourses.map((course, index) => (
                 <motion.div key={course.id} variants={scaleUpItemVariants} custom={index}>
                   <CourseCard id={course.id} slug={course.slug} title={course.title} description={course.description} thumbnailUrl={course.thumbnail_url} durationMinutes={course.duration_minutes ?? 0} level={course.level ?? 'Iniciante'} instructorName={course.instructor_name} totalLessons={course.total_lessons ?? 0} categoryName={course.categories?.name} categoryColor={course.categories?.color || undefined} isFeatured={course.is_featured ?? false} searchMatches={debouncedSearch ? matchesMap.get(course.id) : undefined} />
                 </motion.div>
@@ -209,6 +222,27 @@ const Catalog = () => {
           )
         ) : (
           <EmptyState type="search" title="Nenhum curso encontrado" description="Tente ajustar os filtros ou buscar por outros termos para encontrar o curso perfeito para você" actionLabel="Limpar busca" onAction={handleClearAll} />
+        )}
+
+        {paginates && hasMore && (
+          <div className="mt-8 flex flex-col items-center gap-3">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              Mostrando {displayedCount} de {totalCount} cursos
+            </p>
+            <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
+            <Button
+              variant="outline"
+              onClick={loadMore}
+              disabled={loadingMore}
+              aria-label="Carregar mais cursos"
+            >
+              {loadingMore ? (
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Carregando...</>
+              ) : (
+                "Carregar mais"
+              )}
+            </Button>
+          </div>
         )}
       </main>
     </div>

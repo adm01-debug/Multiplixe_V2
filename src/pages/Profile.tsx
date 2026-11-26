@@ -40,6 +40,7 @@ const Profile = () => {
   const { getUserCertificates } = useCertificates();
   const { data: carteira, isLoading: carregandoColecao, isError: erroColecao } = useWallet();
   const itensColecao = (carteira?.colecao ?? []).filter((item) => item.category !== 'power_up');
+  const semColecao = !carteira;
   const [stats, setStats] = useState<UserStats | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -272,10 +273,13 @@ const Profile = () => {
 
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-sky-500/10 to-fuchsia-500/10 border border-sky-500/20"><Package className="h-6 w-6 text-sky-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Minha coleção</h3><p className="text-sm text-muted-foreground">{carregandoColecao ? 'Carregando seus itens...' : erroColecao ? 'Não foi possível carregar seus itens agora' : itensColecao.length > 0 ? `${itensColecao.length} ${itensColecao.length !== 1 ? 'itens' : 'item'} de avatar, tema ou cosmético` : 'Itens de avatar, tema e cosmético comprados na loja'}</p></div></div>
+            <div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-sky-500/10 to-fuchsia-500/10 border border-sky-500/20"><Package className="h-6 w-6 text-sky-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Minha coleção</h3><p className="text-sm text-muted-foreground">{semColecao && carregandoColecao ? 'Carregando seus itens...' : semColecao && erroColecao ? 'Não foi possível carregar seus itens agora' : itensColecao.length > 0 ? `${itensColecao.length} ${itensColecao.length !== 1 ? 'itens' : 'item'} de avatar, tema ou cosmético` : 'Itens de avatar, tema e cosmético comprados na loja'}</p></div></div>
             <Button variant="outline" size="sm" asChild><Link to="/loja">Abrir loja</Link></Button>
           </div>
-          {carregandoColecao || erroColecao ? (
+          {erroColecao && !semColecao && (
+            <p className="mb-3 text-sm text-amber-600 dark:text-amber-400">Não foi possível atualizar seus itens agora — mostrando os dados da última atualização.</p>
+          )}
+          {semColecao && (carregandoColecao || erroColecao) ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="h-[76px] rounded-2xl border border-border/50 bg-card/50 animate-pulse" />

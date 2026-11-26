@@ -3379,7 +3379,7 @@
   {
    "arquivo": "src/pages/Profile.tsx",
    "exports": [],
-   "linhas": 318,
+   "linhas": 322,
    "hooks": [
     "useAchievements",
     "useAuth",

@@ -1,5 +1,10 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import {
+  buildCertificatePdf,
+  certificateFileName,
+  type CertificatePdfData,
+} from '@/lib/certificatePdf';
 
 interface Certificate {
   id: string;
@@ -93,18 +98,9 @@ export function useCertificates() {
     }
   }, []);
 
-  const downloadCertificate = useCallback((base64Svg: string, fileName: string) => {
-    const svgContent = decodeURIComponent(escape(atob(base64Svg)));
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.svg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  const downloadCertificate = useCallback((data: CertificatePdfData) => {
+    const doc = buildCertificatePdf(data);
+    doc.save(certificateFileName(data.verificationCode));
   }, []);
 
   return {

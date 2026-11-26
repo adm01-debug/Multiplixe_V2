@@ -142,3 +142,9 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   conta de outra pessoa e, em `severity` high/critical, notificava todos os admins. Agora exige
   `Authorization` + `auth.getUser()`; usuário comum só registra alerta sobre si — apontar para outra
   conta exige papel `admin` em `user_roles`, senão 403.
+- **Landing pública também precisa de RLS própria**: `courses` só tinha SELECT para `authenticated`, então
+  `FeaturedCoursesPreview` (rota `/`, sem sessão) recebia 0 linhas e a seção de cursos em destaque
+  aparecia vazia para visitante anônimo. A migration
+  `20261126170000_landing_publica_cursos_publicados.sql` cria a policy
+  `Public can view published courses` (`to anon`, `using (is_published = true)`): só cursos publicados,
+  o resto (`lessons`, progresso, dados de usuário) continua exigindo sessão.

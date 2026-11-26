@@ -1,22 +1,22 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T07:45:49.133Z",
- "commit": "5e2594bafbd2390e948302a343a0557976701526",
+ "gerado_em": "2026-11-26T08:02:56.865Z",
+ "commit": "0345fd211a451b892e1d32b0c9b02ad653683498",
  "branch": "claude/feat-powerups-261126-0750",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "1bfd49692ccb2d49",
-  "baseline.json": "8497d4a5b39f0f92",
-  "componentes.json": "fb27bb5c6a378cc8",
-  "grafo.json": "9d48bda391dfb5e1",
-  "hooks.json": "9e4c06c447027e40"
+  "INDEX.md": "dafbc611a47e3d23",
+  "baseline.json": "76cc1528d64a4646",
+  "componentes.json": "afddec7c7969c73b",
+  "grafo.json": "894669c82eab0fe1",
+  "hooks.json": "53fe6c6395bc914b"
  },
  "contagens": {
-  "arquivos": 591,
+  "arquivos": 594,
   "arquivos_de_codigo": 487,
-  "linhas_de_codigo": 68059,
+  "linhas_de_codigo": 68169,
   "componentes": 234,
   "hooks": 123,
   "paginas": 27,

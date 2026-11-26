@@ -9,6 +9,7 @@ import EmptyState from '@/components/SimpleEmptyState';
 import DynamicSEO from '@/components/seo/DynamicSEO';
 import { usePurchaseItem, useStoreItems, useWallet, type StoreItem } from '@/hooks/useWallet';
 import { useActivatePowerup, usePowerups } from '@/hooks/usePowerups';
+import { useT } from '@/lib/i18n';
 import {
   boostSummary,
   formatDuration,
@@ -50,13 +51,14 @@ const Store = () => {
     refetch: recarregarItens,
   } = useStoreItems();
   const comprar = usePurchaseItem();
-    const {
-      data: powerups,
-      isLoading: carregandoPowerups,
-      isError: erroPowerups,
-      refetch: recarregarPowerups,
-    } = usePowerups();
-    const ativarPowerup = useActivatePowerup();
+  const {
+    data: powerups,
+    isLoading: carregandoPowerups,
+    isError: erroPowerups,
+    refetch: recarregarPowerups,
+  } = usePowerups();
+  const ativarPowerup = useActivatePowerup();
+  const { t } = useT();
   const [categoria, setCategoria] = useState<string>(TODAS);
 
   const coins = carteira?.coins ?? 0;
@@ -141,9 +143,9 @@ const Store = () => {
         </div>
 
         <Tabs defaultValue="catalogo">
-                  <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="catalogo"><ShoppingBag className="h-4 w-4 mr-1.5 inline-block align-middle" />Loja</TabsTrigger>
-                    <TabsTrigger value="powerups"><Zap className="h-4 w-4 mr-1.5 inline-block align-middle" />Power-ups</TabsTrigger>
+            <TabsTrigger value="powerups"><Zap className="h-4 w-4 mr-1.5 inline-block align-middle" />{t('store.powerups')}</TabsTrigger>
             <TabsTrigger value="colecao"><Package className="h-4 w-4 mr-1.5 inline-block align-middle" />Minha coleção</TabsTrigger>
             <TabsTrigger value="extrato"><Receipt className="h-4 w-4 mr-1.5 inline-block align-middle" />Extrato</TabsTrigger>
           </TabsList>
@@ -217,40 +219,40 @@ const Store = () => {
                 role="alert"
                 className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-destructive/40 bg-destructive/5 p-4 text-sm"
               >
-                <span className="text-destructive">Nao foi possivel carregar seus power-ups agora.</span>
+                <span className="text-destructive">{t('store.powerupLoadError')}</span>
                 <Button size="sm" variant="outline" onClick={() => void recarregarPowerups()}>
-                  Tentar novamente
+                  {t('store.retry')}
                 </Button>
               </div>
             ) : (
               <>
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 p-4">
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Impulsionador de XP</p>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('store.boostTitle')}</p>
                     <p className="mt-1 flex items-center gap-2 text-lg font-bold text-amber-600 dark:text-amber-400">
                       <Timer className="h-5 w-5" />
                       {carregandoPowerups ? '...' : boostSummary(powerups?.boost ?? null)}
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {powerups?.boost
-                        ? 'Todo XP ganho agora ja sai multiplicado.'
-                        : 'Compre um impulsionador na loja e ative aqui para acelerar seu XP.'}
+                        ? t('store.boostActive')
+                        : t('store.boostInactive')}
                     </p>
                   </div>
                   {powerups?.boost && (
                     <Badge className="bg-amber-500/15 text-amber-700 dark:text-amber-300">
-                      Ativo {formatMultiplier(powerups.boost.multiplier)}
+                      {t('store.boostBadge')} {formatMultiplier(powerups.boost.multiplier)}
                     </Badge>
                   )}
                 </div>
 
                 {carregandoPowerups ? (
-                  <p className="text-sm text-muted-foreground">Carregando seus power-ups...</p>
+                  <p className="text-sm text-muted-foreground">{t('store.powerupsLoading')}</p>
                 ) : (powerups?.disponiveis ?? []).length === 0 ? (
                   <EmptyState
                     icon={Zap}
-                    title="Nenhum power-up na mochila"
-                    description="Compre impulsionadores e blindagens na aba Loja. Eles ficam guardados aqui ate serem usados."
+                    title={t('store.powerupsEmptyTitle')}
+                    description={t('store.powerupsEmptyDescription')}
                   />
                 ) : (
                   <div className="grid gap-3 md:grid-cols-2">
@@ -267,8 +269,8 @@ const Store = () => {
                         </div>
                         <p className="mt-1 text-xs text-muted-foreground">
                           {powerupNeedsActivation(item.kind)
-                            ? `Dura ${formatDuration(item.duration_minutes)} depois de ativado.`
-                            : 'Cobre automaticamente o primeiro dia perdido da sua sequencia.'}
+                            ? `${t('store.durationLabel')}: ${formatDuration(item.duration_minutes)}`
+                            : t('store.freezeAutomatic')}
                         </p>
                         <div className="mt-3">
                           {powerupNeedsActivation(item.kind) ? (
@@ -278,11 +280,11 @@ const Store = () => {
                               onClick={() => ativarPowerup.mutate(item.kind)}
                             >
                               <Zap className="h-4 w-4 mr-1.5" />
-                              {powerups?.boost ? 'Ja existe um ativo' : 'Ativar agora'}
+                              {powerups?.boost ? t('store.boostAlreadyActive') : t('store.activateNow')}
                             </Button>
                           ) : (
                             <p className="text-xs text-muted-foreground">
-                              Nao precisa ativar: e usada sozinha quando voce perde um dia.
+                              {t('store.freezeNoActivation')}
                             </p>
                           )}
                         </div>

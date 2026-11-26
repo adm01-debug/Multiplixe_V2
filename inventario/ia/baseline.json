@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "5e2594bafbd2390e948302a343a0557976701526",
+  "commit": "0345fd211a451b892e1d32b0c9b02ad653683498",
   "branch": "claude/feat-powerups-261126-0750",
-  "data_commit": "2026-11-26T04:35:16-03:00",
+  "data_commit": "2026-11-26T04:46:03-03:00",
   "ultimos_commits": [
+   "0345fd2 feat: dar efeito real aos power-ups da loja (GAME-007)",
    "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
    "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)",
    "53f669a chore: marcar GAME-003 (ligas semanais) como concluido no plano (#71)",
@@ -14,8 +15,7 @@
    "3600e01 feat: flashcards de revisao com repeticao espacada (FUNC-009) (#68)",
    "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)",
    "6b9fbfc feat: quiz adaptativo com niveis de dificuldade (FUNC-020) (#66)",
-   "53e46c3 feat: tooltips informativos nas ações de admin e nos cards de estatística (UI-006) (#65)",
-   "84e8d50 feat: indicador de cache agora avisa quando o usuário está offline (UI-016) (#64)"
+   "53e46c3 feat: tooltips informativos nas ações de admin e nos cards de estatística (UI-006) (#65)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -24,43 +24,43 @@
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/grafo.json",
+    "mudancas": 9
+   },
+   {
+    "arquivo": "inventario/ia/hooks.json",
     "mudancas": 8
    },
    {
     "arquivo": "src/pages/Profile.tsx",
     "mudancas": 8
-   },
-   {
-    "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 7
    },
    {
     "arquivo": "src/pages/Admin.tsx",
@@ -101,9 +101,9 @@
   ]
  },
  "contagens": {
-  "arquivos": 591,
+  "arquivos": 594,
   "arquivos_de_codigo": 487,
-  "linhas_de_codigo": 68059,
+  "linhas_de_codigo": 68169,
   "componentes": 234,
   "hooks": 123,
   "paginas": 27,
@@ -121,6 +121,9 @@
   "PLANO_IMPLEMENTACAO_PENDENTES.md": 1,
   "PLANO_MELHORIAS.md": 1,
   "README.md": 1,
+  "_probe.sql": 1,
+  "_valida-achados.sql": 1,
+  "_valida-contra.sql": 1,
   "bun.lock": 1,
   "bun.lockb": 1,
   "components.json": 1,
@@ -204,11 +207,11 @@
    "linhas": 369
   },
   {
-   "arquivo": "src/pages/Dashboard.tsx",
-   "linhas": 367
+   "arquivo": "src/pages/Store.tsx",
+   "linhas": 369
   },
   {
-   "arquivo": "src/pages/Store.tsx",
+   "arquivo": "src/pages/Dashboard.tsx",
    "linhas": 367
   },
   {

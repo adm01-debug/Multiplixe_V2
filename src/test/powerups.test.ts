@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { t } from '@/lib/i18n';
 import {
   POWERUP_WALLET_VAZIA,
   boostSummary,
@@ -103,5 +104,40 @@ describe('parsePowerupWallet', () => {
     const carteira = parsePowerupWallet({ disponiveis: [{ kind: 'xp_boost', quantidade: 1 }] });
     expect(carteira.disponiveis[0].nome).toBe('Impulsionador de XP');
     expect(carteira.disponiveis[0].duration_minutes).toBe(0);
+  });
+});
+
+describe('textos dos power-ups nos tres idiomas', () => {
+  const chaves = [
+    'store.powerups',
+    'store.powerupLoadError',
+    'store.retry',
+    'store.boostTitle',
+    'store.boostActive',
+    'store.boostInactive',
+    'store.boostBadge',
+    'store.powerupsLoading',
+    'store.powerupsEmptyTitle',
+    'store.powerupsEmptyDescription',
+    'store.durationLabel',
+    'store.freezeAutomatic',
+    'store.activateNow',
+    'store.boostAlreadyActive',
+    'store.freezeNoActivation',
+  ] as const;
+
+  it('tem texto nos tres idiomas (nada cai no fallback da chave)', () => {
+    for (const locale of ['pt-BR', 'en', 'es'] as const) {
+      for (const chave of chaves) {
+        const texto = t(chave, locale);
+        expect(texto, `${locale} ${chave}`).not.toBe(chave);
+        expect(texto.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('traduz os botoes da mochila em ingles', () => {
+    expect(t('store.activateNow', 'en')).toBe('Activate now');
+    expect(t('store.freezeNoActivation', 'en')).toContain('activation needed');
   });
 });

@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "nos": 487,
- "arestas": 1323,
+ "arestas": 1325,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -2131,6 +2131,7 @@
    "src/components/ui/tabs.tsx",
    "src/hooks/usePowerups.ts",
    "src/hooks/useWallet.ts",
+   "src/lib/i18n.ts",
    "src/lib/powerups.ts",
    "src/lib/store.ts"
   ],
@@ -2285,6 +2286,7 @@
   ],
   "src/test/playbookCommentsHook.test.ts": [],
   "src/test/powerups.test.ts": [
+   "src/lib/i18n.ts",
    "src/lib/powerups.ts"
   ],
   "src/test/profileAvatar.test.tsx": [

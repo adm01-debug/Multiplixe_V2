@@ -135,7 +135,7 @@
   },
   "useActivatePowerup": {
    "arquivo": "src/hooks/usePowerups.ts",
-   "linhas": 54,
+   "linhas": 61,
    "tabelas": [],
    "rpcs": [
     "activate_powerup",
@@ -200,7 +200,7 @@
   },
   "useAdminStoreItems": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -620,7 +620,7 @@
   },
   "useDeleteStoreItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -843,7 +843,7 @@
   },
   "useGrantCoins": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1243,7 +1243,7 @@
   },
   "usePowerups": {
    "arquivo": "src/hooks/usePowerups.ts",
-   "linhas": 54,
+   "linhas": 61,
    "tabelas": [],
    "rpcs": [
     "activate_powerup",
@@ -1313,7 +1313,7 @@
   },
   "usePurchaseItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1470,7 +1470,7 @@
   },
   "useSaveStoreItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1587,7 +1587,7 @@
   },
   "useStoreItems": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1664,14 +1664,15 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 149,
+   "linhas": 201,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [
     "src/components/LanguageToggle.tsx",
     "src/components/dashboard/DashboardHeader.tsx",
-    "src/components/navigation/MobileBottomNav.tsx"
+    "src/components/navigation/MobileBottomNav.tsx",
+    "src/pages/Store.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -1714,7 +1715,7 @@
   },
   "useToggleStoreItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1976,7 +1977,7 @@
   },
   "useWallet": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],

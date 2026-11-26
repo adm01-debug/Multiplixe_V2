@@ -375,6 +375,11 @@ DECLARE
   v_is_new_record BOOLEAN := FALSE;
   v_freeze_used BOOLEAN := FALSE;
 BEGIN
+  -- GAME-007: a blindagem so pode ser usada a favor de quem esta chamando a funcao.
+  IF auth.uid() IS NOT NULL AND auth.uid() <> p_user_id AND NOT public.has_role(auth.uid(), 'admin') THEN
+    RAISE EXCEPTION 'Nao autorizado a atualizar a sequencia de outro usuario' USING ERRCODE = '42501';
+  END IF;
+
   SELECT * INTO v_user_streak
   FROM public.user_streaks
   WHERE user_id = p_user_id;
@@ -512,6 +517,13 @@ begin
     return jsonb_build_object('ok', false, 'mensagem', 'Item indisponivel na loja');
   end if;
 
+  if v_item.category = 'power_up' and v_item.powerup_kind is null then
+    return jsonb_build_object(
+      'ok', false,
+      'mensagem', 'Este power-up esta sem configuracao na loja (tipo ausente). Nada foi cobrado; avise o suporte.'
+    );
+  end if;
+
   select coalesce(coins, 0) into v_coins from public.user_xp where user_id = v_uid;
   v_coins := coalesce(v_coins, 0);
 
@@ -559,6 +571,25 @@ begin
   );
 end;
 $function$;
+
+-- 10.1) Conversao retroativa: compra de power-up feita por uma versao anterior desta
+--       migration (sem criacao de unidade) passa a ter a unidade correspondente na mochila.
+--       Idempotente: conta as unidades ja ligadas ao mesmo purchase_id.
+with compras as (
+  select up.id, up.user_id, up.item_id, si.powerup_kind, si.powerup_multiplier, si.powerup_duration_minutes,
+         greatest(coalesce(up.quantity, 1) - (select count(*) from public.user_powerups x where x.purchase_id = up.id), 0) as faltando
+    from public.user_purchases up
+    join public.store_items si on si.id = up.item_id
+   where si.category = 'power_up' and si.powerup_kind is not null
+),
+serie as (
+  select c.*, g.i
+    from compras c
+    cross join lateral generate_series(1, c.faltando) as g(i)
+)
+insert into public.user_powerups (user_id, kind, item_id, purchase_id, multiplier, duration_minutes, source)
+select user_id, powerup_kind, item_id, id, powerup_multiplier, coalesce(powerup_duration_minutes, 0), 'purchase'
+  from serie;
 
 -- 11) Permissoes: so o aluno autenticado le a propria carteira e ativa o proprio boost.
 revoke all on function public.grant_powerup(uuid, text, uuid, uuid, numeric, integer, text) from public;

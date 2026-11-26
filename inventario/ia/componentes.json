@@ -3491,7 +3491,7 @@
   {
    "arquivo": "src/pages/Store.tsx",
    "exports": [],
-   "linhas": 367,
+   "linhas": 369,
    "hooks": [
     "useActivatePowerup",
     "useMemo",
@@ -3499,6 +3499,7 @@
     "usePowerups",
     "usePurchaseItem",
     "useStoreItems",
+    "useT",
     "useWallet"
    ],
    "tabelas": [],

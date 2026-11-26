@@ -143,6 +143,8 @@ export const usePurchaseItem = () => {
         if (aviso) toast.warning(aviso);
         void queryClient.invalidateQueries({ queryKey: ['wallet'] });
         void queryClient.invalidateQueries({ queryKey: ['store'] });
+        // A compra de power-up cria uma unidade na mochila (aba Power-ups).
+        void queryClient.invalidateQueries({ queryKey: ['powerups'] });
       } else {
         toast.error(resultado.mensagem);
       }

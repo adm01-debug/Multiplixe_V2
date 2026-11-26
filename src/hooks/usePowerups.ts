@@ -20,6 +20,13 @@ export const usePowerups = () => {
     enabled: !!user,
     staleTime: 0,
     refetchOnMount: 'always',
+    // Sem isso o botao "Ativar agora" fica bloqueado ate a pagina ser recarregada depois do vencimento.
+    refetchInterval: (query) => {
+      const boost = query.state.data?.boost;
+      if (!boost?.expires_at) return false;
+      const restante = new Date(boost.expires_at).getTime() - Date.now();
+      return restante > 0 ? Math.min(restante + 2000, 60_000) : false;
+    },
     queryFn: async (): Promise<PowerupWallet> => {
       const { data, error } = await supabase.rpc('get_my_powerups');
       if (error) throw error;

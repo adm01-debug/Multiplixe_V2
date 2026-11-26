@@ -6,7 +6,7 @@
     "tabelas": 70,
     "tabelas_no_types": 70,
     "tabelas_nas_migrations": 70,
-    "colunas": 587,
+    "colunas": 603,
     "views": 1,
     "funcoes": 80,
     "funcoes_expostas_no_types": 52,
@@ -678,7 +678,7 @@
     "store_items": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 11,
+      "colunas": 14,
       "rls": true,
       "policies": 2,
       "triggers": [
@@ -943,7 +943,7 @@
     "user_powerups": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 0,
+      "colunas": 13,
       "rls": true,
       "policies": 1,
       "triggers": [

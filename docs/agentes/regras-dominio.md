@@ -159,4 +159,11 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   `quizzes`, `learning_paths`, `profiles`) e revogá-la quebraria a leitura pública. Regra: ao criar
   `SECURITY DEFINER`, `REVOKE EXECUTE ... FROM PUBLIC, anon` e libere só para `authenticated`/`service_role`,
   com a checagem de dono dentro da função exigindo `auth.uid()` não nulo.
+- **`quiz_options_public` roda como dono de propósito — não ligue `security_invoker` nela**: `quiz_options`
+  tem RLS com policy só para `admin` (`Admins can manage options`), e o aluno lê as alternativas pela view
+  (`src/hooks/useQuizzes.ts:73`, `src/pages/AssessmentRunner.tsx:43`, que existe para não expor `is_correct`).
+  Medido em 26/11/2026 com a claim de um usuário comum: hoje a view devolve 68 linhas e a tabela devolve 0;
+  com `security_invoker = true` a view devolve 0 — o quiz e a avaliação abririam sem alternativa nenhuma.
+  Se um dia for preciso fechar a view, primeiro crie a policy de SELECT em `quiz_options` para quem faz o quiz
+  e só então ligue o `security_invoker`.
 - **Edge disparada por cron precisa de segredo próprio**: `verify_jwt = false` não protege nada, porque a anon key é pública (vai no bundle do site). `webhook-dispatch` e `weekly-admin-digest` atendiam qualquer requisição, e a primeira usa `service_role` internamente. Ambas agora exigem o segredo `cron_secret` (Vault) no header `Authorization`, comparado com a variável `CRON_SECRET` da edge via `supabase/functions/_shared/cronAuth.ts`; sem `CRON_SECRET` configurado elas recusam tudo (falham fechadas). Migration `20261126193000_edges_de_cron_exigem_segredo.sql` gera o valor no banco e reescreve os dois jobs do `pg_cron` para enviá-lo. Regra: novo job de cron = edge com `exigirSegredoDoCron` antes de qualquer efeito.

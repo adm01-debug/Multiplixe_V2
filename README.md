@@ -83,7 +83,7 @@ O arquivo `.env` é gerenciado automaticamente pelo Lovable Cloud:
 - `export-user-data` — exportação LGPD completa
 - `generate-certificate` — emissão de certificado em PDF
 - `generate-sitemap` — sitemap XML dinâmico
-- `approve-password-reset` · `cleanup-security-logs` · `detect-new-device` · `send-security-alert` · `verify-mfa`
+- `approve-password-reset` · `cleanup-security-logs` · `detect-new-device` · `send-security-alert`
 
 ## ✅ Qualidade
 

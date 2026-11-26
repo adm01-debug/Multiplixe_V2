@@ -59,11 +59,11 @@ O projeto tem **16 env vars, todas em `production`, todas vindas de uma integra�
 
 ## Edge functions
 
-13 funções em `supabase/functions/`, `verify_jwt` declarado em `supabase/config.toml`:
+12 funções em `supabase/functions/`, `verify_jwt` declarado em `supabase/config.toml`:
 
 | Função | `verify_jwt` | Observação |
 |---|---|---|
-| `generate-certificate` · `approve-password-reset` · `cleanup-security-logs` · `send-security-alert` · `export-user-data` · `ai-playbook-summarize` · `ai-quiz-generator` · `verify-mfa` · `admin-user-actions` | `true` | exige sessão |
+| `generate-certificate` · `approve-password-reset` · `cleanup-security-logs` · `send-security-alert` · `export-user-data` · `ai-playbook-summarize` · `ai-quiz-generator` · `admin-user-actions` | `true` | exige sessão |
 | `detect-new-device` · `generate-sitemap` · `weekly-admin-digest` · `webhook-dispatch` | `false` | público por design (sitemap, digest agendado, device fingerprint, dispatcher por token assinado) |
 
 - `ai-playbook-summarize` e `ai-quiz-generator` usam `LOVABLE_API_KEY` (Lovable AI Gateway);
@@ -72,8 +72,6 @@ O projeto tem **16 env vars, todas em `production`, todas vindas de uma integra�
   **pode** publicar via Management API/CLI — provado em 26/11/2026 (`webhook-dispatch` v5,
   `weekly-admin-digest` v2, deploy de edge via `supabase functions deploy <slug> --use-api`). Então:
   mudança de edge que precisa entrar em produção = deploy explícito + prova da versão publicada na PR.
-- `verify-mfa` existe em `supabase/functions/` mas **não** está declarada em `config.toml`: fica no default
-  (`verify_jwt = true`). Se precisar mudar, declare.
 
 ## Divergência de documentação
 

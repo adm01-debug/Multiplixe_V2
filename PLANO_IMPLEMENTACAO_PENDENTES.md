@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (75)
+### ✅ Melhorias JÁ IMPLEMENTADAS (76)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (24)
+## ⏳ MELHORIAS PENDENTES (23)
 
 ### 🎨 UX/UI - 2 Pendentes
 
@@ -352,7 +352,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 6 Pendentes
+### 🚀 FUNCIONALIDADES - 5 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -759,7 +759,7 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 
 ---
 
-#### FUNC-020: Quiz Adaptativo
+#### FUNC-020: Quiz Adaptativo ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Quizzes têm dificuldade fixa.
@@ -771,6 +771,14 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 3. Mais XP para questões difíceis
 4. Tracking de acertos por nível
 ```
+
+**Status:** ✅ CONCLUÍDO em 26/11/2026 — PR #66 (main 6b9fbfc).
+
+- supabase/migrations/20261126180000_quiz_adaptativo.sql: quiz_questions.difficulty_level (acil|medio|dificil, default medio) + índice; user_quiz_attempts.weighted_score/difficulty_level/by_difficulty; helpers quiz_difficulty_weight, quiz_difficulty_xp_bonus, quiz_recommended_difficulty e get_adaptive_quiz_plan; submit_quiz_attempt reescrita mantendo assinatura e regra de aprovação.
+- Produção (transação + ROLLBACK): submit_quiz_attempt devolveu score 100, passed true, xp_bonus 15, weighted_score 100, y_difficulty {"medio":{"total":3,"correct":3}}, ecommended_difficulty "dificil"; privilege('authenticated')=true, ('anon')=false.
+- Front: src/lib/quizAdaptive.ts, src/components/quiz/QuizAdaptiveResult.tsx, plano adaptativo em useQuizzes.ts, badge de nível no QuizPlayer.tsx, nível editável no admin (QuizQuestionCard/QuizManager), zod com default medio, tipos do Supabase e inventário de schema regenerados.
+- Verificação: 	sc -b limpo, eslint sem erro, suíte 73 arquivos / 559 testes, ite build ok, guarda de uso do Supabase sem violação.
+- Deploy provado: bundle servido em produção contém os marcadores (CourseQuizModal-Bf3pjVxD.js).
 
 ---
 
@@ -1996,7 +2004,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **24** | **~134h** |
+| **TOTAL PENDENTE** | **23** | **~128h** |
 
 ---
 

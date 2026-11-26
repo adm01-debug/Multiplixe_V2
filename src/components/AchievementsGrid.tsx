@@ -3,6 +3,7 @@ import { Lock, Share2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import ShareAchievement from '@/components/share/ShareAchievement';
+import { rotuloDaJanela } from '@/lib/achievementSeason';
 
 interface Achievement {
   id: string;
@@ -16,6 +17,9 @@ interface Achievement {
   requirement_value: number;
   gradient: string;
     is_secret?: boolean;
+  starts_at?: string | null;
+  ends_at?: string | null;
+  seasonal_event_id?: string | null;
 }
 
 interface AchievementsGridProps {
@@ -36,6 +40,7 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
       <div className="flex flex-wrap gap-3">
         {displayAchievements.map((achievement, index) => {
           const unlocked = isUnlocked(achievement.id);
+          const janela = rotuloDaJanela(achievement);
           
           return (
             <motion.div
@@ -74,6 +79,15 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
               <span className={`text-sm font-medium ${unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
                 {achievement.name}
               </span>
+              {janela && (
+                <span
+                  className={`text-[10px] font-semibold ${
+                    janela.startsWith('Encerrada') ? 'text-muted-foreground' : 'text-amber-600'
+                  }`}
+                >
+                  {janela}
+                </span>
+              )}
               
               {/* Glow effect on hover for unlocked */}
               {unlocked && (
@@ -93,6 +107,7 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
       {displayAchievements.map((achievement, index) => {
         const unlocked = isUnlocked(achievement.id);
+        const janela = rotuloDaJanela(achievement);
         
         return (
           <motion.div
@@ -170,6 +185,16 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
             >
               {achievement.name}
             </motion.span>
+
+            {janela && (
+              <span
+                className={`relative z-10 mt-1 text-[10px] font-semibold text-center ${
+                  janela.startsWith('Encerrada') ? 'text-muted-foreground' : 'text-amber-600'
+                }`}
+              >
+                {janela}
+              </span>
+            )}
 
                         {unlocked && (
                           <div className="relative z-20 mt-2">

@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 521,
- "arestas": 1465,
+ "nos": 523,
+ "arestas": 1470,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -254,7 +254,8 @@
   ],
   "src/components/AchievementsGrid.tsx": [
    "src/components/share/ShareAchievement.tsx",
-   "src/components/ui/button.tsx"
+   "src/components/ui/button.tsx",
+   "src/lib/achievementSeason.ts"
   ],
   "src/components/CertificateCard.tsx": [
    "src/components/ui/badge.tsx",
@@ -383,6 +384,7 @@
    "src/components/ui/textarea.tsx",
    "src/integrations/supabase/client.ts",
    "src/lib/achievementAdmin.ts",
+   "src/lib/achievementSeason.ts",
    "src/lib/utils.ts"
   ],
   "src/components/admin/AdminAssessmentsTab.tsx": [
@@ -1876,8 +1878,10 @@
   ],
   "src/integrations/supabase/types.ts": [],
   "src/lib/achievementAdmin.ts": [
-   "src/integrations/supabase/types.ts"
+   "src/integrations/supabase/types.ts",
+   "src/lib/datetimeInput.ts"
   ],
+  "src/lib/achievementSeason.ts": [],
   "src/lib/certificatePdf.ts": [],
   "src/lib/chapters.ts": [],
   "src/lib/continueLearning.ts": [],
@@ -2352,6 +2356,10 @@
    "src/lib/themePresets.ts"
   ],
   "src/test/componentArchitecture.test.ts": [],
+  "src/test/conquistasSazonais.test.tsx": [
+   "src/components/AchievementsGrid.tsx",
+   "src/lib/achievementSeason.ts"
+  ],
   "src/test/continueLearning.test.ts": [
    "src/lib/continueLearning.ts"
   ],

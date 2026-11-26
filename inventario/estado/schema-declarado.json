@@ -6,15 +6,15 @@
     "tabelas": 74,
     "tabelas_no_types": 74,
     "tabelas_nas_migrations": 74,
-    "colunas": 650,
+    "colunas": 653,
     "views": 1,
-    "funcoes": 99,
+    "funcoes": 100,
     "funcoes_expostas_no_types": 65,
     "enums": 1,
     "policies": 192,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 81,
+    "migrations": 82,
     "alertas": 3,
     "problemas": 3
   },
@@ -35,11 +35,11 @@
     "achievements": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 11,
+      "colunas": 14,
       "rls": true,
       "policies": 2,
       "triggers": [],
-      "indices": 0,
+      "indices": 1,
       "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
       "uso_no_codigo": {
         "src": 6,
@@ -711,7 +711,7 @@
       "indices": 1,
       "criada_em": "20261128200000_eventos_sazonais.sql",
       "uso_no_codigo": {
-        "src": 5,
+        "src": 6,
         "edges": 0
       }
     },
@@ -1377,7 +1377,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261126020000_gamificacao_conquistas_expandidas.sql",
+      "criada_em": "20261128220000_conquistas_sazonais.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1477,6 +1477,18 @@
       "criada_em": "20261126020000_gamificacao_conquistas_expandidas.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "conquista_disponivel": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128220000_conquistas_sazonais.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },

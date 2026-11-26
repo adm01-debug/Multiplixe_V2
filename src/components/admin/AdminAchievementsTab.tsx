@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { rotuloDaJanela } from "@/lib/achievementSeason";
 import {
   ACHIEVEMENT_CATEGORIES,
   ACHIEVEMENT_GRADIENTS,
@@ -41,6 +42,7 @@ import {
 
 const AdminAchievementsTab = () => {
   const [rows, setRows] = useState<AchievementRow[]>([]);
+  const [eventos, setEventos] = useState<{ id: string; title: string }[]>([]);
   const [unlockCounts, setUnlockCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -53,9 +55,10 @@ const AdminAchievementsTab = () => {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [achievementsRes, unlocksRes] = await Promise.all([
+    const [achievementsRes, unlocksRes, eventsRes] = await Promise.all([
       supabase.from("achievements").select("*").order("requirement_value", { ascending: true }),
       supabase.from("user_achievements").select("achievement_id"),
+      supabase.from("seasonal_events").select("id,title").order("starts_at", { ascending: false }),
     ]);
 
     if (achievementsRes.error || unlocksRes.error) {
@@ -64,6 +67,7 @@ const AdminAchievementsTab = () => {
       return;
     }
 
+    setEventos(eventsRes.error ? [] : ((eventsRes.data ?? []) as { id: string; title: string }[]));
     setRows((achievementsRes.data ?? []) as AchievementRow[]);
     const counts: Record<string, number> = {};
     for (const unlock of (unlocksRes.data ?? []) as { achievement_id: string }[]) {
@@ -183,7 +187,13 @@ const AdminAchievementsTab = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rows.map((row) => (
+                {rows.map((row) => {
+                  const janela = rotuloDaJanela(row);
+                  const evento = row.seasonal_event_id
+                    ? eventos.find((item) => item.id === row.seasonal_event_id)
+                    : undefined;
+
+                  return (
                   <TableRow key={row.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -193,6 +203,28 @@ const AdminAchievementsTab = () => {
                         <div>
                           <p className="font-medium leading-tight">{row.name}</p>
                           <p className="text-xs text-muted-foreground">{row.slug}</p>
+                          {(janela || evento) && (
+                            <div className="mt-1 flex flex-wrap items-center gap-1">
+                              {evento && (
+                                <Badge variant="secondary" className="text-[10px]">
+                                  {evento.title}
+                                </Badge>
+                              )}
+                              {janela && (
+                                <Badge
+                                  variant="outline"
+                                  className={cn(
+                                    "text-[10px]",
+                                    janela.startsWith("Encerrada")
+                                      ? "text-muted-foreground"
+                                      : "border-amber-500/40 text-amber-600",
+                                  )}
+                                >
+                                  {janela}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </TableCell>
@@ -234,7 +266,8 @@ const AdminAchievementsTab = () => {
                                           </IconTooltip>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           )}
@@ -242,7 +275,7 @@ const AdminAchievementsTab = () => {
       </Card>
 
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editing ? "Editar conquista" : "Nova conquista"}</DialogTitle>
             <DialogDescription>O identificador é usado em links e compartilhamento; mantenha único.</DialogDescription>
@@ -388,6 +421,61 @@ const AdminAchievementsTab = () => {
                               </p>
                             </div>
                           </div>
+
+            <div className="space-y-3 rounded-md border border-border/60 bg-muted/30 p-3">
+              <div>
+                <Label>Conquista exclusiva (temporária)</Label>
+                <p className="text-xs text-muted-foreground">
+                  Sem evento e sem datas, a conquista vale para sempre. Fora da janela ela fica marcada como encerrada e
+                  não é concedida automaticamente.
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <Label>Evento sazonal</Label>
+                <Select
+                  value={draft.seasonal_event_id || "none"}
+                  onValueChange={(value) => patchDraft({ seasonal_event_id: value === "none" ? "" : value })}
+                >
+                  <SelectTrigger aria-label="Evento sazonal da conquista">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Sem evento (permanente)</SelectItem>
+                    {eventos.map((evento) => (
+                      <SelectItem key={evento.id} value={evento.id}>
+                        {evento.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Com evento vinculado, a conquista só é concedida enquanto o evento estiver ligado e dentro do período dele.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="achievement-starts">Disponível a partir de</Label>
+                  <Input
+                    id="achievement-starts"
+                    type="datetime-local"
+                    value={draft.starts_at}
+                    onChange={(e) => patchDraft({ starts_at: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="achievement-ends">Disponível até</Label>
+                  <Input
+                    id="achievement-ends"
+                    type="datetime-local"
+                    value={draft.ends_at}
+                    onChange={(e) => patchDraft({ ends_at: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className="space-y-1">
               <Label>Gradiente</Label>

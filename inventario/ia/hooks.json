@@ -122,7 +122,7 @@
  "hooks": {
   "useAchievements": {
    "arquivo": "src/hooks/useAchievements.ts",
-   "linhas": 178,
+   "linhas": 181,
    "tabelas": [
     "achievements",
     "user_achievements"

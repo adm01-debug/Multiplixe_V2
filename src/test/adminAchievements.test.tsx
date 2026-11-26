@@ -3,10 +3,12 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import AdminAchievementsTab from "@/components/admin/AdminAchievementsTab";
 import {
   buildAchievementPayload,
+  draftFromAchievement,
   emptyAchievementDraft,
   labelForRequirement,
   slugifyAchievement,
   validateAchievementDraft,
+  type AchievementRow,
 } from "@/lib/achievementAdmin";
 
 interface DbCall {
@@ -34,6 +36,7 @@ const { calls, toastSuccess, toastError, state } = vi.hoisted(() => ({
   state: {
     rows: [] as unknown[],
     unlocks: [] as unknown[],
+    eventos: [] as unknown[],
     insertError: null as null | { code?: string; message?: string },
     updateError: null as null | { code?: string; message?: string },
   },
@@ -44,7 +47,11 @@ vi.mock("sonner", () => ({ toast: { success: toastSuccess, error: toastError } }
 vi.mock("@/integrations/supabase/client", () => {
   const make = (table: string) => {
     const result = () =>
-      table === "achievements" ? { data: state.rows, error: null } : { data: state.unlocks, error: null };
+      table === "achievements"
+        ? { data: state.rows, error: null }
+        : table === "seasonal_events"
+          ? { data: state.eventos, error: null }
+          : { data: state.unlocks, error: null };
     const builder = {} as Builder;
     builder.select = () => builder;
     builder.order = async () => result();
@@ -84,6 +91,9 @@ const row = (overrides: Record<string, unknown> = {}) => ({
   gradient: "from-amber-500 to-orange-500",
     is_secret: false,
   created_at: "2026-01-01T00:00:00.000Z",
+  starts_at: null,
+  ends_at: null,
+  seasonal_event_id: null,
   ...overrides,
 });
 
@@ -91,6 +101,7 @@ beforeEach(() => {
   calls.length = 0;
   state.rows = [row(), row({ id: "ach-2", slug: "dez-aulas", name: "Dez Aulas", requirement_value: 10, xp_reward: 100 })];
   state.unlocks = [{ achievement_id: "ach-1" }, { achievement_id: "ach-1" }, { achievement_id: "ach-2" }];
+  state.eventos = [];
   state.insertError = null;
   state.updateError = null;
   toastSuccess.mockClear();
@@ -201,6 +212,78 @@ describe("achievementAdmin helpers", () => {
             requirement_category: null,
       gradient: "from-amber-500 to-orange-500",
             is_secret: false,
+            starts_at: null,
+            ends_at: null,
+            seasonal_event_id: null,
+    });
+  });
+
+  it("conquista permanente sai do payload sem janela nem evento", () => {
+    const { payload, errors } = buildAchievementPayload({
+            ...emptyAchievementDraft(),
+            name: "Primeira Aula",
+            slug: "primeira-aula",
+            description: "Conclua a primeira aula da plataforma",
+    });
+    expect(errors).toEqual([]);
+    expect(payload).toMatchObject({ starts_at: null, ends_at: null, seasonal_event_id: null });
+  });
+
+  it("leva janela e evento para o payload como instantes ISO", () => {
+    const { payload, errors } = buildAchievementPayload({
+            ...emptyAchievementDraft(),
+            name: "Natal Solidário",
+            slug: "natal-solidario",
+            description: "Conclua uma aula durante o evento de Natal",
+            requirement_type: "lessons_completed",
+            requirement_value: "1",
+            starts_at: "2026-12-01T00:00",
+            ends_at: "2026-12-26T23:59",
+            seasonal_event_id: "  ev-1  ",
+    });
+    expect(errors).toEqual([]);
+    expect(payload).toMatchObject({
+            starts_at: new Date("2026-12-01T00:00").toISOString(),
+            ends_at: new Date("2026-12-26T23:59").toISOString(),
+            seasonal_event_id: "ev-1",
+    });
+  });
+
+  it("recusa janela com término antes do início", () => {
+    const errors = validateAchievementDraft({
+            ...emptyAchievementDraft(),
+            name: "Natal Solidário",
+            slug: "natal-solidario",
+            description: "Conclua uma aula durante o evento de Natal",
+            starts_at: "2026-12-26T10:00",
+            ends_at: "2026-12-01T10:00",
+    });
+    expect(errors).toContain("A data de término precisa ser depois da data de início.");
+  });
+
+  it("recusa data de início inválida", () => {
+    const errors = validateAchievementDraft({
+            ...emptyAchievementDraft(),
+            name: "Natal Solidário",
+            slug: "natal-solidario",
+            description: "Conclua uma aula durante o evento de Natal",
+            starts_at: "data-invalida",
+    });
+    expect(errors).toContain("Data de início inválida.");
+  });
+
+  it("reabrir a conquista preserva o instante gravado da janela", () => {
+    const salvo = row({
+            starts_at: "2026-12-01T03:00:00.000Z",
+            ends_at: "2026-12-27T02:59:00.000Z",
+            seasonal_event_id: "ev-1",
+    }) as unknown as AchievementRow;
+    const { payload, errors } = buildAchievementPayload(draftFromAchievement(salvo));
+    expect(errors).toEqual([]);
+    expect(payload).toMatchObject({
+            starts_at: "2026-12-01T03:00:00.000Z",
+            ends_at: "2026-12-27T02:59:00.000Z",
+            seasonal_event_id: "ev-1",
     });
   });
 
@@ -321,5 +404,40 @@ describe("AdminAchievementsTab", () => {
     expect(remove.column).toBe("id");
     expect(remove.value).toBe("ach-1");
     expect(toastSuccess).toHaveBeenCalledWith("Conquista excluída");
+  });
+
+  it("mostra evento e janela da conquista sazonal na tabela", async () => {
+    state.eventos = [{ id: "ev-1", title: "Natal" }];
+    state.rows = [
+      row({
+        id: "ach-natal",
+        slug: "natal-solidario",
+        name: "Natal Solidário",
+        starts_at: "2020-12-01T00:00:00.000Z",
+        ends_at: "2020-12-31T00:00:00.000Z",
+        seasonal_event_id: "ev-1",
+      }),
+      row({ id: "ach-evento", slug: "sazonal-puro", name: "Sazonal Puro", seasonal_event_id: "ev-1" }),
+    ];
+    state.unlocks = [];
+
+    render(<AdminAchievementsTab />);
+
+    expect(await screen.findByText("Natal Solidário")).toBeInTheDocument();
+    expect(screen.getAllByText("Natal")).toHaveLength(2);
+    expect(screen.getByText(/^Encerrada em /)).toBeInTheDocument();
+    expect(screen.getByText("Sazonal · prazo do evento")).toBeInTheDocument();
+  });
+
+  it("oferece evento e datas no formulário da conquista", async () => {
+    state.eventos = [{ id: "ev-1", title: "Natal" }];
+    render(<AdminAchievementsTab />);
+    await screen.findByText("Primeira Aula");
+
+    fireEvent.click(screen.getByRole("button", { name: /Nova conquista/i }));
+
+    expect(screen.getByLabelText("Evento sazonal da conquista")).toBeInTheDocument();
+    expect(screen.getByLabelText("Disponível a partir de")).toBeInTheDocument();
+    expect(screen.getByLabelText("Disponível até")).toBeInTheDocument();
   });
 });

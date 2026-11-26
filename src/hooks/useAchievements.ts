@@ -15,6 +15,9 @@ interface Achievement {
   requirement_value: number;
   gradient: string;
     is_secret?: boolean;
+  starts_at?: string | null;
+  ends_at?: string | null;
+  seasonal_event_id?: string | null;
 }
 
 interface UserAchievement {

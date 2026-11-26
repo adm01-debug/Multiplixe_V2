@@ -1,4 +1,5 @@
 import type { Database } from "@/integrations/supabase/types";
+import { paraInputLocal } from "@/lib/datetimeInput";
 
 export type AchievementRow = Database["public"]["Tables"]["achievements"]["Row"];
 export type AchievementInsert = Database["public"]["Tables"]["achievements"]["Insert"];
@@ -58,6 +59,11 @@ export interface AchievementDraft {
   requirement_category: string;
   gradient: string;
   is_secret: boolean;
+  // Janela da conquista exclusiva: strings de `datetime-local`, vazio = sem limite.
+  starts_at: string;
+  ends_at: string;
+  // "" = conquista permanente (sem evento amarrado).
+  seasonal_event_id: string;
 }
 
 export const emptyAchievementDraft = (): AchievementDraft => ({
@@ -72,6 +78,9 @@ export const emptyAchievementDraft = (): AchievementDraft => ({
   requirement_category: "",
   gradient: ACHIEVEMENT_GRADIENTS[0],
   is_secret: false,
+  starts_at: "",
+  ends_at: "",
+  seasonal_event_id: "",
 });
 
 export const draftFromAchievement = (row: AchievementRow): AchievementDraft => ({
@@ -86,6 +95,9 @@ export const draftFromAchievement = (row: AchievementRow): AchievementDraft => (
   requirement_category: row.requirement_category ?? "",
   gradient: row.gradient ?? ACHIEVEMENT_GRADIENTS[0],
   is_secret: row.is_secret ?? false,
+  starts_at: row.starts_at ? paraInputLocal(row.starts_at) : "",
+  ends_at: row.ends_at ? paraInputLocal(row.ends_at) : "",
+  seasonal_event_id: row.seasonal_event_id ?? "",
 });
 
 export const slugifyAchievement = (name: string): string =>
@@ -108,6 +120,14 @@ const toInt = (raw: string): number | null => {
   const trimmed = raw.trim();
   if (!/^\d+$/.test(trimmed)) return null;
   return Number(trimmed);
+};
+
+/** Converte o `datetime-local` (hora local do navegador) no instante ISO gravado no banco. */
+const toIso = (raw: string): string | null => {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  const data = new Date(trimmed);
+  return Number.isNaN(data.getTime()) ? null : data.toISOString();
 };
 
 export const validateAchievementDraft = (draft: AchievementDraft): string[] => {
@@ -134,6 +154,12 @@ export const validateAchievementDraft = (draft: AchievementDraft): string[] => {
   if (!ACHIEVEMENT_CATEGORIES.some((c) => c.value === draft.category)) errors.push("Categoria invalida.");
   if (!ACHIEVEMENT_GRADIENTS.some((g) => g === draft.gradient)) errors.push("Gradiente invalido.");
 
+  const inicio = toIso(draft.starts_at);
+  const fim = toIso(draft.ends_at);
+  if (draft.starts_at.trim() && !inicio) errors.push("Data de início inválida.");
+  if (draft.ends_at.trim() && !fim) errors.push("Data de término inválida.");
+  if (inicio && fim && fim <= inicio) errors.push("A data de término precisa ser depois da data de início.");
+
   return errors;
 };
 
@@ -157,6 +183,9 @@ export const buildAchievementPayload = (
               draft.requirement_type === "category_courses_completed" ? draft.requirement_category.trim() : null,
       gradient: draft.gradient,
             is_secret: draft.is_secret,
+      starts_at: toIso(draft.starts_at),
+      ends_at: toIso(draft.ends_at),
+      seasonal_event_id: draft.seasonal_event_id.trim() || null,
     },
     errors,
   };

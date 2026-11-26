@@ -165,7 +165,7 @@
   {
    "arquivo": "src/components/AchievementsGrid.tsx",
    "exports": [],
-   "linhas": 216,
+   "linhas": 241,
    "hooks": [
     "useMemo"
    ],
@@ -243,7 +243,7 @@
   {
    "arquivo": "src/components/admin/AdminAchievementsTab.tsx",
    "exports": [],
-   "linhas": 458,
+   "linhas": 546,
    "hooks": [
     "useCallback",
     "useEffect",
@@ -251,6 +251,7 @@
    ],
    "tabelas": [
     "achievements",
+    "seasonal_events",
     "user_achievements"
    ],
    "edges": [],

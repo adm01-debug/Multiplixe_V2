@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * Barreira contra o retorno de edge function temporaria que expoe o service_role.
+ * Barreira contra o retorno de edge function temporária que expõe o service_role.
  *
- * `migrate-helper` nasceu como funcao de migracao, com chave de acesso fixa no
+ * `migrate-helper` nasceu como função de migração, com chave de acesso fixa no
  * arquivo e `action=credentials` devolvendo `SUPABASE_SERVICE_ROLE_KEY`. Ela nunca
- * esteve publicada e saiu do repo em 26/11/2026 ? mas o editor do Lovable
+ * esteve publicada e saiu do repo em 26/11/2026 — mas o editor do Lovable
  * reintroduz arquivo removido (aconteceu em 08/11/2026). Este teste deixa a CI
  * vermelha se voltar.
  *
@@ -21,16 +21,16 @@ const PROIBIDAS = [
   ['migrate-helper', 'devolvia SUPABASE_SERVICE_ROLE_KEY para quem acertasse a chave fixa do arquivo'],
 ];
 
-test('funcoes proibidas nao existem em supabase/functions', () => {
+test('funções proibidas não existem em supabase/functions', () => {
   for (const [slug, motivo] of PROIBIDAS) {
     const dir = path.join(RAIZ, 'supabase', 'functions', slug);
-    assert.equal(fs.existsSync(dir), false, `supabase/functions/${slug} nao pode existir: ${motivo}`);
+    assert.equal(fs.existsSync(dir), false, `supabase/functions/${slug} não pode existir: ${motivo}`);
   }
 });
 
-test('supabase/config.toml nao declara funcoes proibidas', () => {
+test('supabase/config.toml não declara funções proibidas', () => {
   const config = fs.readFileSync(path.join(RAIZ, 'supabase', 'config.toml'), 'utf8');
   for (const [slug] of PROIBIDAS) {
-    assert.equal(config.includes(`[functions.${slug}]`), false, `supabase/config.toml nao pode declarar [functions.${slug}]`);
+    assert.equal(config.includes(`[functions.${slug}]`), false, `supabase/config.toml não pode declarar [functions.${slug}]`);
   }
 });

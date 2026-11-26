@@ -53,11 +53,56 @@ Deno.serve(async (req) => {
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData, error: userError } = await userClient.auth.getUser();
+
+    if (userError || !userData.user) {
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const rawBody = await req.json();
     const payload = validateInput(rawBody);
+
+    // Usuario comum so registra alerta sobre a propria conta; apontar para outra
+    // conta e prerrogativa de admin.
+    const alvo = payload.user_id ?? userData.user.id;
+
+    if (alvo !== userData.user.id) {
+      const { data: roleData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userData.user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (!roleData) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: 'Apenas administradores podem registrar alerta para outra conta',
+          }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+    }
 
     const { data: alert, error: insertError } = await supabase
       .from('security_alerts')
@@ -67,7 +112,7 @@ Deno.serve(async (req) => {
         title: payload.title,
         description: payload.description,
         ip_address: payload.ip_address,
-        user_id: payload.user_id,
+        user_id: alvo,
         metadata: payload.metadata,
       })
       .select()

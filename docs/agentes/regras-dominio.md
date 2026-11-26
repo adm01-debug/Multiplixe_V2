@@ -137,3 +137,8 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   código usado (um por vez) e grava `last_mfa_at`, e a liberação vale só para a aba atual
   (`sessionStorage`). Sem esse caminho, quem perdesse o autenticador ficava trancado fora do app —
   os códigos eram gerados com `Math.random`, ficavam legíveis no banco e nada os conferia.
+- **Alerta de segurança não confia no corpo**: `send-security-alert` inseria em `security_alerts` com
+  service role usando o `user_id` do JSON, então qualquer um com a chave publicável criava alerta na
+  conta de outra pessoa e, em `severity` high/critical, notificava todos os admins. Agora exige
+  `Authorization` + `auth.getUser()`; usuário comum só registra alerta sobre si — apontar para outra
+  conta exige papel `admin` em `user_roles`, senão 403.

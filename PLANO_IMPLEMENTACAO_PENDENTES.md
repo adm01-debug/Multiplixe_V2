@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (61)
+### ✅ Melhorias JÁ IMPLEMENTADAS (63)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (38)
+## ⏳ MELHORIAS PENDENTES (36)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -317,7 +317,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 8 Pendentes
+### 🚀 FUNCIONALIDADES - 7 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -634,7 +634,7 @@ Validado no banco de produção com o usuário real `96b716a2`: 4 metas de teste
 
 ---
 
-#### FUNC-015: Recomendações Personalizadas
+#### FUNC-015: Recomendacoes Personalizadas ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Não há sistema de recomendação de cursos.
@@ -647,6 +647,15 @@ Validado no banco de produção com o usuário real `96b716a2`: 4 metas de teste
 4. Recomendar cursos populares
 5. Seção "Para você" no Dashboard
 ```
+
+**Entregue em 26/11/2026**
+
+Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `SmartRecommendations` (que usa o RPC `get_smart_recommendations`) nao era importado por pagina alguma, e `useRecommendations` + `RecommendationsWidget` eram codigo morto duplicado, sem o RPC.
+
+- RPC `public.get_smart_recommendations(p_user_id uuid, p_limit integer DEFAULT 6)` conferido no banco de producao: SECURITY DEFINER, devolve curso + `recommendation_reason` (mesma categoria, populares, nivel).
+- `src/hooks/useSmartRecommendations.ts` (React Query, cache de 10 min) + `src/components/dashboard/SmartRecommendations.tsx` (skeleton, some quando nao ha recomendacao, link com prefetch) montados em `src/pages/Dashboard.tsx:250` dentro de `Suspense`, na secao "Recomendado para voce".
+- Removidos `src/hooks/useRecommendations.ts` e `src/components/recommendations/RecommendationsWidget.tsx`: nao tinham nenhum import no repositorio (apenas as proprias referencias internas) e consultavam a mesma tabela sem passar pelo RPC.
+
 
 ---
 
@@ -1106,9 +1115,9 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-### 🔍 SEO - 2 Pendentes
+### 🔍 SEO - 1 Pendente
 
-#### SEO-002: Structured Data (JSON-LD)
+#### SEO-002: Structured Data (JSON-LD) ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** Não há dados estruturados.
@@ -1120,6 +1129,16 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 3. Criar componente JsonLd.tsx
 4. Verificar com Google Rich Results Test
 ```
+
+**Entregue em 26/11/2026**
+
+Verificado no codigo: os dados estruturados existem e sao reais.
+
+- `src/components/seo/DynamicSEO.tsx`: `getStructuredData()` (`@context` schema.org) emite `WebSite` + `publisher Organization` (Promo Brindes, com logo) por padrao e `Course` (nome, descricao, provider, instrutor, duracao, nivel) quando a pagina passa `type="course"`; o JSON-LD sai num `<script type="application/ld+json">` em `DynamicSEO.tsx:111`.
+- Usado em 8 telas: `Index`, `Catalog` (via CourseDetail), `CourseDetail`, `Playbooks`, `PlaybookDetail`, `VideoLibrary`, `SkillAssessments`, `SalesOnboarding`, `OnboardingRuntime`, `NotFound`.
+
+Nada a implementar neste item.
+
 
 ---
 
@@ -1740,12 +1759,12 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🟡 Fase 2: Importantes (Semana 3-4)
-**Prioridade: Média | Esforço Total: ~13h**
+**Prioridade: Média | Esforço Total: ~9h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
 | FUNC-002 | Favoritar Cursos | ✅ 4h |
-| FUNC-015 | Recomendações Personalizadas | 4h |
+| FUNC-015 | Recomendações Personalizadas | ✅ 4h |
 | FUNC-012 | Metas de Aprendizado | ✅ 4h |
 | UI-015 | Avatar Upload | ✅ 4h |
 | GAME-004 | Conquistas Expandidas | 4h |
@@ -1795,13 +1814,13 @@ CREATE TABLE public.webhook_endpoints (
 | Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
-| SEO | 2 | ~6h |
+| SEO | 1 | ~4h |
 | Gamificação | 11 | ~59h |
 | Administrativas | 5 | ~20h |
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **38** | **~181h** |
+| **TOTAL PENDENTE** | **36** | **~175h** |
 
 ---
 

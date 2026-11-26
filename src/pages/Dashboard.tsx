@@ -31,6 +31,8 @@ import StudySchedulePanel from '@/components/calendar/StudySchedulePanel';
 import { useStudyCalendar } from '@/hooks/useStudyCalendar';
 
 // Lazy load heavy widgets (recharts/framer)
+import SeasonalEventBanner from '@/components/gamification/SeasonalEventBanner';
+
 const SmartRecommendations = lazy(() => import('@/components/dashboard/SmartRecommendations'));
 const DailyChallenges = lazy(() => import('@/components/gamification/DailyChallenges'));
 const SkillRadarChart = lazy(() => import('@/components/analytics/SkillRadarChart'));
@@ -254,6 +256,7 @@ const Dashboard = () => {
                   <FavoritesSection />
                 </motion.section>
 
+        <SeasonalEventBanner className="mb-12" />
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><Suspense fallback={<WidgetFallback />}><DailyChallenges /></Suspense></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><GoalsWidget /></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><LevelProgress totalXP={totalXP} /></motion.section>

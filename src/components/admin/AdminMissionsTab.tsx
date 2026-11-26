@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Pencil, Plus, RefreshCw, Trash2, Users } from 'lucide-react';
 import SimpleEmptyState from '@/components/SimpleEmptyState';
+import { paraInputLocal } from '@/lib/datetimeInput';
 import {
   useAdminMissions,
   useAlternarMissao,
@@ -26,8 +27,6 @@ const METRICAS: { valor: MetricaMissao; rotulo: string }[] = [
   { valor: 'lessons', rotulo: 'Aulas concluídas' },
   { valor: 'courses', rotulo: 'Cursos concluídos' },
 ];
-
-const paraInput = (iso: string) => (iso ? new Date(iso).toISOString().slice(0, 16) : '');
 
 const inicioDaSemana = () => {
   const agora = new Date();
@@ -47,8 +46,8 @@ const formulaVazia = (): MissaoInput => {
     metric: 'xp',
     target_value: 500,
     xp_reward: 100,
-    starts_at: paraInput(inicio.toISOString()),
-    ends_at: paraInput(fim.toISOString()),
+    starts_at: paraInputLocal(inicio),
+    ends_at: paraInputLocal(fim),
     is_active: true,
   };
 };
@@ -89,8 +88,8 @@ const AdminMissionsTab = () => {
       metric: missao.metrica,
       target_value: missao.meta,
       xp_reward: missao.xp,
-      starts_at: paraInput(missao.inicio),
-      ends_at: paraInput(missao.fim),
+      starts_at: paraInputLocal(missao.inicio),
+      ends_at: paraInputLocal(missao.fim),
       is_active: missao.ativa,
     });
     setDepartamentoTexto(missao.departamento ?? '');

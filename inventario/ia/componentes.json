@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 240,
+ "total": 242,
  "orfaos": [
   "src/components/admin/AdminTopPlaybooksWidget.tsx",
   "src/components/admin/AdminVideoEngagementWidget.tsx",
@@ -325,6 +325,24 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/admin/AdminEventsTab.tsx",
+   "exports": [],
+   "linhas": 368,
+   "hooks": [
+    "useAdminSeasonalEvents",
+    "useAlternarEvento",
+    "useExcluirEvento",
+    "useMemo",
+    "useSalvarEvento",
+    "useState",
+    "useT"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/admin/AdminFlashcardsTab.tsx",
    "exports": [],
    "linhas": 314,
@@ -349,7 +367,7 @@
   {
    "arquivo": "src/components/admin/AdminMissionsTab.tsx",
    "exports": [],
-   "linhas": 372,
+   "linhas": 371,
    "hooks": [
     "useAdminMissions",
     "useAlternarMissao",
@@ -1281,7 +1299,7 @@
   {
    "arquivo": "src/components/gamification/DailyChallenges.tsx",
    "exports": [],
-   "linhas": 482,
+   "linhas": 483,
    "hooks": [
     "useDailyChallenges",
     "useEffect",
@@ -1317,6 +1335,19 @@
    "edges": [],
    "usado_por": 0,
    "orfao": true
+  },
+  {
+   "arquivo": "src/components/gamification/SeasonalEventBanner.tsx",
+   "exports": [],
+   "linhas": 83,
+   "hooks": [
+    "useSeasonalEvent",
+    "useT"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/gamification/WeeklyGoalTracker.tsx",
@@ -2569,7 +2600,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 62,
+   "usado_por": 64,
    "orfao": false
   },
   {
@@ -2615,7 +2646,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 138,
+   "usado_por": 140,
    "orfao": false
   },
   {
@@ -2820,7 +2851,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 39,
+   "usado_por": 40,
    "orfao": false
   },
   {
@@ -2966,7 +2997,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 22,
+   "usado_por": 23,
    "orfao": false
   },
   {
@@ -3006,7 +3037,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 23,
+   "usado_por": 24,
    "orfao": false
   },
   {
@@ -3122,13 +3153,13 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 73,
+   "usado_por": 74,
    "orfao": false
   },
   {
    "arquivo": "src/pages/Admin.tsx",
    "exports": [],
-   "linhas": 325,
+   "linhas": 332,
    "hooks": [
     "useAdminRole",
     "useAuth",
@@ -3236,7 +3267,7 @@
   {
    "arquivo": "src/pages/Dashboard.tsx",
    "exports": [],
-   "linhas": 367,
+   "linhas": 370,
    "hooks": [
     "useAchievements",
     "useAdminRole",

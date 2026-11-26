@@ -1719,6 +1719,51 @@ export type Database = {
         }
         Relationships: []
       }
+      seasonal_events: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          emoji: string | null
+          ends_at: string
+          id: string
+          is_active: boolean
+          slug: string
+          starts_at: string
+          title: string
+          updated_at: string
+          xp_multiplier: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          emoji?: string | null
+          ends_at: string
+          id?: string
+          is_active?: boolean
+          slug: string
+          starts_at: string
+          title: string
+          updated_at?: string
+          xp_multiplier?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          emoji?: string | null
+          ends_at?: string
+          id?: string
+          is_active?: boolean
+          slug?: string
+          starts_at?: string
+          title?: string
+          updated_at?: string
+          xp_multiplier?: number
+        }
+        Relationships: []
+      }
       skill_assessments: {
         Row: {
           created_at: string
@@ -3030,6 +3075,7 @@ export type Database = {
         Returns: Json
       }
       get_admin_department_challenges: { Args: never; Returns: Json }
+      get_active_seasonal_event: { Args: never; Returns: Json }
       get_adaptive_quiz_plan: {
         Args: { p_limit?: number; p_quiz_id: string }
         Returns: Json

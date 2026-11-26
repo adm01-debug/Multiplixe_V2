@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 137,
+ "total": 142,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -218,6 +218,19 @@
    ],
    "coberto_por_teste": false
   },
+  "useAdminSeasonalEvents": {
+   "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+   "linhas": 144,
+   "tabelas": [
+    "seasonal_events"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminEventsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useAdminStoreItems": {
    "arquivo": "src/hooks/useWallet.ts",
    "linhas": 249,
@@ -234,6 +247,19 @@
     "src/components/admin/AdminStoreTab.tsx"
    ],
    "coberto_por_teste": false
+  },
+  "useAlternarEvento": {
+   "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+   "linhas": 144,
+   "tabelas": [
+    "seasonal_events"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminEventsTab.tsx"
+   ],
+   "coberto_por_teste": true
   },
   "useAlternarMissao": {
    "arquivo": "src/hooks/useAdminMissions.ts",
@@ -332,6 +358,7 @@
     "src/hooks/useQuizzes.ts",
     "src/hooks/useRateLimitLogs.ts",
     "src/hooks/useReputacao.ts",
+    "src/hooks/useSeasonalEvent.ts",
     "src/hooks/useSecurityAlerts.ts",
     "src/hooks/useSessionRotation.ts",
     "src/hooks/useSkillAssessments.ts",
@@ -759,6 +786,19 @@
    "usado_por": [
     "src/components/dashboard/DueAssessmentsWidget.tsx",
     "src/pages/SkillAssessments.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useExcluirEvento": {
+   "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+   "linhas": 144,
+   "tabelas": [
+    "seasonal_events"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminEventsTab.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -1597,6 +1637,19 @@
    ],
    "coberto_por_teste": true
   },
+  "useSalvarEvento": {
+   "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
+   "linhas": 144,
+   "tabelas": [
+    "seasonal_events"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminEventsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useSalvarMissao": {
    "arquivo": "src/hooks/useAdminMissions.ts",
    "linhas": 120,
@@ -1702,6 +1755,19 @@
    "edges": [],
    "usado_por": [
     "src/components/admin/AdminWorkflowsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSeasonalEvent": {
+   "arquivo": "src/hooks/useSeasonalEvent.ts",
+   "linhas": 64,
+   "tabelas": [],
+   "rpcs": [
+    "get_active_seasonal_event"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/gamification/SeasonalEventBanner.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -1867,15 +1933,17 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 543,
+   "linhas": 719,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [
     "src/components/LanguageToggle.tsx",
+    "src/components/admin/AdminEventsTab.tsx",
     "src/components/admin/LessonForm.tsx",
     "src/components/dashboard/DashboardHeader.tsx",
     "src/components/gamification/DepartmentChallenges.tsx",
+    "src/components/gamification/SeasonalEventBanner.tsx",
     "src/components/navigation/MobileBottomNav.tsx",
     "src/components/player/ChaptersPanel.tsx",
     "src/components/player/TranscriptPanel.tsx",

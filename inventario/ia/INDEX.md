@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `24fca8300c1b79e5c57852ea98a858a33457c714` · branch `main` · 2026-11-26T09:34:45-03:00
+Commit: `c61df0c22bae7d582e041bc18f6b1650720710d6` · branch `claude/feat-game-009-eventos-sazonais-261126-1056` · 2026-11-26T11:20:43-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `24fca8300c1b79e5c57852ea98a858a33457c714` · branch `main` · 2026-11-2
 
 | | |
 |---|---|
-| arquivos (codigo) | 628 (512) |
-| linhas de codigo | 73006 |
+| arquivos (codigo) | 631 (521) |
+| linhas de codigo | 74080 |
 | paginas / rotas | 28 / 28 |
-| componentes / hooks | 240 / 137 |
-| arquivos de teste | 87 |
+| componentes / hooks | 242 / 142 |
+| arquivos de teste | 90 |
 | edge functions | 13 |
-| tabelas / migrations | 73 / 79 |
+| tabelas / migrations | 74 / 81 |
 
 ## Divida medida
 
@@ -39,7 +39,7 @@ Commit: `24fca8300c1b79e5c57852ea98a858a33457c714` · branch `main` · 2026-11-2
 |---|---|---|---|---|---|
 | `*` | src/pages/NotFound.tsx | nao | — | 0 | — |
 | `/` | src/pages/Index.tsx | nao | navegacao-no-codigo, prefetch | 35 | detect-new-device, export-user-data, generate-certificate |
-| `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 37 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
+| `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 38 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
 | `/admin/security` | src/pages/RateLimitDashboard.tsx | admin | prefetch | 5 | detect-new-device |
 | `/auth` | src/pages/Auth.tsx | nao | navegacao-no-codigo, prefetch | 1 | detect-new-device |
 | `/avaliacao/:id` | src/pages/AssessmentRunner.tsx | sim | — | 4 | detect-new-device |
@@ -86,7 +86,7 @@ Commit: `24fca8300c1b79e5c57852ea98a858a33457c714` · branch `main` · 2026-11-2
 
 ## Banco (declarado pelo repo)
 
-73 tabelas · 190 policies · 95 funcoes · 2 cron jobs · 1 bucket(s) · 79 migrations
+74 tabelas · 192 policies · 99 funcoes · 2 cron jobs · 1 bucket(s) · 81 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -105,29 +105,29 @@ Commit: `24fca8300c1b79e5c57852ea98a858a33457c714` · branch `main` · 2026-11-2
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (138)
-- `src/integrations/supabase/client.ts` (108)
-- `src/hooks/useAuth.tsx` (73)
-- `src/components/ui/card.tsx` (68)
+- `src/components/ui/button.tsx` (140)
+- `src/integrations/supabase/client.ts` (110)
+- `src/hooks/useAuth.tsx` (74)
+- `src/components/ui/card.tsx` (70)
 - `src/lib/utils.ts` (68)
-- `src/components/ui/badge.tsx` (62)
-- `src/components/ui/input.tsx` (39)
-- `src/components/ui/dialog.tsx` (37)
-- `src/components/ui/label.tsx` (27)
+- `src/components/ui/badge.tsx` (64)
+- `src/components/ui/input.tsx` (40)
+- `src/components/ui/dialog.tsx` (38)
+- `src/components/ui/label.tsx` (28)
 - `src/components/ui/progress.tsx` (25)
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (53)
-- `src/integrations/supabase/types.ts` (21)
-- `inventario/estado/schema-declarado.json` (20)
-- `inventario/ia/baseline.json` (19)
-- `inventario/ia/INDEX.md` (19)
-- `inventario/ia/manifest.json` (19)
-- `inventario/ia/componentes.json` (16)
-- `inventario/ia/grafo.json` (15)
-- `inventario/estado/rotas.json` (14)
-- `inventario/ia/hooks.json` (14)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (54)
+- `inventario/estado/schema-declarado.json` (23)
+- `src/integrations/supabase/types.ts` (23)
+- `inventario/ia/baseline.json` (22)
+- `inventario/ia/INDEX.md` (22)
+- `inventario/ia/manifest.json` (22)
+- `inventario/ia/componentes.json` (19)
+- `inventario/ia/grafo.json` (18)
+- `inventario/estado/rotas.json` (17)
+- `inventario/ia/hooks.json` (17)
 
 ## Scripts npm
 

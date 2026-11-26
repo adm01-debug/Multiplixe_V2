@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 73,
-    "tabelas_no_types": 73,
-    "tabelas_nas_migrations": 73,
-    "colunas": 638,
+    "tabelas": 74,
+    "tabelas_no_types": 74,
+    "tabelas_nas_migrations": 74,
+    "colunas": 650,
     "views": 1,
-    "funcoes": 95,
-    "funcoes_expostas_no_types": 64,
+    "funcoes": 99,
+    "funcoes_expostas_no_types": 65,
     "enums": 1,
-    "policies": 190,
+    "policies": 192,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 79,
+    "migrations": 81,
     "alertas": 3,
     "problemas": 3
   },
@@ -699,6 +699,22 @@
         "edges": 0
       }
     },
+    "seasonal_events": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 12,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "trg_seasonal_events_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20261128200000_eventos_sazonais.sql",
+      "uso_no_codigo": {
+        "src": 5,
+        "edges": 0
+      }
+    },
     "security_alerts": {
       "no_types": true,
       "nas_migrations": true,
@@ -1170,6 +1186,18 @@
         "edges": 0
       }
     },
+    "active_seasonal_multiplier": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128200000_eventos_sazonais.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "active_xp_boost_multiplier": {
       "exposta_no_types": false,
       "args": null,
@@ -1192,7 +1220,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261126060000_multiplicador_xp.sql",
+      "criada_em": "20261128203000_add_user_xp_precisao.sql",
       "uso_no_codigo": {
         "src": 2,
         "edges": 0
@@ -1543,6 +1571,18 @@
         "edges": 0
       }
     },
+    "get_active_seasonal_event": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128200000_eventos_sazonais.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_adaptive_quiz_plan": {
       "exposta_no_types": true,
       "args": [
@@ -1747,7 +1787,7 @@
       "retorno": "Json",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261127180000_powerups.sql",
+      "criada_em": "20261128203000_add_user_xp_precisao.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1884,7 +1924,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261127180000_powerups.sql",
+      "criada_em": "20261128200000_eventos_sazonais.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -2306,6 +2346,18 @@
         "edges": 0
       }
     },
+    "set_seasonal_events_updated_at": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20261128200000_eventos_sazonais.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "submit_quiz_attempt": {
       "exposta_no_types": true,
       "args": [
@@ -2418,6 +2470,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "xp_display": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20261128203000_add_user_xp_precisao.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

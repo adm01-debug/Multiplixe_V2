@@ -2,76 +2,76 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "24fca8300c1b79e5c57852ea98a858a33457c714",
-  "branch": "main",
-  "data_commit": "2026-11-26T09:34:45-03:00",
+  "commit": "c61df0c22bae7d582e041bc18f6b1650720710d6",
+  "branch": "claude/feat-game-009-eventos-sazonais-261126-1056",
+  "data_commit": "2026-11-26T11:20:43-03:00",
   "ultimos_commits": [
+   "c61df0c fix: arredonda o multiplicador de XP como o banco e atualiza inventarios",
+   "8ba2158 fix: mostra o multiplicador de XP com a mesma precisao do rotulo",
+   "b6768c4 fix: corrige fuso do admin, precisao do XP e traducao da aba de eventos",
+   "4e8723d feat: eventos sazonais com bonus de XP (GAME-009)",
+   "95bd7ca chore: marca GAME-008 (missoes por departamento) como concluido no plano (#90)",
+   "7bb2f41 feat: missoes coletivas por departamento (GAME-008) (#89)",
    "24fca83 chore: marca GAME-012 (reputacao social) como concluido no plano",
    "cbdcd34 feat: reputacao social no perfil (GAME-012) (#87)",
    "3d945ba chore: marca MOB-002 (gestos mobile) como concluido no plano (#86)",
-   "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)",
-   "27a4c58 chore: marca FUNC-007 (mentoria) e FUNC-017 (transcricao) como implementadas (#84)",
-   "221562e feat: transcrição de vídeo com busca e salto por trecho (FUNC-017) (#81)",
-   "dc9419a feat: sistema de mentoria entre colegas (FUNC-007) (#83)",
-   "9504633 chore: marca UI-009 como concluido no plano (#82)",
-   "d52def3 feat: preview em video no hover do card de curso (UI-009) (#80)",
-   "c4f9cbf chore: marca UI-012 como concluido no plano (#79)"
+   "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 53
-   },
-   {
-    "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 21
+    "mudancas": 54
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 20
+    "mudancas": 23
+   },
+   {
+    "arquivo": "src/integrations/supabase/types.ts",
+    "mudancas": 23
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 19
+    "mudancas": 22
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 19
+    "mudancas": 22
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 19
+    "mudancas": 22
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 16
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 15
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 14
+    "mudancas": 17
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 14
+    "mudancas": 17
+   },
+   {
+    "arquivo": "src/lib/i18n.ts",
+    "mudancas": 12
    },
    {
     "arquivo": "src/pages/Profile.tsx",
     "mudancas": 10
    },
    {
-    "arquivo": "src/lib/i18n.ts",
-    "mudancas": 9
+    "arquivo": "src/pages/Admin.tsx",
+    "mudancas": 8
    },
    {
     "arquivo": "src/index.css",
-    "mudancas": 6
-   },
-   {
-    "arquivo": "src/pages/Admin.tsx",
     "mudancas": 6
    },
    {
@@ -101,17 +101,17 @@
   ]
  },
  "contagens": {
-  "arquivos": 628,
-  "arquivos_de_codigo": 512,
-  "linhas_de_codigo": 73006,
-  "componentes": 240,
-  "hooks": 137,
+  "arquivos": 631,
+  "arquivos_de_codigo": 521,
+  "linhas_de_codigo": 74080,
+  "componentes": 242,
+  "hooks": 142,
   "paginas": 28,
-  "testes": 87,
+  "testes": 90,
   "edge_functions": 13,
   "rotas": 28,
-  "tabelas": 73,
-  "migrations": 79
+  "tabelas": 74,
+  "migrations": 81
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -121,11 +121,6 @@
   "PLANO_IMPLEMENTACAO_PENDENTES.md": 1,
   "PLANO_MELHORIAS.md": 1,
   "README.md": 1,
-  "_check-cap.sql": 1,
-  "_probe.sql": 1,
-  "_valida-achados.sql": 1,
-  "_valida-capitulos.sql": 1,
-  "_valida-contra.sql": 1,
   "bun.lock": 1,
   "bun.lockb": 1,
   "components.json": 1,
@@ -135,30 +130,27 @@
   "package-lock.json": 1,
   "package.json": 1,
   "postcss.config.js": 1,
-  "pr-body.md": 1,
   "progress.txt": 1,
   "scripts/ai-context": 1,
   "scripts/ci": 11,
   "scripts/lib": 2,
   "src/App.tsx": 1,
-  "src/components": 264,
-  "src/hooks": 68,
+  "src/components": 266,
+  "src/hooks": 70,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 29,
+  "src/lib": 31,
   "src/main.tsx": 1,
   "src/pages": 28,
-  "src/test": 87,
+  "src/test": 90,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 79,
+  "supabase/migrations": 81,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
-  "tsconfig.app.tsbuildinfo": 1,
   "tsconfig.json": 1,
   "tsconfig.node.json": 1,
-  "tsconfig.node.tsbuildinfo": 1,
   "vercel.json": 1,
   "vite.config.ts": 1,
   "vitest.config.ts": 1
@@ -166,7 +158,11 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3499
+   "linhas": 3545
+  },
+  {
+   "arquivo": "src/lib/i18n.ts",
+   "linhas": 719
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -181,12 +177,8 @@
    "linhas": 549
   },
   {
-   "arquivo": "src/lib/i18n.ts",
-   "linhas": 543
-  },
-  {
    "arquivo": "src/components/gamification/DailyChallenges.tsx",
-   "linhas": 482
+   "linhas": 483
   },
   {
    "arquivo": "scripts/ai-context/gerar.mjs",
@@ -210,10 +202,14 @@
   },
   {
    "arquivo": "src/components/admin/AdminMissionsTab.tsx",
-   "linhas": 372
+   "linhas": 371
   },
   {
    "arquivo": "src/components/admin/LearningPathsManager.tsx",
+   "linhas": 370
+  },
+  {
+   "arquivo": "src/pages/Dashboard.tsx",
    "linhas": 370
   },
   {
@@ -225,8 +221,8 @@
    "linhas": 369
   },
   {
-   "arquivo": "src/pages/Dashboard.tsx",
-   "linhas": 367
+   "arquivo": "src/components/admin/AdminEventsTab.tsx",
+   "linhas": 368
   },
   {
    "arquivo": "src/components/analytics/SkillRadarChart.tsx",
@@ -259,10 +255,6 @@
   {
    "arquivo": "src/components/admin/AdminCoursesTab.tsx",
    "linhas": 335
-  },
-  {
-   "arquivo": "src/pages/Profile.tsx",
-   "linhas": 326
   }
  ],
  "qualidade": {

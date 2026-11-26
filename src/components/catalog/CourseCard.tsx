@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock, BookOpen, User, Sparkles, Play, TrendingUp } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { FuzzyHighlight } from "@/components/ui/FuzzyHighlight";
 import FavoriteButton from "@/components/favorites/FavoriteButton";
 import type { FuseResultMatch } from "fuse.js";
@@ -14,6 +14,7 @@ interface CourseCardProps {
   title: string;
   description: string | null;
   thumbnailUrl: string | null;
+  videoPreviewUrl?: string | null;
   durationMinutes: number;
   level: string;
   instructorName: string | null;
@@ -43,6 +44,7 @@ const CourseCard = memo(({
   title,
   description,
   thumbnailUrl,
+  videoPreviewUrl,
   durationMinutes,
   level,
   instructorName,
@@ -70,6 +72,25 @@ const CourseCard = memo(({
     setTimeout(() => setIsPrefetching(false), 800);
   }, [slug, prefetchCourseDetail]);
 
+  const [previewAtivo, setPreviewAtivo] = useState(false);
+  const previewTimer = useRef<number | null>(null);
+
+  const encerrarPreview = useCallback(() => {
+    if (previewTimer.current !== null) {
+      window.clearTimeout(previewTimer.current);
+      previewTimer.current = null;
+    }
+    setPreviewAtivo(false);
+  }, []);
+
+  const iniciarPreview = useCallback(() => {
+    if (!videoPreviewUrl) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    previewTimer.current = window.setTimeout(() => setPreviewAtivo(true), 350);
+  }, [videoPreviewUrl]);
+
+  useEffect(() => encerrarPreview, [encerrarPreview]);
+
   return (
     <PrefetchLink to={`/curso/${slug}`} className="group block h-full rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label={`Curso: ${title}`} onPrefetchData={handlePrefetchData}>
       <motion.div 
@@ -84,6 +105,8 @@ const CourseCard = memo(({
           scale: 0.97,
           y: -4
         }}
+        onMouseEnter={iniciarPreview}
+        onMouseLeave={encerrarPreview}
         transition={{ 
           type: "spring", 
           stiffness: 400, 
@@ -137,6 +160,22 @@ const CourseCard = memo(({
                 </svg>
               </div>
             </>
+          )}
+
+          {/* Preview em video (UI-009): so carrega quando o mouse para no card */}
+          {previewAtivo && videoPreviewUrl && (
+            <video
+              src={videoPreviewUrl}
+              poster={thumbnailUrl ?? undefined}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+              aria-hidden="true"
+              onError={encerrarPreview}
+            />
           )}
 
           {/* Decorative Elements */}

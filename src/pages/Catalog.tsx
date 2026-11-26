@@ -36,6 +36,7 @@ interface Category {
 
 interface Course {
   id: string; title: string; slug: string; description: string | null; thumbnail_url: string | null;
+  video_preview_url: string | null;
   duration_minutes: number | null; level: string | null; instructor_name: string | null;
   total_lessons: number | null; is_featured: boolean | null; category_id: string | null; categories: Category | null;
 }
@@ -217,7 +218,7 @@ const Catalog = () => {
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" variants={scaleUpContainerVariants} initial="hidden" animate="visible">
               {pagedCourses.map((course, index) => (
                 <motion.div key={course.id} variants={scaleUpItemVariants} custom={index}>
-                  <CourseCard id={course.id} slug={course.slug} title={course.title} description={course.description} thumbnailUrl={course.thumbnail_url} durationMinutes={course.duration_minutes ?? 0} level={course.level ?? 'Iniciante'} instructorName={course.instructor_name} totalLessons={course.total_lessons ?? 0} categoryName={course.categories?.name} categoryColor={course.categories?.color || undefined} isFeatured={course.is_featured ?? false} searchMatches={debouncedSearch ? matchesMap.get(course.id) : undefined} />
+                  <CourseCard id={course.id} slug={course.slug} title={course.title} description={course.description} thumbnailUrl={course.thumbnail_url} videoPreviewUrl={course.video_preview_url} durationMinutes={course.duration_minutes ?? 0} level={course.level ?? 'Iniciante'} instructorName={course.instructor_name} totalLessons={course.total_lessons ?? 0} categoryName={course.categories?.name} categoryColor={course.categories?.color || undefined} isFeatured={course.is_featured ?? false} searchMatches={debouncedSearch ? matchesMap.get(course.id) : undefined} />
                 </motion.div>
               ))}
             </motion.div>

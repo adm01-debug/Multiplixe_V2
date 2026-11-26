@@ -41,6 +41,7 @@ export interface AdminCourse {
   created_at: string;
   instructor_name: string | null;
   category_id: string | null;
+  video_preview_url: string | null;
 }
 
 interface Props {

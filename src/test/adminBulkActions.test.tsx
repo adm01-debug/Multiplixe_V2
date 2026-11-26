@@ -44,6 +44,7 @@ const courses: AdminCourse[] = [
     created_at: "2026-01-01T00:00:00.000Z",
     instructor_name: "Ana",
     category_id: null,
+    video_preview_url: null,
   },
   {
     id: "22222222-2222-2222-2222-222222222222",
@@ -58,6 +59,7 @@ const courses: AdminCourse[] = [
     created_at: "2026-01-02T00:00:00.000Z",
     instructor_name: "Bruno",
     category_id: null,
+    video_preview_url: null,
   },
 ];
 

@@ -276,6 +276,7 @@ export type Database = {
           title: string
           total_lessons: number | null
           updated_at: string
+          video_preview_url: string | null
         }
         Insert: {
           category_id?: string | null
@@ -293,6 +294,7 @@ export type Database = {
           title: string
           total_lessons?: number | null
           updated_at?: string
+          video_preview_url?: string | null
         }
         Update: {
           category_id?: string | null
@@ -310,6 +312,7 @@ export type Database = {
           title?: string
           total_lessons?: number | null
           updated_at?: string
+          video_preview_url?: string | null
         }
         Relationships: [
           {

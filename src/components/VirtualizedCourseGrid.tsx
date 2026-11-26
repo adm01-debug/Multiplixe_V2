@@ -9,6 +9,7 @@ interface Course {
   slug: string;
   description: string | null;
   thumbnail_url: string | null;
+  video_preview_url: string | null;
   duration_minutes: number;
   level: string;
   instructor_name: string | null;
@@ -105,6 +106,7 @@ const VirtualizedCourseGrid = ({
                       title={course.title}
                       description={course.description}
                       thumbnailUrl={course.thumbnail_url}
+                      videoPreviewUrl={course.video_preview_url}
                       durationMinutes={course.duration_minutes}
                       level={course.level}
                       instructorName={course.instructor_name}

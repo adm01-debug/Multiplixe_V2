@@ -24,6 +24,7 @@ import SkipLinks from "@/components/accessibility/SkipLinks";
 import AccessibilityWidget from "@/components/accessibility/AccessibilityWidget";
 import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import MFAChallengeGate from "@/components/security/MFAChallengeGate";
 import PageLoader from "@/components/PageLoader";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import RouteErrorBoundary from "@/components/RouteErrorBoundary";
@@ -99,6 +100,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <AuthProvider>
+                          <MFAChallengeGate>
               <SkipLinks />
               <NavigationProgress />
               <ScrollRestoration />
@@ -152,6 +154,7 @@ const App = () => (
                   </PageTransition>
                 </Suspense>
               </ErrorBoundary>
+                              </MFAChallengeGate>
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>

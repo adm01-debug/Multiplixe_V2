@@ -6,15 +6,15 @@
     "tabelas": 71,
     "tabelas_no_types": 71,
     "tabelas_nas_migrations": 71,
-    "colunas": 619,
+    "colunas": 620,
     "views": 1,
-    "funcoes": 86,
-    "funcoes_expostas_no_types": 56,
+    "funcoes": 90,
+    "funcoes_expostas_no_types": 60,
     "enums": 1,
     "policies": 186,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 76,
+    "migrations": 77,
     "alertas": 3,
     "problemas": 3
   },
@@ -122,7 +122,9 @@
       "colunas": 10,
       "rls": true,
       "policies": 4,
-      "triggers": [],
+      "triggers": [
+        "trigger_reputacao_discussao_removida"
+      ],
       "indices": 2,
       "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
       "uso_no_codigo": {
@@ -168,7 +170,10 @@
       "colunas": 8,
       "rls": true,
       "policies": 4,
-      "triggers": [],
+      "triggers": [
+        "trigger_reputacao_resposta_aceita",
+        "trigger_reputacao_respostas"
+      ],
       "indices": 1,
       "criada_em": "20260107114055_88be9b1a-4d11-4df2-a70c-7fa2251ce22b.sql",
       "uso_no_codigo": {
@@ -183,6 +188,7 @@
       "rls": true,
       "policies": 4,
       "triggers": [
+        "trigger_reputacao_votos",
         "trigger_update_discussion_votes"
       ],
       "indices": 0,
@@ -528,11 +534,12 @@
     "profiles": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 14,
+      "colunas": 15,
       "rls": true,
       "policies": 3,
       "triggers": [
         "protect_profile_admin_columns",
+        "trigger_recalcular_reputacao",
         "update_profiles_updated_at"
       ],
       "indices": 0,
@@ -1193,6 +1200,18 @@
         "edges": 0
       }
     },
+    "atualizar_reputacao": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128160000_reputacao.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "audit_admin_changes": {
       "exposta_no_types": false,
       "args": null,
@@ -1248,6 +1267,20 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "calcular_reputacao": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "number",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128160000_reputacao.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1437,6 +1470,20 @@
       "uso_no_codigo": {
         "src": 0,
         "edges": 1
+      }
+    },
+    "detalhar_reputacao": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128160000_reputacao.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
       }
     },
     "ensure_single_default_filter": {
@@ -1669,7 +1716,7 @@
       "retorno": "Json",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261126070000_perfil_publico.sql",
+      "criada_em": "20261128160000_reputacao.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -2025,6 +2072,18 @@
         "edges": 0
       }
     },
+    "recalcular_reputacao_perfil": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128160000_reputacao.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "recalculate_user_goals": {
       "exposta_no_types": true,
       "args": [
@@ -2328,6 +2387,8 @@
       "tipo": "funcao_sem_uso_no_codigo",
       "detalhe": [
         "apply_coin_transaction",
+        "atualizar_reputacao",
+        "calcular_reputacao",
         "check_due_assessment_notifications",
         "check_rate_limit",
         "check_streak_risk_notifications",
@@ -2336,6 +2397,7 @@
         "has_permission",
         "mcp_exec",
         "mentor_disponivel",
+        "recalcular_reputacao_perfil",
         "refresh_platform_stats",
         "verify_path_certificate_by_code"
       ]

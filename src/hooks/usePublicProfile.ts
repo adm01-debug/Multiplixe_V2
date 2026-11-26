@@ -26,6 +26,7 @@ export interface PublicProfileData {
     department: string | null;
     avatar_url: string | null;
     member_since: string;
+    reputation: number;
   };
   xp?: { total_xp: number; current_level: number };
   streak?: { current: number; longest: number };

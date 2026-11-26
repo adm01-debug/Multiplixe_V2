@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 103,
+    "hooks_distintos": 104,
     "problemas": 0
   },
   "rotas": [
@@ -1638,7 +1638,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 36,
+      "arquivos_lidos": 39,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1663,6 +1663,10 @@
         {
           "nome": "usePerformanceComparison",
           "arquivo": "src/hooks/usePerformanceComparison.ts"
+        },
+        {
+          "nome": "useReputacao",
+          "arquivo": "src/hooks/useReputacao.ts"
         },
         {
           "nome": "useT",
@@ -1698,6 +1702,7 @@
         "admin_grant_coins",
         "check_and_award_achievements",
         "create_audit_log",
+        "detalhar_reputacao",
         "get_department_leaderboard",
         "get_my_wallet",
         "get_performance_comparison",
@@ -2444,7 +2449,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 3,
+      "arquivos_lidos": 4,
       "hooks": [
         {
           "nome": "usePublicProfile",
@@ -3672,6 +3677,12 @@
       "arquivo": "src/hooks/usePlaybooks.ts",
       "rotas": [
         "/playbook/:slug"
+      ]
+    },
+    "useReputacao": {
+      "arquivo": "src/hooks/useReputacao.ts",
+      "rotas": [
+        "/perfil"
       ]
     },
     "useRequestMentorship": {

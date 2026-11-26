@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 503,
- "arestas": 1392,
+ "nos": 507,
+ "arestas": 1403,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 135
+   "importado_por": 136
   },
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 105
+   "importado_por": 106
   },
   {
    "arquivo": "src/hooks/useAuth.tsx",
-   "importado_por": 71
+   "importado_por": 72
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -42,7 +42,7 @@
   },
   {
    "arquivo": "src/components/ui/progress.tsx",
-   "importado_por": 22
+   "importado_por": 23
   },
   {
    "arquivo": "src/components/ui/textarea.tsx",
@@ -1217,6 +1217,12 @@
   "src/components/profile/ProfileHeader.tsx": [
    "src/components/profile/AvatarUpload.tsx"
   ],
+  "src/components/profile/ReputacaoCard.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/progress.tsx",
+   "src/hooks/useReputacao.ts",
+   "src/lib/reputacao.ts"
+  ],
   "src/components/pwa/PWAInstallPrompt.tsx": [
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
@@ -1725,6 +1731,10 @@
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useReputacao.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
   "src/hooks/useSecurityAlerts.ts": [
    "src/hooks/useAdminRole.ts",
    "src/hooks/useAuth.tsx",
@@ -1821,6 +1831,7 @@
   "src/lib/queryPersister.ts": [],
   "src/lib/quizAdaptive.ts": [],
   "src/lib/quizReview.ts": [],
+  "src/lib/reputacao.ts": [],
   "src/lib/routePrefetch.ts": [],
   "src/lib/salesEnablementSchemas.ts": [],
   "src/lib/schemas.ts": [],
@@ -2102,6 +2113,7 @@
    "src/components/LanguageToggle.tsx",
    "src/components/LevelProgress.tsx",
    "src/components/profile/ProfileHeader.tsx",
+   "src/components/profile/ReputacaoCard.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
    "src/components/ui/ThemeCustomizer.tsx",
    "src/components/ui/button.tsx",
@@ -2123,7 +2135,8 @@
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
    "src/components/ui/skeleton.tsx",
-   "src/hooks/usePublicProfile.ts"
+   "src/hooks/usePublicProfile.ts",
+   "src/lib/reputacao.ts"
   ],
   "src/pages/RateLimitDashboard.tsx": [
    "src/components/rate-limit/ActivityTab.tsx",
@@ -2394,6 +2407,11 @@
   ],
   "src/test/reducedMotion.test.tsx": [
    "src/components/accessibility/ReducedMotionProvider.tsx"
+  ],
+  "src/test/reputacao.test.tsx": [
+   "src/components/profile/ReputacaoCard.tsx",
+   "src/hooks/useReputacao.ts",
+   "src/lib/reputacao.ts"
   ],
   "src/test/routeErrorBoundary.test.tsx": [
    "src/components/RouteErrorBoundary.tsx"

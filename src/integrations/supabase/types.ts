@@ -1254,6 +1254,7 @@ export type Database = {
           is_public: boolean
           mentor_bio: string | null
           mentor_topics: string[]
+          reputation: number
           updated_at: string
           user_id: string
         }
@@ -1270,6 +1271,7 @@ export type Database = {
           is_public?: boolean
           mentor_bio?: string | null
           mentor_topics?: string[]
+          reputation?: number
           updated_at?: string
           user_id: string
         }
@@ -1286,6 +1288,7 @@ export type Database = {
           is_public?: boolean
           mentor_bio?: string | null
           mentor_topics?: string[]
+          reputation?: number
           updated_at?: string
           user_id?: string
         }
@@ -2864,6 +2867,11 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      atualizar_reputacao: { Args: never; Returns: undefined }
+      calcular_reputacao: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
       check_and_award_achievements: {
         Args: { p_user_id: string }
         Returns: {
@@ -2936,6 +2944,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: string
+      }
+      detalhar_reputacao: {
+        Args: { p_user_id: string }
+        Returns: Json
       }
       get_adaptive_quiz_plan: {
         Args: { p_limit?: number; p_quiz_id: string }
@@ -3259,6 +3271,7 @@ export type Database = {
       get_mentors: { Args: { p_busca?: string }; Returns: Json }
       get_my_mentorship: { Args: never; Returns: Json }
       mentor_disponivel: { Args: { p_user_id: string }; Returns: boolean }
+      recalcular_reputacao_perfil: { Args: never; Returns: undefined }
       respond_mentorship_request: {
         Args: { p_id: string; p_nota?: string; p_status: string }
         Returns: Json

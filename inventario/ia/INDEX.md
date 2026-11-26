@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-002-gestos-261126-0800` · 2026-11-26T08:22:33-03:00
+Commit: `3d945ba3ccab221bef6d64b987bbc920ef3d64b6` · branch `claude/feat-game-012-reputacao-261126-0900` · 2026-11-26T08:35:32-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 
 | | |
 |---|---|
-| arquivos (codigo) | 616 (503) |
-| linhas de codigo | 71470 |
+| arquivos (codigo) | 621 (507) |
+| linhas de codigo | 71789 |
 | paginas / rotas | 28 / 28 |
-| componentes / hooks | 237 / 131 |
-| arquivos de teste | 85 |
+| componentes / hooks | 238 / 132 |
+| arquivos de teste | 86 |
 | edge functions | 13 |
-| tabelas / migrations | 71 / 76 |
+| tabelas / migrations | 71 / 77 |
 
 ## Divida medida
 
@@ -86,14 +86,14 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 
 ## Banco (declarado pelo repo)
 
-71 tabelas · 186 policies · 86 funcoes · 2 cron jobs · 1 bucket(s) · 76 migrations
+71 tabelas · 186 policies · 90 funcoes · 2 cron jobs · 1 bucket(s) · 77 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
 | `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_powerups, user_purchases |
-| `funcao_sem_uso_no_codigo` | apply_coin_transaction, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, refresh_platform_stats, verify_path_certificate_by_code |
+| `funcao_sem_uso_no_codigo` | apply_coin_transaction, atualizar_reputacao, calcular_reputacao, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, recalcular_reputacao_perfil, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
 ### Cron
@@ -105,20 +105,20 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (135)
-- `src/integrations/supabase/client.ts` (105)
-- `src/hooks/useAuth.tsx` (71)
+- `src/components/ui/button.tsx` (136)
+- `src/integrations/supabase/client.ts` (106)
+- `src/hooks/useAuth.tsx` (72)
 - `src/lib/utils.ts` (68)
 - `src/components/ui/card.tsx` (66)
 - `src/components/ui/badge.tsx` (60)
 - `src/components/ui/input.tsx` (38)
 - `src/components/ui/dialog.tsx` (36)
 - `src/components/ui/label.tsx` (26)
-- `src/components/ui/progress.tsx` (22)
+- `src/components/ui/progress.tsx` (23)
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (51)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (52)
 - `src/integrations/supabase/types.ts` (20)
 - `inventario/estado/schema-declarado.json` (19)
 - `inventario/ia/baseline.json` (18)

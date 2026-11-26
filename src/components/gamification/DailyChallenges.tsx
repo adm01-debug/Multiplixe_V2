@@ -21,6 +21,7 @@ import { useDailyChallenges, type ChallengeProgress } from '@/hooks/useDailyChal
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { useXpMultiplier } from '@/hooks/useXpMultiplier';
+import { formatarMultiplicador } from '@/lib/xpFormat';
 
 const challengeIcons: Record<string, typeof Target> = {
   watch_lessons: BookOpen,
@@ -344,7 +345,7 @@ const DailyChallenges = () => {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-xs text-amber-500 font-medium" title={multiplierLabel || undefined}
               >
-                XP x{multiplier} (bônus ativo)
+                XP x{formatarMultiplicador(multiplier)} (bônus ativo)
               </motion.span>
             )}
           </div>

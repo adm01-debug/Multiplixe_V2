@@ -35,6 +35,8 @@ const AdminStoreTab = lazy(() => import('@/components/admin/AdminStoreTab').catc
 const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap').catch((e) => { console.error('[Admin] Failed to load AdminEngagementHeatmap', e); throw e; }));
 const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention').catch((e) => { console.error('[Admin] Failed to load AdminCohortRetention', e); throw e; }));
 const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget').catch((e) => { console.error('[Admin] Failed to load AdminTelemetryWidget', e); throw e; }));
+const AdminTopPlaybooksWidget = lazy(() => import('@/components/admin/AdminTopPlaybooksWidget').catch((e) => { console.error('[Admin] Failed to load AdminTopPlaybooksWidget', e); throw e; }));
+const AdminVideoEngagementWidget = lazy(() => import('@/components/admin/AdminVideoEngagementWidget').catch((e) => { console.error('[Admin] Failed to load AdminVideoEngagementWidget', e); throw e; }));
 const PlatformSettingsTab = lazy(() => import('@/components/admin/PlatformSettingsTab').catch((e) => { console.error('[Admin] Failed to load PlatformSettingsTab', e); throw e; }));
 const AdminAchievementsTab = lazy(() => import('@/components/admin/AdminAchievementsTab').catch((e) => { console.error('[Admin] Failed to load AdminAchievementsTab', e); throw e; }));
 const AdminWebhooksTab = lazy(() => import('@/components/admin/AdminWebhooksTab').catch((e) => { console.error('[Admin] Failed to load AdminWebhooksTab', e); throw e; }));
@@ -307,6 +309,10 @@ const Admin = () => {
                   <AdminEngagementHeatmap />
                   <AdminCohortRetention />
                 </div>
+                                <div className="grid lg:grid-cols-2 gap-4">
+                                  <AdminTopPlaybooksWidget />
+                                  <AdminVideoEngagementWidget />
+                                </div>
               </Suspense>
             </div>
           </TabsContent>

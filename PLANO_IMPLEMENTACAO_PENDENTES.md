@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (85)
+### ✅ Melhorias JÁ IMPLEMENTADAS (86)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -35,6 +35,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 | GAME-001 | Desafios Diários (DailyChallenges.tsx) | ✅ Implementado |
 | MOB-001 | PWA Completo (manifest.json, sw.js) | ✅ Implementado |
 | MOB-003 | Bottom Navigation (MobileBottomNav.tsx) | ✅ Implementado |
+| MOB-002 | Gestos Mobile (useGestosMobile.ts, swipe e pull-to-refresh) | ✅ Implementado |
 | SEC-001 | Rate Limiting (tabelas + RateLimitDashboard) | ✅ Implementado |
 | SEC-005 | Audit Log de Admin (audit_logs, useAuditLog) | ✅ Implementado |
 | REF-003 | Hooks de Fetch Centralizados (useCachedQuery) | ✅ Implementado |
@@ -48,7 +49,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (14)
+## ⏳ MELHORIAS PENDENTES (13)
 
 ### 🎨 UX/UI - 0 Pendentes
 
@@ -1817,9 +1818,9 @@ CREATE TABLE public.platform_settings (
 
 ---
 
-### 📱 MOBILE - 1 Pendente
+### 📱 MOBILE - 0 Pendentes
 
-#### MOB-002: Gestos de Navegação
+#### MOB-002: Gestos de Navegação ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Não há gestos mobile.
@@ -1831,6 +1832,21 @@ CREATE TABLE public.platform_settings (
 3. Pull to refresh em listas (react-pull-to-refresh)
 4. Testar em dispositivos reais
 ```
+
+**Entregue em 26/11/2026**
+
+O app nao tinha nenhum gesto: nao havia swipe nem pull-to-refresh em lugar algum do codigo.
+
+- `src/hooks/useGestosMobile.ts` (novo): `useSwipeHorizontal` (limite de 72 px, exige movimento 1,6x mais horizontal que vertical e ignora arrasto iniciado em `input`, `textarea`, `select`, `button`, `a`, `[role="slider"]` ou `[data-gesto-ignorar="true"]`) e `usePuxarParaAtualizar` (arma so com a pagina no topo, indicador com estagios, devolve a promise da atualizacao e fixa `overscroll-behavior-y: contain` no documento enquanto ativo, evitando o recarregamento nativo do Chrome Android).
+- `src/pages/LessonPlayer.tsx`: swipe para a esquerda vai para a proxima aula, para a direita volta, aplicado no wrapper do conteudo.
+- `src/pages/Catalog.tsx`: puxar o topo dispara `Promise.all` de cursos e categorias e mostra o indicador fixo ate as duas respostas chegarem.
+- `src/components/player/VideoControls.tsx`: as duas barras (progresso e volume) ficam marcadas com `data-gesto-ignorar`, entao arrastar dentro do player nunca troca de aula.
+- `src/lib/i18n.ts`: secao `gestures` (`pull`, `release`, `refreshing`) em PT, EN e ES.
+- `src/test/gestosMobile.test.tsx` (9 casos) e `src/test/gestosVideoControls.test.tsx` (3 casos, com o `VideoPlayer` real dentro do wrapper de gesto).
+
+Verificado antes do merge: `tsc -p tsconfig.app.json --noEmit` EXIT 0, `eslint` sem erros nos arquivos tocados, `vite build` EXIT 0, suíte completa 698 testes (as 4 falhas de timeout sao flakiness pre-existente: os mesmos arquivos passam isolados), guard do Supabase com 0 violacoes, testes unitarios de CI 85 passando, inventario regenerado.
+
+PR #85 com todos os checks verdes e squash-merge em `6faa1fd`. Deploy provado em producao: o chunk `index-eLemJYnF.js` servido contem `gestures:{pull:"Puxe para atualizar",release:"Solte para atualizar",refreshing:"Atualizando..."}` e `touchstart`; o chunk `Catalog-BIJGbY6R.js` contem o indicador chamando `gestures.pull`/`gestures.release`/`gestures.refreshing`; o chunk `LessonPlayer-DIvpdHlP.js` contem `data-gesto-ignorar`.
 
 ---
 

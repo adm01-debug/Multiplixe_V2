@@ -30,6 +30,7 @@ const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngage
 const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention').catch((e) => { console.error('[Admin] Failed to load AdminCohortRetention', e); throw e; }));
 const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget').catch((e) => { console.error('[Admin] Failed to load AdminTelemetryWidget', e); throw e; }));
 const PlatformSettingsTab = lazy(() => import('@/components/admin/PlatformSettingsTab').catch((e) => { console.error('[Admin] Failed to load PlatformSettingsTab', e); throw e; }));
+const AdminAchievementsTab = lazy(() => import('@/components/admin/AdminAchievementsTab').catch((e) => { console.error('[Admin] Failed to load AdminAchievementsTab', e); throw e; }));
 
 interface PlatformStats {
   totalUsers: number;
@@ -213,6 +214,7 @@ const Admin = () => {
               <TabsTrigger value="assessments"><Target className="h-4 w-4 mr-1.5 inline-block align-middle" />Avaliações</TabsTrigger>
               <TabsTrigger value="users"><Users className="h-4 w-4 mr-1.5 inline-block align-middle" />Usuários</TabsTrigger>
               <TabsTrigger value="quizzes"><Target className="h-4 w-4 mr-1.5 inline-block align-middle" />Quizzes</TabsTrigger>
+              <TabsTrigger value="achievements"><Trophy className="h-4 w-4 mr-1.5 inline-block align-middle" />Conquistas</TabsTrigger>
               <TabsTrigger value="permissions"><Shield className="h-4 w-4 mr-1.5 inline-block align-middle" />Permissões</TabsTrigger>
               <TabsTrigger value="analytics"><TrendingUp className="h-4 w-4 mr-1.5 inline-block align-middle" />Analytics</TabsTrigger>
               <TabsTrigger value="stats"><BarChart3 className="h-4 w-4 mr-1.5 inline-block align-middle" />Stats</TabsTrigger>
@@ -260,6 +262,11 @@ const Admin = () => {
               <QuizStats />
             </Suspense>
           </TabsContent>
+                    <TabsContent value="achievements">
+                      <Suspense fallback={<TabFallback />}>
+                        <AdminAchievementsTab />
+                      </Suspense>
+                    </TabsContent>
           <TabsContent value="permissions">
             <Suspense fallback={<TabFallback />}>
               <PermissionsManager />

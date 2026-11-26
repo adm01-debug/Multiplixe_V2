@@ -1998,6 +1998,36 @@ export type Database = {
           },
         ]
       }
+      user_leagues: {
+        Row: {
+          created_at: string
+          last_change: string | null
+          last_change_at: string | null
+          league: string
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          created_at?: string
+          last_change?: string | null
+          last_change_at?: string | null
+          league?: string
+          updated_at?: string
+          user_id: string
+          week_start?: string
+        }
+        Update: {
+          created_at?: string
+          last_change?: string | null
+          last_change_at?: string | null
+          league?: string
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
       user_goals: {
         Row: {
           completed: boolean | null
@@ -2773,6 +2803,7 @@ export type Database = {
           xp_reward: number
         }[]
       }
+      get_my_league: { Args: never; Returns: Json }
       get_my_xp_multiplier: {
         Args: never
         Returns: Json
@@ -2934,6 +2965,10 @@ export type Database = {
           lockout_seconds: number
           total_attempts: number
         }[]
+      }
+      refresh_leagues: {
+        Args: { p_zone?: number; p_min_jogadores?: number }
+        Returns: Json
       }
       refresh_platform_stats: { Args: never; Returns: undefined }
       register_playbook_view: {

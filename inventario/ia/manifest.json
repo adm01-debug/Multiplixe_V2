@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-25T23:42:20.369Z",
- "commit": "1d3c4f4616f9d5a2656c4b62edfe603b02088dd5",
- "branch": "claude/perf-memoizacao-251126-2140",
+ "gerado_em": "2026-11-26T06:34:28.261Z",
+ "commit": "85cd87a5dbd870f459539f039774c870585574a3",
+ "branch": "claude/feat-ligas-semanais-261126-0333",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "6f4597a9d4b141e2",
-  "baseline.json": "1918646e2752a7ce",
-  "componentes.json": "153b064ed81e6658",
-  "grafo.json": "69e4f2325c39d36c",
-  "hooks.json": "70cb17dc8c2dc121"
+  "INDEX.md": "6cba1801dd475fe9",
+  "baseline.json": "1498697c148a67f1",
+  "componentes.json": "234dea86f8bf4fe4",
+  "grafo.json": "36ee6d4b401f1421",
+  "hooks.json": "80249834e46ed578"
  },
  "contagens": {
-  "arquivos": 502,
-  "arquivos_de_codigo": 416,
-  "linhas_de_codigo": 57367,
-  "componentes": 221,
-  "hooks": 101,
-  "paginas": 24,
-  "testes": 41,
+  "arquivos": 578,
+  "arquivos_de_codigo": 479,
+  "linhas_de_codigo": 66405,
+  "componentes": 232,
+  "hooks": 113,
+  "paginas": 26,
+  "testes": 76,
   "edge_functions": 13,
   "rotas": 24,
-  "tabelas": 62,
-  "migrations": 55
+  "tabelas": 66,
+  "migrations": 67
  },
  "erros": []
 }

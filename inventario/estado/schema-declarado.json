@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 65,
-    "tabelas_no_types": 65,
-    "tabelas_nas_migrations": 65,
-    "colunas": 554,
+    "tabelas": 66,
+    "tabelas_no_types": 66,
+    "tabelas_nas_migrations": 66,
+    "colunas": 561,
     "views": 1,
-    "funcoes": 64,
-    "funcoes_expostas_no_types": 44,
+    "funcoes": 66,
+    "funcoes_expostas_no_types": 46,
     "enums": 1,
-    "policies": 176,
+    "policies": 178,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 66,
+    "migrations": 67,
     "alertas": 3,
     "problemas": 3
   },
@@ -810,6 +810,22 @@
         "edges": 0
       }
     },
+    "user_leagues": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "update_user_leagues_updated_at"
+      ],
+      "indices": 1,
+      "criada_em": "20261127120000_ligas_semanais.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "user_learning_path_progress": {
       "no_types": true,
       "nas_migrations": true,
@@ -1346,6 +1362,18 @@
         "edges": 0
       }
     },
+    "get_my_league": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127120000_ligas_semanais.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_my_xp_multiplier": {
       "exposta_no_types": true,
       "args": [],
@@ -1711,6 +1739,21 @@
         "edges": 0
       }
     },
+    "refresh_leagues": {
+      "exposta_no_types": true,
+      "args": [
+        "p_min_jogadores",
+        "p_zone"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127120000_ligas_semanais.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "refresh_platform_stats": {
       "exposta_no_types": true,
       "args": [],
@@ -1931,7 +1974,8 @@
         "playbook_views",
         "saved_filters",
         "user_daily_challenge_progress",
-        "user_flashcard_progress"
+        "user_flashcard_progress",
+        "user_leagues"
       ]
     },
     {

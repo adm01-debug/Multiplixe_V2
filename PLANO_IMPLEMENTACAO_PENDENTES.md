@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (65)
+### ✅ Melhorias JÁ IMPLEMENTADAS (66)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (34)
+## ⏳ MELHORIAS PENDENTES (33)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -317,7 +317,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 7 Pendentes
+### 🚀 FUNCIONALIDADES - 6 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -618,7 +618,7 @@ Validado no banco de produção com o usuário real `96b716a2`: 4 metas de teste
 
 ---
 
-#### FUNC-014: Comparativo de Desempenho
+#### FUNC-014: Comparativo de Desempenho ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 3h  
 **Descrição:** Usuário não vê como se compara com média.
@@ -631,6 +631,23 @@ Validado no banco de produção com o usuário real `96b716a2`: 4 metas de teste
 4. Mostrar comparativo no Profile
 5. "Você está X% acima da média"
 ```
+
+**Entregue em 26/11/2026**
+
+O card `src/components/analytics/PerformanceComparison.tsx` já existia pronto, mas estava órfão: nenhum arquivo o importava e os números vinham de um `defaultStats` fixo (2450 XP, 24h) — não havia nada no banco calculando média nenhuma.
+
+- `supabase/migrations/20261126030000_comparativo_desempenho.sql` (nova, já aplicada em produção): RPC `public.get_performance_comparison()` (SECURITY DEFINER, `stable`) devolve, numa linha só, o valor do aluno logado e a média da plataforma para XP total, aulas concluídas, cursos concluídos, horas de estudo e sequência atual, mais `student_count`. Só agregados saem da função — nenhum dado de outro aluno.
+- A coorte da média são os alunos com atividade (aparecem em `user_xp`, `user_streaks`, `user_course_progress` ou `user_lesson_progress`); contas `admin`/`super_admin` ficam fora para não inflar a média. Aulas contam só `is_completed` e cursos só `completed_at is not null`.
+- `src/lib/performanceComparison.ts` (novo): mapeia a linha do RPC (números como texto inclusive), arredonda horas/sequência em 1 casa e descarta linhas em que nem o aluno nem a média têm número — quem está começando não vê zero contra zero.
+- `src/hooks/usePerformanceComparison.ts` (novo) chama o RPC e devolve `metrics`, `loading` e `refetch`.
+- `src/components/analytics/PerformanceComparisonWidget.tsx` (novo): monta os ícones, mostra skeleton durante a chamada, some da tela se a função falhar e escreve embaixo "Comparado com N alunos com atividade".
+- `src/pages/Profile.tsx`: widget registrado com `lazy` + `Suspense` logo acima do bloco Estatísticas, como o plano pedia.
+- `PerformanceComparison.tsx`: `defaultStats` (mock) removido; a barra usa `peak = max(dois valores, 1)`, então aluno e média zerados não geram mais `NaN%` na largura.
+- `src/test/performanceComparison.test.tsx` (novo, 5 casos): conversão da linha do RPC, nulos e valores inválidos, ocultação de linhas zeradas, e o card mostrando Você, Média e +36%.
+
+Validado no banco de produção dentro de transação com rollback: aluno sintético com 300 XP, 2 aulas concluídas, 1 curso concluído e 2,5h assistidas devolveu exatamente esses valores nas médias, com os 345 XP da conta admin ignorados e `student_count = 1`.
+
+Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 65 arquivos / 522 testes, `node --test scripts/ci/*.unit.mjs` 85 pass / 0 fail, guard de Supabase 0 violações, `vite build` ok.
 
 ---
 
@@ -1852,7 +1869,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **34** | **~167h** |
+| **TOTAL PENDENTE** | **33** | **~164h** |
 
 ---
 

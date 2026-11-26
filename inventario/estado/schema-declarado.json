@@ -6,15 +6,15 @@
     "tabelas": 63,
     "tabelas_no_types": 63,
     "tabelas_nas_migrations": 63,
-    "colunas": 526,
+    "colunas": 527,
     "views": 1,
-    "funcoes": 53,
-    "funcoes_expostas_no_types": 38,
+    "funcoes": 56,
+    "funcoes_expostas_no_types": 39,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 62,
+    "migrations": 63,
     "alertas": 3,
     "problemas": 3
   },
@@ -922,7 +922,7 @@
     "user_xp": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 11,
+      "colunas": 12,
       "rls": true,
       "policies": 3,
       "triggers": [
@@ -998,7 +998,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20251224142421_1ba36b19-9f29-4c42-885d-6097ba869c5a.sql",
+      "criada_em": "20261126060000_multiplicador_xp.sql",
       "uso_no_codigo": {
         "src": 2,
         "edges": 0
@@ -1117,7 +1117,7 @@
       "retorno": "Json",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20260107112852_10a29add-9875-4cf2-a25d-24205338800c.sql",
+      "criada_em": "20261126060000_multiplicador_xp.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1272,6 +1272,18 @@
         "edges": 0
       }
     },
+    "get_my_xp_multiplier": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126060000_multiplicador_xp.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_performance_comparison": {
       "exposta_no_types": true,
       "args": [],
@@ -1380,6 +1392,18 @@
       "criada_em": "20251224142421_1ba36b19-9f29-4c42-885d-6097ba869c5a.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "get_xp_multiplier": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126060000_multiplicador_xp.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },
@@ -1715,6 +1739,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "xp_multiplier_for": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20261126060000_multiplicador_xp.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

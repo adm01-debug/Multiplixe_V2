@@ -31,36 +31,21 @@ import { LessonForm } from './LessonForm';
 import { QuizManager } from './QuizManager';
 import { Plus, Edit, Trash2, Loader2, Clock, GripVertical, Play, FileQuestion } from 'lucide-react';
 import { toast } from 'sonner';
+import type { Aula, CursoMinimo } from '@/types';
 
-interface Lesson {
-  id: string;
-  title: string;
-  description: string | null;
-  video_url: string | null;
-  duration_seconds: number | null;
-  order_index: number;
-  is_free: boolean;
-  course_id: string;
-}
-
-interface Course {
-  id: string;
-  title: string;
-  slug: string;
-}
 
 interface LessonsManagerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  course: Course | null;
+  course: CursoMinimo | null;
 }
 
 export function LessonsManager({ open, onOpenChange, course }: LessonsManagerProps) {
-  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [lessons, setLessons] = useState<Aula[]>([]);
   const [loading, setLoading] = useState(false);
   const [lessonFormOpen, setLessonFormOpen] = useState(false);
-  const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
-  const [deletingLesson, setDeletingLesson] = useState<Lesson | null>(null);
+  const [editingLesson, setEditingLesson] = useState<Aula | null>(null);
+  const [deletingLesson, setDeletingLesson] = useState<Aula | null>(null);
     const [savingDeletion, setSavingDeletion] = useState(false);
   const [quizManagerOpen, setQuizManagerOpen] = useState(false);
   const [quizLessonId, setQuizLessonId] = useState<string | null>(null);

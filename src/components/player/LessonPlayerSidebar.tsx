@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import LessonList from '@/components/player/LessonList';
 import PomodoroTimer from '@/components/pomodoro/PomodoroTimer';
 import { BookOpen, ChevronRight, TrendingUp } from 'lucide-react';
+import type { Aula } from '@/types';
 
 interface LessonProgress {
   lesson_id: string;
@@ -9,19 +10,8 @@ interface LessonProgress {
   last_position_seconds: number;
 }
 
-interface Lesson {
-  id: string;
-  title: string;
-  description: string | null;
-  video_url: string | null;
-  duration_seconds: number;
-  order_index: number;
-  is_free: boolean;
-  course_id: string;
-}
-
 interface Props {
-  lessons: Lesson[];
+  lessons: Aula[];
   lessonsProgress: LessonProgress[];
   currentLessonId: string;
   courseSlug: string;

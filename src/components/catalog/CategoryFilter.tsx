@@ -1,16 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Users, Package, Crown, Laptop, Heart, LayoutGrid } from "lucide-react";
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  icon: string | null;
-  color: string | null;
-}
+import type { Categoria } from '@/types';
 
 interface CategoryFilterProps {
-  categories: Category[];
+  categories: Categoria[];
   selectedCategory: string | null;
   onSelectCategory: (slug: string | null) => void;
 }

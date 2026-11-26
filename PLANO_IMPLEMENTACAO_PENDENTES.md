@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (63)
+### ✅ Melhorias JÁ IMPLEMENTADAS (64)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (36)
+## ⏳ MELHORIAS PENDENTES (35)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1405,7 +1405,7 @@ Nada a implementar neste item.
 
 ---
 
-### 🛠️ MELHORIAS ADMINISTRATIVAS - 3 Pendentes
+### 🛠️ MELHORIAS ADMINISTRATIVAS - 2 Pendentes
 
 #### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -1431,7 +1431,7 @@ Nada a implementar neste item.
 
 ---
 
-#### ADMIN-003: Gestão de Conquistas
+#### ADMIN-003: Gestão de Conquistas ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Conquistas são fixas no banco.
@@ -1445,6 +1445,20 @@ Nada a implementar neste item.
 5. Preview de ícone/gradiente
 ```
 
+**Entregue em 26/11/2026**
+
+As conquistas existiam apenas como dado semeado no banco: o admin não tinha como criar, corrigir recompensa, trocar ícone ou apagar uma conquista obsoleta. E havia um defeito silencioso no catálogo — 4 conquistas de pomodoro com ícone textual apareciam para o aluno como a palavra "Timer".
+
+- `src/components/admin/AdminAchievementsTab.tsx` (novo): tabela com ícone, nome, slug, categoria, requisito legível, XP e quantos alunos já desbloquearam; botão "Nova conquista", edição por linha e exclusão com confirmação.
+- Formulário cobre nome (slug automático, "Mestre das Vendas Ágeis!" → `mestre-das-vendas-ageis`), identificador editável, descrição, paleta de 12 ícones com `aria-pressed`, categoria, XP, tipo de requisito, valor e 11 gradientes — tudo com preview visual antes de salvar.
+- `src/lib/achievementAdmin.ts` (novo): validação antes de tocar o banco (nome ≥ 3, slug `[a-z0-9-]{3,50}`, descrição ≥ 10, XP inteiro ≤ 10000, valor ≥ 1, categoria/gradiente/tipo válidos) e `buildAchievementPayload` convertendo números e aparando strings.
+- Só os 4 tipos que `check_and_award_achievements(uuid)` realmente concede são aceitos (`lessons_completed`, `courses_completed`, `current_level`, `total_xp`); a tela lista quais são e avisa que outros tipos ficariam salvos sem nunca desbloquear.
+- Exclusão mostra quantos alunos perdem o desbloqueio, porque `user_achievements.achievement_id` é `ON DELETE CASCADE`.
+- Slug duplicado (erro `23505` do unique `achievements_slug_key`) vira "Já existe uma conquista com esse identificador", não erro genérico.
+- Aba "Conquistas" registrada em `src/pages/Admin.tsx` (lazy + `Suspense`), ao lado de Quizzes.
+- `src/test/adminAchievements.test.tsx` (novo, 11 casos): helpers (slug, rótulo de requisito, validações, payload) e CRUD com mock do Supabase — listagem com contagem de desbloqueios, payload do insert, erro 23505, update por id e delete só depois da confirmação.
+
+Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 514 testes, `vite build` ok, guard de Supabase 0 violações.
 ---
 
 #### ADMIN-004: Bulk Actions ✅ CONCLUÍDO
@@ -1791,14 +1805,14 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🔵 Fase 4: Nice-to-Have (Semana 7-8)
-**Prioridade: Baixa | Esforço Total: ~15h**
+**Prioridade: Baixa | Esforço Total: ~11h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
 | GAME-003 | Sistema de Ligas | 6h |
 | FUNC-022 | Compartilhar Conquistas | ✅ 4h |
 | INT-003 | SSO Google/Microsoft | 4h |
-| ADMIN-003 | Gestão de Conquistas | 4h |
+| ADMIN-003 | Gestão de Conquistas | ✅ 4h |
 | FUNC-005 | Melhorar Certificado PDF | ✅ 3h |
 | UI-008 | Grid/Lista Toggle | ✅ 4h |
 | REF-005 | Constants File | 1h |
@@ -1820,7 +1834,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **36** | **~175h** |
+| **TOTAL PENDENTE** | **35** | **~171h** |
 
 ---
 

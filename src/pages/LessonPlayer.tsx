@@ -25,6 +25,7 @@ import NotesPanel from "@/components/notes/NotesPanel";
 import ChaptersPanel from "@/components/player/ChaptersPanel";
 import { TranscriptPanel } from "@/components/player/TranscriptPanel";
 import { parseChapters } from "@/lib/chapters";
+import { useSwipeHorizontal } from "@/hooks/useGestosMobile";
 import { useT } from "@/lib/i18n";
 import { toast } from "sonner";
 import { Sparkles, ChevronLeft, ChevronRight, BookOpen, Loader2, CheckCircle, Trophy, Play } from "lucide-react";
@@ -194,6 +195,7 @@ const LessonPlayer = () => {
   const handleSignOut = async () => { await signOut(); navigate("/"); };
   const goToPreviousLesson = () => { if (!currentLesson) return; const i = lessons.findIndex((l) => l.id === currentLesson.id); if (i > 0) navigate(`/curso/${slug}/aula/${lessons[i - 1].id}`); };
   const goToNextLesson = () => { if (!currentLesson) return; const i = lessons.findIndex((l) => l.id === currentLesson.id); if (i < lessons.length - 1) navigate(`/curso/${slug}/aula/${lessons[i + 1].id}`); };
+  const gestosAula = useSwipeHorizontal({ aoAvancar: goToNextLesson, aoVoltar: goToPreviousLesson });
 
   if (authLoading || loading) return <div className="min-h-screen flex items-center justify-center"><div className="flex flex-col items-center gap-4"><div className="relative"><div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary animate-spin-slow" /><div className="absolute inset-2 bg-background rounded-full" /><Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin text-primary" /></div><p className="text-muted-foreground font-medium animate-pulse">Carregando aula...</p></div></div>;
   if (!user || !course || !currentLesson) return null;
@@ -218,7 +220,7 @@ const LessonPlayer = () => {
 
         <div className="flex-1 flex">
           <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar && !focusMode ? 'lg:mr-80 xl:mr-96' : ''}`}>
-            <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`}>
+            <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`} {...gestosAula}>
               <div className="rounded-2xl overflow-hidden shadow-2xl mb-6">
                 {currentLesson.video_url ? <VideoPlayer ref={playerRef} src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} onTimeUpdate={handleVideoTimeUpdate} initialPosition={currentProgress?.last_position_seconds || 0} chapters={chapters} /> : (
                   <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 flex flex-col items-center justify-center gap-4"><div className="p-6 bg-card/50 backdrop-blur-sm rounded-full"><Play className="h-12 w-12 text-muted-foreground" /></div><p className="text-muted-foreground font-medium">Vídeo não disponível</p></div>

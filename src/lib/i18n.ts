@@ -69,6 +69,11 @@ const dict = {
       adminTitle: "Transcrição da aula",
       adminHint: "Uma linha por trecho. Prefixe com o tempo (ex.: 00:45) para o aluno pular direto ao ponto.",
     },
+    gestures: {
+      pull: "Puxe para atualizar",
+      release: "Solte para atualizar",
+      refreshing: "Atualizando...",
+    },
     theme: {
       title: "Aparência",
       subtitle: "Escolha a paleta de cores que combina com você.",
@@ -162,6 +167,11 @@ const dict = {
       retry: "Try again",
       adminTitle: "Lesson transcript",
       adminHint: "One line per passage. Prefix it with the timestamp (e.g. 00:45) so learners can jump straight to it.",
+    },
+    gestures: {
+      pull: "Pull to refresh",
+      release: "Release to refresh",
+      refreshing: "Refreshing...",
     },
     theme: {
       title: "Appearance",
@@ -257,6 +267,11 @@ const dict = {
       adminTitle: "Transcripción de la clase",
       adminHint: "Una línea por fragmento. Pon el tiempo al inicio (ej.: 00:45) para que el alumno vaya directo al punto.",
     },
+    gestures: {
+      pull: "Tira para actualizar",
+      release: "Suelta para actualizar",
+      refreshing: "Actualizando...",
+    },
     theme: {
       title: "Apariencia",
       subtitle: "Elige la paleta de colores que va contigo.",
@@ -296,6 +311,7 @@ export type DictPath =
   | `store.${keyof Dict["store"]}`
   | `chapters.${keyof Dict["chapters"]}`
   | `transcript.${keyof Dict["transcript"]}`
+  | `gestures.${keyof Dict["gestures"]}`
   | `theme.${keyof Dict["theme"]}`
   | `common.${keyof Dict["common"]}`;
 

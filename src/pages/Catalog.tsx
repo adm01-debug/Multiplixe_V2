@@ -5,6 +5,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCourses, useCategories } from "@/hooks/useCachedQuery";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { usePuxarParaAtualizar } from "@/hooks/useGestosMobile";
+import { useT } from "@/lib/i18n";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useFuzzySearchWithMatches } from "@/hooks/useFuzzySearch";
 import CacheIndicator from "@/components/ui/CacheIndicator";
@@ -50,7 +52,9 @@ const Catalog = () => {
 
   const isStale = coursesStale || categoriesStale;
   const isFetching = coursesFetching || categoriesFetching;
-  const handleRefresh = useCallback(() => { refetchCourses(); refetchCategories(); }, [refetchCourses, refetchCategories]);
+  const handleRefresh = useCallback(() => Promise.all([refetchCourses(), refetchCategories()]), [refetchCourses, refetchCategories]);
+  const { t } = useT();
+  const { puxado, atualizando, limite, aoPuxar } = usePuxarParaAtualizar({ aoAtualizar: handleRefresh });
 
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") ?? "");
   const debouncedSearch = useDebouncedValue(searchQuery, 300);
@@ -131,7 +135,18 @@ const Catalog = () => {
   const hasActiveFilters = selectedCategory || selectedLevel;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20" {...aoPuxar}>
+      {(puxado > 0 || atualizando) && (
+        <div className="pointer-events-none fixed inset-x-0 top-2 z-50 flex justify-center">
+          <div className="flex items-center gap-2 rounded-full border border-border/50 bg-card/95 px-4 py-2 text-sm shadow-lg backdrop-blur">
+            <Loader2 className={`h-4 w-4 text-primary ${atualizando ? 'animate-spin' : ''}`} aria-hidden="true" />
+            <span aria-live="polite">
+              {atualizando ? t('gestures.refreshing') : puxado >= limite ? t('gestures.release') : t('gestures.pull')}
+            </span>
+          </div>
+        </div>
+      )}
+
       <CatalogHeader userName={userName} onSignOut={handleSignOut} />
 
       <main id="main-content" className="container mx-auto px-4 py-8">

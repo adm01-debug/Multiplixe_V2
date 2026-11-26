@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 129,
+ "total": 131,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -1392,6 +1392,17 @@
    ],
    "coberto_por_teste": false
   },
+  "usePuxarParaAtualizar": {
+   "arquivo": "src/hooks/useGestosMobile.ts",
+   "linhas": 125,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Catalog.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useQuizStatsData": {
    "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts",
    "linhas": 271,
@@ -1749,9 +1760,20 @@
    ],
    "coberto_por_teste": true
   },
+  "useSwipeHorizontal": {
+   "arquivo": "src/hooks/useGestosMobile.ts",
+   "linhas": 125,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/LessonPlayer.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 342,
+   "linhas": 358,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1763,6 +1785,7 @@
     "src/components/player/ChaptersPanel.tsx",
     "src/components/player/TranscriptPanel.tsx",
     "src/components/ui/ThemeCustomizer.tsx",
+    "src/pages/Catalog.tsx",
     "src/pages/LessonPlayer.tsx",
     "src/pages/Store.tsx"
    ],

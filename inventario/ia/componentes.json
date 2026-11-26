@@ -3144,7 +3144,7 @@
   {
    "arquivo": "src/pages/Catalog.tsx",
    "exports": [],
-   "linhas": 256,
+   "linhas": 271,
    "hooks": [
     "useAuth",
     "useCallback",
@@ -3155,8 +3155,10 @@
     "useInfiniteScroll",
     "useMemo",
     "useNavigate",
+    "usePuxarParaAtualizar",
     "useSearchParams",
     "useState",
+    "useT",
     "useViewMode"
    ],
    "tabelas": [],
@@ -3316,7 +3318,7 @@
   {
    "arquivo": "src/pages/LessonPlayer.tsx",
    "exports": [],
-   "linhas": 274,
+   "linhas": 276,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3331,6 +3333,7 @@
     "useRef",
     "useState",
     "useStreaks",
+    "useSwipeHorizontal",
     "useT",
     "useUserPreferences",
     "useUserXP"

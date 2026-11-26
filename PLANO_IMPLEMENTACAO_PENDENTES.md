@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (79)
+### ✅ Melhorias JÁ IMPLEMENTADAS (80)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -1309,7 +1309,7 @@ Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) 
 Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
-### 🎮 GAMIFICAÇÃO - 4 Pendentes
+### 🎮 GAMIFICAÇÃO - 3 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1472,7 +1472,7 @@ O aluno só acumulava XP: não existia moeda, carteira, extrato nem loja para ga
 - Deploy provado no bundle servido: `assets/Store-BfnzTyk0.js`, `assets/useWallet-C72igWsI.js` e `assets/Profile-DlBT1XN9.js` contêm "recompensas", `get_my_wallet`, o aviso de preço alterado e o aviso de coleção desatualizada.
 ---
 
-#### GAME-007: Power-ups de Estudo
+#### GAME-007: Power-ups de Estudo ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Não há power-ups.
@@ -1485,6 +1485,17 @@ O aluno só acumulava XP: não existia moeda, carteira, extrato nem loja para ga
 4. Comprar com coins ou ganhar em conquistas
 ```
 
+**Entregue em 26/11/2026**
+
+O aluno ganhava moeda (GAME-006) mas não tinha o que fazer com ela além de cosmético: não existia mochila, nem efeito de jogo.
+
+- `supabase/migrations/20261127180000_powerups.sql` (aplicada em produção): tabela `user_powerups` (unidades com `kind`, `purchase_id`, `consumed_at`, `expires_at` e `source`), colunas `powerup_kind`, `powerup_multiplier` e `powerup_duration_minutes` em `store_items`, os dois power-ups do catálogo (Impulsionador de XP 2x por 60 min, 150 moedas; Blindagem de Sequência 1440 min, 200 moedas) e as funções `get_my_powerups`, `activate_powerup`, `grant_powerup`, `active_xp_boost_multiplier` e `has_streak_freeze`, além de `purchase_store_item` e `update_user_streak` estendidas para entregar e consumir as unidades. A Blindagem é usada sozinha: quando o aluno perde um dia, a função salva a sequência e devolve `freeze_used` em vez de zerar.
+- Conversão retroativa (bloco `10.1`): compra de power-up feita por versão anterior da loja passa a virar unidade na mochila, respeitando `quantity` e contando as unidades já vinculadas ao `purchase_id` (inclusive consumidas), então rodar de novo não repõe item usado.
+- Front: `src/lib/powerups.ts` (rótulos, leitura da mochila, tempo restante), `src/hooks/usePowerups.ts` (consulta + ativação, revalida quando o boost vence), `src/hooks/useXpMultiplier.ts` (multiplicador lido no ganho de XP), `src/hooks/useStreaks.ts` (aviso de blindagem usada), `src/hooks/useWallet.ts` (a compra atualiza a mochila na hora) e `src/pages/Store.tsx` com a quarta aba "Power-ups" (estados de carregando, vazio, erro com "Tentar novamente", tempo restante e botão de ativação), textos nos três idiomas.
+- Hardening na mesma migration: `update_user_streak` só aceita a própria conta (`auth.uid() = p_user_id`) ou admin — sem isso um aluno poderia gastar a blindagem de outra conta; `purchase_store_item` recusa item de categoria Power-up sem tipo definido **antes** de debitar moedas.
+- Validado em produção com transação + `ROLLBACK`: chamada para outro aluno → **BLOQUEADO 42501** (a própria conta segue funcionando); item sem tipo → `ok:false`, saldo 1 → 1 e 0 unidades; conversão retroativa criou 2 unidades nas duas execuções (idempotente, `quantity = 2`); compra real de Impulsionador → 1000 → 800 moedas e 1 unidade `source: purchase`; `has_function_privilege` confirma `update_user_streak` liberado e `active_xp_boost_multiplier` / `INSERT` / `TRUNCATE` negados.
+- Testes e gates: `src/test/powerups.test.ts` 14 casos; suíte 77 arquivos / **594 testes**; `tsc -b` 0 erro; eslint limpo; build ok; guarda de Supabase 396 chamadas / 0 violações; inventário de schema em dia (603 colunas).
+- Deploy provado no bundle servido de `https://multiplixe-v2.vercel.app`: `assets/index-DgPT0H73.js` contém "Nenhum power-up na mochila" e a mensagem da blindagem traduzida.
 ---
 
 #### GAME-008: Missões de Equipe/Departamento
@@ -2025,12 +2036,12 @@ CREATE TABLE public.webhook_endpoints (
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
-| Gamificação | 4 | ~26h |
+| Gamificação | 3 | ~20h |
 | Administrativas | 1 | ~4h |
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **20** | **~106h** |
+| **TOTAL PENDENTE** | **19** | **~100h** |
 
 ---
 

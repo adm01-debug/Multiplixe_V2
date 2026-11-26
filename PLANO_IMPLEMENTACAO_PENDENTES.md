@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (35)
+## ⏳ MELHORIAS PENDENTES (31)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -160,7 +160,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-#### UI-014: Feedback de Copiar Código de Certificado
+#### UI-014: Feedback de Copiar Código de Certificado ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 1h  
 **Descrição:** Código de verificação não tem botão de copiar.
@@ -170,6 +170,13 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 1. Adicionar botão de copiar em CertificateCard
 2. Usar navigator.clipboard.writeText
 3. Mostrar toast de confirmação
+```
+
+**Evidência (2026-11-26):**
+```text
+- src/components/CertificateCard.tsx:32-41 copia o codigo com navigator.clipboard.writeText e
+  dispara toast.success("Código copiado!") ou toast.error em caso de falha.
+- Linhas 109-123: botao de copiar alterna o icone Copy/Check e o rotulo para "Copiado!" por 2s.
 ```
 
 ---
@@ -1055,7 +1062,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-#### SEO-003: Sitemap.xml
+#### SEO-003: Sitemap.xml ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** Não há sitemap.
@@ -1068,9 +1075,21 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 4. Adicionar ao robots.txt
 ```
 
+**Evidência (2026-11-26):**
+```text
+- supabase/functions/generate-sitemap/index.ts (71 linhas) monta o XML com 9 rotas publicas fixas
+  mais playbooks, cursos, trilhas e videos publicados (slug/updated_at vem do banco).
+- Funcao ativa em producao: GET /functions/v1/generate-sitemap devolve HTTP 200 com urlset valido
+  (conferido nesta sessao; resposta com as 9 rotas + trilhas publicadas).
+- public/robots.txt ja aponta "Sitemap:" para a funcao e libera Googlebot, Bingbot, Twitterbot e
+  facebookexternalhit.
+- Observacao: o gateway do Supabase devolve Content-Type text/plain na resposta, embora a funcao
+  declare application/xml. O Google aceita ambos; trocar o header exigiria redeploy da funcao.
+```
+
 ---
 
-#### SEO-004: Canonical URLs
+#### SEO-004: Canonical URLs ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 1h  
 **Descrição:** Não há canonical URLs.
@@ -1080,6 +1099,16 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 1. Adicionar link rel="canonical" em DynamicSEO
 2. Evitar conteúdo duplicado
 3. Usar URL completa
+```
+
+**Evidência (2026-11-26):**
+```text
+- src/components/seo/DynamicSEO.tsx:105 emite <link rel="canonical" href={url} /> usando a URL
+  absoluta; o componente tambem monta Open Graph, Twitter Card e JSON-LD.
+- Paginas que passam url propria: Playbooks (/playbooks), PlaybookDetail (/playbook/:slug),
+  SalesOnboarding (/onboarding) e OnboardingRuntime; a home usa BASE_URL.
+- Paginas internas autenticadas (catalogo, dashboard, curso) nao sao indexaveis, entao nao
+  concorrem com conteudo duplicado.
 ```
 
 ---
@@ -1572,7 +1601,7 @@ CREATE TABLE public.webhook_endpoints (
 
 ---
 
-#### REF-006: Error Boundary
+#### REF-006: Error Boundary ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 2h  
 **Descrição:** Erros não tratados quebram a UI.
@@ -1584,6 +1613,17 @@ CREATE TABLE public.webhook_endpoints (
 3. Botão de "Tentar novamente"
 4. Enviar erro para logging (opcional)
 5. Wrap em App.tsx
+```
+
+**Evidência (2026-11-26):**
+```text
+- src/components/ErrorBoundary.tsx (94 linhas): captura erro de render, registra telemetria
+  (trackRenderError + trackTelemetry com routeName), mostra UI amigavel com role="alert" e oferece
+  "Tentar novamente" ate 3 vezes, "Recarregar pagina" e "Ir para o Dashboard".
+- src/components/RouteErrorBoundary.tsx envolve cada rota e nomeia a tela do erro.
+- App.tsx:114 abre <ErrorBoundary> e a linha 146 fecha, envolvendo todas as rotas dentro do
+  <Suspense>; portanto nenhum erro de pagina derruba o app.
+- Teste existente: src/test/routeErrorBoundary.test.tsx.
 ```
 
 ---
@@ -1598,7 +1638,7 @@ CREATE TABLE public.webhook_endpoints (
 | PERF-002 | Memoização de Componentes | ✅ 3h |
 | A11Y-001 | Labels em Inputs | ✅ 2h |
 | SEC-002 | Validação de Input Completa | ✅ 3h |
-| REF-006 | Error Boundary | 2h |
+| REF-006 | Error Boundary | ✅ 2h |
 | UI-011 | Modal Confirmação Saída | ✅ 2h |
 | FUNC-021 | Revisão de Quiz | ✅ 3h |
 | REF-001 | Componentização Header | 4h |
@@ -1633,7 +1673,7 @@ CREATE TABLE public.webhook_endpoints (
 | SEO-006 | Core Web Vitals | 4h |
 | A11Y-005 | Skip Links | ✅ 1h |
 | A11Y-008 | Reduced Motion | ✅ 2h |
-| UI-014 | Copiar Certificado | 1h |
+| UI-014 | Copiar Certificado | ✅ 1h |
 
 ---
 
@@ -1656,18 +1696,18 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 6 | ~18h |
+| UX/UI | 5 | ~17h |
 | Performance | 1 | ~4h |
 | Funcionalidades | 9 | ~51h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
-| SEO | 5 | ~11h |
+| SEO | 3 | ~8h |
 | Gamificação | 11 | ~59h |
 | Administrativas | 5 | ~20h |
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
-| Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **36** | **~212h** |
+| Refatorações | 4 | ~10h |
+| **TOTAL PENDENTE** | **32** | **~206h** |
 
 ---
 

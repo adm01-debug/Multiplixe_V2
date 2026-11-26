@@ -2,6 +2,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import {
+  QTD_CODIGOS_BACKUP,
+  TAMANHO_CODIGO_BACKUP,
+  gerarCodigoBackup,
+  hashCodigoBackup,
+  indiceCodigoBackup,
+} from '@/lib/backupCodes';
 
 interface MFASettings {
   totp_enabled: boolean;
@@ -166,15 +173,16 @@ export const useMFA = () => {
     if (!user) return null;
 
     try {
-      const codes = Array.from({ length: 10 }, () =>
-        Math.random().toString(36).substring(2, 8).toUpperCase()
+      const codes = Array.from({ length: QTD_CODIGOS_BACKUP }, () =>
+        gerarCodigoBackup(crypto.getRandomValues(new Uint8Array(TAMANHO_CODIGO_BACKUP)))
       );
+      const hashes = await Promise.all(codes.map(hashCodigoBackup));
 
       await supabase
         .from('user_mfa_settings')
         .upsert({
           user_id: user.id,
-          backup_codes: codes,
+          backup_codes: hashes,
           updated_at: new Date().toISOString(),
         });
 
@@ -234,6 +242,41 @@ export const useMFA = () => {
     }
   };
 
+  /**
+   * Consome um codigo de backup: confere o hash guardado, apaga o codigo da lista
+   * (uso unico) e carimba o segundo fator em `last_mfa_at`. Falso quando nao confere.
+   */
+  const consumeBackupCode = async (code: string): Promise<boolean> => {
+    if (!user) return false;
+
+    const { data, error } = await supabase
+      .from('user_mfa_settings')
+      .select('backup_codes')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) return false;
+
+    const hashes = data?.backup_codes ?? [];
+    const hash = await hashCodigoBackup(code);
+
+    if (indiceCodigoBackup(hash, hashes) === -1) return false;
+
+    const { error: erroUpdate } = await supabase
+      .from('user_mfa_settings')
+      .update({
+        backup_codes: hashes.filter((h) => h !== hash),
+        last_mfa_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('user_id', user.id);
+
+    if (erroUpdate) return false;
+
+    await fetchSettings();
+    return true;
+  };
+
   return {
     settings,
     loading,
@@ -242,6 +285,7 @@ export const useMFA = () => {
     verifyTOTPEnrollment,
     disableTOTP,
     generateBackupCodes,
+    consumeBackupCode,
     checkMFARequired,
     verifyMFACode,
     refetch: fetchSettings,

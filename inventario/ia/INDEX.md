@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `93120e263dc11e6e1e01faf5750c630b19d95bbe` · branch `claude/feat-ui-012-tema-personalizavel-2611260700` · 2026-11-26T06:09:34-03:00
+Commit: `9504633612032c0dabaa9e365a2d7e9c6f3e8bb2` · branch `claude/feat-func-007-mentoria-261126-0658` · 2026-11-26T06:43:08-03:00
 
 ## Como usar
 
@@ -21,17 +21,17 @@ Commit: `93120e263dc11e6e1e01faf5750c630b19d95bbe` · branch `claude/feat-ui-012
 
 | | |
 |---|---|
-| arquivos (codigo) | 602 (492) |
-| linhas de codigo | 69208 |
-| paginas / rotas | 27 / 27 |
-| componentes / hooks | 235 / 124 |
-| arquivos de teste | 80 |
+| arquivos (codigo) | 609 (497) |
+| linhas de codigo | 70671 |
+| paginas / rotas | 28 / 28 |
+| componentes / hooks | 236 / 129 |
+| arquivos de teste | 82 |
 | edge functions | 13 |
-| tabelas / migrations | 70 / 73 |
+| tabelas / migrations | 71 / 75 |
 
 ## Divida medida
 
-`: any`: 2 · `console.log`: 14 · `@ts-ignore`: 1 · `eslint-disable`: 2 · TODO/FIXME: 5 · arquivos > 500 linhas: 3
+`: any`: 2 · `console.log`: 14 · `@ts-ignore`: 1 · `eslint-disable`: 2 · TODO/FIXME: 5 · arquivos > 500 linhas: 4
 
 ## Rotas
 
@@ -52,6 +52,7 @@ Commit: `93120e263dc11e6e1e01faf5750c630b19d95bbe` · branch `claude/feat-ui-012
 | `/flashcards` | src/pages/Flashcards.tsx | sim | command-palette, navegacao-no-codigo | 1 | detect-new-device |
 | `/forgot-password` | src/pages/ForgotPassword.tsx | nao | navegacao-no-codigo, prefetch | 2 | — |
 | `/loja` | src/pages/Store.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo | 1 | detect-new-device |
+| `/mentoria` | src/pages/Mentorship.tsx | sim | command-palette, navegacao-no-codigo | 2 | detect-new-device |
 | `/onboarding` | src/pages/SalesOnboarding.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo | 2 | detect-new-device |
 | `/onboarding/executar` | src/pages/OnboardingRuntime.tsx | sim | navegacao-no-codigo | 2 | detect-new-device |
 | `/perfil` | src/pages/Profile.tsx | sim | command-palette, menu-mobile, navegacao-no-codigo, prefetch | 10 | detect-new-device, export-user-data, generate-certificate |
@@ -85,14 +86,14 @@ Commit: `93120e263dc11e6e1e01faf5750c630b19d95bbe` · branch `claude/feat-ui-012
 
 ## Banco (declarado pelo repo)
 
-70 tabelas · 182 policies · 81 funcoes · 2 cron jobs · 1 bucket(s) · 73 migrations
+71 tabelas · 186 policies · 86 funcoes · 2 cron jobs · 1 bucket(s) · 75 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
 | `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_powerups, user_purchases |
-| `funcao_sem_uso_no_codigo` | apply_coin_transaction, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, refresh_platform_stats, verify_path_certificate_by_code |
+| `funcao_sem_uso_no_codigo` | apply_coin_transaction, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
 ### Cron
@@ -104,29 +105,29 @@ Commit: `93120e263dc11e6e1e01faf5750c630b19d95bbe` · branch `claude/feat-ui-012
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (134)
-- `src/integrations/supabase/client.ts` (104)
-- `src/hooks/useAuth.tsx` (70)
+- `src/components/ui/button.tsx` (135)
+- `src/integrations/supabase/client.ts` (105)
+- `src/hooks/useAuth.tsx` (71)
 - `src/lib/utils.ts` (68)
-- `src/components/ui/card.tsx` (65)
-- `src/components/ui/badge.tsx` (59)
-- `src/components/ui/input.tsx` (36)
-- `src/components/ui/dialog.tsx` (35)
-- `src/components/ui/label.tsx` (25)
+- `src/components/ui/card.tsx` (66)
+- `src/components/ui/badge.tsx` (60)
+- `src/components/ui/input.tsx` (37)
+- `src/components/ui/dialog.tsx` (36)
+- `src/components/ui/label.tsx` (26)
 - `src/components/ui/progress.tsx` (22)
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (48)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (50)
+- `src/integrations/supabase/types.ts` (18)
 - `inventario/estado/schema-declarado.json` (17)
-- `src/integrations/supabase/types.ts` (17)
-- `inventario/ia/baseline.json` (14)
-- `inventario/ia/INDEX.md` (14)
-- `inventario/ia/manifest.json` (14)
-- `inventario/ia/componentes.json` (11)
+- `inventario/ia/baseline.json` (15)
+- `inventario/ia/INDEX.md` (15)
+- `inventario/ia/manifest.json` (15)
+- `inventario/ia/componentes.json` (12)
+- `inventario/ia/grafo.json` (11)
 - `inventario/estado/rotas.json` (10)
-- `inventario/ia/grafo.json` (10)
-- `inventario/ia/hooks.json` (9)
+- `inventario/ia/hooks.json` (10)
 
 ## Scripts npm
 

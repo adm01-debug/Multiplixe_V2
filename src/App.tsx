@@ -43,6 +43,7 @@ const LessonPlayer = lazy(() => import("./pages/LessonPlayer"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const Flashcards = lazy(() => import("./pages/Flashcards"));
+const Mentorship = lazy(() => import("./pages/Mentorship"));
 const Store = lazy(() => import("./pages/Store"));
 const Admin = lazy(() => import("./pages/Admin"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
@@ -129,6 +130,7 @@ const App = () => (
                     <Route path="/perfil" element={<RouteErrorBoundary routeName="Perfil"><ProtectedRoute><Profile /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/ranking" element={<RouteErrorBoundary routeName="Ranking"><ProtectedRoute><Leaderboard /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/flashcards" element={<RouteErrorBoundary routeName="Flashcards"><ProtectedRoute><Flashcards /></ProtectedRoute></RouteErrorBoundary>} />
+                  <Route path="/mentoria" element={<RouteErrorBoundary routeName="Mentoria"><ProtectedRoute><Mentorship /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/loja" element={<RouteErrorBoundary routeName="Loja"><ProtectedRoute><Store /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/trilhas" element={<RouteErrorBoundary routeName="Trilhas"><ProtectedRoute><LearningPaths /></ProtectedRoute></RouteErrorBoundary>} />
                     <Route path="/trilha/:slug" element={<RouteErrorBoundary routeName="Trilha"><ProtectedRoute><LearningPathDetail /></ProtectedRoute></RouteErrorBoundary>} />

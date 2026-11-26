@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T09:13:09.916Z",
- "commit": "93120e263dc11e6e1e01faf5750c630b19d95bbe",
- "branch": "claude/feat-ui-012-tema-personalizavel-2611260700",
+ "gerado_em": "2026-11-26T09:58:53.425Z",
+ "commit": "9504633612032c0dabaa9e365a2d7e9c6f3e8bb2",
+ "branch": "claude/feat-func-007-mentoria-261126-0658",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "ae088a60fe94afa2",
-  "baseline.json": "1ad384d8ea161c77",
-  "componentes.json": "0a4a83c819727680",
-  "grafo.json": "3a3a75cfb486ddc2",
-  "hooks.json": "0f2748e343573a56"
+  "INDEX.md": "e5574c801c47993c",
+  "baseline.json": "e56df84c2dcd3082",
+  "componentes.json": "13748f4e66b14cda",
+  "grafo.json": "8c9771bcea5bd827",
+  "hooks.json": "2bdec8495102ae56"
  },
  "contagens": {
-  "arquivos": 602,
-  "arquivos_de_codigo": 492,
-  "linhas_de_codigo": 69208,
-  "componentes": 235,
-  "hooks": 124,
-  "paginas": 27,
-  "testes": 80,
+  "arquivos": 609,
+  "arquivos_de_codigo": 497,
+  "linhas_de_codigo": 70671,
+  "componentes": 236,
+  "hooks": 129,
+  "paginas": 28,
+  "testes": 82,
   "edge_functions": 13,
-  "rotas": 27,
-  "tabelas": 70,
-  "migrations": 73
+  "rotas": 28,
+  "tabelas": 71,
+  "migrations": 75
  },
  "erros": []
 }

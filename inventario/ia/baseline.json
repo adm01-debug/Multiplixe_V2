@@ -2,48 +2,52 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "93120e263dc11e6e1e01faf5750c630b19d95bbe",
-  "branch": "claude/feat-ui-012-tema-personalizavel-2611260700",
-  "data_commit": "2026-11-26T06:09:34-03:00",
+  "commit": "9504633612032c0dabaa9e365a2d7e9c6f3e8bb2",
+  "branch": "claude/feat-func-007-mentoria-261126-0658",
+  "data_commit": "2026-11-26T06:43:08-03:00",
   "ultimos_commits": [
-   "93120e2 fix: corrige sobrescrita de preferencia, contraste do gradiente e testes",
-   "ccd99a7 feat: tema de cores personalizavel (UI-012)",
+   "9504633 chore: marca UI-009 como concluido no plano (#82)",
+   "d52def3 feat: preview em video no hover do card de curso (UI-009) (#80)",
+   "c4f9cbf chore: marca UI-012 como concluido no plano (#79)",
+   "07320d1 feat: tema de cores personalizavel (UI-012) (#78)",
    "c30b81e chore: marcar FUNC-019 (capitulos no video) como concluido no plano (#77)",
    "eea0c25 feat: capitulos de tempo no video da aula (FUNC-019) (#76)",
    "51c7545 chore: marcar GAME-007 (power-ups) como concluido no plano (#75)",
    "06ae69a feat: dar efeito real aos power-ups da loja (GAME-007) (#74)",
    "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
-   "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)",
-   "53f669a chore: marcar GAME-003 (ligas semanais) como concluido no plano (#71)",
-   "5c62c2e feat: ligas semanais com promocao e rebaixamento (GAME-003) (#70)"
+   "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 48
+    "mudancas": 50
+   },
+   {
+    "arquivo": "src/integrations/supabase/types.ts",
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
     "mudancas": 17
    },
    {
-    "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 17
-   },
-   {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "inventario/ia/componentes.json",
+    "mudancas": 12
+   },
+   {
+    "arquivo": "inventario/ia/grafo.json",
     "mudancas": 11
    },
    {
@@ -51,12 +55,8 @@
     "mudancas": 10
    },
    {
-    "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 10
-   },
-   {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "src/pages/Profile.tsx",
@@ -64,7 +64,7 @@
    },
    {
     "arquivo": "src/index.css",
-    "mudancas": 7
+    "mudancas": 6
    },
    {
     "arquivo": "src/pages/Admin.tsx",
@@ -75,7 +75,15 @@
     "mudancas": 5
    },
    {
+    "arquivo": "src/components/admin/AdminCoursesTab.tsx",
+    "mudancas": 5
+   },
+   {
     "arquivo": "src/lib/i18n.ts",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "src/pages/Catalog.tsx",
     "mudancas": 5
    },
    {
@@ -89,29 +97,21 @@
    {
     "arquivo": "docs/agentes/regras-dominio.md",
     "mudancas": 4
-   },
-   {
-    "arquivo": "scripts/ci/README.md",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "src/App.tsx",
-    "mudancas": 4
    }
   ]
  },
  "contagens": {
-  "arquivos": 602,
-  "arquivos_de_codigo": 492,
-  "linhas_de_codigo": 69208,
-  "componentes": 235,
-  "hooks": 124,
-  "paginas": 27,
-  "testes": 80,
+  "arquivos": 609,
+  "arquivos_de_codigo": 497,
+  "linhas_de_codigo": 70671,
+  "componentes": 236,
+  "hooks": 129,
+  "paginas": 28,
+  "testes": 82,
   "edge_functions": 13,
-  "rotas": 27,
-  "tabelas": 70,
-  "migrations": 73
+  "rotas": 28,
+  "tabelas": 71,
+  "migrations": 75
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -142,17 +142,17 @@
   "scripts/lib": 2,
   "src/App.tsx": 1,
   "src/components": 260,
-  "src/hooks": 63,
+  "src/hooks": 64,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 26,
+  "src/lib": 27,
   "src/main.tsx": 1,
-  "src/pages": 27,
-  "src/test": 80,
+  "src/pages": 28,
+  "src/test": 82,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 73,
+  "supabase/migrations": 75,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -166,7 +166,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3339
+   "linhas": 3397
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -175,6 +175,10 @@
   {
    "arquivo": "src/components/ui/sidebar.tsx",
    "linhas": 638
+  },
+  {
+   "arquivo": "src/pages/Mentorship.tsx",
+   "linhas": 549
   },
   {
    "arquivo": "src/components/gamification/DailyChallenges.tsx",
@@ -221,6 +225,10 @@
    "linhas": 359
   },
   {
+   "arquivo": "src/components/admin/CourseForm.tsx",
+   "linhas": 357
+  },
+  {
    "arquivo": "src/components/admin/IPWhitelistManager.tsx",
    "linhas": 355
   },
@@ -238,11 +246,7 @@
   },
   {
    "arquivo": "src/components/admin/AdminCoursesTab.tsx",
-   "linhas": 334
-  },
-  {
-   "arquivo": "src/components/admin/CourseForm.tsx",
-   "linhas": 331
+   "linhas": 335
   },
   {
    "arquivo": "src/test/adminAchievements.test.tsx",
@@ -259,10 +263,6 @@
   {
    "arquivo": "src/components/admin/LessonForm.tsx",
    "linhas": 323
-  },
-  {
-   "arquivo": "src/components/gamification/XPAnimations.tsx",
-   "linhas": 320
   }
  ],
  "qualidade": {
@@ -274,7 +274,8 @@
   "arquivos_acima_500_linhas": [
    "src/components/skeletons/PageSkeletons.tsx",
    "src/components/ui/sidebar.tsx",
-   "src/integrations/supabase/types.ts"
+   "src/integrations/supabase/types.ts",
+   "src/pages/Mentorship.tsx"
   ]
  },
  "todos": [

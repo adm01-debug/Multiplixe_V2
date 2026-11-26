@@ -798,6 +798,45 @@ export type Database = {
         }
         Relationships: []
       }
+      mentorship_requests: {
+        Row: {
+          created_at: string
+          id: string
+          mentee_id: string
+          mentor_id: string
+          message: string
+          responded_at: string | null
+          response_note: string | null
+          status: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mentee_id: string
+          mentor_id: string
+          message: string
+          responded_at?: string | null
+          response_note?: string | null
+          status?: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mentee_id?: string
+          mentor_id?: string
+          message?: string
+          responded_at?: string | null
+          response_note?: string | null
+          status?: string
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscriptions: {
         Row: {
           email: string
@@ -1208,7 +1247,10 @@ export type Database = {
           full_name: string | null
           id: string
           is_active: boolean
+          is_mentor: boolean
           is_public: boolean
+          mentor_bio: string | null
+          mentor_topics: string[]
           updated_at: string
           user_id: string
         }
@@ -1221,7 +1263,10 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_active?: boolean
+          is_mentor?: boolean
           is_public?: boolean
+          mentor_bio?: string | null
+          mentor_topics?: string[]
           updated_at?: string
           user_id: string
         }
@@ -1234,7 +1279,10 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_active?: boolean
+          is_mentor?: boolean
           is_public?: boolean
+          mentor_bio?: string | null
+          mentor_topics?: string[]
           updated_at?: string
           user_id?: string
         }
@@ -3204,6 +3252,13 @@ export type Database = {
           user_name: string
           verification_code: string
         }[]
+      }
+      get_mentors: { Args: { p_busca?: string }; Returns: Json }
+      get_my_mentorship: { Args: never; Returns: Json }
+      mentor_disponivel: { Args: { p_user_id: string }; Returns: boolean }
+      respond_mentorship_request: {
+        Args: { p_id: string; p_nota?: string; p_status: string }
+        Returns: Json
       }
     }
     Enums: {

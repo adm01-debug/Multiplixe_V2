@@ -16,6 +16,7 @@ import CourseListItem from "@/components/catalog/CourseListItem";
 import ViewToggle, { useViewMode } from "@/components/catalog/ViewToggle";
 import CategoryFilter from "@/components/catalog/CategoryFilter";
 import LevelFilter from "@/components/catalog/LevelFilter";
+import SavedFilters from "@/components/catalog/SavedFilters";
 import SearchInput from "@/components/catalog/SearchInput";
 import CatalogHeader from "@/components/catalog/CatalogHeader";
 import CatalogHero from "@/components/catalog/CatalogHero";
@@ -124,6 +125,13 @@ const Catalog = () => {
 
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "Colaborador";
   const hasActiveFilters = selectedCategory || selectedLevel;
+  const filtrosAtuais = { q: debouncedSearch || null, categoria: selectedCategory, nivel: selectedLevel };
+
+  const aplicarFiltroSalvo = (filtros: Record<string, string | null>) => {
+    setSearchQuery(filtros.q ?? "");
+    setSelectedCategory(filtros.categoria ?? null);
+    setSelectedLevel(filtros.nivel ?? null);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20" {...aoPuxar}>
@@ -172,6 +180,14 @@ const Catalog = () => {
                   <Button variant="ghost" size="sm" onClick={handleClearAll} className="text-muted-foreground hover:text-foreground">Limpar filtros</Button>
                 </div>
               )}
+              <div className="border-t border-border/50 pt-5">
+                <SavedFilters
+                  entityType="courses"
+                  filtrosAtuais={filtrosAtuais}
+                  temFiltrosAtivos={Boolean(hasActiveFilters || debouncedSearch)}
+                  onAplicar={aplicarFiltroSalvo}
+                />
+              </div>
             </div>
           </div>
         </div>

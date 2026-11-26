@@ -7,7 +7,7 @@ export interface Notification {
   user_id: string;
   title: string;
   message: string;
-  type: 'streak_risk' | 'new_course' | 'achievement' | 'info';
+  type: 'streak_risk' | 'assessment_due' | 'new_course' | 'achievement' | 'info';
   is_read: boolean;
   action_url: string | null;
   created_at: string;

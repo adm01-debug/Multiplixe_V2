@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (42)
+## ⏳ MELHORIAS PENDENTES (41)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -597,7 +597,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 2 Pendentes
+### ♿ ACESSIBILIDADE - 1 Pendente
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -626,7 +626,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-003: ARIA Roles e Labels
+#### A11Y-003: ARIA Roles e Labels ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 2h  
 **Descrição:** Faltam roles e labels em componentes.
@@ -637,6 +637,28 @@ leitor de tela) e 17 só com `placeholder`.
 2. Adicionar role="main" no conteúdo principal
 3. Adicionar aria-label em botões com apenas ícone
 4. Verificar todos os componentes de navegação
+```
+
+**Entrega (2026-11-26):**
+```
+- Auditoria automática de todo o src (script que lê cada tag <Button>/<button> respeitando
+  chaves dentro dos atributos): 50 botões que só mostram ícone (size="icon") não tinham nome
+  acessível — um leitor de tela anunciava apenas "botão". Todos receberam aria-label com a
+  ação real: fechar, editar/excluir (avaliação, playbook, vídeo, workflow, aula), mover curso
+  para cima/baixo, remover etapa/opção/curso/passkey, mês anterior/próximo, sair da conta,
+  enviar resposta, voltar, alternar barra lateral, personalizar tema, excluir notificação etc.
+  Os 42 arquivos afetados mudaram apenas na linha do atributo.
+- Navegação: as 5 <nav> sem rótulo receberam aria-label — CatalogHeader, DashboardHeader e
+  landing/Header (menu desktop) como "Navegação principal"; MobileBottomNav como "Navegação
+  inferior"; o menu hambúrguer do landing como "Navegação mobile". SkipLinks e Breadcrumb já
+  tinham rótulo; pagination já usava role="navigation" aria-label="pagination".
+- <main> já existe em todas as páginas (nenhuma alteração necessária) e o menu por teclado
+  continua coberto por A11Y-002.
+- Guarda de regressão: src/test/iconButtonLabels.test.ts varre src/**/*.tsx a cada execução e
+  falha se aparecer um <Button size="icon"> sem aria-label/aria-labelledby/title — reprovava
+  com as 50 violações antes da correção e agora passa.
+- Validado: tsc 0 erros; suíte 46 arquivos / 438 testes; guards 88 (85 pass, 3 skip, 0 fail);
+  build de produção ok.
 ```
 
 ---
@@ -1506,7 +1528,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 2 | ~4h |
+| Acessibilidade | 1 | ~2h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1514,7 +1536,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **45** | **~241h** |
+| **TOTAL PENDENTE** | **44** | **~239h** |
 
 ---
 

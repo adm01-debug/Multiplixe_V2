@@ -232,7 +232,7 @@ const DiscussionCard = ({
                   className="flex-1"
                 />
                 <Button
-                  size="icon"
+                  size="icon" aria-label="Enviar resposta"
                   onClick={handleSubmitReply}
                   disabled={!newReply.trim() || submitting}
                 >

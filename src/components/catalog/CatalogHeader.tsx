@@ -30,7 +30,7 @@ const CatalogHeader = ({ userName, onSignOut }: CatalogHeaderProps) => {
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
+          <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
             <Link to="/dashboard" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors">
               Dashboard
             </Link>
@@ -48,7 +48,7 @@ const CatalogHeader = ({ userName, onSignOut }: CatalogHeaderProps) => {
             </Link>
             <Button
               variant="outline"
-              size="icon"
+              size="icon" aria-label="Sair da conta"
               onClick={onSignOut}
               className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"
             >

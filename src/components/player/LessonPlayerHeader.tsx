@@ -78,7 +78,7 @@ const LessonPlayerHeader = ({ courseSlug, courseTitle, userName, courseProgress,
               </Tooltip>
             </TooltipProvider>
           )}
-          <Button variant="outline" size="icon" onClick={onSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
+          <Button variant="outline" size="icon" aria-label="Sair da conta" onClick={onSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
             <LogOut className="h-4 w-4" />
           </Button>
         </div>

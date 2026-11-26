@@ -99,8 +99,8 @@ const AdminWorkflowsTab = () => {
                     <p className="text-sm text-muted-foreground mt-1">{w.description || 'Sem descrição'}</p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="icon" variant="ghost" onClick={() => openEdit(w)}><Pencil className="h-4 w-4" /></Button>
-                    <Button size="icon" variant="ghost" onClick={() => { if (confirm('Excluir workflow?')) del.mutate(w.id); }}>
+                    <Button size="icon" aria-label="Editar workflow" variant="ghost" onClick={() => openEdit(w)}><Pencil className="h-4 w-4" /></Button>
+                    <Button size="icon" aria-label="Excluir workflow" variant="ghost" onClick={() => { if (confirm('Excluir workflow?')) del.mutate(w.id); }}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
                   </div>
@@ -170,7 +170,7 @@ const AdminWorkflowsTab = () => {
                       </Select>
                       <Input aria-label="Título do passo" placeholder="Título" value={step.title} onChange={e => updateStep(idx, { title: e.target.value })} className="col-span-2" />
                     </div>
-                    <Button size="icon" variant="ghost" onClick={() => removeStep(idx)}><X className="h-4 w-4" /></Button>
+                    <Button size="icon" aria-label="Remover etapa" variant="ghost" onClick={() => removeStep(idx)}><X className="h-4 w-4" /></Button>
                   </div>
                   <div className="grid grid-cols-2 gap-2 ml-8">
                     <Input aria-label="ID do recurso do passo" placeholder="ID do recurso (opcional)" value={step.resource_id || ''} onChange={e => updateStep(idx, { resource_id: e.target.value })} />

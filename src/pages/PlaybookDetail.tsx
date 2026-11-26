@@ -67,7 +67,7 @@ const PlaybookDetail = () => {
       />
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => navigate('/playbooks')} className="rounded-xl">
+          <Button variant="ghost" size="icon" aria-label="Voltar para playbooks" onClick={() => navigate('/playbooks')} className="rounded-xl">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <span className="text-sm text-muted-foreground">Voltar aos playbooks</span>

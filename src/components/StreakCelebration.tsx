@@ -38,7 +38,7 @@ const StreakCelebration = ({ newStreak, xpAwarded, isNewRecord, onClose }: Strea
         {/* Close button */}
         <Button
           variant="ghost"
-          size="icon"
+          size="icon" aria-label="Fechar"
           onClick={onClose}
           className="absolute top-4 right-4 rounded-full hover:bg-muted"
         >

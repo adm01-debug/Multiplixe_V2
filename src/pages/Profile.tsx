@@ -117,7 +117,7 @@ const Profile = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')} className="rounded-xl hover:bg-muted"><ArrowLeft className="h-5 w-5" /></Button>
+              <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl hover:bg-muted"><ArrowLeft className="h-5 w-5" /></Button>
               <Link to="/dashboard" className="flex items-center gap-3 group">
                 <div className="relative"><div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" /><div className="relative p-2.5 bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg neon-button"><GraduationCap className="h-6 w-6 text-white" /></div></div>
                 <div><h1 className="font-display font-bold text-xl text-foreground tracking-tight">MULTIPLI<span className="text-gradient neon-text">XE</span></h1><p className="text-[10px] text-muted-foreground uppercase tracking-wide">by Promo Brindes</p></div>

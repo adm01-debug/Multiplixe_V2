@@ -226,7 +226,7 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
                           <div className="flex items-center justify-center gap-1">
                             <Button
                               variant="ghost"
-                              size="icon"
+                              size="icon" aria-label="Editar aula"
                               className="h-8 w-8"
                               onClick={() => {
                                 setEditingLesson(lesson);
@@ -237,7 +237,7 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
                             </Button>
                             <Button
                               variant="ghost"
-                              size="icon"
+                              size="icon" aria-label="Excluir aula"
                               className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
                               onClick={() => setDeletingLesson(lesson)}
                             >

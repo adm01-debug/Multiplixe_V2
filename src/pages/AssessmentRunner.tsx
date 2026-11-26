@@ -123,7 +123,7 @@ const AssessmentRunner = () => {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 glass border-b border-border/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate('/avaliacoes')} className="rounded-xl"><ArrowLeft className="h-5 w-5" /></Button>
+          <Button variant="ghost" size="icon" aria-label="Voltar para avaliações" onClick={() => navigate('/avaliacoes')} className="rounded-xl"><ArrowLeft className="h-5 w-5" /></Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold">{assessment.title}</h1>
             <Progress value={(answered / Math.max(total, 1)) * 100} className="h-1.5 mt-2" />

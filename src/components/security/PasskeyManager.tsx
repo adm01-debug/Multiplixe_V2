@@ -170,7 +170,7 @@ const PasskeyManager = () => {
                         </Badge>
                         <Button 
                           variant="ghost" 
-                          size="icon"
+                          size="icon" aria-label="Remover passkey"
                           onClick={() => setConfirmDelete(credential)}
                           disabled={deletingId === credential.id}
                         >

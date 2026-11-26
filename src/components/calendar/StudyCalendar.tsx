@@ -95,10 +95,10 @@ const StudyCalendar = ({
             {format(currentMonth, "MMMM yyyy", { locale: ptBR })}
           </CardTitle>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" onClick={previousMonth} className="h-8 w-8">
+            <Button variant="ghost" size="icon" aria-label="Mês anterior" onClick={previousMonth} className="h-8 w-8">
               <ChevronLeft className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={nextMonth} className="h-8 w-8">
+            <Button variant="ghost" size="icon" aria-label="Próximo mês" onClick={nextMonth} className="h-8 w-8">
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>

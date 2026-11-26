@@ -63,7 +63,7 @@ const LessonPlayerSidebar = ({ lessons, lessonsProgress, currentLessonId, course
       </div>
     </div>
 
-    <Button variant="ghost" size="icon" onClick={onCloseSidebar} className="lg:hidden absolute top-20 left-4 rounded-xl">
+    <Button variant="ghost" size="icon" aria-label="Fechar painel de aulas" onClick={onCloseSidebar} className="lg:hidden absolute top-20 left-4 rounded-xl">
       <ChevronRight className="h-5 w-5" />
     </Button>
   </aside>

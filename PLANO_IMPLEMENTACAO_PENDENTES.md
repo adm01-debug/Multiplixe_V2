@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (71)
+### ✅ Melhorias JÁ IMPLEMENTADAS (72)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (28)
+## ⏳ MELHORIAS PENDENTES (27)
 
 ### 🎨 UX/UI - 4 Pendentes
 
@@ -1256,7 +1256,7 @@ Nada a implementar neste item.
 
 ---
 
-#### SEO-006: Performance Core Web Vitals
+#### SEO-006: Performance Core Web Vitals ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Verificar e otimizar LCP, FID, CLS.
@@ -1270,6 +1270,15 @@ Nada a implementar neste item.
 5. Documentar métricas atuais e melhorias
 ```
 
+**Entregue em 26/11/2026**
+
+Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) contra produção: **Performance 0.70**, FCP 4,3 s, **LCP 5,3 s**, CLS 0, TBT 40 ms, TTI 6,1 s. Diagnóstico apontou dois pesos mortos no primeiro carregamento.
+
+- **recharts inteiro no bundle inicial (433 kB / 114 kB gzip).** A entrada do `manualChunks` `'chart-vendor': ['recharts']` fazia o Vite pré-carregar `chart-vendor-*.js` em todo acesso, inclusive na landing page, que não usa gráfico nenhum. Removida a entrada em `vite.config.ts`; o recharts passou a ir em chunks sob demanda (`generateCategoricalChart`, `BarChart`, `PieChart`), carregados só em rotas com gráfico.
+- **Fontes render-blocking de terceiros.** `index.html` carregava Inter + Plus Jakarta Sans (que nem são as fontes usadas) e `src/index.css` importava via `@import` Space Grotesk + Outfit do Google Fonts — dois CSS externos bloqueando o render (~919 ms somados no relatório). As fontes reais viraram self-hosted, variáveis e em woff2: `public/fonts/outfit-latin.woff2` (31 kB), `outfit-latin-ext`, `space-grotesk-latin.woff2` (22 kB) e `space-grotesk-latin-ext`, declaradas em `@font-face` com `font-display: swap` e `unicode-range` (subset latin só baixa quando precisa). O `index.html` agora só faz `preload` dos dois arquivos latin; nenhuma requisição a `fonts.googleapis.com`/`fonts.gstatic.com`.
+- `index.html` ganhou `preconnect`/`dns-prefetch` para `images.unsplash.com` (capas dos cursos).
+
+Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
 ### 🎮 GAMIFICAÇÃO - 6 Pendentes
@@ -1912,7 +1921,7 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🟢 Fase 3: Melhorias (Semana 5-6)
-**Prioridade: Média-Baixa | Esforço Total: ~4h**
+**Prioridade: Média-Baixa | Esforço Total: ~0h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -1920,7 +1929,7 @@ CREATE TABLE public.webhook_endpoints (
 | FUNC-011 | Agenda de Estudos | ✅ 6h |
 | FUNC-013 | Activity Timeline | ✅ 4h |
 | PERF-003 | Paginação Catálogo | ✅ 3h |
-| SEO-006 | Core Web Vitals | 4h |
+| SEO-006 | Core Web Vitals | ✅ 4h |
 | A11Y-005 | Skip Links | ✅ 1h |
 | A11Y-008 | Reduced Motion | ✅ 2h |
 | UI-014 | Copiar Certificado | ✅ 1h |
@@ -1951,13 +1960,13 @@ CREATE TABLE public.webhook_endpoints (
 | Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
-| SEO | 1 | ~4h |
+| SEO | 0 | — |
 | Gamificação | 11 | ~59h |
 | Administrativas | 5 | ~20h |
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **28** | **~146h** |
+| **TOTAL PENDENTE** | **27** | **~142h** |
 
 ---
 

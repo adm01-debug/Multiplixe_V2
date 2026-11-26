@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Bell, Flame, BookOpen, Trophy, Info, Check, X } from 'lucide-react';
+import { Bell, Flame, BookOpen, Trophy, Info, Check, X, ClipboardCheck } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { motion } from 'framer-motion';
@@ -22,6 +22,8 @@ const NotificationBell = () => {
     switch (type) {
       case 'streak_risk':
         return <Flame className="h-5 w-5 text-orange-500" />;
+      case 'assessment_due':
+        return <ClipboardCheck className="h-5 w-5 text-emerald-500" />;
       case 'new_course':
         return <BookOpen className="h-5 w-5 text-primary" />;
       case 'achievement':

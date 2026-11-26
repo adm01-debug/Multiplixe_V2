@@ -12,9 +12,9 @@
     "funcoes_expostas_no_types": 67,
     "enums": 1,
     "policies": 196,
-    "cron_jobs": 6,
+    "cron_jobs": 8,
     "buckets": 1,
-    "migrations": 92,
+    "migrations": 93,
     "alertas": 3,
     "problemas": 3
   },
@@ -2678,6 +2678,16 @@
     ]
   },
   "cron": {
+    "avisar-avaliacoes-vencendo": {
+      "agenda": "0 11 * * *",
+      "chama_edge": null,
+      "definido_em": "20261129130000_agendar_avisos_automaticos.sql"
+    },
+    "avisar-risco-de-sequencia": {
+      "agenda": "0 21 * * *",
+      "chama_edge": null,
+      "definido_em": "20261129130000_agendar_avisos_automaticos.sql"
+    },
     "cleanup-security-logs": {
       "agenda": "20 3 * * *",
       "chama_edge": null,

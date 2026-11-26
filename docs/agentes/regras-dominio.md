@@ -176,3 +176,10 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   Se um dia for preciso fechar a view, primeiro crie a policy de SELECT em `quiz_options` para quem faz o quiz
   e só então ligue o `security_invoker`.
 - **Edge disparada por cron precisa de segredo próprio**: `verify_jwt = false` não protege nada, porque a anon key é pública (vai no bundle do site). `webhook-dispatch` e `weekly-admin-digest` atendiam qualquer requisição, e a primeira usa `service_role` internamente. Ambas agora exigem o segredo `cron_secret` (Vault) no header `Authorization`, comparado com a variável `CRON_SECRET` da edge via `supabase/functions/_shared/cronAuth.ts`; sem `CRON_SECRET` configurado elas recusam tudo (falham fechadas). Migration `20261126193000_edges_de_cron_exigem_segredo.sql` gera o valor no banco e reescreve os dois jobs do `pg_cron` para enviá-lo. Regra: novo job de cron = edge com `exigirSegredoDoCron` antes de qualquer efeito.
+- **Aviso automático precisa de cron além da função**: `public.check_due_assessment_notifications()` (avaliação
+  vencendo nos próximos 7 dias, link `/avaliacoes`) e `public.check_streak_risk_notifications()` (última
+  atividade ontem e sequência > 0, link `/dashboard`) estavam completas e sem nenhum chamador — nenhuma
+  notificação saía. Agora rodam por `pg_cron` (`avisar-avaliacoes-vencendo` às 11:00 UTC, job 13;
+  `avisar-risco-de-sequencia` às 21:00 UTC, job 14; migration `20261129130000`), idempotentes por dia
+  (checam `notifications` do dia antes de inserir). O tipo `assessment_due` ganhou ícone próprio em
+  `src/components/NotificationBell.tsx` (`streak_risk` já tinha).

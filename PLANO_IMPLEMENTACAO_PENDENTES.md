@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (44)
+## ⏳ MELHORIAS PENDENTES (43)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -597,7 +597,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 3 Pendentes
+### ♿ ACESSIBILIDADE - 2 Pendentes
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -681,7 +681,7 @@ leitor de tela) e 17 só com `placeholder`.
 ```
 ---
 
-#### A11Y-006: Anúncios de Screen Reader
+#### A11Y-006: Anúncios de Screen Reader ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 2h  
 **Descrição:** Ações dinâmicas não são anunciadas.
@@ -692,6 +692,22 @@ leitor de tela) e 17 só com `placeholder`.
 2. Anunciar: toasts, carregamentos, erros
 3. Anunciar progresso de quiz
 4. Componente LiveAnnouncer.tsx
+```
+
+**Entrega (2026-11-26):**
+```
+- LiveAnnouncer.tsx já existia (provider com regiões role="status"/aria-live="polite" e
+  role="alert"/aria-live="assertive" + hook useAnnouncements) mas nunca era montado e ninguém
+  o importava. Trabalho parado de outro agente.
+- Montado em src/main.tsx dentro do ReducedMotionProvider.
+- useLiveAnnouncer agora degrada para no-op fora do provider em vez de lançar: telas e modais
+  renderizados isoladamente (inclusive nos testes) não quebram.
+- QuizPlayer anuncia "Questão X de N" a cada troca de questão e o resultado
+  ("Aprovado/Não aprovado: N% de acertos") — educado quando aprovado, assertivo quando não.
+- Toasts já são anunciados pelo sonner (região própria), então não foram duplicados.
+- src/test/liveAnnouncer.test.tsx (novo, 6 casos): regiões vazias, anúncio educado com limpeza
+  em 3s, anúncio assertivo, formato de progresso, uso fora do provider e QuizPlayer anunciando
+  a questão atual e a seguinte.
 ```
 
 ---
@@ -1476,7 +1492,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 3 | ~6h |
+| Acessibilidade | 2 | ~4h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1484,7 +1500,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **47** | **~245h** |
+| **TOTAL PENDENTE** | **46** | **~243h** |
 
 ---
 

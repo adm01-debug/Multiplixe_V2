@@ -7,6 +7,7 @@ import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw, Alert
 import { cn } from '@/lib/utils';
 import { useConfirmExit } from '@/hooks/useConfirmExit';
 import QuizReview from './QuizReview';
+import { useAnnouncements } from '@/components/accessibility/LiveAnnouncer';
 import { buildQuizReview, type QuizReviewData, type QuizReviewPayload } from '@/lib/quizReview';
 import {
   AlertDialog,
@@ -74,6 +75,22 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading, onLoadReview }:
       enabled: hasStartedQuiz && !showResult,
       message: 'Você tem um quiz em andamento. Se sair agora, seu progresso será perdido.',
     });
+
+    const { announce, announceProgress } = useAnnouncements();
+
+  // A11Y-006: anuncia a troca de questão e o resultado para leitores de tela.
+  useEffect(() => {
+    if (showResult) return;
+    announceProgress(currentQuestionIndex + 1, quiz.quiz_questions.length, 'Questão');
+  }, [currentQuestionIndex, showResult, announceProgress, quiz.quiz_questions.length]);
+
+  useEffect(() => {
+    if (!showResult || !result) return;
+    announce(
+      `${result.passed ? 'Aprovado' : 'Não aprovado'}: ${result.score}% de acertos`,
+      result.passed ? 'polite' : 'assertive'
+    );
+  }, [showResult, result, announce]);
 
     const requestExit = () => exitGuard.confirmNavigation(onClose);
 

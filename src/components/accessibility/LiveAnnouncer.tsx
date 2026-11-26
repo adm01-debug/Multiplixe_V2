@@ -6,12 +6,11 @@ interface LiveAnnouncerContextType {
 
 const LiveAnnouncerContext = createContext<LiveAnnouncerContextType | null>(null);
 
+const noopAnnouncer: LiveAnnouncerContextType = { announce: () => {} };
+
 export const useLiveAnnouncer = () => {
-  const context = useContext(LiveAnnouncerContext);
-  if (!context) {
-    throw new Error("useLiveAnnouncer must be used within LiveAnnouncerProvider");
-  }
-  return context;
+  // Fora do provider devolve no-op: telas isoladas (testes, modais) não quebram.
+  return useContext(LiveAnnouncerContext) ?? noopAnnouncer;
 };
 
 interface LiveAnnouncerProviderProps {

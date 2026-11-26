@@ -6,15 +6,15 @@
     "tabelas": 63,
     "tabelas_no_types": 63,
     "tabelas_nas_migrations": 63,
-    "colunas": 527,
+    "colunas": 528,
     "views": 1,
-    "funcoes": 56,
-    "funcoes_expostas_no_types": 39,
+    "funcoes": 57,
+    "funcoes_expostas_no_types": 40,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 63,
+    "migrations": 64,
     "alertas": 3,
     "problemas": 3
   },
@@ -481,7 +481,7 @@
     "profiles": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 10,
+      "colunas": 11,
       "rls": true,
       "policies": 3,
       "triggers": [
@@ -491,7 +491,7 @@
       "indices": 0,
       "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
       "uso_no_codigo": {
-        "src": 20,
+        "src": 21,
         "edges": 6
       }
     },
@@ -1303,6 +1303,20 @@
       "security_definer": false,
       "search_path": "public",
       "criada_em": "20260727133050_05bea0c9-c4d0-4906-a115-a25635cc582e.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_public_profile": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126070000_perfil_publico.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0

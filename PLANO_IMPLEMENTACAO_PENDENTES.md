@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (70)
+### ✅ Melhorias JÁ IMPLEMENTADAS (71)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (29)
+## ⏳ MELHORIAS PENDENTES (28)
 
 ### 🎨 UX/UI - 4 Pendentes
 
@@ -1272,7 +1272,7 @@ Nada a implementar neste item.
 
 ---
 
-### 🎮 GAMIFICAÇÃO - 7 Pendentes
+### 🎮 GAMIFICAÇÃO - 6 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1457,7 +1457,7 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 
 ---
 
-#### GAME-010: Perfil Público com Badges
+#### GAME-010: Perfil Público com Badges ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Perfil é privado.
@@ -1470,6 +1470,19 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 4. Opção de tornar privado
 ```
 
+**Entregue em 26/11/2026**
+
+O perfil era 100% privado: não havia rota pública, nenhum campo de visibilidade e o único acesso era a própria página `/perfil` logada.
+
+- `supabase/migrations/20261126070000_perfil_publico.sql` (aplicada em produção): coluna `profiles.is_public boolean not null default false` e função `public.get_public_profile(p_user_id uuid)` (STABLE, SECURITY DEFINER) que devolve `{available, reason, profile, xp, streak, achievements, completed_courses, certificates_count}` — apenas para perfil ativo **e** público, sem e-mail, com conquistas secretas ocultas e só cursos em 100%. `reason` distingue `private`, `not_found` e `invalid`. Grants para `anon` e `authenticated` (link abre sem login).
+- `src/hooks/usePublicProfile.ts` (novo): chama a RPC `get_public_profile` e expõe `profile`, `loading` e `error`, com guarda contra resposta fora de ordem.
+- `src/pages/PublicProfile.tsx` (novo): avatar/iniciais, nome, departamento, nível, XP total, sequência, contagem de conquistas/cursos/certificados, grade de badges (gradiente + ícone) e lista de cursos concluídos. Estados de carregando (skeleton), perfil privado, perfil inexistente, link inválido e falha de rede.
+- `src/App.tsx`: rota pública `/usuario/:id` registrada fora do `ProtectedRoute` (qualquer pessoa com o link abre).
+- `src/pages/Profile.tsx`: card "Perfil público" com `Switch` que grava `is_public` na própria linha de `profiles` (revertendo o estado se o update falhar), indicador de salvando e botão "Copiar link" com o endereço `/usuario/<id>`.
+- `src/integrations/supabase/types.ts`: `profiles.is_public` em Row/Insert/Update e `get_public_profile` (`Args: { p_user_id: string }`, `Returns: Json`).
+- `src/test/publicProfile.test.tsx` (novo, 5 casos): dados públicos na tela, ausência total de e-mail (`@`), perfil privado, perfil inexistente e falha da RPC.
+
+Validação em produção (transação + `ROLLBACK`, aluno `d543f3c1`): default `is_public = false` → `{available:false, reason:"private"}`; com `is_public = true` → `full_name`, `xp.total_xp`, `streak`, `achievements`, `completed_courses`, `certificates_count`, e `get_public_profile(...)::text` **não contém `@`**; UUID inexistente → `not_found`; `p_user_id` nulo → `invalid`; `has_function_privilege` confirma EXECUTE para `anon` e `authenticated`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo, guard de Supabase 371 chamadas / 0 violações.
 ---
 
 #### GAME-011: Ranking por Categoria ✅ CONCLUÍDO
@@ -1944,7 +1957,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **29** | **~150h** |
+| **TOTAL PENDENTE** | **28** | **~146h** |
 
 ---
 

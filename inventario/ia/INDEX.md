@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `0345fd211a451b892e1d32b0c9b02ad653683498` · branch `claude/feat-powerups-261126-0750` · 2026-11-26T04:46:03-03:00
+Commit: `617492c6922ff734ce12082a97be596f2506b382` · branch `claude/feat-powerups-261126-0750` · 2026-11-26T05:03:52-03:00
 
 ## Como usar
 
@@ -22,7 +22,7 @@ Commit: `0345fd211a451b892e1d32b0c9b02ad653683498` · branch `claude/feat-poweru
 | | |
 |---|---|
 | arquivos (codigo) | 594 (487) |
-| linhas de codigo | 68169 |
+| linhas de codigo | 68185 |
 | paginas / rotas | 27 / 27 |
 | componentes / hooks | 234 / 123 |
 | arquivos de teste | 78 |
@@ -118,15 +118,15 @@ Commit: `0345fd211a451b892e1d32b0c9b02ad653683498` · branch `claude/feat-poweru
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (46)
-- `inventario/estado/schema-declarado.json` (16)
-- `src/integrations/supabase/types.ts` (16)
-- `inventario/ia/baseline.json` (13)
-- `inventario/ia/INDEX.md` (13)
-- `inventario/ia/manifest.json` (13)
-- `inventario/ia/componentes.json` (10)
-- `inventario/estado/rotas.json` (9)
-- `inventario/ia/grafo.json` (9)
-- `inventario/ia/hooks.json` (8)
+- `inventario/estado/schema-declarado.json` (17)
+- `src/integrations/supabase/types.ts` (17)
+- `inventario/ia/baseline.json` (14)
+- `inventario/ia/INDEX.md` (14)
+- `inventario/ia/manifest.json` (14)
+- `inventario/ia/componentes.json` (11)
+- `inventario/estado/rotas.json` (10)
+- `inventario/ia/grafo.json` (10)
+- `inventario/ia/hooks.json` (9)
 
 ## Scripts npm
 

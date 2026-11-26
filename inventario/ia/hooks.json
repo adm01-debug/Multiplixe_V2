@@ -135,7 +135,7 @@
   },
   "useActivatePowerup": {
    "arquivo": "src/hooks/usePowerups.ts",
-   "linhas": 61,
+   "linhas": 62,
    "tabelas": [],
    "rpcs": [
     "activate_powerup",
@@ -1243,7 +1243,7 @@
   },
   "usePowerups": {
    "arquivo": "src/hooks/usePowerups.ts",
-   "linhas": 61,
+   "linhas": 62,
    "tabelas": [],
    "rpcs": [
     "activate_powerup",
@@ -1604,7 +1604,7 @@
   },
   "useStreaks": {
    "arquivo": "src/hooks/useStreaks.ts",
-   "linhas": 133,
+   "linhas": 132,
    "tabelas": [
     "user_streaks"
    ],
@@ -1664,7 +1664,7 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 201,
+   "linhas": 207,
    "tabelas": [],
    "rpcs": [],
    "edges": [],

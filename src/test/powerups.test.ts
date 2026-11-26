@@ -124,6 +124,8 @@ describe('textos dos power-ups nos tres idiomas', () => {
     'store.activateNow',
     'store.boostAlreadyActive',
     'store.freezeNoActivation',
+    'store.powerupActivateError',
+    'store.freezeSaved',
   ] as const;
 
   it('tem texto nos tres idiomas (nada cai no fallback da chave)', () => {
@@ -133,6 +135,14 @@ describe('textos dos power-ups nos tres idiomas', () => {
         expect(texto, `${locale} ${chave}`).not.toBe(chave);
         expect(texto.length).toBeGreaterThan(0);
       }
+    }
+  });
+
+  it('avisa quantos dias a blindagem salvou no idioma escolhido', () => {
+    for (const locale of ['pt-BR', 'en', 'es'] as const) {
+      const texto = t('store.freezeSaved', locale).replace('{n}', '12');
+      expect(texto, locale).toContain('12');
+      expect(texto, locale).not.toContain('{n}');
     }
   });
 

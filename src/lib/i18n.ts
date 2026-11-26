@@ -41,6 +41,8 @@ const dict = {
       activateNow: "Ativar agora",
       boostAlreadyActive: "Já existe um ativo",
       freezeNoActivation: "Não precisa ativar: é usada sozinha quando você perde um dia.",
+      powerupActivateError: "Não foi possível ativar o power-up. Tente novamente.",
+      freezeSaved: "Sua Blindagem de Sequência salvou a sequência: você manteve {n} dias.",
     },
     common: {
       search: "Buscar",
@@ -89,6 +91,8 @@ const dict = {
       activateNow: "Activate now",
       boostAlreadyActive: "One is already active",
       freezeNoActivation: "No activation needed: it is used on its own when you miss a day.",
+      powerupActivateError: "We could not activate the power-up. Please try again.",
+      freezeSaved: "Your Streak Shield saved your streak: you kept {n} days.",
     },
     common: {
       search: "Search",
@@ -137,6 +141,8 @@ const dict = {
       activateNow: "Activar ahora",
       boostAlreadyActive: "Ya hay uno activo",
       freezeNoActivation: "No necesita activación: se usa sola cuando pierdes un día.",
+      powerupActivateError: "No fue posible activar el power-up. Inténtalo de nuevo.",
+      freezeSaved: "Tu Escudo de Racha salvó la racha: mantuviste {n} días.",
     },
     common: {
       search: "Buscar",

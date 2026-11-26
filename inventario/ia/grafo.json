@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "nos": 487,
- "arestas": 1325,
+ "arestas": 1327,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -1676,6 +1676,7 @@
   "src/hooks/usePowerups.ts": [
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts",
+   "src/lib/i18n.ts",
    "src/lib/powerups.ts"
   ],
   "src/hooks/usePublicProfile.ts": [
@@ -1718,7 +1719,8 @@
   ],
   "src/hooks/useStreaks.ts": [
    "src/hooks/useAuth.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/i18n.ts"
   ],
   "src/hooks/useStudyCalendar.ts": [
    "src/hooks/useAuth.tsx",

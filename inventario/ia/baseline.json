@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "0345fd211a451b892e1d32b0c9b02ad653683498",
+  "commit": "617492c6922ff734ce12082a97be596f2506b382",
   "branch": "claude/feat-powerups-261126-0750",
-  "data_commit": "2026-11-26T04:46:03-03:00",
+  "data_commit": "2026-11-26T05:03:52-03:00",
   "ultimos_commits": [
+   "617492c fix: fechar os achados do review dos power-ups (GAME-007)",
    "0345fd2 feat: dar efeito real aos power-ups da loja (GAME-007)",
    "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
    "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)",
@@ -14,8 +15,7 @@
    "875fa6b chore: marcar FUNC-009 (flashcards SRS) como concluido no plano (#69)",
    "3600e01 feat: flashcards de revisao com repeticao espacada (FUNC-009) (#68)",
    "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)",
-   "6b9fbfc feat: quiz adaptativo com niveis de dificuldade (FUNC-020) (#66)",
-   "53e46c3 feat: tooltips informativos nas ações de admin e nos cards de estatística (UI-006) (#65)"
+   "6b9fbfc feat: quiz adaptativo com niveis de dificuldade (FUNC-020) (#66)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -24,39 +24,39 @@
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "src/pages/Profile.tsx",
@@ -103,7 +103,7 @@
  "contagens": {
   "arquivos": 594,
   "arquivos_de_codigo": 487,
-  "linhas_de_codigo": 68169,
+  "linhas_de_codigo": 68185,
   "componentes": 234,
   "hooks": 123,
   "paginas": 27,

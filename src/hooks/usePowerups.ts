@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { t } from '@/lib/i18n';
 import { POWERUP_WALLET_VAZIA, parsePowerupWallet, type PowerupWallet } from '@/lib/powerups';
 
 export interface ActivatePowerupResult {
@@ -43,7 +44,7 @@ export const useActivatePowerup = () => {
     mutationFn: async (kind: string): Promise<ActivatePowerupResult> => {
       const { data, error } = await supabase.rpc('activate_powerup', { p_kind: kind });
       if (error) throw error;
-      return (data ?? { ok: false, mensagem: 'Nao foi possivel ativar o power-up' }) as unknown as ActivatePowerupResult;
+      return (data ?? { ok: false, mensagem: t('store.powerupActivateError') }) as unknown as ActivatePowerupResult;
     },
     onSuccess: (resultado) => {
       if (resultado.ok) {
@@ -56,6 +57,6 @@ export const useActivatePowerup = () => {
         toast.warning(resultado.mensagem);
       }
     },
-    onError: () => toast.error('Nao foi possivel ativar o power-up. Tente novamente.'),
+    onError: () => toast.error(t('store.powerupActivateError')),
   });
 };

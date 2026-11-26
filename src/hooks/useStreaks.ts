@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { t } from '@/lib/i18n';
 
 interface UserStreak {
   id: string;
@@ -75,9 +76,7 @@ export const useStreaks = () => {
       if (data && data.length > 0) {
               const resultado = data[0] as StreakUpdateResult;
               if (resultado.freeze_used) {
-                toast.success(
-                  'Sua Blindagem de Sequencia salvou a sequencia: voce manteve ' + resultado.new_streak + ' dias.',
-                );
+                toast.success(t('store.freezeSaved').replace('{n}', String(resultado.new_streak)));
               }
               return resultado;
       }

@@ -22,6 +22,7 @@ import OnboardingTutorial, { useOnboardingTutorial } from '@/components/onboardi
 import ProfileCompletionBar from '@/components/onboarding/ProfileCompletionBar';
 import GoalsWidget from '@/components/goals/GoalsWidget';
 import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidget';
+import FavoritesSection from '@/components/favorites/FavoritesSection';
 import OnboardingWidget from '@/components/dashboard/OnboardingWidget';
 import DueAssessmentsWidget from '@/components/dashboard/DueAssessmentsWidget';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
@@ -248,6 +249,10 @@ const Dashboard = () => {
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <Suspense fallback={<WidgetFallback />}><SmartRecommendations /></Suspense>
         </motion.section>
+
+                <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
+                  <FavoritesSection />
+                </motion.section>
 
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><Suspense fallback={<WidgetFallback />}><DailyChallenges /></Suspense></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><GoalsWidget /></motion.section>

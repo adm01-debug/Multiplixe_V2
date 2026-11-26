@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (31)
+## ⏳ MELHORIAS PENDENTES (30)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -306,9 +306,9 @@ contagem total e os filtros de categoria/nivel sao client-side - seria regressao
 
 ---
 
-### 🚀 FUNCIONALIDADES - 13 Pendentes
+### 🚀 FUNCIONALIDADES - 11 Pendentes
 
-#### FUNC-002: Favoritar Cursos
+#### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Usuários não podem favoritar cursos.
@@ -336,6 +336,22 @@ USING (auth.uid() = user_id);
 2. Criar useFavorites.ts hook
 3. Adicionar botão de favorito no CourseCard
 4. Criar seção "Meus Favoritos" no Dashboard
+```
+
+**Entrega (2026-11-26):**
+```text
+- A base ja existia e estava orfa: useFavorites.ts (mutacoes otimistas com rollback, toasts, undo),
+  FavoriteButton.tsx (coracao com aria-pressed, spinner e tooltip) e a tabela public.user_favorites
+  em producao com RLS e 3 policies (select/insert/delete com auth.uid() = user_id).
+- FavoriteButton so era montado no modo lista (CourseListItem). Agora tambem aparece no CourseCard,
+  que e o card usado na grade do catalogo, nos favoritos e nas secoes do Dashboard.
+- Novo FavoritesSection.tsx: secao "Meus Favoritos" no Dashboard, lista os cursos salvos na ordem
+  dos favoritos (course_id -> courses com categoria), com skeleton durante o carregamento, estado
+  vazio (EmptyState type="favorites") e atalho para o catalogo.
+- Seguranca: is_published = true na consulta + RLS de user_favorites impedem que favorito de curso
+  despublicado ou de outro usuario apareca.
+- Testes: src/test/favorites.test.tsx (3 casos: so favoritados na ordem dos favoritos, estado vazio
+  com atalho, toggle sem navegar para o curso). Suite: 55 arquivos, todos verdes.
 ```
 
 ---
@@ -1650,7 +1666,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
-| FUNC-002 | Favoritar Cursos | 4h |
+| FUNC-002 | Favoritar Cursos | ✅ 4h |
 | FUNC-015 | Recomendações Personalizadas | 4h |
 | FUNC-012 | Metas de Aprendizado | 4h |
 | UI-015 | Avatar Upload | 4h |
@@ -1698,7 +1714,7 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 5 | ~17h |
 | Performance | 1 | ~4h |
-| Funcionalidades | 9 | ~51h |
+| Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
 | SEO | 3 | ~8h |
@@ -1707,7 +1723,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **32** | **~206h** |
+| **TOTAL PENDENTE** | **31** | **~202h** |
 
 ---
 

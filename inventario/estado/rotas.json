@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 120,
+    "hooks_distintos": 121,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 78,
+      "arquivos_lidos": 80,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -178,6 +178,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useVideoOffline",
+          "arquivo": "src/hooks/useVideoOffline.ts"
         },
         {
           "nome": "useViewMode",
@@ -738,7 +742,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 74,
+      "arquivos_lidos": 76,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -879,6 +883,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useVideoOffline",
+          "arquivo": "src/hooks/useVideoOffline.ts"
         },
         {
           "nome": "useViewMode",
@@ -1032,7 +1040,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 42,
+      "arquivos_lidos": 45,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1097,6 +1105,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useVideoOffline",
+          "arquivo": "src/hooks/useVideoOffline.ts"
         }
       ],
       "buckets": [],
@@ -1152,7 +1164,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 107,
+      "arquivos_lidos": 109,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1329,6 +1341,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useVideoOffline",
+          "arquivo": "src/hooks/useVideoOffline.ts"
         },
         {
           "nome": "useViewMode",
@@ -2077,7 +2093,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 62,
+      "arquivos_lidos": 64,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2218,6 +2234,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useVideoOffline",
+          "arquivo": "src/hooks/useVideoOffline.ts"
         },
         {
           "nome": "useViewMode",
@@ -2308,7 +2328,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 66,
+      "arquivos_lidos": 68,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2449,6 +2469,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useVideoOffline",
+          "arquivo": "src/hooks/useVideoOffline.ts"
         },
         {
           "nome": "useViewMode",
@@ -4126,6 +4150,17 @@
         "/curso/:slug/aula/:lessonId",
         "/dashboard",
         "/perfil",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useVideoOffline": {
+      "arquivo": "src/hooks/useVideoOffline.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
         "/trilha/:slug",
         "/trilhas"
       ]

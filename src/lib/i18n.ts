@@ -69,6 +69,23 @@ const dict = {
       adminTitle: "Transcrição da aula",
       adminHint: "Uma linha por trecho. Prefixe com o tempo (ex.: 00:45) para o aluno pular direto ao ponto.",
     },
+    offline: {
+      titulo: "Assistir offline",
+      dica: "Baixe a aula para assistir sem internet. Fica gravada neste aparelho.",
+      baixar: "Baixar aula",
+      baixando: "Baixando aula",
+      cancelar: "Cancelar",
+      disponivel: "Disponível offline",
+      remover: "Remover do aparelho",
+      semConexao: "Sem conexão e esta aula não está baixada neste aparelho.",
+      baixado: "Aula baixada para assistir offline.",
+      erro: "Não foi possível baixar a aula.",
+      cancelado: "Download cancelado.",
+      pendente: "Sem conexão: seu progresso ficou salvo no aparelho e será enviado quando voltar.",
+      sincronizado: "Progresso da aula enviado para a plataforma.",
+      armazenado: "Aulas neste aparelho",
+      limpar: "Remover todas",
+    },
     gestures: {
       pull: "Puxe para atualizar",
       release: "Solte para atualizar",
@@ -286,6 +303,23 @@ const dict = {
       retry: "Try again",
       adminTitle: "Lesson transcript",
       adminHint: "One line per passage. Prefix it with the timestamp (e.g. 00:45) so learners can jump straight to it.",
+    },
+    offline: {
+      titulo: "Watch offline",
+      dica: "Download this lesson to watch without internet. It stays on this device.",
+      baixar: "Download lesson",
+      baixando: "Downloading lesson",
+      cancelar: "Cancel",
+      disponivel: "Available offline",
+      remover: "Remove from device",
+      semConexao: "You are offline and this lesson is not downloaded on this device.",
+      baixado: "Lesson downloaded for offline watching.",
+      erro: "We could not download this lesson.",
+      cancelado: "Download cancelled.",
+      pendente: "You are offline: your progress was saved on this device and will be sent when the connection returns.",
+      sincronizado: "Lesson progress sent to the platform.",
+      armazenado: "Lessons on this device",
+      limpar: "Remove all",
     },
     gestures: {
       pull: "Pull to refresh",
@@ -505,6 +539,23 @@ const dict = {
       adminTitle: "Transcripción de la clase",
       adminHint: "Una línea por fragmento. Pon el tiempo al inicio (ej.: 00:45) para que el alumno vaya directo al punto.",
     },
+    offline: {
+      titulo: "Ver sin conexión",
+      dica: "Descarga esta clase para verla sin internet. Queda guardada en este dispositivo.",
+      baixar: "Descargar clase",
+      baixando: "Descargando clase",
+      cancelar: "Cancelar",
+      disponivel: "Disponible sin conexión",
+      remover: "Quitar del dispositivo",
+      semConexao: "Sin conexión y esta clase no está descargada en este dispositivo.",
+      baixado: "Clase descargada para ver sin conexión.",
+      erro: "No se pudo descargar la clase.",
+      cancelado: "Descarga cancelada.",
+      pendente: "Sin conexión: tu progreso quedó guardado en el dispositivo y se enviará cuando vuelva la conexión.",
+      sincronizado: "Progreso de la clase enviado a la plataforma.",
+      armazenado: "Clases en este dispositivo",
+      limpar: "Quitar todas",
+    },
     gestures: {
       pull: "Tira para actualizar",
       release: "Suelta para actualizar",
@@ -668,6 +719,7 @@ export type DictPath =
   | `store.${keyof Dict["store"]}`
   | `chapters.${keyof Dict["chapters"]}`
   | `transcript.${keyof Dict["transcript"]}`
+  | `offline.${keyof Dict["offline"]}`
   | `gestures.${keyof Dict["gestures"]}`
   | `theme.${keyof Dict["theme"]}`
   | `reputation.${keyof Dict["reputation"]}`

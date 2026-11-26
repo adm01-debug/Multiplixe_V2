@@ -1,16 +1,19 @@
+import type { DictPath } from '@/lib/i18n';
+
 export interface NivelReputacao {
   nivel: number;
-  titulo: string;
+  chave: DictPath;
   minimo: number;
   proximo_minimo: number | null;
 }
 
-// Faixas de reputacao exibidas no perfil. A pontuacao vem de public.detalhar_reputacao.
+// Faixas de reputacao exibidas no perfil. A pontuacao vem de public.detalhar_reputacao
+// e os nomes dos niveis de src/lib/i18n.ts (reputation.levelN).
 export const NIVEIS_REPUTACAO: NivelReputacao[] = [
-  { nivel: 1, titulo: 'Iniciante', minimo: 0, proximo_minimo: 25 },
-  { nivel: 2, titulo: 'Colaborador', minimo: 25, proximo_minimo: 100 },
-  { nivel: 3, titulo: 'Mentor', minimo: 100, proximo_minimo: 300 },
-  { nivel: 4, titulo: 'Referência', minimo: 300, proximo_minimo: null },
+  { nivel: 1, chave: 'reputation.level1', minimo: 0, proximo_minimo: 25 },
+  { nivel: 2, chave: 'reputation.level2', minimo: 25, proximo_minimo: 100 },
+  { nivel: 3, chave: 'reputation.level3', minimo: 100, proximo_minimo: 300 },
+  { nivel: 4, chave: 'reputation.level4', minimo: 300, proximo_minimo: null },
 ];
 
 export const PESOS_REPUTACAO = {
@@ -34,9 +37,4 @@ export const nivelDaReputacao = (pontos: number): ProgressoReputacao => {
     : Math.min(100, Math.max(0, Math.round(((total - atual.minimo) / (proximo - atual.minimo)) * 100)));
 
   return { ...atual, faltam, progresso };
-};
-
-export const rotuloPontosReputacao = (pontos: number) => {
-  const total = Math.max(0, Math.floor(Number.isFinite(pontos) ? pontos : 0));
-  return total === 1 ? '1 ponto' : total.toLocaleString('pt-BR') + ' pontos';
 };

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { nivelDaReputacao, rotuloPontosReputacao } from "@/lib/reputacao";
+import { nivelDaReputacao } from "@/lib/reputacao";
 import { ReputacaoCard } from "@/components/profile/ReputacaoCard";
 import type { DetalheReputacao } from "@/hooks/useReputacao";
 
@@ -15,7 +15,7 @@ const detalhe = (valores: Partial<DetalheReputacao> = {}): DetalheReputacao => (
 
 describe("nivelDaReputacao", () => {
   it("comeca no nivel 1 sem pontos", () => {
-    expect(nivelDaReputacao(0)).toMatchObject({ nivel: 1, titulo: "Iniciante", minimo: 0, proximo_minimo: 25, faltam: 25, progresso: 0 });
+    expect(nivelDaReputacao(0)).toMatchObject({ nivel: 1, minimo: 0, proximo_minimo: 25, faltam: 25, progresso: 0 });
   });
 
   it("calcula o progresso dentro da faixa", () => {
@@ -24,8 +24,8 @@ describe("nivelDaReputacao", () => {
   });
 
   it("sobe de nivel exatamente na fronteira", () => {
-    expect(nivelDaReputacao(25)).toMatchObject({ nivel: 2, titulo: "Colaborador", faltam: 75, progresso: 0 });
-    expect(nivelDaReputacao(100)).toMatchObject({ nivel: 3, titulo: "Mentor", faltam: 200, progresso: 0 });
+    expect(nivelDaReputacao(25)).toMatchObject({ nivel: 2, faltam: 75, progresso: 0 });
+    expect(nivelDaReputacao(100)).toMatchObject({ nivel: 3, faltam: 200, progresso: 0 });
     expect(nivelDaReputacao(299)).toMatchObject({ nivel: 3, faltam: 1, progresso: 100 });
   });
 
@@ -42,21 +42,12 @@ describe("nivelDaReputacao", () => {
   });
 });
 
-describe("rotuloPontosReputacao", () => {
-  it("flexiona singular e plural e nunca mostra negativo", () => {
-    expect(rotuloPontosReputacao(0)).toBe("0 pontos");
-    expect(rotuloPontosReputacao(1)).toBe("1 ponto");
-    expect(rotuloPontosReputacao(2)).toBe("2 pontos");
-    expect(rotuloPontosReputacao(-7)).toBe("0 pontos");
-    expect(rotuloPontosReputacao(Number.NaN)).toBe("0 pontos");
-  });
-});
-
 describe("ReputacaoCard", () => {
   it("mostra total, nivel e quanto falta para subir", () => {
     render(<ReputacaoCard detalhe={detalhe({ total: 42, votos_recebidos: 5, respostas: 3, respostas_aceitas: 2, votos_negativos: 1 })} />);
 
     expect(screen.getByText("42")).toBeTruthy();
+    expect(screen.queryByText("42 pontos")).toBeNull();
     expect(screen.getByText(/2 - Colaborador/)).toBeTruthy();
     expect(screen.getByText(/Faltam 58 pontos/)).toBeTruthy();
     expect(screen.getByText("5")).toBeTruthy();

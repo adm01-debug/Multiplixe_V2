@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "3d945ba3ccab221bef6d64b987bbc920ef3d64b6",
+  "commit": "e7d87e412d9b1a0f781d4b57333c95dacf9194d7",
   "branch": "claude/feat-game-012-reputacao-261126-0900",
-  "data_commit": "2026-11-26T08:35:32-03:00",
+  "data_commit": "2026-11-26T08:57:46-03:00",
   "ultimos_commits": [
+   "e7d87e4 feat: reputacao social no perfil (GAME-012)",
    "3d945ba chore: marca MOB-002 (gestos mobile) como concluido no plano (#86)",
    "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)",
    "27a4c58 chore: marca FUNC-007 (mentoria) e FUNC-017 (transcricao) como implementadas (#84)",
@@ -14,8 +15,7 @@
    "9504633 chore: marca UI-009 como concluido no plano (#82)",
    "d52def3 feat: preview em video no hover do card de curso (UI-009) (#80)",
    "c4f9cbf chore: marca UI-012 como concluido no plano (#79)",
-   "07320d1 feat: tema de cores personalizavel (UI-012) (#78)",
-   "c30b81e chore: marcar FUNC-019 (capitulos no video) como concluido no plano (#77)"
+   "07320d1 feat: tema de cores personalizavel (UI-012) (#78)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -24,43 +24,43 @@
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 20
+    "mudancas": 21
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 19
+    "mudancas": 20
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "src/pages/Profile.tsx",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "src/lib/i18n.ts",
@@ -101,9 +101,9 @@
   ]
  },
  "contagens": {
-  "arquivos": 621,
+  "arquivos": 622,
   "arquivos_de_codigo": 507,
-  "linhas_de_codigo": 71789,
+  "linhas_de_codigo": 71873,
   "componentes": 238,
   "hooks": 132,
   "paginas": 28,
@@ -111,7 +111,7 @@
   "edge_functions": 13,
   "rotas": 28,
   "tabelas": 71,
-  "migrations": 77
+  "migrations": 78
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -152,7 +152,7 @@
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 77,
+  "supabase/migrations": 78,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -193,6 +193,10 @@
    "linhas": 458
   },
   {
+   "arquivo": "src/lib/i18n.ts",
+   "linhas": 440
+  },
+  {
    "arquivo": "src/components/quiz/QuizPlayer.tsx",
    "linhas": 415
   },
@@ -223,10 +227,6 @@
   {
    "arquivo": "src/components/analytics/SkillRadarChart.tsx",
    "linhas": 359
-  },
-  {
-   "arquivo": "src/lib/i18n.ts",
-   "linhas": 358
   },
   {
    "arquivo": "src/components/admin/CourseForm.tsx",

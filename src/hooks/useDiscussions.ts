@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { queryClient } from '@/lib/queryClient';
 
 export interface Discussion {
   id: string;
@@ -195,6 +196,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
 
       if (error) throw error;
 
+      queryClient.invalidateQueries({ queryKey: ['reputacao'] });
       toast.success('Resposta enviada!');
       return data;
     } catch {
@@ -225,6 +227,7 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
         .update({ is_resolved: true })
         .eq('id', discussionId);
 
+      queryClient.invalidateQueries({ queryKey: ['reputacao'] });
       toast.success('Marcado como resposta!');
       fetchDiscussions();
     } catch {
@@ -247,6 +250,8 @@ export const useDiscussions = (courseId?: string, lessonId?: string) => {
         });
 
       if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ['reputacao'] });
 
       if (type === 'discussion') {
         fetchDiscussions();

@@ -2119,9 +2119,10 @@
     "MinhaReputacaoCard",
     "ReputacaoCard"
    ],
-   "linhas": 106,
+   "linhas": 115,
    "hooks": [
-    "useReputacao"
+    "useReputacao",
+    "useT"
    ],
    "tabelas": [],
    "edges": [],
@@ -3477,9 +3478,10 @@
   {
    "arquivo": "src/pages/PublicProfile.tsx",
    "exports": [],
-   "linhas": 211,
+   "linhas": 213,
    "hooks": [
-    "usePublicProfile"
+    "usePublicProfile",
+    "useT"
    ],
    "tabelas": [],
    "edges": [],

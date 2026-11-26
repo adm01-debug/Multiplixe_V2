@@ -681,7 +681,7 @@
   },
   "useDiscussions": {
    "arquivo": "src/hooks/useDiscussions.ts",
-   "linhas": 270,
+   "linhas": 275,
    "tabelas": [
     "course_discussions",
     "discussion_replies",
@@ -1485,7 +1485,7 @@
   },
   "useReputacao": {
    "arquivo": "src/hooks/useReputacao.ts",
-   "linhas": 47,
+   "linhas": 44,
    "tabelas": [],
    "rpcs": [
     "detalhar_reputacao"
@@ -1787,7 +1787,7 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 358,
+   "linhas": 440,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1798,9 +1798,11 @@
     "src/components/navigation/MobileBottomNav.tsx",
     "src/components/player/ChaptersPanel.tsx",
     "src/components/player/TranscriptPanel.tsx",
+    "src/components/profile/ReputacaoCard.tsx",
     "src/components/ui/ThemeCustomizer.tsx",
     "src/pages/Catalog.tsx",
     "src/pages/LessonPlayer.tsx",
+    "src/pages/PublicProfile.tsx",
     "src/pages/Store.tsx"
    ],
    "coberto_por_teste": true

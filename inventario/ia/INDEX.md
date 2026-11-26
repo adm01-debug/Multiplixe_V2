@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `3d945ba3ccab221bef6d64b987bbc920ef3d64b6` · branch `claude/feat-game-012-reputacao-261126-0900` · 2026-11-26T08:35:32-03:00
+Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-012-reputacao-261126-0900` · 2026-11-26T08:57:46-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `3d945ba3ccab221bef6d64b987bbc920ef3d64b6` · branch `claude/feat-game-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 621 (507) |
-| linhas de codigo | 71789 |
+| arquivos (codigo) | 622 (507) |
+| linhas de codigo | 71873 |
 | paginas / rotas | 28 / 28 |
 | componentes / hooks | 238 / 132 |
 | arquivos de teste | 86 |
 | edge functions | 13 |
-| tabelas / migrations | 71 / 77 |
+| tabelas / migrations | 71 / 78 |
 
 ## Divida medida
 
@@ -46,7 +46,7 @@ Commit: `3d945ba3ccab221bef6d64b987bbc920ef3d64b6` · branch `claude/feat-game-0
 | `/avaliacoes` | src/pages/SkillAssessments.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | detect-new-device |
 | `/biblioteca-videos` | src/pages/VideoLibrary.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | — |
 | `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 34 | detect-new-device, export-user-data, generate-certificate |
-| `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 13 | detect-new-device |
+| `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 14 | detect-new-device |
 | `/curso/:slug/aula/:lessonId` | src/pages/LessonPlayer.tsx | sim | prefetch | 17 | detect-new-device, generate-certificate |
 | `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 40 | detect-new-device, export-user-data, generate-certificate |
 | `/flashcards` | src/pages/Flashcards.tsx | sim | command-palette, navegacao-no-codigo | 1 | detect-new-device |
@@ -86,7 +86,7 @@ Commit: `3d945ba3ccab221bef6d64b987bbc920ef3d64b6` · branch `claude/feat-game-0
 
 ## Banco (declarado pelo repo)
 
-71 tabelas · 186 policies · 90 funcoes · 2 cron jobs · 1 bucket(s) · 77 migrations
+71 tabelas · 187 policies · 91 funcoes · 2 cron jobs · 1 bucket(s) · 78 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -119,15 +119,15 @@ Commit: `3d945ba3ccab221bef6d64b987bbc920ef3d64b6` · branch `claude/feat-game-0
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (52)
-- `src/integrations/supabase/types.ts` (20)
-- `inventario/estado/schema-declarado.json` (19)
-- `inventario/ia/baseline.json` (18)
-- `inventario/ia/INDEX.md` (18)
-- `inventario/ia/manifest.json` (18)
-- `inventario/ia/componentes.json` (15)
-- `inventario/ia/grafo.json` (14)
-- `inventario/estado/rotas.json` (13)
-- `inventario/ia/hooks.json` (13)
+- `src/integrations/supabase/types.ts` (21)
+- `inventario/estado/schema-declarado.json` (20)
+- `inventario/ia/baseline.json` (19)
+- `inventario/ia/INDEX.md` (19)
+- `inventario/ia/manifest.json` (19)
+- `inventario/ia/componentes.json` (16)
+- `inventario/ia/grafo.json` (15)
+- `inventario/estado/rotas.json` (14)
+- `inventario/ia/hooks.json` (14)
 
 ## Scripts npm
 

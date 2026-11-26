@@ -10,8 +10,6 @@ export interface DetalheReputacao {
   respostas_aceitas: number;
 }
 
-const VAZIO: DetalheReputacao = { total: 0, votos_recebidos: 0, votos_negativos: 0, respostas: 0, respostas_aceitas: 0 };
-
 const numero = (valor: unknown) => (typeof valor === 'number' && Number.isFinite(valor) ? valor : Number(valor) || 0);
 
 export const useReputacao = (userId?: string) => {
@@ -21,6 +19,7 @@ export const useReputacao = (userId?: string) => {
   const consulta = useQuery({
     queryKey: ['reputacao', alvo],
     enabled: !!alvo,
+    staleTime: 0,
     queryFn: async (): Promise<DetalheReputacao> => {
       const { data, error } = await supabase.rpc('detalhar_reputacao', { p_user_id: alvo });
       if (error) throw error;
@@ -42,5 +41,3 @@ export const useReputacao = (userId?: string) => {
     recarregar: consulta.refetch,
   };
 };
-
-export const REPUTACAO_VAZIA = VAZIO;

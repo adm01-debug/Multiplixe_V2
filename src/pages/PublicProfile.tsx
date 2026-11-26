@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Award, BookOpenCheck, Flame, Lock, Sparkles, ArrowLeft, UserX, Trophy, ShieldCheck } from 'lucide-react';
 import { usePublicProfile } from '@/hooks/usePublicProfile';
 import { nivelDaReputacao } from '@/lib/reputacao';
+import { useT } from '@/lib/i18n';
 
 const initialsOf = (name?: string | null) => {
   if (!name) return '?';
@@ -26,6 +27,7 @@ const formatDate = (value?: string | null) => {
 const PublicProfile = () => {
   const { id } = useParams<{ id: string }>();
   const { profile, loading, error } = usePublicProfile(id);
+  const { t } = useT();
 
   if (loading) {
     return (
@@ -117,7 +119,7 @@ const PublicProfile = () => {
                 <Sparkles className="h-3 w-3 mr-1" /> Nível {profile!.xp?.current_level ?? 1}
               </Badge>
               <Badge variant="outline" className="rounded-lg">
-                <ShieldCheck className="h-3 w-3 mr-1 text-violet-500" /> Nível {nivelReputacao.nivel} de reputação
+                <ShieldCheck className="h-3 w-3 mr-1 text-violet-500" /> {t('reputation.level')} {nivelReputacao.nivel} {t('reputation.badge')}
               </Badge>
               <Badge variant="outline" className="rounded-lg">
                 <Flame className="h-3 w-3 mr-1 text-orange-500" /> {profile!.streak?.current ?? 0} dias de sequência
@@ -153,7 +155,7 @@ const PublicProfile = () => {
         <div className="rounded-2xl bg-card/80 border border-border/50 p-5">
           <ShieldCheck className="h-5 w-5 text-violet-500 mb-2" />
           <div className="text-2xl font-display font-bold text-foreground">{reputacao.toLocaleString('pt-BR')}</div>
-          <p className="text-sm text-muted-foreground">Reputação · Nível {nivelReputacao.nivel}</p>
+          <p className="text-sm text-muted-foreground">{t('reputation.cardLabel')} · {t('reputation.level')} {nivelReputacao.nivel}</p>
         </div>
       </section>
 

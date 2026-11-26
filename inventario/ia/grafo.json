@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "nos": 507,
- "arestas": 1403,
+ "arestas": 1407,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -66,7 +66,7 @@
   },
   {
    "arquivo": "src/lib/i18n.ts",
-   "importado_por": 14
+   "importado_por": 17
   },
   {
    "arquivo": "src/components/SimpleEmptyState.tsx",
@@ -1221,6 +1221,7 @@
    "src/components/ui/button.tsx",
    "src/components/ui/progress.tsx",
    "src/hooks/useReputacao.ts",
+   "src/lib/i18n.ts",
    "src/lib/reputacao.ts"
   ],
   "src/components/pwa/PWAInstallPrompt.tsx": [
@@ -1612,7 +1613,8 @@
   ],
   "src/hooks/useDiscussions.ts": [
    "src/hooks/useAuth.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
   ],
   "src/hooks/useFavorites.ts": [
    "src/hooks/useAuth.tsx",
@@ -1831,7 +1833,9 @@
   "src/lib/queryPersister.ts": [],
   "src/lib/quizAdaptive.ts": [],
   "src/lib/quizReview.ts": [],
-  "src/lib/reputacao.ts": [],
+  "src/lib/reputacao.ts": [
+   "src/lib/i18n.ts"
+  ],
   "src/lib/routePrefetch.ts": [],
   "src/lib/salesEnablementSchemas.ts": [],
   "src/lib/schemas.ts": [],
@@ -2136,6 +2140,7 @@
    "src/components/ui/card.tsx",
    "src/components/ui/skeleton.tsx",
    "src/hooks/usePublicProfile.ts",
+   "src/lib/i18n.ts",
    "src/lib/reputacao.ts"
   ],
   "src/pages/RateLimitDashboard.tsx": [

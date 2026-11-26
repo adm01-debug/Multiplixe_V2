@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (78)
+### ✅ Melhorias JÁ IMPLEMENTADAS (79)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (21)
+## ⏳ MELHORIAS PENDENTES (20)
 
 ### 🎨 UX/UI - 2 Pendentes
 
@@ -1309,7 +1309,7 @@ Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) 
 Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
-### 🎮 GAMIFICAÇÃO - 5 Pendentes
+### 🎮 GAMIFICAÇÃO - 4 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1448,7 +1448,7 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 
 ---
 
-#### GAME-006: Moeda Virtual
+#### GAME-006: Moeda Virtual ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 8h  
 **Descrição:** Apenas XP, sem moeda para gastar.
@@ -1461,6 +1461,15 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 4. Gastar em: avatares, temas, power-ups
 ```
 
+**Entregue em 26/11/2026**
+
+O aluno só acumulava XP: não existia moeda, carteira, extrato nem loja para gastar.
+
+- `supabase/migrations/20261127140000_moeda_virtual.sql` (aplicada em produção): coluna `user_xp.coins`, tabelas `coin_transactions`, `store_items` e `user_purchases`, 6 funções (`get_my_wallet`, `apply_coin_transaction`, `award_coins_from_xp`, `award_coins_from_achievement`, `purchase_store_item`, `admin_grant_coins`), 3 triggers, RLS com leitura só do próprio aluno e 10 itens de catálogo (avatar, tema, cosmético, power-up, XP Boost 2x).
+- `20261127150000_moeda_virtual_hardening.sql`, `20261127160000_moeda_virtual_nao_retroativa.sql` e `20261127170000_moeda_virtual_guarda_sobra_xp.sql` (todas aplicadas em produção): o saldo e a sobra de XP só mudam por função `SECURITY DEFINER` dona de `postgres`; a guarda recusa alteração feita por `authenticated` (saldo **e** `coins_xp_remainder`), o aluno não pode mais inserir conquista direto (`revoke insert` + remoção da policy) e a conversão XP→moeda virou incremental por resto acumulado, sem creditar XP anterior à loja.
+- Front: `src/lib/store.ts`, `src/hooks/useWallet.ts`, `src/pages/Store.tsx` (loja com catálogo, coleção, extrato, estados de erro/vazio e aviso quando o preço muda entre a tela e a compra), `src/components/admin/AdminStoreTab.tsx` (CRUD do catálogo e crédito manual para o admin), rota `/loja` em `src/App.tsx`, carteira no `DashboardHeader`, loja na `CommandPalette` e no menu inferior do celular, coleção visível no perfil e chaves de i18n nos 3 idiomas.
+- Validado em produção com transação + ROLLBACK atuando como aluno: editar saldo → **BLOQUEADO**; injetar moedas no insert → **BLOQUEADO**; inflar a sobra de XP → **BLOQUEADO**; criar conquista → *permission denied*; `add_user_xp`, upsert de `user_xp` sem moedas, marcar conquista como vista, `get_my_wallet`, `admin_grant_coins` e `purchase_store_item` continuam permitidos. Conversão: 25+25 XP = **5 moedas**; aluno com 345 XP antigos ganha 2 moedas em 25 XP (o método por acumulado creditaria 37). Compra real: 200 moedas − item de 150 = saldo 50, extrato somando 50 e 1 item na coleção.
+- Deploy provado no bundle servido: `assets/Store-BfnzTyk0.js`, `assets/useWallet-C72igWsI.js` e `assets/Profile-DlBT1XN9.js` contêm "recompensas", `get_my_wallet`, o aviso de preço alterado e o aviso de coleção desatualizada.
 ---
 
 #### GAME-007: Power-ups de Estudo
@@ -2016,12 +2025,12 @@ CREATE TABLE public.webhook_endpoints (
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
-| Gamificação | 5 | ~34h |
+| Gamificação | 4 | ~26h |
 | Administrativas | 1 | ~4h |
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **21** | **~114h** |
+| **TOTAL PENDENTE** | **20** | **~106h** |
 
 ---
 

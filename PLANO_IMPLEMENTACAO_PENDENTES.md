@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (66)
+### ✅ Melhorias JÁ IMPLEMENTADAS (67)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (33)
+## ⏳ MELHORIAS PENDENTES (32)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1254,7 +1254,7 @@ Nada a implementar neste item.
 
 ---
 
-### 🎮 GAMIFICAÇÃO - 10 Pendentes
+### 🎮 GAMIFICAÇÃO - 9 Pendentes
 
 #### GAME-002: Desafios Semanais
 **Prioridade:** 🟢 Baixa  
@@ -1410,7 +1410,7 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 
 ---
 
-#### GAME-011: Ranking por Categoria
+#### GAME-011: Ranking por Categoria ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Leaderboard geral apenas.
@@ -1422,6 +1422,19 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 3. Mostrar especialistas por área
 4. "Top em Vendas", "Top em Atendimento"
 ```
+
+**Entregue em 26/11/2026**
+
+O ranking só existia global (individual) e por departamento. Não havia como ver quem é referência em cada área do catálogo, mesmo com `courses.category_id` e as 6 categorias já cadastradas.
+
+- `supabase/migrations/20261126040000_ranking_por_categoria.sql` (nova, já aplicada em produção): RPC `public.get_category_leaderboard(p_category_id uuid default null, p_limit integer default 10)`. Métrica = cursos concluídos na categoria, desempate por aulas concluídas; devolve `rank` por categoria. SECURITY DEFINER, `stable`, `search_path` fixo, `revoke` de `public`/`anon` e `grant` só para `authenticated`.
+- Administradores são removidos **antes** do rankeamento (e não depois), senão o ranking abria buraco: a conta admin aparecia como rank 1 e o primeiro aluno exibido saía como rank 2.
+- `src/hooks/useCategoryLeaderboard.ts` (novo): chama o RPC e agrupa as linhas por categoria.
+- `src/components/leaderboard/CategoryLeaderboard.tsx` (novo): cards por categoria com o top 3 ("Top em Vendas", "Top em Atendimento"), atalhos por categoria com a cor real de `categories.color`, lista completa ao filtrar, skeleton, mensagem de erro e estado vazio.
+- `src/pages/Leaderboard.tsx`: terceira aba **Por Categoria** ao lado de Individual e Por Departamento.
+
+**Verificado de verdade (produção, transação com ROLLBACK):** aluno sintético com 1 curso concluído e 3 aulas na categoria Tecnologia → RPC devolveu exatamente 1 curso / 3 aulas / rank 1, e a conta admin (que também tinha o curso e 9 aulas) ficou de fora.
+- `tsc -b --force` 0 erros · guard de Supabase 0 violações · `src/test/categoryLeaderboard.test.tsx` (novo, 4 casos): chamada única ao RPC, agrupamento, filtro por categoria, falha do RPC e estado vazio.
 
 ---
 
@@ -1869,7 +1882,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **33** | **~164h** |
+| **TOTAL PENDENTE** | **32** | **~160h** |
 
 ---
 

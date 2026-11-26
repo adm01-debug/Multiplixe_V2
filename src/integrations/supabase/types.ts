@@ -2556,6 +2556,21 @@ export type Database = {
         }
         Returns: string
       }
+      get_category_leaderboard: {
+        Args: { p_category_id?: string; p_limit?: number }
+        Returns: {
+          avatar_url: string | null
+          category_color: string | null
+          category_id: string
+          category_name: string
+          category_slug: string | null
+          completed_courses: number
+          completed_lessons: number
+          display_name: string
+          rank: number
+          user_id: string
+        }[]
+      }
       get_department_leaderboard: {
         Args: { p_limit?: number }
         Returns: {

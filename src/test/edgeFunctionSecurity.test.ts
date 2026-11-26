@@ -59,6 +59,17 @@ describe("Edge Function Security - Input Validation", () => {
       expect(code).toContain("alert_type");
     });
 
+    it("should require an authenticated session before writing", () => {
+      expect(code).toContain("req.headers.get('Authorization')");
+      expect(code).toContain("auth.getUser()");
+    });
+
+    it("should only let admins point an alert at another account", () => {
+      expect(code).toContain("const alvo = payload.user_id ?? userData.user.id");
+      expect(code).toContain("Apenas administradores podem registrar alerta para outra conta");
+      expect(code).toContain("user_id: alvo,");
+    });
+
     it("should use Supabase client for database operations", () => {
       expect(code).toContain("createClient");
     });

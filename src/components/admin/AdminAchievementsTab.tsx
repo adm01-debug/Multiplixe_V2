@@ -198,7 +198,14 @@ const AdminAchievementsTab = () => {
                     <TableCell>
                       <Badge variant="secondary">{categoryLabel(row.category)}</Badge>
                     </TableCell>
-                    <TableCell className="text-sm">{labelForRequirement(row.requirement_type, row.requirement_value)}</TableCell>
+                    <TableCell className="text-sm">
+                      {labelForRequirement(row.requirement_type, row.requirement_value, row.requirement_category)}
+                      {row.is_secret && (
+                        <Badge variant="outline" className="ml-2">
+                          Secreta
+                        </Badge>
+                      )}
+                    </TableCell>
                     <TableCell className="text-sm">{row.xp_reward} XP</TableCell>
                     <TableCell className="text-sm">{unlockCounts[row.id] ?? 0}</TableCell>
                     <TableCell className="text-right">
@@ -345,6 +352,37 @@ const AdminAchievementsTab = () => {
                 />
               </div>
             </div>
+
+                          {draft.requirement_type === "category_courses_completed" && (
+                            <div className="space-y-1">
+                              <Label htmlFor="achievement-requirement-category">Categoria do requisito</Label>
+                              <Input
+                                id="achievement-requirement-category"
+                                placeholder="Ex.: Vendas"
+                                value={draft.requirement_category}
+                                onChange={(e) => patchDraft({ requirement_category: e.target.value })}
+                              />
+                              <p className="text-xs text-muted-foreground">
+                                Conta apenas cursos concluídos cuja categoria tenha exatamente esse nome.
+                              </p>
+                            </div>
+                          )}
+
+                          <div className="flex items-start gap-2 rounded-md border border-border/60 bg-muted/30 p-3">
+                            <input
+                              id="achievement-secret"
+                              type="checkbox"
+                              className="mt-0.5 h-4 w-4"
+                              checked={draft.is_secret}
+                              onChange={(e) => patchDraft({ is_secret: e.target.checked })}
+                            />
+                            <div>
+                              <Label htmlFor="achievement-secret">Conquista secreta</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Fica oculta no perfil do aluno enquanto não for desbloqueada.
+                              </p>
+                            </div>
+                          </div>
 
             <div className="space-y-1">
               <Label>Gradiente</Label>

@@ -14,6 +14,7 @@ interface Achievement {
   requirement_type: string;
   requirement_value: number;
   gradient: string;
+    is_secret?: boolean;
 }
 
 interface UserAchievement {

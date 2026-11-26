@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (64)
+### ✅ Melhorias JÁ IMPLEMENTADAS (65)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (35)
+## ⏳ MELHORIAS PENDENTES (34)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1237,7 +1237,7 @@ Nada a implementar neste item.
 
 ---
 
-### 🎮 GAMIFICAÇÃO - 11 Pendentes
+### 🎮 GAMIFICAÇÃO - 10 Pendentes
 
 #### GAME-002: Desafios Semanais
 **Prioridade:** 🟢 Baixa  
@@ -1270,7 +1270,7 @@ Nada a implementar neste item.
 
 ---
 
-#### GAME-004: Recompensas de Milestone Expandidas
+#### GAME-004: Recompensas de Milestone Expandidas ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Conquistas existem mas podem expandir.
@@ -1282,6 +1282,24 @@ Nada a implementar neste item.
 3. Badges especiais por categoria
 4. Conquistas secretas
 ```
+
+**Entregue em 26/11/2026**
+
+O motor de conquistas só sabia avaliar 4 tipos de requisito (`total_xp`, `current_level`, `lessons_completed`, `courses_completed`). As 4 conquistas de pomodoro do catálogo nunca desbloqueavam, porque `pomodoro_sessions` não era avaliado e `complete_pomodoro_session` não chamava o motor. Também não existia conquista secreta.
+
+- `supabase/migrations/20261126020000_gamificacao_conquistas_expandidas.sql` (nova, já aplicada em produção): colunas `achievements.requirement_category` (usada só pelo requisito por categoria) e `achievements.is_secret` (`boolean not null default false`).
+- `check_and_award_achievements(uuid)` reescrita: passa de 4 para 7 tipos de requisito, somando `pomodoro_sessions` (conta `pomodoro_sessions`), `streak_days` (maior sequência em `user_streaks.longest_streak`) e `category_courses_completed` (cursos concluídos dentro da categoria escolhida). Continua SECURITY DEFINER e idempotente: só insere o que o aluno ainda não tem.
+- `complete_pomodoro_session` passou a chamar `check_and_award_achievements`: terminar um pomodoro concede a conquista na hora, sem depender de o aluno abrir a página de conquistas.
+- 4 conquistas de pomodoro tinham nome de ícone lucide gravado como texto ("Timer", "Crown", "Trophy", "Flame") e o grid renderiza o campo como texto puro: o aluno via a palavra. Convertidas para emoji, com UTF-8 conferido byte a byte (`encode(convert_to(icon,'UTF8'),'hex')`).
+- 7 conquistas novas (`ON CONFLICT (slug) DO NOTHING`): 10 cursos, 100 aulas, sequência de 7 dias, sequência de 30 dias (secreta, 300 XP) e uma por categoria — Vendas, Atendimento e Soft Skills. Catálogo vai a 23 conquistas.
+- Admin (`src/components/admin/AdminAchievementsTab.tsx` + `src/lib/achievementAdmin.ts`): campo "Categoria do requisito" aparece apenas quando o tipo é por categoria (e passa a ser obrigatório), checkbox "Conquista secreta" e selo "Secreta" na linha da tabela; `labelForRequirement` descreve o requisito como "Cursos concluídos na categoria (Vendas) ≥ 2".
+- Aluno (`src/components/AchievementsGrid.tsx`): conquista secreta não desbloqueada não aparece na grade — depois de desbloqueada entra normalmente, inclusive na visão compacta.
+- `src/integrations/supabase/types.ts` e `src/hooks/useAchievements.ts`: tipos com as duas colunas novas.
+- `src/test/adminAchievements.test.tsx`: 14 casos, incluindo categoria obrigatória, categoria no payload, `is_secret` no payload e o selo "Secreta" com o requisito por categoria na tabela.
+
+Validado no banco de produção dentro de transação com rollback: 10 sessões de pomodoro sintéticas concederam `pomodoro_first`, `pomodoro_10` e `category_service`, e uma chamada real a `complete_pomodoro_session` concedeu a conquista imediatamente.
+
+Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 testes, `node --test scripts/ci/*.unit.mjs` 85 pass / 0 fail, guard de Supabase 0 violações, `vite build` ok.
 
 ---
 
@@ -1773,7 +1791,7 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🟡 Fase 2: Importantes (Semana 3-4)
-**Prioridade: Média | Esforço Total: ~9h**
+**Prioridade: Média | Esforço Total: ~5h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -1781,7 +1799,7 @@ CREATE TABLE public.webhook_endpoints (
 | FUNC-015 | Recomendações Personalizadas | ✅ 4h |
 | FUNC-012 | Metas de Aprendizado | ✅ 4h |
 | UI-015 | Avatar Upload | ✅ 4h |
-| GAME-004 | Conquistas Expandidas | 4h |
+| GAME-004 | Conquistas Expandidas | ✅ 4h |
 | ADMIN-002 | Gestão de Usuários Avançada | ✅ 4h |
 | REF-002 | Layout Wrapper | 3h |
 | REF-004 | Tipos Centralizados | 2h |
@@ -1834,7 +1852,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **35** | **~171h** |
+| **TOTAL PENDENTE** | **34** | **~167h** |
 
 ---
 

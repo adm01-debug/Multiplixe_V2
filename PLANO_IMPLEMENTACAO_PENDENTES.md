@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (59)
+### ✅ Melhorias JÁ IMPLEMENTADAS (60)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (40)
+## ⏳ MELHORIAS PENDENTES (39)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -317,7 +317,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 9 Pendentes
+### 🚀 FUNCIONALIDADES - 8 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -407,7 +407,7 @@ A tabela `user_notes`, o hook `useNotes` e o `NotesPanel` (criar, editar, exclui
 
 ---
 
-#### FUNC-005: Melhorar Download de Certificado PDF
+#### FUNC-005: Melhorar Download de Certificado PDF ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 3h  
 **Descrição:** Template do certificado pode melhorar.
@@ -420,6 +420,19 @@ A tabela `user_notes`, o hook `useNotes` e o `NotesPanel` (criar, editar, exclui
 4. Melhorar tipografia e layout
 5. Opção de compartilhar no LinkedIn
 ```
+
+**Entregue em 26/11/2026**
+
+O botao "Baixar" entregava um arquivo `.svg` (o edge function devolve o certificado como SVG em base64, apesar do nome `pdfBase64`), o layout era um desenho fixo no edge function e nao havia como levar o certificado para o LinkedIn.
+
+- `src/lib/certificatePdf.ts` (novo): `buildCertificatePdf` monta um PDF A4 paisagem de verdade com jsPDF (que ja era dependencia): moldura dourada dupla, marca PROMO BRINDES no topo, titulo em serifada, nome e curso com quebra de linha automatica, data de emissao em pt-BR, bloco de assinatura digital e rodape com codigo + URL de verificacao. Tema claro, pensado para impressao.
+- `src/lib/certificatePdf.ts`: `buildLinkedInCertificationUrl` (startTask=CERTIFICATION_NAME, nome do curso, organizacao, mes/ano de emissao, URL absoluta de verificacao e codigo), `absoluteCertificateUrl` e `certificateFileName` (`certificado-<codigo>.pdf`).
+- `src/hooks/useCertificates.ts`: `downloadCertificate` passou a receber os dados do certificado e salvar o PDF (antes decodificava o SVG em base64 e baixava `.svg`).
+- `src/components/CertificateCard.tsx`: botao "Adicionar certificado ao LinkedIn" ao lado de visualizar/baixar/verificar, abrindo o formulario de certificacao do LinkedIn em nova aba.
+- `src/test/certificatePdf.test.ts` (novo, 5 casos) e `src/test/certificateShare.test.tsx` (novo, 2 casos): conteudo do PDF, nome do arquivo, data em pt-BR, parametros do LinkedIn e o clique em Baixar entregando os dados certos.
+
+QR de verificacao ficou fora: exigiria uma dependencia de encoder de QR (nao existe no projeto) e o certificado ja imprime codigo + URL da pagina publica `/verificar-certificado`.
+
 
 ---
 
@@ -1748,7 +1761,7 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🔵 Fase 4: Nice-to-Have (Semana 7-8)
-**Prioridade: Baixa | Esforço Total: ~18h**
+**Prioridade: Baixa | Esforço Total: ~15h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -1756,7 +1769,7 @@ CREATE TABLE public.webhook_endpoints (
 | FUNC-022 | Compartilhar Conquistas | ✅ 4h |
 | INT-003 | SSO Google/Microsoft | 4h |
 | ADMIN-003 | Gestão de Conquistas | 4h |
-| FUNC-005 | Melhorar Certificado PDF | 3h |
+| FUNC-005 | Melhorar Certificado PDF | ✅ 3h |
 | UI-008 | Grid/Lista Toggle | ✅ 4h |
 | REF-005 | Constants File | 1h |
 
@@ -1777,7 +1790,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **40** | **~188h** |
+| **TOTAL PENDENTE** | **39** | **~185h** |
 
 ---
 

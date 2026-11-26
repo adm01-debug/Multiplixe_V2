@@ -2,10 +2,11 @@ import { memo, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Award, Download, Eye, ExternalLink, Copy, Check } from 'lucide-react';
+import { Award, Download, Eye, ExternalLink, Copy, Check, Linkedin } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCertificates } from '@/hooks/useCertificates';
+import { buildLinkedInCertificationUrl } from '@/lib/certificatePdf';
 import { toast } from 'sonner';
 
 interface Certificate {
@@ -56,7 +57,13 @@ function CertificateCardImpl({ certificate }: CertificateCardProps) {
       );
 
       if (result) {
-        downloadCertificate(result.pdfBase64, `certificado-${certificate.verification_code}`);
+        downloadCertificate({
+          userName: certificate.user_name,
+          courseTitle: certificate.course_title,
+          issuedAt: certificate.issued_at,
+          verificationCode: certificate.verification_code,
+          verificationUrl: result.verificationUrl,
+        });
         toast.success('Certificado baixado com sucesso!');
       } else {
         toast.error('Erro ao baixar certificado');
@@ -86,6 +93,13 @@ function CertificateCardImpl({ certificate }: CertificateCardProps) {
   };
 
   const verificationUrl = `/verificar-certificado?code=${certificate.verification_code}`;
+  const linkedInUrl = buildLinkedInCertificationUrl({
+    userName: certificate.user_name,
+    courseTitle: certificate.course_title,
+    issuedAt: certificate.issued_at,
+    verificationCode: certificate.verification_code,
+    verificationUrl,
+  });
 
   return (
     <>
@@ -156,6 +170,17 @@ function CertificateCardImpl({ certificate }: CertificateCardProps) {
             >
               <a href={verificationUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4" />
+              </a>
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <a
+                href={linkedInUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Adicionar certificado ao LinkedIn"
+                title="Adicionar ao LinkedIn"
+              >
+                <Linkedin className="h-4 w-4" />
               </a>
             </Button>
           </div>

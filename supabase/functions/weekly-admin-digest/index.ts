@@ -127,7 +127,7 @@ async function collectStats(supabase: ReturnType<typeof createClient>): Promise<
       supabase.from("profiles").select("id", { count: "exact", head: true }).gte("created_at", startIso),
       supabase.from("user_xp_history").select("xp_amount").gte("created_at", startIso),
       supabase.from("user_lesson_progress").select("id", { count: "exact", head: true }).eq("is_completed", true).gte("completed_at", startIso),
-      supabase.from("user_course_progress").select("course_id").eq("progress_percentage", 100).gte("updated_at", startIso),
+      supabase.from("user_course_progress").select("course_id").eq("progress_percentage", 100).gte("completed_at", startIso),
       supabase.from("user_streaks").select("user_id", { count: "exact", head: true }).lt("last_activity_date", streakCutoff).gt("current_streak", 0),
       supabase.from("courses").select("id, title"),
     ]);

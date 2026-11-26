@@ -1,22 +1,22 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T08:22:14.057Z",
- "commit": "51c7545a8f9e18b00e602a2319548162ac054383",
+ "gerado_em": "2026-11-26T08:29:59.157Z",
+ "commit": "1f29df226ff107cbcfba4692596936556122d63c",
  "branch": "claude/feat-func-019-capitulos-261126-0520",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "ac7180ed3327a7c6",
-  "baseline.json": "88efbebf348a0e4f",
-  "componentes.json": "5af2087630cd898c",
-  "grafo.json": "c7eaa2e4e9a3f0ad",
-  "hooks.json": "2cbc06570cc9e67a"
+  "INDEX.md": "849fbbd06afd23e9",
+  "baseline.json": "77b988dc7664e3d5",
+  "componentes.json": "c7581d67a2b78141",
+  "grafo.json": "fae97fc9649a1d11",
+  "hooks.json": "7c5d5509b518de02"
  },
  "contagens": {
   "arquivos": 600,
   "arquivos_de_codigo": 490,
-  "linhas_de_codigo": 68625,
+  "linhas_de_codigo": 68700,
   "componentes": 235,
   "hooks": 123,
   "paginas": 27,

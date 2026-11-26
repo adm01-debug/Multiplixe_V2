@@ -134,7 +134,8 @@ const LessonPlayer = () => {
 
   const handleProgress = useCallback(async (currentTime: number, duration: number) => {
     if (!user || !currentLesson || !course) return;
-    const isCompleted = currentTime / duration >= 0.9;
+    const jaConcluida = lessonsProgress.find((p) => p.lesson_id === currentLesson.id)?.is_completed ?? false;
+    const isCompleted = jaConcluida || currentTime / duration >= 0.9;
     try {
       const { error } = await supabase.from("user_lesson_progress").upsert({ user_id: user.id, lesson_id: currentLesson.id, course_id: course.id, last_position_seconds: Math.floor(currentTime), watched_seconds: Math.floor(currentTime), is_completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null }, { onConflict: "user_id,lesson_id" });
       if (!error && isCompleted) {

@@ -638,9 +638,10 @@
    "exports": [
     "LessonForm"
    ],
-   "linhas": 306,
+   "linhas": 323,
    "hooks": [
     "useEffect",
+    "useMemo",
     "useState",
     "useT"
    ],
@@ -2006,7 +2007,7 @@
   {
    "arquivo": "src/components/player/VideoPlayer.tsx",
    "exports": [],
-   "linhas": 275,
+   "linhas": 277,
    "hooks": [
     "useCallback",
     "useEffect",
@@ -3298,7 +3299,7 @@
   {
    "arquivo": "src/pages/LessonPlayer.tsx",
    "exports": [],
-   "linhas": 228,
+   "linhas": 229,
    "hooks": [
     "useAchievements",
     "useAuth",

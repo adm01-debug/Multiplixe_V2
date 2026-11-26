@@ -55,6 +55,7 @@ const dict = {
       startLabel: "Início (segundos)",
       remove: "Remover capítulo",
       afterEnd: "Há capítulo marcado depois do fim do vídeo. Confira o tempo de início.",
+      duplicateStart: "Dois capítulos começam no mesmo segundo. Ajuste o início para não perder nenhum.",
     },
     common: {
       search: "Buscar",
@@ -117,6 +118,7 @@ const dict = {
       startLabel: "Start (seconds)",
       remove: "Remove chapter",
       afterEnd: "A chapter starts after the end of the video. Check the start time.",
+      duplicateStart: "Two chapters start at the same second. Adjust the start time so none is lost.",
     },
     common: {
       search: "Search",
@@ -179,6 +181,7 @@ const dict = {
       startLabel: "Inicio (segundos)",
       remove: "Eliminar capítulo",
       afterEnd: "Hay un capítulo marcado después del final del video. Revisa el tiempo de inicio.",
+      duplicateStart: "Dos capítulos empiezan en el mismo segundo. Ajusta el inicio para no perder ninguno.",
     },
     common: {
       search: "Buscar",

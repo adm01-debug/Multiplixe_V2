@@ -209,6 +209,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    const alvo = e.target instanceof HTMLElement ? e.target : null;
+    if (alvo && (alvo.isContentEditable || alvo.closest('button, a, [role="button"], [role="link"]'))) return;
     const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
     switch (e.key.toLowerCase()) {
       case ' ': case 'k': e.preventDefault(); togglePlay(); break;

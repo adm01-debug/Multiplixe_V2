@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import {
   CHAPTERS_MAX,
@@ -9,6 +9,8 @@ import {
   parseChapters,
 } from "@/lib/chapters";
 import ChaptersPanel from "@/components/player/ChaptersPanel";
+import VideoPlayer from "@/components/player/VideoPlayer";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { t } from "@/lib/i18n";
 
 describe("parseChapters", () => {
@@ -130,6 +132,7 @@ describe("textos dos capitulos", () => {
     "chapters.startLabel",
     "chapters.remove",
     "chapters.afterEnd",
+    "chapters.duplicateStart",
   ] as const;
 
   it("existe nos tres idiomas", () => {
@@ -174,5 +177,53 @@ describe("ChaptersPanel", () => {
     const atual = screen.getByRole("button", { name: /Proposta/ });
     expect(atual).toHaveAttribute("aria-current", "true");
     expect(screen.getByText(t("chapters.now"))).toBeInTheDocument();
+  });
+});
+
+describe("atalhos do player com capitulos", () => {
+  const play = vi.fn(() => Promise.resolve());
+  const pause = vi.fn();
+
+  beforeEach(() => {
+    play.mockClear();
+    pause.mockClear();
+    Object.defineProperty(HTMLMediaElement.prototype, "play", { configurable: true, writable: true, value: play });
+    Object.defineProperty(HTMLMediaElement.prototype, "pause", { configurable: true, writable: true, value: pause });
+    Object.defineProperty(HTMLMediaElement.prototype, "duration", { configurable: true, get: () => 300 });
+    Object.defineProperty(HTMLMediaElement.prototype, "paused", { configurable: true, get: () => true });
+  });
+
+  const renderPlayer = () =>
+    render(
+      <TooltipProvider>
+        <VideoPlayer src="aula.mp4" title="Aula 1" chapters={[{ title: "Introducao", start_seconds: 0 }]} />
+      </TooltipProvider>,
+    );
+
+  const marcarDuracao = (container: HTMLElement) => {
+    const video = container.querySelector("video");
+    if (video) fireEvent(video, new Event("loadedmetadata"));
+    return video;
+  };
+
+  it("mostra o marcador do capitulo na barra", () => {
+    const { container } = renderPlayer();
+    marcarDuracao(container);
+    expect(screen.getByRole("button", { name: /Introducao/ })).toHaveAttribute("title", "0:00 · Introducao");
+  });
+
+  it("Espaco em um botao da interface nao rouba o clique do capitulo", () => {
+    const { container } = renderPlayer();
+    marcarDuracao(container);
+    fireEvent.keyDown(screen.getByRole("button", { name: /Introducao/ }), { key: " " });
+    expect(play).not.toHaveBeenCalled();
+    expect(pause).not.toHaveBeenCalled();
+  });
+
+  it("Espaco fora de botoes continua alternando a reproducao", () => {
+    const { container } = renderPlayer();
+    marcarDuracao(container);
+    fireEvent.keyDown(document.body, { key: " " });
+    expect(play).toHaveBeenCalledTimes(1);
   });
 });

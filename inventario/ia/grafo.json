@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "nos": 490,
- "arestas": 1340,
+ "arestas": 1342,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -2208,6 +2208,8 @@
   ],
   "src/test/chapters.test.tsx": [
    "src/components/player/ChaptersPanel.tsx",
+   "src/components/player/VideoPlayer.tsx",
+   "src/components/ui/tooltip.tsx",
    "src/lib/chapters.ts",
    "src/lib/i18n.ts"
   ],

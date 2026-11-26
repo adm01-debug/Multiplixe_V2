@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `51c7545a8f9e18b00e602a2319548162ac054383` · branch `claude/feat-func-019-capitulos-261126-0520` · 2026-11-26T05:14:36-03:00
+Commit: `1f29df226ff107cbcfba4692596936556122d63c` · branch `claude/feat-func-019-capitulos-261126-0520` · 2026-11-26T05:22:47-03:00
 
 ## Como usar
 
@@ -22,7 +22,7 @@ Commit: `51c7545a8f9e18b00e602a2319548162ac054383` · branch `claude/feat-func-0
 | | |
 |---|---|
 | arquivos (codigo) | 600 (490) |
-| linhas de codigo | 68625 |
+| linhas de codigo | 68700 |
 | paginas / rotas | 27 / 27 |
 | componentes / hooks | 235 / 123 |
 | arquivos de teste | 79 |
@@ -118,15 +118,15 @@ Commit: `51c7545a8f9e18b00e602a2319548162ac054383` · branch `claude/feat-func-0
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (47)
-- `inventario/estado/schema-declarado.json` (16)
-- `src/integrations/supabase/types.ts` (16)
-- `inventario/ia/baseline.json` (13)
-- `inventario/ia/INDEX.md` (13)
-- `inventario/ia/manifest.json` (13)
-- `inventario/ia/componentes.json` (10)
-- `inventario/estado/rotas.json` (9)
-- `inventario/ia/grafo.json` (9)
-- `inventario/ia/hooks.json` (8)
+- `inventario/estado/schema-declarado.json` (17)
+- `src/integrations/supabase/types.ts` (17)
+- `inventario/ia/baseline.json` (14)
+- `inventario/ia/INDEX.md` (14)
+- `inventario/ia/manifest.json` (14)
+- `inventario/ia/componentes.json` (11)
+- `inventario/estado/rotas.json` (10)
+- `inventario/ia/grafo.json` (10)
+- `inventario/ia/hooks.json` (9)
 
 ## Scripts npm
 

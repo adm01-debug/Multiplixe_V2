@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "51c7545a8f9e18b00e602a2319548162ac054383",
+  "commit": "1f29df226ff107cbcfba4692596936556122d63c",
   "branch": "claude/feat-func-019-capitulos-261126-0520",
-  "data_commit": "2026-11-26T05:14:36-03:00",
+  "data_commit": "2026-11-26T05:22:47-03:00",
   "ultimos_commits": [
+   "1f29df2 feat: capitulos de tempo no video da aula (FUNC-019)",
    "51c7545 chore: marcar GAME-007 (power-ups) como concluido no plano (#75)",
    "06ae69a feat: dar efeito real aos power-ups da loja (GAME-007) (#74)",
    "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
@@ -14,8 +15,7 @@
    "5c62c2e feat: ligas semanais com promocao e rebaixamento (GAME-003) (#70)",
    "875fa6b chore: marcar FUNC-009 (flashcards SRS) como concluido no plano (#69)",
    "3600e01 feat: flashcards de revisao com repeticao espacada (FUNC-009) (#68)",
-   "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)",
-   "6b9fbfc feat: quiz adaptativo com niveis de dificuldade (FUNC-020) (#66)"
+   "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -24,39 +24,39 @@
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "src/pages/Profile.tsx",
@@ -103,7 +103,7 @@
  "contagens": {
   "arquivos": 600,
   "arquivos_de_codigo": 490,
-  "linhas_de_codigo": 68625,
+  "linhas_de_codigo": 68700,
   "componentes": 235,
   "hooks": 123,
   "paginas": 27,
@@ -253,16 +253,16 @@
    "linhas": 323
   },
   {
+   "arquivo": "src/components/admin/LessonForm.tsx",
+   "linhas": 323
+  },
+  {
    "arquivo": "src/pages/Profile.tsx",
    "linhas": 322
   },
   {
    "arquivo": "src/components/gamification/XPAnimations.tsx",
    "linhas": 320
-  },
-  {
-   "arquivo": "src/pages/Admin.tsx",
-   "linhas": 318
   }
  ],
  "qualidade": {

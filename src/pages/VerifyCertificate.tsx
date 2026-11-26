@@ -79,7 +79,7 @@ export default function VerifyCertificate() {
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   className="uppercase font-mono text-lg tracking-wider"
-                  maxLength={8}
+                  maxLength={16}
                 />
                 <Button onClick={handleVerify} disabled={loading || !code.trim()}>
                   <Search className="h-4 w-4 mr-2" />
@@ -116,7 +116,9 @@ export default function VerifyCertificate() {
                     </div>
                     
                     <div>
-                      <p className="text-sm text-muted-foreground">Curso Concluído</p>
+                      <p className="text-sm text-muted-foreground">
+                        {certificate.kind === 'trilha' ? 'Trilha Concluída' : 'Curso Concluído'}
+                      </p>
                       <p className="text-lg font-semibold">{certificate.course_title}</p>
                     </div>
                     

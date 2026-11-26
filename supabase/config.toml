@@ -14,7 +14,7 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.detect-new-device]
-verify_jwt = false
+verify_jwt = true
 
 [functions.cleanup-security-logs]
 verify_jwt = true

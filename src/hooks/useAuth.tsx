@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const checkNewDevice = async (userId: string, userEmail: string) => {
+  const checkNewDevice = async () => {
     try {
       // Get IP address from a public API
       const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -27,8 +27,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       await supabase.functions.invoke('detect-new-device', {
         body: {
-          user_id: userId,
-          user_email: userEmail,
           ip_address: ipAddress,
           user_agent: navigator.userAgent
         }
@@ -50,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (event === 'SIGNED_IN' && session?.user) {
           // Use setTimeout to avoid blocking the auth flow
           setTimeout(() => {
-            checkNewDevice(session.user.id, session.user.email || '');
+            checkNewDevice();
           }, 100);
         }
       }

@@ -28,13 +28,19 @@ describe("Edge Function Security - Input Validation", () => {
 
   describe("detect-new-device", () => {
     const code = readFile("supabase/functions/detect-new-device/index.ts");
+      const config = readFile("supabase/config.toml");
 
-    it("should validate user_id input", () => {
-      expect(code).toMatch(/user_id|userId/);
+      it("should derive the user from the access token, not from the body", () => {
+        expect(code).toContain("auth.getUser()");
+        expect(code).toMatch(/const user_id = userData\.user\.id/);
+        expect(code).not.toMatch(/user_id,\s*user_email,\s*ip_address/);
     });
 
-    it("should validate email input", () => {
-      expect(code).toContain("email");
+      it("should require a JWT before running", () => {
+        const marcador = "[functions.detect-new-device]";
+        const inicio = config.indexOf(marcador);
+        const bloco = config.slice(inicio + marcador.length);
+        expect(bloco.split("[functions.")[0]).toContain("verify_jwt = true");
     });
 
     it("should handle error cases gracefully", () => {

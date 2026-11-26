@@ -6,10 +6,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  GraduationCap, ArrowLeft, Loader2, BookOpen, Users, BarChart3,
+  GraduationCap, Loader2, BookOpen, Users, BarChart3,
   ShieldAlert, TrendingUp, Zap, Trophy, Route, Shield, Target,
   FileText, Video, Sparkles, Settings, Brain, ShoppingBag, Gift, CalendarDays, Webhook,
 } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { toast } from 'sonner';
 import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
 import type { UserStat } from '@/components/admin/admin-users/types';
@@ -54,7 +56,7 @@ const TabFallback = () => (
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+    const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useAdminRole();
   const [courses, setCourses] = useState<AdminCourse[]>([]);
   const [users, setUsers] = useState<UserStat[]>([]);
@@ -170,29 +172,18 @@ const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl hover:bg-muted">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-red-500 to-orange-500">
-                  <ShieldAlert className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold">Administração</h1>
-                  <p className="text-sm text-muted-foreground">Gerencie a plataforma</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8">
+    <AppLayout
+      cabecalho={
+        <PageHeader
+          titulo="Administração"
+          subtitulo="Gerencie a plataforma"
+          icone={ShieldAlert}
+          gradiente="from-red-500 to-orange-500"
+          nivel={50}
+          classeVoltar="rounded-xl hover:bg-muted"
+        />
+      }
+    >
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {statCards.map((stat) => {
             const IconComponent = stat.icon;
@@ -330,8 +321,7 @@ const Admin = () => {
             </Suspense>
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+          </AppLayout>
   );
 };
 

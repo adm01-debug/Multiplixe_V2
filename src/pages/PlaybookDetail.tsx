@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ArrowLeft, Eye, Calendar, Tag, Sparkles, Loader2 } from 'lucide-react';
+import { Eye, Calendar, Tag, Sparkles, Loader2 } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,7 +18,7 @@ import PlaybookDetailSkeleton from '@/components/skeletons/PlaybookDetailSkeleto
 const PlaybookDetail = () => {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
-  const { data: playbook, isLoading } = usePlaybook(slug);
+    const { data: playbook, isLoading } = usePlaybook(slug);
   const registerView = useRegisterPlaybookView();
   const [summary, setSummary] = useState<string | null>(null);
   const [summarizing, setSummarizing] = useState(false);
@@ -58,23 +60,22 @@ const PlaybookDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title={playbook.title}
-        description={playbook.summary || `Playbook de vendas: ${playbook.title}`}
-        url={`https://multiplixe-v2.vercel.app/playbook/${playbook.slug}`}
-        type="article"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-3">
-          <Button variant="ghost" size="icon" aria-label="Voltar para playbooks" onClick={() => navigate('/playbooks')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <span className="text-sm text-muted-foreground">Voltar aos playbooks</span>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
+    <AppLayout
+      seo={{
+        title: playbook.title,
+        description: playbook.summary || `Playbook de vendas: ${playbook.title}`,
+        url: `https://multiplixe-v2.vercel.app/playbook/${playbook.slug}`,
+        type: "article",
+      }}
+      cabecalho={
+        <PageHeader
+          rotuloVoltar="Voltar aos playbooks"
+          ariaVoltar="Voltar para playbooks"
+          voltarPara="/playbooks"
+        />
+      }
+      classeConteudo="max-w-4xl"
+    >
         <div className="space-y-4 mb-8">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary" className="capitalize">{playbook.category}</Badge>
@@ -124,8 +125,7 @@ const PlaybookDetail = () => {
         </article>
 
         <PlaybookComments playbookId={playbook.id} />
-      </main>
-    </div>
+          </AppLayout>
   );
 };
 

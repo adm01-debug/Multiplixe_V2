@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Target, Clock, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
+import { Target, Clock, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -17,34 +19,26 @@ const statusMap: Record<DueAssessment['status'], { label: string; variant: 'defa
 
 const SkillAssessments = () => {
   const navigate = useNavigate();
-  const { data: due = [], isLoading: loadDue } = useDueAssessments();
+    const { data: due = [], isLoading: loadDue } = useDueAssessments();
   const { data: results = [], isLoading: loadRes } = useUserAssessmentResults();
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title="Avaliações de Competência"
-        description="Mantenha suas habilidades de vendas em dia com avaliações periódicas."
-        url="https://multiplixe-v2.vercel.app/avaliacoes"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500">
-              <Target className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">Avaliações de Competência</h1>
-              <p className="text-sm text-muted-foreground">Acompanhe e mantenha suas habilidades em dia</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 space-y-8">
+    <AppLayout
+      seo={{
+        title: "Avaliações de Competência",
+        description: "Mantenha suas habilidades de vendas em dia com avaliações periódicas.",
+        url: "https://multiplixe-v2.vercel.app/avaliacoes",
+      }}
+      cabecalho={
+        <PageHeader
+          titulo="Avaliações de Competência"
+          subtitulo="Acompanhe e mantenha suas habilidades em dia"
+          icone={Target}
+          gradiente="from-amber-500 to-orange-500"
+        />
+      }
+      classeConteudo="space-y-8"
+    >
         <section>
           <h2 className="text-lg font-semibold mb-4">Avaliações disponíveis</h2>
           {loadDue ? (
@@ -118,8 +112,7 @@ const SkillAssessments = () => {
             </Card>
           )}
         </section>
-      </main>
-    </div>
+          </AppLayout>
   );
 };
 

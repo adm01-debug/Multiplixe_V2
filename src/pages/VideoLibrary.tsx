@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Video, Search, Play, Clock } from 'lucide-react';
+import { Video, Search, Play, Clock } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,8 +20,7 @@ const formatDuration = (s: number) => {
 };
 
 const VideoLibrary = () => {
-  const navigate = useNavigate();
-  const { data: videos = [], isLoading } = useTrainingVideos();
+    const { data: videos = [], isLoading } = useTrainingVideos();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<string>('all');
   const [active, setActive] = useState<TrainingVideo | null>(null);
@@ -58,30 +58,23 @@ const VideoLibrary = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title="Biblioteca de Vídeos"
-        description="Demos de produto e treinamentos rápidos para o time de vendas."
-        url="https://multiplixe-v2.vercel.app/biblioteca-videos"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500">
-              <Video className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">Biblioteca de Vídeos</h1>
-              <p className="text-sm text-muted-foreground">Demos e treinamentos rápidos</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 space-y-6">
+        <>
+      <AppLayout
+      seo={{
+        title: "Biblioteca de Vídeos",
+        description: "Demos de produto e treinamentos rápidos para o time de vendas.",
+        url: "https://multiplixe-v2.vercel.app/biblioteca-videos",
+      }}
+      cabecalho={
+        <PageHeader
+          titulo="Biblioteca de Vídeos"
+          subtitulo="Demos e treinamentos rápidos"
+          icone={Video}
+          gradiente="from-purple-500 to-pink-500"
+        />
+      }
+      classeConteudo="space-y-6"
+    >
         <div className="relative max-w-2xl">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input aria-label="Buscar vídeos" placeholder="Buscar vídeos..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" />
@@ -131,8 +124,7 @@ const VideoLibrary = () => {
             ))}
           </div>
         )}
-      </main>
-
+  
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
         <DialogContent className="max-w-4xl">
           <DialogTitle>{active?.title}</DialogTitle>
@@ -152,7 +144,8 @@ const VideoLibrary = () => {
           {active?.description && <p className="text-sm text-muted-foreground">{active.description}</p>}
         </DialogContent>
       </Dialog>
-    </div>
+      </AppLayout>
+    </>
   );
 };
 

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Brain, CheckCircle2, Clock, Layers, Play, RotateCcw, Sparkles, Trophy } from 'lucide-react';
+import { Brain, CheckCircle2, Clock, Layers, Play, RotateCcw, Sparkles, Trophy } from 'lucide-react';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +18,7 @@ const TODOS = 'todos';
 
 const Flashcards = () => {
   const navigate = useNavigate();
-  const [params, setParams] = useSearchParams();
+    const [params, setParams] = useSearchParams();
   const { data: overview, isLoading } = useFlashcardOverview();
   const [courseId, setCourseId] = useState<string | null>(params.get('curso'));
 
@@ -40,30 +42,22 @@ const Flashcards = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <DynamicSEO
-        title="Flashcards de Revisão"
-        description="Revise o conteúdo dos cursos em cartões com repetição espaçada e ganhe XP."
-        url="https://multiplixe-v2.vercel.app/flashcards"
-      />
-      <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Voltar ao painel" onClick={() => navigate('/dashboard')} className="rounded-xl">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500">
-              <Brain className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">Flashcards de Revisão</h1>
-              <p className="text-sm text-muted-foreground">Repetição espaçada: revise no dia certo e fixe o conteúdo</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 space-y-6">
+    <AppLayout
+      seo={{
+        title: "Flashcards de Revisão",
+        description: "Revise o conteúdo dos cursos em cartões com repetição espaçada e ganhe XP.",
+        url: "https://multiplixe-v2.vercel.app/flashcards",
+      }}
+      cabecalho={
+        <PageHeader
+          titulo="Flashcards de Revisão"
+          subtitulo="Repetição espaçada: revise no dia certo e fixe o conteúdo"
+          icone={Brain}
+          gradiente="from-violet-500 to-fuchsia-500"
+        />
+      }
+      classeConteudo="space-y-6"
+    >
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { titulo: 'Para revisar agora', valor: overview?.pendentes ?? 0, icon: Clock, cor: 'text-amber-500' },
@@ -209,8 +203,7 @@ const Flashcards = () => {
             Último cartão agendado {describeDue(session.lastResult.due_at).toLowerCase()} · fator de facilidade {session.lastResult.ease_factor}.
           </p>
         )}
-      </main>
-    </div>
+          </AppLayout>
   );
 };
 

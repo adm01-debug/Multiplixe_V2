@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 74,
     "colunas": 650,
     "views": 1,
-    "funcoes": 98,
+    "funcoes": 99,
     "funcoes_expostas_no_types": 65,
     "enums": 1,
     "policies": 192,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 80,
+    "migrations": 81,
     "alertas": 3,
     "problemas": 3
   },
@@ -1220,7 +1220,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261126060000_multiplicador_xp.sql",
+      "criada_em": "20261128203000_add_user_xp_precisao.sql",
       "uso_no_codigo": {
         "src": 2,
         "edges": 0
@@ -1787,7 +1787,7 @@
       "retorno": "Json",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261128200000_eventos_sazonais.sql",
+      "criada_em": "20261128203000_add_user_xp_precisao.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -2470,6 +2470,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "xp_display": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": null,
+      "criada_em": "20261128203000_add_user_xp_precisao.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

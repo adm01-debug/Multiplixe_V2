@@ -327,14 +327,15 @@
   {
    "arquivo": "src/components/admin/AdminEventsTab.tsx",
    "exports": [],
-   "linhas": 362,
+   "linhas": 368,
    "hooks": [
     "useAdminSeasonalEvents",
     "useAlternarEvento",
     "useExcluirEvento",
     "useMemo",
     "useSalvarEvento",
-    "useState"
+    "useState",
+    "useT"
    ],
    "tabelas": [],
    "edges": [],
@@ -366,7 +367,7 @@
   {
    "arquivo": "src/components/admin/AdminMissionsTab.tsx",
    "exports": [],
-   "linhas": 372,
+   "linhas": 371,
    "hooks": [
     "useAdminMissions",
     "useAlternarMissao",
@@ -1298,7 +1299,7 @@
   {
    "arquivo": "src/components/gamification/DailyChallenges.tsx",
    "exports": [],
-   "linhas": 482,
+   "linhas": 483,
    "hooks": [
     "useDailyChallenges",
     "useEffect",

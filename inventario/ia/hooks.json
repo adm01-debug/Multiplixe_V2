@@ -220,7 +220,7 @@
   },
   "useAdminSeasonalEvents": {
    "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
-   "linhas": 143,
+   "linhas": 144,
    "tabelas": [
     "seasonal_events"
    ],
@@ -250,7 +250,7 @@
   },
   "useAlternarEvento": {
    "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
-   "linhas": 143,
+   "linhas": 144,
    "tabelas": [
     "seasonal_events"
    ],
@@ -791,7 +791,7 @@
   },
   "useExcluirEvento": {
    "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
-   "linhas": 143,
+   "linhas": 144,
    "tabelas": [
     "seasonal_events"
    ],
@@ -1639,7 +1639,7 @@
   },
   "useSalvarEvento": {
    "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
-   "linhas": 143,
+   "linhas": 144,
    "tabelas": [
     "seasonal_events"
    ],
@@ -1933,12 +1933,13 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 583,
+   "linhas": 719,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [
     "src/components/LanguageToggle.tsx",
+    "src/components/admin/AdminEventsTab.tsx",
     "src/components/admin/LessonForm.tsx",
     "src/components/dashboard/DashboardHeader.tsx",
     "src/components/gamification/DepartmentChallenges.tsx",

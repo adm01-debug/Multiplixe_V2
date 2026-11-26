@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T13:54:33.869Z",
- "commit": "95bd7ca1c7d81e5c4127363622565f2c8e9dfd1e",
- "branch": "main",
+ "gerado_em": "2026-11-26T14:19:59.198Z",
+ "commit": "8ba215859e3a5c65cb7fdd021883c39e08ae59cb",
+ "branch": "claude/feat-game-009-eventos-sazonais-261126-1056",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "1cf8ba8e75d53cf7",
-  "baseline.json": "1c7cb0a195f2905a",
-  "componentes.json": "e070daf583c97656",
-  "grafo.json": "d754037baa891532",
-  "hooks.json": "4c3112adbc71d780"
+  "INDEX.md": "e25e0dee8820bd19",
+  "baseline.json": "df22cfff5ec1532d",
+  "componentes.json": "573882910966effd",
+  "grafo.json": "14b706b4a6ce8edb",
+  "hooks.json": "e9f0d076957c7aa9"
  },
  "contagens": {
-  "arquivos": 636,
-  "arquivos_de_codigo": 517,
-  "linhas_de_codigo": 73847,
+  "arquivos": 643,
+  "arquivos_de_codigo": 521,
+  "linhas_de_codigo": 74080,
   "componentes": 242,
   "hooks": 142,
   "paginas": 28,
-  "testes": 88,
+  "testes": 90,
   "edge_functions": 13,
   "rotas": 28,
   "tabelas": 74,
-  "migrations": 80
+  "migrations": 81
  },
  "erros": []
 }

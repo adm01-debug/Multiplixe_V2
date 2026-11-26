@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `95bd7ca1c7d81e5c4127363622565f2c8e9dfd1e` · branch `main` · 2026-11-26T10:43:09-03:00
+Commit: `8ba215859e3a5c65cb7fdd021883c39e08ae59cb` · branch `claude/feat-game-009-eventos-sazonais-261126-1056` · 2026-11-26T11:16:21-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `95bd7ca1c7d81e5c4127363622565f2c8e9dfd1e` · branch `main` · 2026-11-2
 
 | | |
 |---|---|
-| arquivos (codigo) | 636 (517) |
-| linhas de codigo | 73847 |
+| arquivos (codigo) | 643 (521) |
+| linhas de codigo | 74080 |
 | paginas / rotas | 28 / 28 |
 | componentes / hooks | 242 / 142 |
-| arquivos de teste | 88 |
+| arquivos de teste | 90 |
 | edge functions | 13 |
-| tabelas / migrations | 74 / 80 |
+| tabelas / migrations | 74 / 81 |
 
 ## Divida medida
 
@@ -86,7 +86,7 @@ Commit: `95bd7ca1c7d81e5c4127363622565f2c8e9dfd1e` · branch `main` · 2026-11-2
 
 ## Banco (declarado pelo repo)
 
-74 tabelas · 192 policies · 98 funcoes · 2 cron jobs · 1 bucket(s) · 80 migrations
+74 tabelas · 192 policies · 99 funcoes · 2 cron jobs · 1 bucket(s) · 81 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -119,15 +119,15 @@ Commit: `95bd7ca1c7d81e5c4127363622565f2c8e9dfd1e` · branch `main` · 2026-11-2
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (54)
-- `src/integrations/supabase/types.ts` (22)
-- `inventario/estado/schema-declarado.json` (21)
-- `inventario/ia/baseline.json` (20)
-- `inventario/ia/INDEX.md` (20)
-- `inventario/ia/manifest.json` (20)
-- `inventario/ia/componentes.json` (17)
-- `inventario/ia/grafo.json` (16)
-- `inventario/estado/rotas.json` (15)
-- `inventario/ia/hooks.json` (15)
+- `src/integrations/supabase/types.ts` (23)
+- `inventario/estado/schema-declarado.json` (22)
+- `inventario/ia/baseline.json` (21)
+- `inventario/ia/INDEX.md` (21)
+- `inventario/ia/manifest.json` (21)
+- `inventario/ia/componentes.json` (18)
+- `inventario/ia/grafo.json` (17)
+- `inventario/estado/rotas.json` (16)
+- `inventario/ia/hooks.json` (16)
 
 ## Scripts npm
 

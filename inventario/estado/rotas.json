@@ -268,7 +268,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 67,
+      "arquivos_lidos": 68,
       "hooks": [
         {
           "nome": "useAdminFlashcards",
@@ -1125,7 +1125,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 105,
+      "arquivos_lidos": 106,
       "hooks": [
         {
           "nome": "useAchievements",

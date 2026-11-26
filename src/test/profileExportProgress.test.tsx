@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Profile from "@/pages/Profile";
 
-const { docSave, tables, authValue, xpValue, achievementsValue, certificatesValue } = vi.hoisted(() => {
+const { docSave, invokeMock, tables, authValue, xpValue, achievementsValue, certificatesValue } = vi.hoisted(() => {
   const tables: Record<string, unknown[]> = {
     profiles: [{ created_at: "2025-01-15T00:00:00.000Z", avatar_url: null }],
     user_course_progress: [{ progress_percentage: 100, courses: { duration_minutes: 120 } }],
@@ -15,6 +15,7 @@ const { docSave, tables, authValue, xpValue, achievementsValue, certificatesValu
   };
   return {
     docSave: vi.fn(),
+    invokeMock: vi.fn(),
     tables,
     authValue: {
       user: {
@@ -56,7 +57,7 @@ vi.mock("@/integrations/supabase/client", () => {
   return {
     supabase: {
       from: (table: string) => builder(tables[table] ?? []),
-      functions: { invoke: async () => ({ data: {}, error: null }) },
+      functions: { invoke: (...args: unknown[]) => invokeMock(...args) },
     },
   };
 });
@@ -98,6 +99,8 @@ const renderProfile = () => {
 describe("exportar progresso em PDF no perfil (FUNC-010)", () => {
   beforeEach(() => {
     docSave.mockClear();
+    invokeMock.mockReset();
+    invokeMock.mockResolvedValue({ data: {}, error: null });
   });
 
   it("mostra o botao de exportar progresso na secao de estatisticas", async () => {
@@ -123,5 +126,23 @@ describe("exportar progresso em PDF no perfil (FUNC-010)", () => {
 
     await waitFor(() => expect(docSave).toHaveBeenCalledTimes(1));
     expect(String(docSave.mock.calls[0][0])).toMatch(/^progresso-ana-souza-\d{4}-\d{2}-\d{2}\.pdf$/);
+  });
+
+  it("desabilita o botao de exportar dados enquanto a exportacao esta em andamento", async () => {
+    let finishExport: (value: { data: unknown; error: null }) => void = () => undefined;
+    invokeMock.mockImplementationOnce(
+      () => new Promise<{ data: unknown; error: null }>((resolve) => { finishExport = resolve; }),
+    );
+
+    renderProfile();
+
+    const exportButton = await screen.findByRole("button", { name: /exportar dados/i });
+    fireEvent.click(exportButton);
+
+    await waitFor(() => expect(exportButton).toBeDisabled());
+    expect(invokeMock).toHaveBeenCalledWith("export-user-data");
+
+    finishExport({ data: { ok: true }, error: null });
+    await waitFor(() => expect(exportButton).not.toBeDisabled());
   });
 });

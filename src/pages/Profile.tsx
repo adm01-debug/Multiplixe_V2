@@ -21,7 +21,7 @@ import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { ProfileSkeleton, DashboardStatsSkeleton, AchievementsGridSkeleton, CertificateCardSkeleton, ChartSkeleton } from '@/components/skeletons/PageSkeletons';
-import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download } from 'lucide-react';
+import { GraduationCap, LogOut, ArrowLeft, Sparkles, Trophy, BookOpen, Target, Flame, TrendingUp, Award, Star, CheckCircle, Clock, BarChart3, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import LanguageToggle from '@/components/LanguageToggle';
 
@@ -38,6 +38,8 @@ const Profile = () => {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loadingStats, setLoadingStats] = useState(true);
+  const [exporting, setExporting] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => { if (!loading && !user) navigate('/auth'); }, [user, loading, navigate]);
 
@@ -66,9 +68,21 @@ const Profile = () => {
     fetchStats();
   }, [user, getUserCertificates]);
 
-  const handleSignOut = async () => { await signOut(); toast.success('Até logo!'); navigate('/'); };
+  const handleSignOut = async () => {
+      if (signingOut) return;
+      setSigningOut(true);
+      try {
+        await signOut();
+        toast.success('Até logo!');
+        navigate('/');
+      } finally {
+        setSigningOut(false);
+      }
+    };
 
   const handleExport = async () => {
+      if (exporting) return;
+      setExporting(true);
     try {
       const { data, error } = await supabase.functions.invoke('export-user-data');
       if (error) throw error;
@@ -83,6 +97,8 @@ const Profile = () => {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Falha ao exportar';
       toast.error(msg);
+      } finally {
+        setExporting(false);
     }
   };
 
@@ -130,11 +146,11 @@ const Profile = () => {
             </div>
             <div className="flex items-center gap-2">
               <LanguageToggle />
-              <Button variant="outline" size="sm" onClick={handleExport} className="rounded-xl">
-                <Download className="h-4 w-4 mr-2" /> Exportar dados
+              <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting} className="rounded-xl">
+                              {exporting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />} Exportar dados
               </Button>
-              <Button variant="outline" size="icon" onClick={handleSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive h-11 w-11" aria-label="Sair">
-                <LogOut className="h-4 w-4" />
+                            <Button variant="outline" size="icon" onClick={handleSignOut} disabled={signingOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive h-11 w-11" aria-label="Sair">
+                              {signingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
               </Button>
             </div>
           </div>

@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (69)
+### ✅ Melhorias JÁ IMPLEMENTADAS (70)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,11 +44,11 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (30)
+## ⏳ MELHORIAS PENDENTES (29)
 
-### 🎨 UX/UI - 5 Pendentes
+### 🎨 UX/UI - 4 Pendentes
 
-#### UI-004: Feedback Visual em Ações
+#### UI-004: Feedback Visual em Ações ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 3h  
 **Descrição:** Alguns botões não mostram loading state durante ações.
@@ -60,6 +60,24 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 3. Usar disabled + Loader2 durante operações async
 4. Arquivo: src/components/admin/*.tsx, src/pages/Profile.tsx
 ```
+
+**Implementação — status:**
+```
+[x] 1. Auditoria de CourseForm, LessonForm, QuizManager, Profile e telas admin
+[x] 2. Loading state nos botões de ação que faltavam
+[x] 3. disabled + Loader2 durante operações async, com guarda contra duplo clique
+[x] 4. src/components/admin/*.tsx, src/pages/Profile.tsx
+```
+
+**O que a auditoria encontrou (e o que foi corrigido):**
+- `CourseForm`, `LessonForm` e `QuizManager` já tinham `disabled={loading}` + `Loader2` — nada a fazer.
+- `LessonsManager`: o botão "Excluir" do diálogo de confirmação chamava `handleDeleteLesson` sem estado — dava para clicar 3x e disparar 3 deletes. Agora `savingDeletion` desabilita o botão e mostra spinner durante o delete (inclusive na atualização do contador de aulas do curso).
+- `LearningPathsManager`: os dois interruptores de publicar/destacar e o "Excluir" da trilha não tinham estado nenhum — duplo clique alternava o valor duas vezes (publicava e despublicava na sequência). Agora `busyPathId` desabilita os interruptores da trilha em operação e `savingDeletion` cobre o delete.
+- `Profile`: "Exportar dados" (chamada à edge function `export-user-data`) e o botão de sair não tinham feedback. Agora `exporting`/`signingOut` desabilitam o botão e trocam o ícone por `Loader2`, com guarda contra clique repetido (evita baixar o arquivo duas vezes).
+
+**Testes:** `src/test/profileExportProgress.test.tsx` ganhou o caso "desabilita o botão de exportar dados enquanto a exportação está em andamento" (promise pendente → botão `disabled`, depois liberado) — 4 casos verdes no arquivo. Suíte completa: 68 arquivos / 536 testes. `tsc -b` 0 erros; eslint 0 erros nos arquivos tocados.
+
+**Arquivos:** `src/components/admin/LessonsManager.tsx`, `src/components/admin/LearningPathsManager.tsx`, `src/pages/Profile.tsx`, `src/test/profileExportProgress.test.tsx`.
 
 ---
 
@@ -1915,7 +1933,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 5 | ~17h |
+| UX/UI | 4 | ~14h |
 | Performance | 1 | ~4h |
 | Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
@@ -1926,7 +1944,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **30** | **~153h** |
+| **TOTAL PENDENTE** | **29** | **~150h** |
 
 ---
 

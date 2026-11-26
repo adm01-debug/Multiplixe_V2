@@ -60,6 +60,7 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
   const [lessonFormOpen, setLessonFormOpen] = useState(false);
   const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
   const [deletingLesson, setDeletingLesson] = useState<Lesson | null>(null);
+    const [savingDeletion, setSavingDeletion] = useState(false);
   const [quizManagerOpen, setQuizManagerOpen] = useState(false);
   const [quizLessonId, setQuizLessonId] = useState<string | null>(null);
 
@@ -88,28 +89,33 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
   }, [open, course]);
 
   const handleDeleteLesson = async () => {
-    if (!deletingLesson || !course) return;
+      if (!deletingLesson || !course || savingDeletion) return;
 
-    const { error } = await supabase
-      .from('lessons')
-      .delete()
-      .eq('id', deletingLesson.id);
+      setSavingDeletion(true);
+      try {
+        const { error } = await supabase
+          .from('lessons')
+          .delete()
+          .eq('id', deletingLesson.id);
 
-    if (error) {
-      toast.error('Erro ao excluir aula');
-    } else {
-      toast.success('Aula excluída com sucesso!');
-      
-      // Update course total_lessons count
-      await supabase
-        .from('courses')
-        .update({ total_lessons: lessons.length - 1 })
-        .eq('id', course.id);
+        if (error) {
+          toast.error('Erro ao excluir aula');
+        } else {
+          toast.success('Aula excluída com sucesso!');
 
-      fetchLessons();
+          // Update course total_lessons count
+          await supabase
+            .from('courses')
+            .update({ total_lessons: lessons.length - 1 })
+            .eq('id', course.id);
+
+          fetchLessons();
+        }
+
+        setDeletingLesson(null);
+      } finally {
+        setSavingDeletion(false);
     }
-
-    setDeletingLesson(null);
   };
 
   const formatDuration = (seconds: number | null) => {
@@ -289,9 +295,10 @@ export function LessonsManager({ open, onOpenChange, course }: LessonsManagerPro
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteLesson}
+                          disabled={savingDeletion}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Excluir
+                          {savingDeletion ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Excluir'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

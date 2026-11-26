@@ -80,7 +80,9 @@ const row = (overrides: Record<string, unknown> = {}) => ({
   xp_reward: 50,
   requirement_type: "lessons_completed",
   requirement_value: 1,
+    requirement_category: null,
   gradient: "from-amber-500 to-orange-500",
+    is_secret: false,
   created_at: "2026-01-01T00:00:00.000Z",
   ...overrides,
 });
@@ -105,7 +107,12 @@ describe("achievementAdmin helpers", () => {
   it("descreve o requisito com rótulo legível", () => {
     expect(labelForRequirement("lessons_completed", 5)).toBe("Aulas concluídas ≥ 5");
     expect(labelForRequirement("total_xp", 500)).toBe("XP total ≥ 500");
-    expect(labelForRequirement("pomodoro_sessions", 7)).toBe("pomodoro_sessions ≥ 7");
+      expect(labelForRequirement("pomodoro_sessions", 10)).toBe("Sessões de foco concluídas ≥ 10");
+      expect(labelForRequirement("streak_days", 7)).toBe("Dias seguidos de estudo ≥ 7");
+      expect(labelForRequirement("category_courses_completed", 2, "Vendas")).toBe(
+        "Cursos concluídos na categoria (Vendas) ≥ 2",
+      );
+      expect(labelForRequirement("forum_posts", 3)).toBe("forum_posts ≥ 3");
   });
 
   it("rejeita rascunho incompleto", () => {
@@ -118,14 +125,58 @@ describe("achievementAdmin helpers", () => {
   it("rejeita tipo de requisito sem concessão automática", () => {
     const errors = validateAchievementDraft({
       ...emptyAchievementDraft(),
-      name: "Sessões de foco",
-      slug: "sessoes-de-foco",
-      description: "Complete dez sessões de pomodoro",
-      requirement_type: "pomodoro_sessions",
+        name: "Participativo",
+        slug: "participativo",
+        description: "Escreva dez posts no fórum da plataforma",
+        requirement_type: "forum_posts",
       requirement_value: "10",
     });
     expect(errors).toEqual(["Tipo de requisito sem concessão automática; escolha um dos tipos listados."]);
   });
+
+    it("exige categoria quando o requisito é por categoria e leva a categoria ao payload", () => {
+      const withoutCategory = validateAchievementDraft({
+        ...emptyAchievementDraft(),
+        name: "Vendedor de Elite",
+        slug: "vendedor-de-elite",
+        description: "Conclua dois cursos da categoria Vendas",
+        requirement_type: "category_courses_completed",
+        requirement_value: "2",
+        requirement_category: "  ",
+      });
+      expect(withoutCategory).toContain("Informe a categoria usada na contagem (ex.: Vendas).");
+
+      const { payload } = buildAchievementPayload({
+        ...emptyAchievementDraft(),
+        name: "Vendedor de Elite",
+        slug: "vendedor-de-elite",
+        description: "Conclua dois cursos da categoria Vendas",
+        requirement_type: "category_courses_completed",
+        requirement_value: "2",
+        requirement_category: "  Vendas  ",
+        is_secret: true,
+      });
+      expect(payload).toMatchObject({ requirement_category: "Vendas", is_secret: true });
+    });
+
+    it("conquista secreta é aceita e marcada no payload", () => {
+      const { payload, errors } = buildAchievementPayload({
+        ...emptyAchievementDraft(),
+        name: "Mês de Foco",
+        slug: "mes-de-foco",
+        description: "Estude 30 dias seguidos",
+        requirement_type: "streak_days",
+        requirement_value: "30",
+        requirement_category: "ignorada",
+        is_secret: true,
+      });
+      expect(errors).toEqual([]);
+      expect(payload).toMatchObject({
+        requirement_type: "streak_days",
+        requirement_category: null,
+        is_secret: true,
+      });
+    });
 
   it("monta payload com números convertidos e campos aparados", () => {
     const { payload, errors } = buildAchievementPayload({
@@ -147,7 +198,9 @@ describe("achievementAdmin helpers", () => {
       xp_reward: 250,
       requirement_type: "total_xp",
       requirement_value: 1000,
+            requirement_category: null,
       gradient: "from-amber-500 to-orange-500",
+            is_secret: false,
     });
   });
 
@@ -230,6 +283,27 @@ describe("AdminAchievementsTab", () => {
     expect(update.value).toBe("ach-1");
     expect(update.patch).toMatchObject({ xp_reward: 90, slug: "primeira-aula" });
     expect(toastSuccess).toHaveBeenCalledWith("Conquista atualizada");
+  });
+
+  it("marca conquista secreta e mostra a categoria do requisito", async () => {
+    state.rows = [
+      row({
+        id: "ach-secret",
+        slug: "mes-de-foco",
+        name: "Mês de Foco",
+        is_secret: true,
+        requirement_type: "category_courses_completed",
+        requirement_value: 2,
+        requirement_category: "Vendas",
+      }),
+    ];
+    state.unlocks = [];
+
+    render(<AdminAchievementsTab />);
+
+    expect(await screen.findByText("Mês de Foco")).toBeInTheDocument();
+    expect(screen.getByText("Secreta")).toBeInTheDocument();
+    expect(screen.getByText("Cursos concluídos na categoria (Vendas) ≥ 2")).toBeInTheDocument();
   });
 
   it("exclui conquista após confirmar, avisando quantos alunos desbloquearam", async () => {

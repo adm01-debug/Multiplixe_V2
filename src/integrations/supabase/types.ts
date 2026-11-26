@@ -22,7 +22,9 @@ export type Database = {
           gradient: string | null
           icon: string
           id: string
+                  is_secret: boolean
           name: string
+                  requirement_category: string | null
           requirement_type: string
           requirement_value: number
           slug: string
@@ -35,7 +37,9 @@ export type Database = {
           gradient?: string | null
           icon?: string
           id?: string
+                  is_secret?: boolean
           name: string
+                  requirement_category?: string | null
           requirement_type: string
           requirement_value?: number
           slug: string
@@ -48,7 +52,9 @@ export type Database = {
           gradient?: string | null
           icon?: string
           id?: string
+                  is_secret?: boolean
           name?: string
+                  requirement_category?: string | null
           requirement_type?: string
           requirement_value?: number
           slug?: string

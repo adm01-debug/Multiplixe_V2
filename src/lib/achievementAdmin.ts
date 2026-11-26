@@ -11,13 +11,17 @@ export const ACHIEVEMENT_GRADIENTS = [
   "from-amber-500 to-yellow-500",
   "from-blue-500 to-cyan-500",
   "from-emerald-500 to-teal-500",
+  "from-green-500 to-emerald-500",
   "from-indigo-500 to-purple-500",
   "from-orange-500 to-red-500",
+  "from-orange-500 to-yellow-500",
   "from-purple-500 to-pink-500",
+  "from-red-500 to-orange-500",
   "from-rose-500 to-pink-500",
   "from-rose-500 to-red-500",
   "from-teal-500 to-cyan-500",
   "from-yellow-500 to-amber-500",
+  "from-yellow-500 to-green-500",
 ] as const;
 
 export const ACHIEVEMENT_ICONS = ["🏆", "🥇", "🎯", "🚀", "⭐", "🔥", "💡", "📚", "🎓", "⚡", "🏅", "🌟"] as const;
@@ -35,6 +39,9 @@ export const ACHIEVEMENT_REQUIREMENTS = [
     { value: "courses_completed", label: "Cursos concluídos" },
     { value: "current_level", label: "Nível atual" },
   { value: "total_xp", label: "XP total" },
+    { value: "pomodoro_sessions", label: "Sessões de foco concluídas" },
+    { value: "streak_days", label: "Dias seguidos de estudo" },
+    { value: "category_courses_completed", label: "Cursos concluídos na categoria" },
 ] as const;
 
 export const SUPPORTED_REQUIREMENT_TYPES: string[] = ACHIEVEMENT_REQUIREMENTS.map((r) => r.value);
@@ -48,7 +55,9 @@ export interface AchievementDraft {
   xp_reward: string;
   requirement_type: string;
   requirement_value: string;
+  requirement_category: string;
   gradient: string;
+  is_secret: boolean;
 }
 
 export const emptyAchievementDraft = (): AchievementDraft => ({
@@ -60,7 +69,9 @@ export const emptyAchievementDraft = (): AchievementDraft => ({
   xp_reward: "50",
   requirement_type: "lessons_completed",
   requirement_value: "1",
+  requirement_category: "",
   gradient: ACHIEVEMENT_GRADIENTS[0],
+  is_secret: false,
 });
 
 export const draftFromAchievement = (row: AchievementRow): AchievementDraft => ({
@@ -72,7 +83,9 @@ export const draftFromAchievement = (row: AchievementRow): AchievementDraft => (
   xp_reward: String(row.xp_reward),
   requirement_type: row.requirement_type,
   requirement_value: String(row.requirement_value),
+  requirement_category: row.requirement_category ?? "",
   gradient: row.gradient ?? ACHIEVEMENT_GRADIENTS[0],
+  is_secret: row.is_secret ?? false,
 });
 
 export const slugifyAchievement = (name: string): string =>
@@ -84,9 +97,11 @@ export const slugifyAchievement = (name: string): string =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 50);
 
-export const labelForRequirement = (type: string, value: number): string => {
+export const labelForRequirement = (type: string, value: number, category?: string | null): string => {
   const found = ACHIEVEMENT_REQUIREMENTS.find((r) => r.value === type);
-  return `${found?.label ?? type} ≥ ${value}`;
+  const base = found?.label ?? type;
+  const suffix = type === "category_courses_completed" && category ? ` (${category})` : "";
+  return `${base}${suffix} ≥ ${value}`;
 };
 
 const toInt = (raw: string): number | null => {
@@ -113,6 +128,9 @@ export const validateAchievementDraft = (draft: AchievementDraft): string[] => {
   if (!SUPPORTED_REQUIREMENT_TYPES.includes(draft.requirement_type)) {
     errors.push("Tipo de requisito sem concessão automática; escolha um dos tipos listados.");
   }
+    if (draft.requirement_type === "category_courses_completed" && draft.requirement_category.trim().length < 2) {
+      errors.push("Informe a categoria usada na contagem (ex.: Vendas).");
+    }
   if (!ACHIEVEMENT_CATEGORIES.some((c) => c.value === draft.category)) errors.push("Categoria invalida.");
   if (!ACHIEVEMENT_GRADIENTS.some((g) => g === draft.gradient)) errors.push("Gradiente invalido.");
 
@@ -135,7 +153,10 @@ export const buildAchievementPayload = (
       xp_reward: Number(draft.xp_reward),
       requirement_type: draft.requirement_type,
       requirement_value: Number(draft.requirement_value),
+            requirement_category:
+              draft.requirement_type === "category_courses_completed" ? draft.requirement_category.trim() : null,
       gradient: draft.gradient,
+            is_secret: draft.is_secret,
     },
     errors,
   };

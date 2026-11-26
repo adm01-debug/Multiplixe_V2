@@ -15,6 +15,7 @@ interface Achievement {
   requirement_type: string;
   requirement_value: number;
   gradient: string;
+    is_secret?: boolean;
 }
 
 interface AchievementsGridProps {
@@ -24,10 +25,10 @@ interface AchievementsGridProps {
 }
 
 const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: AchievementsGridProps) => {
-  const displayAchievements = useMemo(
-    () => (compact ? achievements.slice(0, 4) : achievements),
-    [achievements, compact]
-  );
+  const displayAchievements = useMemo(() => {
+      const visible = achievements.filter((achievement) => !achievement.is_secret || isUnlocked(achievement.id));
+      return compact ? visible.slice(0, 4) : visible;
+    }, [achievements, compact, isUnlocked]);
 
   if (compact) {
     
@@ -90,7 +91,7 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-      {achievements.map((achievement, index) => {
+      {displayAchievements.map((achievement, index) => {
         const unlocked = isUnlocked(achievement.id);
         
         return (

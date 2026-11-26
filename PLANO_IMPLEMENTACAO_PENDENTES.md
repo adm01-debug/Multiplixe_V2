@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (40)
+## ⏳ MELHORIAS PENDENTES (37)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -161,7 +161,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-#### UI-015: Avatar Upload no Perfil
+#### UI-015: Avatar Upload no Perfil ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Perfil mostra apenas inicial do nome como avatar.
@@ -173,6 +173,20 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 3. Criar bucket 'avatars' com políticas RLS
 4. Atualizar profiles.avatar_url
 5. Redimensionar imagem antes do upload (max 256x256)
+```
+
+**Entrega (2026-11-26):**
+```text
+- AvatarUpload.tsx estava orfao (233 linhas, zero imports). Montado no ProfileHeader no
+  lugar do circulo com a inicial; onAvatarChange propaga a URL nova para a pagina.
+- Profile.tsx passou a carregar profiles.avatar_url junto das estatisticas.
+- Bucket 'avatars' existia com RLS habilitado em storage.objects e ZERO policies: todo
+  upload autenticado falhava com 403. Migration 20261125234500_storage_policies_avatars.sql
+  cria leitura publica e insert/update/delete limitados a pasta do proprio usuario.
+- Prova em producao (usuario real criado e removido no teste): upload na propria pasta 200,
+  upload em pasta alheia 403 AccessDenied, delete proprio 200; ao remover a policy o upload
+  volta a falhar com 403 e ao recria-la volta a passar.
+- src/test/profileAvatar.test.tsx: 3 casos (rotulo acessivel, inicial sem avatar, imagem salva).
 ```
 
 ---
@@ -442,7 +456,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-#### FUNC-013: Histórico de Atividades Timeline
+#### FUNC-013: Histórico de Atividades Timeline ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** XP history existe mas não há timeline visual de atividades.
@@ -454,6 +468,16 @@ CREATE TABLE public.user_goals (
 3. Filtrar por período (7d, 30d, all)
 4. Adicionar no Profile.tsx
 5. Usar framer-motion para animações
+```
+
+**Entrega (2026-11-26):**
+```text
+- ActivityTimeline.tsx (213 linhas) estava orfao. Montado na Profile em secao 'Atividade
+  Recente' com lazy load e skeleton, limit=8.
+- Agrega user_lesson_progress, user_course_progress e user_achievements; colunas e chaves
+  estrangeiras usadas nos embeds foram conferidas no banco de producao.
+- Filtro por periodo (7 dias / 30 dias / tudo) adicionado ao componente, com aria-pressed.
+- src/test/activityTimeline.test.tsx: 3 casos (ordem, filtro de 7 dias, periodo ativo).
 ```
 
 ---
@@ -582,7 +606,7 @@ CREATE TABLE public.user_goals (
 ```
 ---
 
-#### FUNC-022: Compartilhar Conquistas
+#### FUNC-022: Compartilhar Conquistas ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Não há opção de compartilhar conquistas.
@@ -593,6 +617,16 @@ CREATE TABLE public.user_goals (
 2. Gerar imagem da conquista (canvas ou SVG)
 3. Web Share API para compartilhar
 4. URL pública para visualização (opcional)
+```
+
+**Entrega (2026-11-26):**
+```text
+- ShareAchievement.tsx (287 linhas) estava orfao. Montado no card de conquista desbloqueada
+  do AchievementsGrid, com botao visivel no hover/focus e aria-label por conquista.
+- O componente ja cobre imagem via canvas, Web Share API com fallback, links sociais,
+  copiar texto e download; consome lib/shareImage e useTelemetry ja existentes.
+- src/test/achievementShare.test.tsx: 3 casos (so desbloqueadas, nenhuma desbloqueada,
+  dialogo aberto com descricao e XP da conquista).
 ```
 
 ---
@@ -1554,9 +1588,9 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 8 | ~26h |
+| UX/UI | 7 | ~22h |
 | Performance | 2 | ~7h |
-| Funcionalidades | 13 | ~69h |
+| Funcionalidades | 11 | ~61h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
@@ -1565,7 +1599,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **43** | **~237h** |
+| **TOTAL PENDENTE** | **40** | **~229h** |
 
 ---
 

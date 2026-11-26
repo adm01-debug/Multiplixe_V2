@@ -14,6 +14,7 @@ import { CertificateCard } from '@/components/CertificateCard';
 const AchievementsGrid = lazy(() => import('@/components/AchievementsGrid'));
 const XPEvolutionChart = lazy(() => import('@/components/XPEvolutionChart'));
 const PersonalImpactWidget = lazy(() => import('@/components/profile/PersonalImpactWidget'));
+const ActivityTimeline = lazy(() => import('@/components/activity/ActivityTimeline'));
 import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
@@ -33,6 +34,7 @@ const Profile = () => {
   const { getUserCertificates } = useCertificates();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => { if (!loading && !user) navigate('/auth'); }, [user, loading, navigate]);
@@ -45,7 +47,7 @@ const Profile = () => {
         const [lessonsRes, coursesRes, profileRes, userCertificates] = await Promise.all([
           supabase.from('user_lesson_progress').select('is_completed, watched_seconds').eq('user_id', user.id),
           supabase.from('user_course_progress').select('progress_percentage').eq('user_id', user.id),
-          supabase.from('profiles').select('created_at').eq('user_id', user.id).maybeSingle(),
+          supabase.from('profiles').select('created_at, avatar_url').eq('user_id', user.id).maybeSingle(),
           getUserCertificates(user.id),
         ]);
         setStats({
@@ -56,6 +58,7 @@ const Profile = () => {
           memberSince: profileRes.data?.created_at || user.created_at,
         });
         setCertificates(userCertificates);
+        setAvatarUrl(profileRes.data?.avatar_url ?? null);
       } catch { /* Silent fail */ } finally { setLoadingStats(false); }
     };
     fetchStats();
@@ -137,7 +140,7 @@ const Profile = () => {
       </header>
 
       <main id="main-content" className="container mx-auto px-4 py-8">
-        <ProfileHeader userName={userName} userEmail={userEmail} totalXP={totalXP} levelIcon={userLevel.currentLevel.icon} levelNumber={userLevel.currentLevel.level} memberSinceDate={memberSinceDate} />
+        <ProfileHeader userName={userName} userEmail={userEmail} totalXP={totalXP} levelIcon={userLevel.currentLevel.icon} levelNumber={userLevel.currentLevel.level} memberSinceDate={memberSinceDate} avatarUrl={avatarUrl} onAvatarChange={setAvatarUrl} />
         <section className="mb-12"><LevelProgress totalXP={totalXP} /></section>
         <Suspense fallback={null}><PersonalImpactWidget /></Suspense>
 
@@ -169,6 +172,15 @@ const Profile = () => {
         </section>
 
         <section className="mb-12">
+                  <div className="flex items-center gap-4 mb-6"><div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20"><Clock className="h-6 w-6 text-primary" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Atividade Recente</h3><p className="text-sm text-muted-foreground">Aulas, cursos e conquistas dos seus últimos passos</p></div></div>
+                  <div className="rounded-2xl bg-card/80 border border-border/50 neon-card p-6">
+                    <Suspense fallback={<div className="space-y-4">{[1, 2, 3].map((i) => (<div key={i} className="flex gap-4 animate-pulse"><div className="w-10 h-10 rounded-full bg-muted" /><div className="flex-1 space-y-2"><div className="h-4 w-32 bg-muted rounded" /><div className="h-3 w-48 bg-muted rounded" /></div></div>))}</div>}>
+                      <ActivityTimeline limit={8} />
+                    </Suspense>
+                  </div>
+                </section>
+
+                <section className="mb-12">
           <div className="flex items-center gap-4 mb-6"><div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20"><Award className="h-6 w-6 text-amber-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Certificados</h3><p className="text-sm text-muted-foreground">{certificates.length > 0 ? `${certificates.length} certificado${certificates.length !== 1 ? 's' : ''} emitido${certificates.length !== 1 ? 's' : ''}` : 'Complete cursos para receber certificados'}</p></div></div>
           {certificates.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{certificates.map((cert) => <CertificateCard key={cert.id} certificate={cert} />)}</div> : <div className="rounded-2xl border border-border/50 bg-card/50 neon-card"><EmptyState type="certificates" actionLabel="Explorar cursos" onAction={() => navigate('/catalogo')} /></div>}
         </section>

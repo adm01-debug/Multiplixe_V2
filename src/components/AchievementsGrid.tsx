@@ -1,6 +1,8 @@
 import { memo, useMemo } from 'react';
-import { Lock, Sparkles } from 'lucide-react';
+import { Lock, Share2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import ShareAchievement from '@/components/share/ShareAchievement';
 
 interface Achievement {
   id: string;
@@ -167,6 +169,28 @@ const AchievementsGrid = ({ achievements, isUnlocked, compact = false }: Achieve
             >
               {achievement.name}
             </motion.span>
+
+                        {unlocked && (
+                          <div className="relative z-20 mt-2">
+                            <ShareAchievement
+                              title={achievement.name}
+                              description={achievement.description}
+                              type="achievement"
+                              value={achievement.xp_reward}
+                              icon={achievement.icon}
+                              trigger={
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  aria-label={`Compartilhar conquista ${achievement.name}`}
+                                  className="h-7 w-7 rounded-full opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+                                >
+                                  <Share2 className="h-3.5 w-3.5" />
+                                </Button>
+                              }
+                            />
+                          </div>
+                        )}
             
             {/* Description tooltip on hover */}
             <motion.div 

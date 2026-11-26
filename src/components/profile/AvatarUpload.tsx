@@ -77,7 +77,7 @@ const AvatarUpload = ({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <button className="relative group cursor-pointer">
+        <button className="relative group cursor-pointer" aria-label={`Alterar foto de perfil de ${userName}`}>
           <div className={`${sizeClass.container} rounded-full overflow-hidden ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all`}>
             {currentAvatarUrl ? (
               <img

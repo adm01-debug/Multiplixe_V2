@@ -22,12 +22,13 @@ import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import NotesPanel from "@/components/notes/NotesPanel";
 import ChaptersPanel from "@/components/player/ChaptersPanel";
+import TranscriptPanel from "@/components/player/TranscriptPanel";
 import { parseChapters } from "@/lib/chapters";
 import { toast } from "sonner";
 import { Sparkles, ChevronLeft, ChevronRight, BookOpen, Loader2, CheckCircle, Trophy, Play } from "lucide-react";
 
 interface Course { id: string; title: string; slug: string; }
-interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; chapters: unknown; }
+interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; chapters: unknown; transcript: string | null; }
 interface LessonProgress { lesson_id: string; is_completed: boolean; last_position_seconds: number; }
 
 const LessonPlayer = () => {
@@ -197,6 +198,7 @@ const LessonPlayer = () => {
               </div>
 
               <ChaptersPanel chapters={chapters} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
+              <TranscriptPanel transcript={currentLesson.transcript} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
 
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-3">

@@ -637,7 +637,7 @@
    "exports": [
     "LessonForm"
    ],
-   "linhas": 323,
+   "linhas": 344,
    "hooks": [
     "useEffect",
     "useMemo",
@@ -1980,6 +1980,23 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/player/TranscriptPanel.tsx",
+   "exports": [
+    "TranscriptPanel"
+   ],
+   "linhas": 87,
+   "hooks": [
+    "useEffect",
+    "useMemo",
+    "useState",
+    "useT"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/player/VideoControls.tsx",
    "exports": [],
    "linhas": 174,
@@ -3299,7 +3316,7 @@
   {
    "arquivo": "src/pages/LessonPlayer.tsx",
    "exports": [],
-   "linhas": 229,
+   "linhas": 231,
    "hooks": [
     "useAchievements",
     "useAuth",

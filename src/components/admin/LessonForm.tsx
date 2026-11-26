@@ -27,6 +27,7 @@ const lessonSchema = z.object({
   duration_seconds: z.number().min(0).optional(),
   order_index: z.number().min(0),
   is_free: z.boolean(),
+  transcript: z.string().max(200000, 'Transcrição muito longa').optional(),
 });
 
 type LessonFormData = z.infer<typeof lessonSchema>;
@@ -41,6 +42,7 @@ interface Lesson {
   is_free: boolean;
   course_id: string;
   chapters?: unknown;
+  transcript?: string | null;
 }
 
 interface LessonFormProps {
@@ -73,6 +75,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
       duration_seconds: 0,
       order_index: nextOrderIndex,
       is_free: false,
+      transcript: '',
     },
   });
 
@@ -100,6 +103,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
         duration_seconds: lesson.duration_seconds || 0,
         order_index: lesson.order_index,
         is_free: lesson.is_free || false,
+        transcript: lesson.transcript || '',
       });
       setChapters(parseChapters(lesson.chapters));
     } else {
@@ -110,6 +114,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
         duration_seconds: 0,
         order_index: nextOrderIndex,
         is_free: false,
+        transcript: '',
       });
       setChapters([]);
     }
@@ -133,6 +138,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
         order_index: data.order_index,
         is_free: data.is_free,
         chapters: parseChapters(chapters) as unknown as Json,
+        transcript: data.transcript?.trim() ? data.transcript : null,
       };
 
       if (lesson) {
@@ -201,6 +207,21 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
               placeholder="Descreva a aula..."
               rows={3}
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="transcript">{t('transcript.adminTitle')}</Label>
+            <Textarea
+              id="transcript"
+              {...register('transcript')}
+              placeholder="00:00 Primeiro trecho da aula..."
+              rows={6}
+              className="font-mono text-xs"
+            />
+            <p className="text-xs text-muted-foreground">{t('transcript.adminHint')}</p>
+            {errors.transcript && (
+              <p className="text-sm text-destructive">{errors.transcript.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">

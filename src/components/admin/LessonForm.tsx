@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -14,7 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { useT } from '@/lib/i18n';
+import { CHAPTERS_MAX, CHAPTER_TITLE_MAX, formatChapterTime, parseChapters, type LessonChapter } from '@/lib/chapters';
+import type { Json } from '@/integrations/supabase/types';
 import { toast } from 'sonner';
 
 const lessonSchema = z.object({
@@ -37,6 +40,7 @@ interface Lesson {
   order_index: number;
   is_free: boolean;
   course_id: string;
+  chapters?: unknown;
 }
 
 interface LessonFormProps {
@@ -50,6 +54,8 @@ interface LessonFormProps {
 
 export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderIndex = 0, onSuccess }: LessonFormProps) {
   const [loading, setLoading] = useState(false);
+  const [chapters, setChapters] = useState<LessonChapter[]>([]);
+  const { t } = useT();
 
   const {
     register,
@@ -71,6 +77,19 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
   });
 
   const isFree = watch('is_free');
+  const duracao = watch('duration_seconds');
+  const capituloForaDoVideo = typeof duracao === 'number' && duracao > 0 && chapters.some((c) => c.start_seconds > duracao);
+  // dois capitulos no mesmo segundo: a normalizacao grava so o primeiro, entao o salvamento e bloqueado
+  const iniciosRepetidos = useMemo(() => {
+    const vistos = new Set<number>();
+    const repetidos = new Set<number>();
+    for (const capitulo of chapters) {
+      const segundo = Math.max(0, Math.floor(capitulo.start_seconds));
+      if (vistos.has(segundo)) repetidos.add(segundo);
+      else vistos.add(segundo);
+    }
+    return repetidos;
+  }, [chapters]);
 
   useEffect(() => {
     if (lesson) {
@@ -82,6 +101,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
         order_index: lesson.order_index,
         is_free: lesson.is_free || false,
       });
+      setChapters(parseChapters(lesson.chapters));
     } else {
       reset({
         title: '',
@@ -91,10 +111,16 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
         order_index: nextOrderIndex,
         is_free: false,
       });
+      setChapters([]);
     }
   }, [lesson, nextOrderIndex, reset]);
 
   const onSubmit = async (data: LessonFormData) => {
+    if (iniciosRepetidos.size > 0) {
+      toast.error(t('chapters.duplicateStart'));
+      setLoading(false);
+      return;
+    }
     setLoading(true);
 
     try {
@@ -106,6 +132,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
         duration_seconds: data.duration_seconds || 0,
         order_index: data.order_index,
         is_free: data.is_free,
+        chapters: parseChapters(chapters) as unknown as Json,
       };
 
       if (lesson) {
@@ -148,7 +175,7 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{lesson ? 'Editar Aula' : 'Nova Aula'}</DialogTitle>
         </DialogHeader>
@@ -208,6 +235,64 @@ export function LessonForm({ open, onOpenChange, courseId, lesson, nextOrderInde
                 min={0}
               />
             </div>
+          </div>
+
+          <div className="space-y-3 rounded-xl border border-border/60 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <Label>{t('chapters.adminTitle')}</Label>
+                <p className="text-xs text-muted-foreground">{t('chapters.adminEmpty')}</p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="shrink-0 gap-1"
+                disabled={chapters.length >= CHAPTERS_MAX}
+                onClick={() => setChapters((atuais) => [...atuais, { title: '', start_seconds: 0 }])}
+              >
+                <Plus className="h-4 w-4" />
+                {t('chapters.add')}
+              </Button>
+            </div>
+
+            {chapters.length > 0 && (
+              <div className="space-y-2">
+                {chapters.map((capitulo, indice) => (
+                  <div key={indice} className="flex items-center gap-2">
+                    <Input
+                      value={capitulo.title}
+                      maxLength={CHAPTER_TITLE_MAX}
+                      placeholder={t('chapters.namePlaceholder')}
+                      aria-label={t('chapters.namePlaceholder')}
+                      className={capitulo.title.trim() ? '' : 'border-destructive'}
+                      onChange={(e) => setChapters((atuais) => atuais.map((c, i) => (i === indice ? { ...c, title: e.target.value } : c)))}
+                    />
+                    <Input
+                      type="number"
+                      min={0}
+                      value={capitulo.start_seconds}
+                      aria-label={t('chapters.startLabel')}
+                      className={iniciosRepetidos.has(capitulo.start_seconds) ? 'w-24 border-destructive' : 'w-24'}
+                      onChange={(e) => setChapters((atuais) => atuais.map((c, i) => (i === indice ? { ...c, start_seconds: Math.max(0, Math.floor(Number(e.target.value) || 0)) } : c)))}
+                    />
+                    <span className="w-14 shrink-0 text-right font-mono text-xs text-muted-foreground">{formatChapterTime(capitulo.start_seconds)}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      aria-label={t('chapters.remove')}
+                      onClick={() => setChapters((atuais) => atuais.filter((_, i) => i !== indice))}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {iniciosRepetidos.size > 0 && <p className="text-xs text-destructive">{t('chapters.duplicateStart')}</p>}
+            {capituloForaDoVideo && <p className="text-xs text-amber-600">{t('chapters.afterEnd')}</p>}
           </div>
 
           <div className="flex items-center gap-3">

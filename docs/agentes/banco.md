@@ -31,22 +31,25 @@ Checado nesta sessão: `SUPABASE - GESTÃO DE CLIENTES` → `pgxfvjmuubtbowutlid
 conectou (`ERR_PROXY_TUNNEL`) e não foi possível saber para qual projeto aponta — **NÃO VERIFICADO**.
 
 Consequências práticas:
-1. Não há como rodar `SELECT` de diagnóstico, conferir RLS ao vivo, ler log do Postgres nem aplicar DDL.
-   Qualquer afirmação sobre o estado do banco sai de arquivo versionado (`types.ts`, `migrations/`) e
+1. O banco é acessível pela **Management API** do Supabase
+   (`POST https://api.supabase.com/v1/projects/ywsblgsikhiscvpmopkp/database/query`, PAT do dono): dá para
+   rodar `SELECT` de diagnóstico, conferir RLS ao vivo, ler o resultado de `EXPLAIN` e aplicar DDL.
+   Afirmação sobre o banco sem essa consulta sai de arquivo versionado (`types.ts`, `migrations/`) e
    precisa ser marcada como "declarado no repo, não verificado ao vivo".
 2. **Nunca** escreva nos bancos dos MCPs acima: são outros sistemas (CRM, Catálogo, Zapp Web V2). Nome
    parecido de MCP já causou escrita no banco errado em outro projeto — confira qual MCP carregou.
-3. Precisa de dado real? Peça ao dono a query pelo Lovable Cloud, ou peça que ele habilite um MCP apontando
-   para `ywsblgsikhiscvpmopkp`.
+3. Precisa de dado real ou de DDL? Use a Management API do item 1 — ela cobre `SELECT`, estado de RLS e
+   aplicação de migration sem depender de MCP. O painel do Lovable Cloud é só consulta manual.
 
 ## Migrations
 
-- `supabase/migrations/` tem **49 arquivos** `.sql`, nomeados pelo Lovable
-  (`<timestamp>_<uuid>.sql`), não por assunto. Eles são **registro do que o Lovable já aplicou**, não fila de
-  entrada: criar um arquivo novo não aplica nada.
-- Não há ledger consultável, `supabase/config.toml` só declara `project_id` e `verify_jwt` por função, e não
-  há workflow de deploy. Portanto: **ordem obrigatória = pedir o DDL ao dono → ele aplica no Lovable Cloud →
-  o arquivo e o `types.ts` chegam ao repo no commit do Lovable.**
+- `supabase/migrations/` tem **73 arquivos** `.sql`. Os primeiros vieram do Lovable
+  (`<timestamp>_<uuid>.sql`); os escritos por agente usam `<timestamp>_<assunto>.sql`. O arquivo é o
+  **registro do que já foi aplicado**, não fila de entrada: criar arquivo novo não aplica nada.
+- Não existe ledger consultável, `supabase/config.toml` só declara `project_id` e `verify_jwt` por função, e
+  não há workflow de deploy. Ordem obrigatória: **dry-run em produção** (`begin; <DDL>; …; rollback;` e ler o
+  resultado) → **aplicar de verdade** → **conferir o objeto** pela Management API → commitar o arquivo `.sql`
+  junto do `src/integrations/supabase/types.ts` atualizado.
 - Mudança de contrato de função/tabela usada pelo front (`REVOKE`, `DROP`, rename) exige o deploy do front
   **antes** — o Vercel só publica no merge da `main` (`docs/agentes/lovable-vercel.md`).
 

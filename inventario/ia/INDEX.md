@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `617492c6922ff734ce12082a97be596f2506b382` · branch `claude/feat-powerups-261126-0750` · 2026-11-26T05:03:52-03:00
+Commit: `1f29df226ff107cbcfba4692596936556122d63c` · branch `claude/feat-func-019-capitulos-261126-0520` · 2026-11-26T05:22:47-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `617492c6922ff734ce12082a97be596f2506b382` · branch `claude/feat-poweru
 
 | | |
 |---|---|
-| arquivos (codigo) | 594 (487) |
-| linhas de codigo | 68185 |
+| arquivos (codigo) | 600 (490) |
+| linhas de codigo | 68700 |
 | paginas / rotas | 27 / 27 |
-| componentes / hooks | 234 / 123 |
-| arquivos de teste | 78 |
+| componentes / hooks | 235 / 123 |
+| arquivos de teste | 79 |
 | edge functions | 13 |
-| tabelas / migrations | 70 / 72 |
+| tabelas / migrations | 70 / 73 |
 
 ## Divida medida
 
@@ -85,7 +85,7 @@ Commit: `617492c6922ff734ce12082a97be596f2506b382` · branch `claude/feat-poweru
 
 ## Banco (declarado pelo repo)
 
-70 tabelas · 182 policies · 80 funcoes · 2 cron jobs · 1 bucket(s) · 72 migrations
+70 tabelas · 182 policies · 81 funcoes · 2 cron jobs · 1 bucket(s) · 73 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -117,7 +117,7 @@ Commit: `617492c6922ff734ce12082a97be596f2506b382` · branch `claude/feat-poweru
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (46)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (47)
 - `inventario/estado/schema-declarado.json` (17)
 - `src/integrations/supabase/types.ts` (17)
 - `inventario/ia/baseline.json` (14)

@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef, useState, useEffect, useCallback } from "react";
 import { SpeedIndicator, SkipIndicator, PlayOverlay, TitleOverlay } from "./VideoOverlays";
 import VideoControls, { getSpeedLabel } from "./VideoControls";
+import { CHAPTERS_VAZIO, type LessonChapter } from "@/lib/chapters";
 
 interface VideoPlayerProps {
   src: string;
@@ -10,6 +11,7 @@ interface VideoPlayerProps {
   onTimeUpdate?: (seconds: number) => void;
   initialPosition?: number;
   autoPlay?: boolean;
+  chapters?: LessonChapter[];
 }
 
 export interface VideoPlayerHandle {
@@ -17,7 +19,7 @@ export interface VideoPlayerHandle {
 }
 
 const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
-  src, title, onProgress, onComplete, initialPosition = 0, autoPlay = false, onTimeUpdate,
+  src, title, onProgress, onComplete, initialPosition = 0, autoPlay = false, onTimeUpdate, chapters = CHAPTERS_VAZIO,
 }, ref) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -207,6 +209,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    const alvo = e.target instanceof HTMLElement ? e.target : null;
+    if (alvo && (alvo.isContentEditable || alvo.closest('button, a, [role="button"], [role="link"]'))) return;
     const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
     switch (e.key.toLowerCase()) {
       case ' ': case 'k': e.preventDefault(); togglePlay(); break;
@@ -258,7 +262,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
       <VideoControls
         isPlaying={isPlaying} currentTime={currentTime} duration={duration}
         volume={volume} isMuted={isMuted} playbackRate={playbackRate}
-        isFullscreen={isFullscreen} visible={controlsVisible}
+        isFullscreen={isFullscreen} visible={controlsVisible} chapters={chapters}
                 isPiPSupported={isPiPSupported} isPiPActive={isPiPActive}
         onTogglePlay={togglePlay} onSeek={handleSeek} onSkip={handleSkip}
         onVolumeChange={handleVolumeChange} onToggleMute={toggleMute}

@@ -7,6 +7,8 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { chapterPosition, formatChapterTime, type LessonChapter } from '@/lib/chapters';
+import { t } from '@/lib/i18n';
 
 const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
@@ -32,6 +34,7 @@ interface VideoControlsProps {
   playbackRate: number;
   isFullscreen: boolean;
   visible: boolean;
+  chapters: LessonChapter[];
     isPiPSupported: boolean;
     isPiPActive: boolean;
   onTogglePlay: () => void;
@@ -46,7 +49,7 @@ interface VideoControlsProps {
 
 const VideoControls = ({
   isPlaying, currentTime, duration, volume, isMuted, playbackRate,
-  isFullscreen, visible, onTogglePlay, onSeek, onSkip,
+  isFullscreen, visible, chapters, onTogglePlay, onSeek, onSkip,
   onVolumeChange, onToggleMute, onPlaybackRateChange, onToggleFullscreen,
     isPiPSupported, isPiPActive, onTogglePiP,
 }: VideoControlsProps) => {
@@ -59,6 +62,25 @@ const VideoControls = ({
       }`}
     >
       <div className="mb-4 group/progress">
+        {chapters.length > 0 && duration > 0 && (
+          <div className="relative mb-1 h-3" aria-hidden="false">
+            {chapters.map((capitulo) => {
+              const posicao = chapterPosition(capitulo, duration);
+              if (posicao === null) return null;
+              return (
+                <button
+                  key={capitulo.start_seconds}
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); onSeek([capitulo.start_seconds]); }}
+                  className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/80 ring-1 ring-black/50 transition-colors hover:bg-primary focus-visible:bg-primary focus-visible:outline-none"
+                  style={{ left: `${posicao}%` }}
+                  title={`${formatChapterTime(capitulo.start_seconds)} · ${capitulo.title}`}
+                  aria-label={`${t('chapters.jumpTo')} ${capitulo.title} (${formatChapterTime(capitulo.start_seconds)})`}
+                />
+              );
+            })}
+          </div>
+        )}
         <Slider value={[currentTime]} max={duration || 100} step={0.1} onValueChange={onSeek} className="cursor-pointer" />
       </div>
 

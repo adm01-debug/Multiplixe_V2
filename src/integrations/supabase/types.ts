@@ -717,6 +717,7 @@ export type Database = {
       }
       lessons: {
         Row: {
+          chapters: Json
           course_id: string
           created_at: string
           description: string | null
@@ -729,6 +730,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          chapters?: Json
           course_id: string
           created_at?: string
           description?: string | null
@@ -741,6 +743,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          chapters?: Json
           course_id?: string
           created_at?: string
           description?: string | null

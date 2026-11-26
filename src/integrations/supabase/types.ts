@@ -729,6 +729,7 @@ export type Database = {
           is_free: boolean | null
           order_index: number
           title: string
+          transcript: string | null
           updated_at: string
           video_url: string | null
         }
@@ -742,6 +743,7 @@ export type Database = {
           is_free?: boolean | null
           order_index?: number
           title: string
+          transcript?: string | null
           updated_at?: string
           video_url?: string | null
         }
@@ -755,6 +757,7 @@ export type Database = {
           is_free?: boolean | null
           order_index?: number
           title?: string
+          transcript?: string | null
           updated_at?: string
           video_url?: string | null
         }

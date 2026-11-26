@@ -12,6 +12,7 @@ import { usePlatformSettings } from "@/hooks/usePlatformSettings";
 import { xpRewardsFrom, XP_REWARDS_KEY } from "@/lib/platformSettings";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer, { type VideoPlayerHandle } from "@/components/player/VideoPlayer";
 import FloatingProgress from "@/components/player/FloatingProgress";
 import LessonPlayerHeader from "@/components/player/LessonPlayerHeader";
@@ -22,7 +23,9 @@ import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import NotesPanel from "@/components/notes/NotesPanel";
 import ChaptersPanel from "@/components/player/ChaptersPanel";
+import { TranscriptPanel } from "@/components/player/TranscriptPanel";
 import { parseChapters } from "@/lib/chapters";
+import { useT } from "@/lib/i18n";
 import { toast } from "sonner";
 import { Sparkles, ChevronLeft, ChevronRight, BookOpen, Loader2, CheckCircle, Trophy, Play } from "lucide-react";
 
@@ -33,6 +36,7 @@ interface LessonProgress { lesson_id: string; is_completed: boolean; last_positi
 const LessonPlayer = () => {
   const { slug, lessonId } = useParams<{ slug: string; lessonId: string }>();
   const navigate = useNavigate();
+  const { t } = useT();
   const { user, loading: authLoading, signOut } = useAuth();
   const { fireLessonComplete, fireCourseComplete } = useConfetti();
   const { addXP, refetch: refetchXP } = useUserXP();
@@ -53,6 +57,9 @@ const LessonPlayer = () => {
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
   const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
   const [videoSeconds, setVideoSeconds] = useState(0);
+  const [transcript, setTranscript] = useState<string | null>(null);
+  const [transcriptEstado, setTranscriptEstado] = useState<"carregando" | "pronto" | "erro">("carregando");
+  const [transcriptTentativa, setTranscriptTentativa] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showSidebar, setShowSidebar] = useState(true);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
@@ -110,7 +117,7 @@ const LessonPlayer = () => {
       const { data: courseData, error: courseError } = await supabase.from("courses").select("id, title, slug").eq("slug", slug).eq("is_published", true).maybeSingle();
       if (courseError || !courseData) { toast.error("Curso não encontrado"); navigate("/catalogo"); return; }
       setCourse(courseData);
-      const { data: lessonsData } = await supabase.from("lessons").select("*").eq("course_id", courseData.id).order("order_index");
+      const { data: lessonsData } = await supabase.from("lessons").select("id, title, description, video_url, duration_seconds, order_index, is_free, course_id, chapters").eq("course_id", courseData.id).order("order_index");
       if (lessonsData) {
         setLessons(lessonsData);
         if (lessonId) { const lesson = lessonsData.find((l) => l.id === lessonId); if (lesson) setCurrentLesson(lesson); else if (lessonsData.length > 0) navigate(`/curso/${slug}/aula/${lessonsData[0].id}`, { replace: true }); }
@@ -126,6 +133,28 @@ const LessonPlayer = () => {
   useEffect(() => { if (lessonId && lessons.length > 0) { const lesson = lessons.find((l) => l.id === lessonId); if (lesson) setCurrentLesson(lesson); } }, [lessonId, lessons]);
 
   useEffect(() => { videoTimeRef.current = 0; setVideoSeconds(0); }, [currentLesson?.id]);
+
+  // transcricao so da aula atual: o restante da lista nao carrega o texto
+  useEffect(() => {
+    const id = currentLesson?.id;
+    setTranscript(null);
+    if (!id) {
+      setTranscriptEstado("pronto");
+      return;
+    }
+    let cancelado = false;
+    setTranscriptEstado("carregando");
+    supabase.from("lessons").select("transcript").eq("id", id).maybeSingle().then(({ data, error }) => {
+      if (cancelado) return;
+      if (error) {
+        setTranscriptEstado("erro");
+        return;
+      }
+      setTranscript((data?.transcript as string | null | undefined) ?? null);
+      setTranscriptEstado("pronto");
+    });
+    return () => { cancelado = true; };
+  }, [currentLesson?.id, transcriptTentativa]);
 
   const handleVideoTimeUpdate = useCallback((seconds: number) => { videoTimeRef.current = seconds; setVideoSeconds((anterior) => (Math.floor(anterior) === Math.floor(seconds) ? anterior : seconds)); }, []);
   const getVideoTime = useCallback(() => videoTimeRef.current, []);
@@ -197,6 +226,22 @@ const LessonPlayer = () => {
               </div>
 
               <ChaptersPanel chapters={chapters} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
+              {currentLesson?.id && transcriptEstado === "carregando" ? (
+                <div className="mt-4 rounded-2xl border border-border/50 bg-card/50 p-4" aria-busy="true">
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="mt-3 h-24 w-full" />
+                  <span className="sr-only">{t("transcript.loading")}</span>
+                </div>
+              ) : transcriptEstado === "erro" ? (
+                <div className="mt-4 rounded-2xl border border-border/50 bg-card/50 p-4" role="alert">
+                  <p className="text-sm text-destructive">{t("transcript.error")}</p>
+                  <Button variant="outline" size="sm" className="mt-3 gap-2" onClick={() => setTranscriptTentativa((n) => n + 1)}>
+                    <Loader2 className="h-4 w-4" />{t("transcript.retry")}
+                  </Button>
+                </div>
+              ) : (
+                <TranscriptPanel transcript={transcript} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
+              )}
 
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-3">

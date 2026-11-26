@@ -58,6 +58,17 @@ const dict = {
       afterEnd: "Há capítulo marcado depois do fim do vídeo. Confira o tempo de início.",
       duplicateStart: "Dois capítulos começam no mesmo segundo. Ajuste o início para não perder nenhum.",
     },
+    transcript: {
+      title: "Transcrição",
+      now: "Agora",
+      searchPlaceholder: "Buscar na transcrição",
+      searchEmpty: "Nenhum trecho encontrado.",
+      loading: "Carregando transcrição",
+      error: "Não foi possível carregar a transcrição desta aula.",
+      retry: "Tentar novamente",
+      adminTitle: "Transcrição da aula",
+      adminHint: "Uma linha por trecho. Prefixe com o tempo (ex.: 00:45) para o aluno pular direto ao ponto.",
+    },
     theme: {
       title: "Aparência",
       subtitle: "Escolha a paleta de cores que combina com você.",
@@ -140,6 +151,17 @@ const dict = {
       remove: "Remove chapter",
       afterEnd: "A chapter starts after the end of the video. Check the start time.",
       duplicateStart: "Two chapters start at the same second. Adjust the start time so none is lost.",
+    },
+    transcript: {
+      title: "Transcript",
+      now: "Now",
+      searchPlaceholder: "Search the transcript",
+      searchEmpty: "No matching passage.",
+      loading: "Loading transcript",
+      error: "We could not load this lesson transcript.",
+      retry: "Try again",
+      adminTitle: "Lesson transcript",
+      adminHint: "One line per passage. Prefix it with the timestamp (e.g. 00:45) so learners can jump straight to it.",
     },
     theme: {
       title: "Appearance",
@@ -224,6 +246,17 @@ const dict = {
       afterEnd: "Hay un capítulo marcado después del final del video. Revisa el tiempo de inicio.",
       duplicateStart: "Dos capítulos empiezan en el mismo segundo. Ajusta el inicio para no perder ninguno.",
     },
+    transcript: {
+      title: "Transcripción",
+      now: "Ahora",
+      searchPlaceholder: "Buscar en la transcripción",
+      searchEmpty: "Ningún fragmento encontrado.",
+      loading: "Cargando la transcripción",
+      error: "No se pudo cargar la transcripción de esta clase.",
+      retry: "Intentar de nuevo",
+      adminTitle: "Transcripción de la clase",
+      adminHint: "Una línea por fragmento. Pon el tiempo al inicio (ej.: 00:45) para que el alumno vaya directo al punto.",
+    },
     theme: {
       title: "Apariencia",
       subtitle: "Elige la paleta de colores que va contigo.",
@@ -262,6 +295,7 @@ export type DictPath =
   | `dashboard.${keyof Dict["dashboard"]}`
   | `store.${keyof Dict["store"]}`
   | `chapters.${keyof Dict["chapters"]}`
+  | `transcript.${keyof Dict["transcript"]}`
   | `theme.${keyof Dict["theme"]}`
   | `common.${keyof Dict["common"]}`;
 

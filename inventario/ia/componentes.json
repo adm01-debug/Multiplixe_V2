@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 236,
+ "total": 237,
  "orfaos": [
   "src/components/admin/AdminTopPlaybooksWidget.tsx",
   "src/components/admin/AdminVideoEngagementWidget.tsx",
@@ -637,7 +637,7 @@
    "exports": [
     "LessonForm"
    ],
-   "linhas": 323,
+   "linhas": 344,
    "hooks": [
     "useEffect",
     "useMemo",
@@ -1980,6 +1980,23 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/player/TranscriptPanel.tsx",
+   "exports": [
+    "TranscriptPanel"
+   ],
+   "linhas": 91,
+   "hooks": [
+    "useEffect",
+    "useMemo",
+    "useState",
+    "useT"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/player/VideoControls.tsx",
    "exports": [],
    "linhas": 174,
@@ -2757,7 +2774,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 37,
+   "usado_por": 38,
    "orfao": false
   },
   {
@@ -2903,7 +2920,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 20,
+   "usado_por": 21,
    "orfao": false
   },
   {
@@ -3299,7 +3316,7 @@
   {
    "arquivo": "src/pages/LessonPlayer.tsx",
    "exports": [],
-   "linhas": 229,
+   "linhas": 274,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3314,6 +3331,7 @@
     "useRef",
     "useState",
     "useStreaks",
+    "useT",
     "useUserPreferences",
     "useUserXP"
    ],

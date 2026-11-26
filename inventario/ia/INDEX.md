@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `9504633612032c0dabaa9e365a2d7e9c6f3e8bb2` · branch `claude/feat-func-007-mentoria-261126-0658` · 2026-11-26T06:43:08-03:00
+Commit: `a1fee212ece8a2840284c93edb9fd6ebf7c44669` · branch `claude/feat-func-017-transcricao-aula-2611280745` · 2026-11-26T07:17:41-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `9504633612032c0dabaa9e365a2d7e9c6f3e8bb2` · branch `claude/feat-func-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 609 (497) |
-| linhas de codigo | 70671 |
+| arquivos (codigo) | 613 (500) |
+| linhas de codigo | 71062 |
 | paginas / rotas | 28 / 28 |
-| componentes / hooks | 236 / 129 |
-| arquivos de teste | 82 |
+| componentes / hooks | 237 / 129 |
+| arquivos de teste | 83 |
 | edge functions | 13 |
-| tabelas / migrations | 71 / 75 |
+| tabelas / migrations | 71 / 76 |
 
 ## Divida medida
 
@@ -86,7 +86,7 @@ Commit: `9504633612032c0dabaa9e365a2d7e9c6f3e8bb2` · branch `claude/feat-func-0
 
 ## Banco (declarado pelo repo)
 
-71 tabelas · 186 policies · 86 funcoes · 2 cron jobs · 1 bucket(s) · 75 migrations
+71 tabelas · 186 policies · 86 funcoes · 2 cron jobs · 1 bucket(s) · 76 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
@@ -111,7 +111,7 @@ Commit: `9504633612032c0dabaa9e365a2d7e9c6f3e8bb2` · branch `claude/feat-func-0
 - `src/lib/utils.ts` (68)
 - `src/components/ui/card.tsx` (66)
 - `src/components/ui/badge.tsx` (60)
-- `src/components/ui/input.tsx` (37)
+- `src/components/ui/input.tsx` (38)
 - `src/components/ui/dialog.tsx` (36)
 - `src/components/ui/label.tsx` (26)
 - `src/components/ui/progress.tsx` (22)
@@ -119,15 +119,15 @@ Commit: `9504633612032c0dabaa9e365a2d7e9c6f3e8bb2` · branch `claude/feat-func-0
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (50)
-- `src/integrations/supabase/types.ts` (18)
-- `inventario/estado/schema-declarado.json` (17)
-- `inventario/ia/baseline.json` (15)
-- `inventario/ia/INDEX.md` (15)
-- `inventario/ia/manifest.json` (15)
-- `inventario/ia/componentes.json` (12)
-- `inventario/ia/grafo.json` (11)
-- `inventario/estado/rotas.json` (10)
-- `inventario/ia/hooks.json` (10)
+- `src/integrations/supabase/types.ts` (20)
+- `inventario/estado/schema-declarado.json` (19)
+- `inventario/ia/baseline.json` (17)
+- `inventario/ia/INDEX.md` (17)
+- `inventario/ia/manifest.json` (17)
+- `inventario/ia/componentes.json` (15)
+- `inventario/ia/grafo.json` (13)
+- `inventario/estado/rotas.json` (12)
+- `inventario/ia/hooks.json` (12)
 
 ## Scripts npm
 

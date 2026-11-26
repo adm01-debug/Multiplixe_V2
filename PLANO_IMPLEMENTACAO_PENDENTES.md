@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (68)
+### ✅ Melhorias JÁ IMPLEMENTADAS (69)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (31)
+## ⏳ MELHORIAS PENDENTES (30)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -1254,7 +1254,7 @@ Nada a implementar neste item.
 
 ---
 
-### 🎮 GAMIFICAÇÃO - 8 Pendentes
+### 🎮 GAMIFICAÇÃO - 7 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1339,7 +1339,7 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 
 ---
 
-#### GAME-005: Multiplier de XP
+#### GAME-005: Multiplier de XP ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 3h  
 **Descrição:** XP é fixo, sem multiplicadores.
@@ -1351,6 +1351,31 @@ Verificação: `tsc -b --force` 0 erros, eslint 0, suíte 64 arquivos / 517 test
 3. Streak multiplier (1.5x após 7 dias)
 4. Happy hour de aprendizado (opcional)
 ```
+
+**Implementação — status:**
+```
+[x] 1. Campo xp_multiplier em user_xp (numeric(4,2) not null default 1)
+[x] 2. Double XP weekend (sexta, sábado e domingo)
+[x] 3. Streak multiplier (1.5x após 7 dias, 2x após 30 dias, teto de 4x)
+[ ] 4. Happy hour — NÃO IMPLEMENTADO: o servidor não conhece o timezone do usuário, a regra dispararia na hora errada para o Brasil. Basta chamar xp_multiplier_for com um terceiro parâmetro quando houver horário por usuário.
+```
+
+**O que foi entregue (migration `20261126060000_multiplicador_xp.sql`, aplicada em produção):**
+- `xp_multiplier_for(p_streak, p_dow)` IMMUTABLE: regra pura, testável sem depender do relógio. Provado em produção: `(0, quinta)=1`, `(7, quinta)=1.5`, `(30, quinta)=2`, `(10, sexta)=3`, `(40, domingo)=4` (teto), `(3, sábado)=2`.
+- `get_xp_multiplier(uuid)` STABLE SECURITY DEFINER: multiplicador do usuário na data corrente (sem grant para authenticated — regra interna).
+- `get_my_xp_multiplier()` SECURITY DEFINER: devolve `{ multiplier, streak, streak_multiplier, weekend_multiplier, label }` para a UI, com rótulo pronto ("Sequencia de 7 dias: XP x1.5", "Fim de semana: XP em dobro").
+- `add_user_xp` reescrito: concede o valor **já multiplicado** (arredondado), grava o multiplicador vigente em `user_xp.xp_multiplier` e registra o XP real em `user_xp_history`. XP negativo (estorno) passa sem multiplicação.
+- `claim_daily_challenge_reward` devolve o `xp_earned` real e **corrigiu um bug de produção**: a função chamava `add_user_xp(xp, source, user_id)` com os argumentos na ordem errada (assinatura é `user_id, amount, source`), então todo resgate de desafio estourava `42883 function add_user_xp(integer, unknown, uuid) does not exist`.
+
+**Provado em produção (transação + ROLLBACK, aluno `d543f3c1` com streak 7):**
+`add_user_xp(user, 100, 'lesson')` → total 150 e histórico `{xp:150}`; resgate de "Primeira Vitória" (25 XP) → `{success:true, xp_earned:38}` (25 × 1.5 = 37,5 → 38) e histórico `{xp:38, src:'daily_challenge'}`; `user_xp.xp_multiplier = 1.5`; `get_my_xp_multiplier()` → `{multiplier:1.5, streak:7, label:"Sequencia de 7 dias: XP x1.5"}`.
+
+**Front:**
+- `src/hooks/useXpMultiplier.ts` (novo): lê o RPC, recarrega em `window focus`, `applyMultiplier(xp)` arredonda igual ao banco, cai para 1x se o RPC falhar (nunca inventa bônus).
+- `DailyChallenges.tsx`: o bônus **inventado** (`min(streak*5, 50)%` calculado no cliente, que nunca era creditado) foi substituído pelo multiplicador real — o botão de coleta mostra o valor já multiplicado ("+75"), o header mostra "+N XP hoje" multiplicado e o selo "XP x2 (bônus ativo)" só aparece quando há bônus de verdade. `useStreaks` removido do componente.
+- `types.ts`: `get_my_xp_multiplier` (Returns: Json) + `xp_multiplier` em Row/Insert/Update de `user_xp`.
+
+**Testes:** `src/test/xpMultiplier.test.tsx` (3 casos: leitura do RPC, fallback 1x em erro, arredondamento 25→38) e `src/test/dailyChallenges.test.tsx` ganhou o caso do multiplicador (agora 6 casos). Suíte: 68 arquivos / 535 testes verdes. `tsc -b` 0, eslint limpo, guard 369 chamadas / 0 violações, `schema-declarado.json` regenerado (56 funções).
 
 ---
 
@@ -1901,7 +1926,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **31** | **~156h** |
+| **TOTAL PENDENTE** | **30** | **~153h** |
 
 ---
 

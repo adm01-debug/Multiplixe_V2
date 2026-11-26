@@ -2312,6 +2312,7 @@ export type Database = {
           xp_from_courses: number
           xp_from_lessons: number
           xp_from_streaks: number
+          xp_multiplier: number
         }
         Insert: {
           created_at?: string
@@ -2325,6 +2326,7 @@ export type Database = {
           xp_from_courses?: number
           xp_from_lessons?: number
           xp_from_streaks?: number
+          xp_multiplier?: number
         }
         Update: {
           created_at?: string
@@ -2338,6 +2340,7 @@ export type Database = {
           xp_from_courses?: number
           xp_from_lessons?: number
           xp_from_streaks?: number
+          xp_multiplier?: number
         }
         Relationships: []
       }
@@ -2626,6 +2629,10 @@ export type Database = {
           xp_claimed: boolean
           xp_reward: number
         }[]
+      }
+      get_my_xp_multiplier: {
+        Args: never
+        Returns: Json
       }
       get_performance_comparison: {
               Args: never

@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { useDailyChallenges, type ChallengeProgress } from '@/hooks/useDailyChallenges';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
-import { useStreaks } from '@/hooks/useStreaks';
+import { useXpMultiplier } from '@/hooks/useXpMultiplier';
 
 const challengeIcons: Record<string, typeof Target> = {
   watch_lessons: BookOpen,
@@ -76,7 +76,7 @@ const DailyChallenges = () => {
     unclaimedCount 
   } = useDailyChallenges();
   
-  const { currentStreak } = useStreaks();
+  const { multiplier, label: multiplierLabel, applyMultiplier } = useXpMultiplier();
   const [timeUntilReset, setTimeUntilReset] = useState(getTimeUntilReset());
 
   useEffect(() => {
@@ -86,9 +86,7 @@ const DailyChallenges = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const streakBonus = currentStreak 
-    ? Math.min(currentStreak * 5, 50)
-    : 0;
+  const hasBonus = multiplier > 1;
 
   const dailyTotal = dailyChallenges.length;
   const dailyCompleted = dailyChallenges.filter(c => c.is_completed).length;
@@ -96,7 +94,7 @@ const DailyChallenges = () => {
   const weeklyCompleted = weeklyChallenges.filter(c => c.is_completed).length;
   const dailyXP = dailyChallenges.reduce((acc, c) => acc + c.challenge.xp_reward, 0);
   const weeklyXP = weeklyChallenges.reduce((acc, c) => acc + c.challenge.xp_reward, 0);
-  const bonusXP = Math.round(dailyXP * (streakBonus / 100));
+  const dailyXPWithMultiplier = dailyChallenges.reduce((acc, c) => acc + applyMultiplier(c.challenge.xp_reward), 0);
   const allDailyCompleted = dailyTotal > 0 && dailyCompleted === dailyTotal;
 
   const [showCelebration, setShowCelebration] = useState(false);
@@ -138,7 +136,7 @@ const DailyChallenges = () => {
     const isCompleted = challenge.is_completed;
     const canClaim = isCompleted && !challenge.xp_claimed && challenge.id.startsWith('pending-') === false;
     const isClaiming = claiming === challenge.id;
-    const xpWithBonus = challenge.challenge.xp_reward + Math.round(challenge.challenge.xp_reward * (streakBonus / 100));
+    const xpWithBonus = applyMultiplier(challenge.challenge.xp_reward);
 
     return (
       <motion.div
@@ -295,7 +293,7 @@ const DailyChallenges = () => {
               <p className="text-xl font-bold text-foreground">Todos Completos!</p>
               <div className="flex items-center gap-2 text-primary">
                 <Sparkles className="h-5 w-5" />
-                <span className="font-bold">+{dailyXP + bonusXP} XP Total</span>
+                <span className="font-bold">+{dailyXPWithMultiplier} XP Total</span>
               </div>
             </motion.div>
           </motion.div>
@@ -337,16 +335,16 @@ const DailyChallenges = () => {
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
               <Flame className="h-4 w-4 text-primary" />
               <span className="text-sm font-semibold text-primary">
-                +{dailyXP} XP hoje
+                +{dailyXPWithMultiplier} XP hoje
               </span>
             </div>
-            {streakBonus > 0 && (
+            {hasBonus && (
               <motion.span
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-xs text-amber-500 font-medium"
+                className="text-xs text-amber-500 font-medium" title={multiplierLabel || undefined}
               >
-                +{streakBonus}% bônus streak
+                XP x{multiplier} (bônus ativo)
               </motion.span>
             )}
           </div>

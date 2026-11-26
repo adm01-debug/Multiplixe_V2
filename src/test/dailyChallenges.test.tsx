@@ -13,8 +13,15 @@ vi.mock("@/hooks/useAuth", () => ({
   useAuth: () => ({ user: { id: "u1" }, loading: false }),
 }));
 
-vi.mock("@/hooks/useStreaks", () => ({
-  useStreaks: () => ({ currentStreak: 0 }),
+const xpMultiplierState = vi.hoisted(() => ({ value: 1 }));
+
+vi.mock("@/hooks/useXpMultiplier", () => ({
+  useXpMultiplier: () => ({
+    multiplier: xpMultiplierState.value,
+    label: xpMultiplierState.value > 1 ? "Fim de semana: XP em dobro" : "",
+    loading: false,
+    applyMultiplier: (xp: number) => Math.round(xp * xpMultiplierState.value),
+  }),
 }));
 
 vi.mock("sonner", () => ({
@@ -71,6 +78,7 @@ const weekly = {
 
 describe("desafios diários e semanais (GAME-002)", () => {
   beforeEach(() => {
+    xpMultiplierState.value = 1;
     rpc.mockReset();
     toastSuccess.mockReset();
     toastError.mockReset();
@@ -132,5 +140,15 @@ describe("desafios diários e semanais (GAME-002)", () => {
 
     await waitFor(() => expect(rpc).toHaveBeenCalledWith("get_my_challenges"));
     await waitFor(() => expect(container.firstChild).toBeNull());
+  });
+
+  it("aplica o multiplicador real de XP vindo do banco", async () => {
+    xpMultiplierState.value = 2;
+    rpc.mockResolvedValue({ data: [daily, weekly], error: null });
+    render(<DailyChallenges />);
+
+    const claim = await screen.findByRole("button", { name: /\+100/ });
+    expect(claim).toBeInTheDocument();
+    expect(screen.getByText(/XP x2/)).toBeInTheDocument();
   });
 });

@@ -2990,6 +2990,7 @@ export type Database = {
           created_by: string | null
           descricao: string | null
           eventos: string[]
+          formato: string
           id: string
           is_active: boolean
           nome: string
@@ -3002,6 +3003,7 @@ export type Database = {
           created_by?: string | null
           descricao?: string | null
           eventos?: string[]
+          formato?: string
           id?: string
           is_active?: boolean
           nome: string
@@ -3014,6 +3016,7 @@ export type Database = {
           created_by?: string | null
           descricao?: string | null
           eventos?: string[]
+          formato?: string
           id?: string
           is_active?: boolean
           nome?: string

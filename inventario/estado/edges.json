@@ -274,7 +274,7 @@
       "sem_chamador": true
     },
     "webhook-dispatch": {
-      "linhas": 152,
+      "linhas": 217,
       "segredos_lidos": [
         "SUPABASE_SERVICE_ROLE_KEY",
         "SUPABASE_URL"

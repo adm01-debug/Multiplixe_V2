@@ -6,6 +6,7 @@ export const EVENTOS_WEBHOOK = [
   'curso.concluido',
   'certificado.emitido',
   'conquista.desbloqueada',
+  'ranking.semanal',
   'teste',
 ] as const;
 
@@ -15,8 +16,31 @@ export const ROTULO_EVENTO: Record<EventoWebhook, string> = {
   'curso.concluido': 'Curso concluído',
   'certificado.emitido': 'Certificado emitido',
   'conquista.desbloqueada': 'Conquista desbloqueada',
+  'ranking.semanal': 'Ranking semanal',
   teste: 'Teste manual',
 };
+
+export const FORMATOS_WEBHOOK = [
+  {
+    valor: 'generico',
+    rotulo: 'JSON da plataforma',
+    descricao: 'Corpo do Multiplixe (id, evento, ocorrido_em, dados) assinado em HMAC-SHA256.',
+  },
+  {
+    valor: 'slack',
+    rotulo: 'Slack (Incoming Webhook)',
+    descricao: 'Mensagem de texto e blocos aceita pelo Slack. Cole a URL do Incoming Webhook do canal.',
+  },
+] as const;
+
+export type FormatoWebhook = (typeof FORMATOS_WEBHOOK)[number]['valor'];
+
+export const descricaoFormato = (formato: string) =>
+  FORMATOS_WEBHOOK.find((item) => item.valor === formato)?.descricao ??
+  FORMATOS_WEBHOOK[0].descricao;
+
+export const rotuloFormato = (formato: string) =>
+  FORMATOS_WEBHOOK.find((item) => item.valor === formato)?.rotulo ?? FORMATOS_WEBHOOK[0].rotulo;
 
 export type StatusEntrega = 'pendente' | 'entregue' | 'falhou';
 
@@ -26,6 +50,7 @@ export interface EndpointWebhook {
   url: string;
   eventos: string[];
   secret: string;
+  formato: FormatoWebhook;
   is_active: boolean;
   descricao: string | null;
   created_at: string;
@@ -35,6 +60,7 @@ export interface EndpointInput {
   nome: string;
   url: string;
   eventos: string[];
+  formato: FormatoWebhook;
   descricao: string | null;
   is_active: boolean;
 }
@@ -62,6 +88,7 @@ const normalizarEndpoint = (bruto: Record<string, unknown>): EndpointWebhook => 
   url: typeof bruto.url === 'string' ? bruto.url : '',
   eventos: Array.isArray(bruto.eventos) ? bruto.eventos.map(String) : [],
   secret: typeof bruto.secret === 'string' ? bruto.secret : '',
+  formato: bruto.formato === 'slack' ? 'slack' : 'generico',
   is_active: bruto.is_active !== false,
   descricao: typeof bruto.descricao === 'string' ? bruto.descricao : null,
   created_at: typeof bruto.created_at === 'string' ? bruto.created_at : '',
@@ -92,6 +119,9 @@ export const validarEndpoint = (dados: EndpointInput): string | null => {
   if (!dados.eventos.length) return 'Selecione pelo menos um evento.';
   const invalido = dados.eventos.find((evento) => !EVENTOS_WEBHOOK.includes(evento as EventoWebhook));
   if (invalido) return `Evento não suportado: ${invalido}.`;
+  if (!FORMATOS_WEBHOOK.some((formato) => formato.valor === dados.formato)) {
+    return 'Formato de mensagem não suportado.';
+  }
 
   return null;
 };
@@ -126,7 +156,7 @@ export const useAdminWebhooks = () => {
     queryFn: async (): Promise<EndpointWebhook[]> => {
       const { data, error } = await supabase
         .from('webhook_endpoints')
-        .select('id, nome, url, eventos, secret, is_active, descricao, created_at')
+        .select('id, nome, url, eventos, secret, formato, is_active, descricao, created_at')
         .order('created_at', { ascending: false });
       if (error) throw error;
 
@@ -171,6 +201,7 @@ export const useSalvarEndpoint = () => {
         nome: dados.nome.trim(),
         url: dados.url.trim(),
         eventos: dados.eventos,
+        formato: dados.formato,
         descricao: dados.descricao?.trim() ? dados.descricao.trim() : null,
         is_active: dados.is_active,
       };

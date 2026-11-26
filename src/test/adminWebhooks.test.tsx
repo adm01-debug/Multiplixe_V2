@@ -92,6 +92,7 @@ const ENDPOINT = {
   nome: "RH - Folha",
   url: "https://rh.cliente.com/hook",
   eventos: ["curso.concluido", "certificado.emitido"],
+  formato: "generico",
   secret: "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
   is_active: true,
   descricao: "Envia conclusões para o RH",
@@ -127,6 +128,7 @@ describe("validarEndpoint", () => {
     nome: "Destino",
     url: "https://destino.com/hook",
     eventos: ["curso.concluido"],
+    formato: "generico" as const,
     descricao: null,
     is_active: true,
   };
@@ -145,6 +147,16 @@ describe("validarEndpoint", () => {
 
   it("recusa evento fora da lista suportada", () => {
     expect(validarEndpoint({ ...base, eventos: ["evento.inventado"] })).toContain("não suportado");
+  });
+
+  it("aceita o evento de ranking semanal", () => {
+    expect(validarEndpoint({ ...base, eventos: ["ranking.semanal"] })).toBeNull();
+  });
+
+  it("recusa formato de mensagem desconhecido", () => {
+    expect(
+      validarEndpoint({ ...base, formato: "teams" as unknown as "slack" }),
+    ).toContain("Formato de mensagem não suportado");
   });
 });
 
@@ -252,8 +264,32 @@ describe("AdminWebhooksTab", () => {
       nome: "Slack RH",
       url: "https://hooks.slack.com/services/xyz",
       eventos: ["curso.concluido", "certificado.emitido"],
+      formato: "generico",
       is_active: true,
       descricao: null,
+    });
+  });
+
+  it("identifica o endpoint no formato Slack e preserva o formato ao editar", async () => {
+    state.endpoints = [
+      { ...ENDPOINT, formato: "slack", eventos: ["curso.concluido", "ranking.semanal"] },
+    ];
+    renderTab();
+
+    expect(await screen.findByRole("heading", { name: "RH - Folha" })).toBeTruthy();
+    expect(screen.getByText("Slack (Incoming Webhook)")).toBeTruthy();
+    expect(screen.getAllByText("Ranking semanal").length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: /editar rh - folha/i }));
+    fireEvent.click(screen.getByRole("button", { name: /salvar endpoint/i }));
+
+    await waitFor(() => expect(toastSuccess).toHaveBeenCalled());
+
+    const atualizacao = calls.find((chamada) => chamada.op === "update");
+    expect(atualizacao?.table).toBe("webhook_endpoints");
+    expect(atualizacao?.patch).toMatchObject({
+      formato: "slack",
+      eventos: ["curso.concluido", "ranking.semanal"],
     });
   });
 

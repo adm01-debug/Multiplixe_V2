@@ -20,8 +20,68 @@ interface Pendente {
   evento: string;
   payload: Record<string, unknown>;
   tentativas: number;
-  webhook_endpoints: { url: string; secret: string; is_active: boolean } | null;
+  webhook_endpoints: {
+    url: string;
+    secret: string;
+    is_active: boolean;
+    formato: string | null;
+  } | null;
 }
+
+// Slack Incoming Webhook recusa o JSON da plataforma: espera { text, blocks } em mrkdwn.
+const escapado = (valor: unknown): string =>
+  String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+const listaDe = <T>(valor: unknown): T[] => (Array.isArray(valor) ? (valor as T[]) : []);
+
+const textoRanking = (dados: Record<string, unknown>) => {
+  const medalhas = ["🥇", "🥈", "🥉", "4.", "5."];
+  const usuarios = listaDe<{ nome?: string; xp?: number }>(dados.top_usuarios).map(
+    (item, indice) =>
+      `${medalhas[indice] ?? "•"} *${escapado(item.nome) || "Participante"}* — ${Number(item.xp ?? 0)} XP`,
+  );
+  const cursos = listaDe<{ titulo?: string; conclusoes?: number }>(dados.top_cursos).map(
+    (item, indice) =>
+      `${indice + 1}. ${escapado(item.titulo) || "Curso"} — ${Number(item.conclusoes ?? 0)} conclusão(ões)`,
+  );
+
+  return [
+    usuarios.length ? `*Top 5 por XP*\n${usuarios.join("\n")}` : "*Top 5 por XP*\n_Sem XP registrado na semana._",
+    cursos.length
+      ? `*Top 5 cursos concluídos*\n${cursos.join("\n")}`
+      : "*Top 5 cursos concluídos*\n_Nenhum curso concluído na semana._",
+  ];
+};
+
+const corpoSlack = (evento: string, dados: Record<string, unknown>) => {
+  const nome = escapado(dados.usuario_nome) || "Um participante";
+  let manchete = `🔔 Evento *${escapado(evento)}*`;
+  let secoes: string[] = [];
+
+  if (evento === "ranking.semanal") {
+    manchete = "🏆 Ranking semanal da Academia Promo Brindes";
+    secoes = textoRanking(dados);
+  } else if (evento === "curso.concluido") {
+    manchete = `📚 *${nome}* concluiu o curso *${escapado(dados.curso_titulo) || "da plataforma"}*`;
+  } else if (evento === "certificado.emitido") {
+    const codigo = escapado(dados.codigo_verificacao);
+    manchete = `🎓 Certificado de *${nome}* no curso *${escapado(dados.curso_titulo) || "da plataforma"}*${
+      codigo ? ` — código ${codigo}` : ""
+    }`;
+  } else if (evento === "conquista.desbloqueada") {
+    manchete = `🏅 *${nome}* desbloqueou a conquista *${escapado(dados.conquista_nome) || "da plataforma"}*`;
+  }
+
+  const blocks = [manchete, ...secoes].map((texto) => ({
+    type: "section",
+    text: { type: "mrkdwn", text: texto },
+  }));
+
+  return JSON.stringify({ text: manchete.replace(/[*_`]/g, ""), blocks });
+};
 
 type Supa = ReturnType<typeof criarCliente>;
 
@@ -39,12 +99,15 @@ const entregar = async (supabase: Supa, entrega: Pendente) => {
     return "falha" as const;
   }
 
-  const corpo = JSON.stringify({
-    id: entrega.id,
-    evento: entrega.evento,
-    ocorrido_em: entrega.payload?.ocorrido_em ?? null,
-    dados: entrega.payload ?? {},
-  });
+  const corpo =
+    endpoint.formato === "slack"
+      ? corpoSlack(entrega.evento, entrega.payload ?? {})
+      : JSON.stringify({
+          id: entrega.id,
+          evento: entrega.evento,
+          ocorrido_em: entrega.payload?.ocorrido_em ?? null,
+          dados: entrega.payload ?? {},
+        });
 
   const tentativas = entrega.tentativas + 1;
 
@@ -126,7 +189,9 @@ Deno.serve(async (req) => {
 
     const { data, error } = await supabase
       .from("webhook_deliveries")
-      .select("id, endpoint_id, evento, payload, tentativas, webhook_endpoints(url, secret, is_active)")
+      .select(
+        "id, endpoint_id, evento, payload, tentativas, webhook_endpoints(url, secret, is_active, formato)",
+      )
       .eq("status", "pendente")
       .lte("proxima_tentativa", new Date().toISOString())
       .order("created_at", { ascending: true })

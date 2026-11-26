@@ -23,7 +23,8 @@ import {
 } from '@/components/ui/select';
 import { CourseForm } from '@/components/admin/CourseForm';
 import { LessonsManager } from '@/components/admin/LessonsManager';
-import { Search, Loader2, Clock, Eye, Edit, Trash2, Plus, Play, Tag, X } from 'lucide-react';
+import CourseCsvImport from '@/components/admin/CourseCsvImport';
+import { Search, Loader2, Clock, Eye, Edit, Trash2, Plus, Play, Tag, X, FileUp } from 'lucide-react';
 import { toast } from 'sonner';
 
 export interface AdminCourse {
@@ -55,6 +56,7 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
   const [editingCourse, setEditingCourse] = useState<AdminCourse | null>(null);
   const [deletingCourse, setDeletingCourse] = useState<AdminCourse | null>(null);
   const [lessonsManagerOpen, setLessonsManagerOpen] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<AdminCourse | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
@@ -156,9 +158,14 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input aria-label="Buscar cursos" placeholder="Buscar cursos..." value={searchCourses} onChange={(e) => setSearchCourses(e.target.value)} className="pl-10" />
         </div>
-        <Button onClick={() => { setEditingCourse(null); setCourseFormOpen(true); }}>
-          <Plus className="h-4 w-4 mr-2" /> Novo Curso
-        </Button>
+        <div className="flex items-center gap-2">
+                  <Button variant="outline" onClick={() => setCsvImportOpen(true)}>
+                    <FileUp className="h-4 w-4 mr-2" /> Importar CSV
+                  </Button>
+                  <Button onClick={() => { setEditingCourse(null); setCourseFormOpen(true); }}>
+                    <Plus className="h-4 w-4 mr-2" /> Novo Curso
+                  </Button>
+                </div>
       </div>
 
       {selectedIds.length > 0 && (
@@ -310,7 +317,15 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>    </div>
+      </AlertDialog>
+
+            <CourseCsvImport
+              open={csvImportOpen}
+              onOpenChange={setCsvImportOpen}
+              categories={categories}
+              onImported={onRefresh}
+            />
+          </div>
   );
 };
 

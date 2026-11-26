@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (72)
+### ✅ Melhorias JÁ IMPLEMENTADAS (73)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (27)
+## ⏳ MELHORIAS PENDENTES (26)
 
 ### 🎨 UX/UI - 4 Pendentes
 
@@ -1537,7 +1537,7 @@ O ranking só existia global (individual) e por departamento. Não havia como ve
 
 ---
 
-### 🛠️ MELHORIAS ADMINISTRATIVAS - 2 Pendentes
+### 🛠️ MELHORIAS ADMINISTRATIVAS - 1 Pendente
 
 #### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -1619,7 +1619,7 @@ A tabela de cursos do admin só tinha ações linha a linha (editar, publicar, d
 
 ---
 
-#### ADMIN-005: Importação de Cursos via CSV
+#### ADMIN-005: Importação de Cursos via CSV ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Cursos criados manualmente.
@@ -1632,6 +1632,19 @@ A tabela de cursos do admin só tinha ações linha a linha (editar, publicar, d
 4. Preview antes de importar
 5. Relatório de importação
 ```
+
+**Status:** ✅ CONCLUÍDO
+
+**O que foi feito:**
+- `src/lib/courseCsv.ts` (novo): `parseDelimited` com suporte a aspas, aspas escapadas e quebra de linha dentro do campo; `detectDelimiter` (`;`, `,`, tab); `parseCourseCsv` gera `title`, `slug` (auto a partir do título quando vazio, com remoção de acentos), `level` normalizado (`básico`→`iniciante`), `duration_minutes`, `category_id` resolvido pelo nome, `is_published`/`is_featured` em sim/nao, e acumula erros por linha (título, nível, categoria inexistente, slug repetido).
+- `src/components/admin/CourseCsvImport.tsx` (novo): diálogo com seleção de arquivo, download do modelo, badges de linhas válidas/com erro, preview das 50 primeiras linhas com erro por linha, importação apenas das linhas válidas e relatório final (criados + falhas com mensagem do banco).
+- `src/components/admin/AdminCoursesTab.tsx`: botão "Importar CSV" ao lado de "Novo Curso"; ao importar, `onRefresh` recarrega a lista.
+- **Correção de premissa do plano:** `CSVImporter.tsx` citado no plano **não existe** no repositório (só há exportação CSV em `quiz-stats/exportUtils.ts`), então o importador foi criado do zero.
+
+**Verificação:**
+- `tsc -b --force` → exit 0; `eslint` nos 4 arquivos → exit 0.
+- `supabase-usage-guard` → 372 chamadas resolvidas, 0 violações. O insert usa `supabase.from('courses').insert()` tipado.
+- Suíte: **70 arquivos / 548 testes** passando, incluindo 7 novos em `src/test/courseCsvImport.test.ts` (separador, aspas, slug automático, categoria inexistente, nível inválido, título vazio, slug repetido, sim/nao, vírgula).
 
 ---
 
@@ -1966,7 +1979,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **27** | **~142h** |
+| **TOTAL PENDENTE** | **26** | **~138h** |
 
 ---
 

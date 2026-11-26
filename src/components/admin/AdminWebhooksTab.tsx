@@ -6,6 +6,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import SimpleEmptyState from '@/components/SimpleEmptyState';
@@ -24,9 +31,12 @@ import {
 import { toast } from 'sonner';
 import {
   EVENTOS_WEBHOOK,
+  FORMATOS_WEBHOOK,
   contagensEntregas,
+  descricaoFormato,
   mascararSecret,
   rotuloEvento,
+  rotuloFormato,
   useAdminWebhooks,
   useAlternarEndpoint,
   useExcluirEndpoint,
@@ -37,6 +47,7 @@ import {
   type EndpointInput,
   type EndpointWebhook,
   type EntregaWebhook,
+  type FormatoWebhook,
   type StatusEntrega,
 } from '@/hooks/useAdminWebhooks';
 
@@ -44,6 +55,7 @@ const formularioVazio = (): EndpointInput => ({
   nome: '',
   url: '',
   eventos: ['curso.concluido', 'certificado.emitido'],
+  formato: 'generico',
   descricao: null,
   is_active: true,
 });
@@ -52,6 +64,7 @@ const formularioDe = (endpoint: EndpointWebhook): EndpointInput => ({
   nome: endpoint.nome,
   url: endpoint.url,
   eventos: [...endpoint.eventos],
+  formato: endpoint.formato,
   descricao: endpoint.descricao,
   is_active: endpoint.is_active,
 });
@@ -202,6 +215,7 @@ const AdminWebhooksTab = () => {
                       <Badge variant={endpoint.is_active ? 'default' : 'outline'}>
                         {endpoint.is_active ? 'Ativo' : 'Desligado'}
                       </Badge>
+                      <Badge variant="secondary">{rotuloFormato(endpoint.formato)}</Badge>
                     </div>
                     <p className="mt-1 break-all font-mono text-xs text-muted-foreground">
                       {endpoint.url}
@@ -400,10 +414,38 @@ const AdminWebhooksTab = () => {
                 className="font-mono text-sm"
               />
               <p className="text-xs text-muted-foreground">
-                Enviamos um POST com o corpo JSON assinado no header
-                <code className="mx-1 rounded bg-muted px-1">X-Multiplixe-Signature</code>
-                (HMAC-SHA256 do corpo com o segredo abaixo).
+                {form.formato === 'slack'
+                  ? 'Cole aqui a URL do Incoming Webhook do canal (https://hooks.slack.com/services/...).'
+                  : 'Enviamos um POST com o corpo JSON assinado no header'}
+                {form.formato !== 'slack' && (
+                  <>
+                    <code className="mx-1 rounded bg-muted px-1">X-Multiplixe-Signature</code>
+                    (HMAC-SHA256 do corpo com o segredo abaixo).
+                  </>
+                )}
               </p>
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="webhook-formato">Formato da mensagem</Label>
+              <Select
+                value={form.formato}
+                onValueChange={(valor) =>
+                  setForm((atual) => ({ ...atual, formato: valor as FormatoWebhook }))
+                }
+              >
+                <SelectTrigger id="webhook-formato">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {FORMATOS_WEBHOOK.map((item) => (
+                    <SelectItem key={item.valor} value={item.valor}>
+                      {item.rotulo}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">{descricaoFormato(form.formato)}</p>
             </div>
 
             <div className="space-y-2">

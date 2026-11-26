@@ -6,15 +6,15 @@
     "tabelas": 76,
     "tabelas_no_types": 76,
     "tabelas_nas_migrations": 76,
-    "colunas": 674,
+    "colunas": 675,
     "views": 1,
-    "funcoes": 106,
+    "funcoes": 107,
     "funcoes_expostas_no_types": 66,
     "enums": 1,
     "policies": 198,
-    "cron_jobs": 3,
+    "cron_jobs": 4,
     "buckets": 1,
-    "migrations": 83,
+    "migrations": 84,
     "alertas": 3,
     "problemas": 3
   },
@@ -1170,7 +1170,7 @@
     "webhook_endpoints": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 10,
+      "colunas": 11,
       "rls": true,
       "policies": 4,
       "triggers": [
@@ -1602,6 +1602,18 @@
       "criada_em": "20261128160000_reputacao.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "enfileirar_ranking_semanal": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129100000_int_001_slack_webhooks.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },
@@ -2453,7 +2465,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "criada_em": "20261129100000_int_001_slack_webhooks.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -2465,7 +2477,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "criada_em": "20261129100000_int_001_slack_webhooks.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -2477,7 +2489,7 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "criada_em": "20261129100000_int_001_slack_webhooks.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -2591,7 +2603,7 @@
       "retorno": null,
       "security_definer": false,
       "search_path": "public",
-      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "criada_em": "20261129100000_int_001_slack_webhooks.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -2644,6 +2656,11 @@
       "agenda": "0 9 * * 1",
       "chama_edge": "weekly-admin-digest",
       "definido_em": "20260418134642_ab948a1e-eb00-40a8-aadc-54aede6157df.sql"
+    },
+    "weekly-ranking-webhook": {
+      "agenda": "0 9 * * 1",
+      "chama_edge": null,
+      "definido_em": "20261129100000_int_001_slack_webhooks.sql"
     }
   },
   "buckets": {

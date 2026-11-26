@@ -34,6 +34,8 @@ export const quizQuestionSchema = z.object({
   question_text: z.string().trim().min(1, 'está sem texto').max(2000, 'texto muito longo (máx. 2000)'),
   explanation: z.string().trim().max(2000, 'explicação muito longa (máx. 2000)'),
   order_index: z.number().int().min(0),
+  // FUNC-020: nível usado pelo quiz adaptativo (peso do acerto e bônus de XP).
+  difficulty_level: z.enum(['facil', 'medio', 'dificil']).default('medio'),
   options: optionsSchema,
 });
 

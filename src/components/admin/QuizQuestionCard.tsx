@@ -6,7 +6,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2, GripVertical } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { QUIZ_DIFFICULTIES, QUIZ_DIFFICULTY_LABELS } from '@/lib/quizAdaptive';
+import { Plus, Trash2, GripVertical, Info } from 'lucide-react';
 
 interface QuizOption {
   id?: string;
@@ -20,6 +28,7 @@ interface QuizQuestion {
   question_text: string;
   explanation: string;
   order_index: number;
+  difficulty_level?: string;
   options: QuizOption[];
 }
 
@@ -45,9 +54,31 @@ const QuizQuestionCard = ({
           <div className="flex-1">
             <div className="flex items-center justify-between mb-2">
               <Badge>Questão {index + 1}</Badge>
-              <Button variant="ghost" size="sm" onClick={onRemove}>
-                <Trash2 className="w-4 h-4 text-destructive" />
-              </Button>
+              <div className="flex items-center gap-1">
+                <Select
+                  value={question.difficulty_level || 'medio'}
+                  onValueChange={(value) => onUpdateQuestion('difficulty_level', value)}
+                >
+                  <SelectTrigger className="h-8 w-[120px]" aria-label="Nível de dificuldade da questão">
+                    <SelectValue placeholder="Nível" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {QUIZ_DIFFICULTIES.map((level) => (
+                      <SelectItem key={level} value={level}>
+                        {QUIZ_DIFFICULTY_LABELS[level]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <IconTooltip label="Como funciona o nível de dificuldade: Fácil vale 1 ponto e 2 XP de bônus; Médio, 1,5 ponto e 5 XP; Difícil, 2 pontos e 10 XP. O quiz adaptativo usa esses níveis para escolher as próximas questões.">
+                  <span className="inline-flex cursor-help text-muted-foreground">
+                    <Info className="w-4 h-4" aria-hidden="true" />
+                  </span>
+                </IconTooltip>
+                <Button variant="ghost" size="sm" onClick={onRemove}>
+                  <Trash2 className="w-4 h-4 text-destructive" />
+                </Button>
+              </div>
             </div>
             <Textarea
               value={question.question_text}

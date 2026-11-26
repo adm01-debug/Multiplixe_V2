@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (80)
+### ✅ Melhorias JÁ IMPLEMENTADAS (81)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (20)
+## ⏳ MELHORIAS PENDENTES (19)
 
 ### 🎨 UX/UI - 2 Pendentes
 
@@ -352,7 +352,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 4 Pendentes
+### 🚀 FUNCIONALIDADES - 3 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -747,7 +747,7 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 
 ---
 
-#### FUNC-019: Marcadores de Tempo no Vídeo
+#### FUNC-019: Marcadores de Tempo no Vídeo ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Não há chaptering/marcadores no vídeo.
@@ -760,6 +760,16 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 4. Admin pode definir capítulos
 ```
 
+**Entregue em 26/11/2026**
+
+O aluno só tinha a barra de progresso: não havia como pular direto ao assunto, e o admin não tinha onde marcar os trechos.
+
+- `supabase/migrations/20261127190000_capitulos_aula.sql` (aplicada em produção): coluna `lessons.chapters` (`jsonb not null default '[]'`), validador `public.chapters_validos(jsonb)` (array de até 50 itens, cada um com `title` de 1 a 80 caracteres e `start_seconds` inteiro >= 0, sem estourar cast em JSON de outro cliente) e constraint `lessons_chapters_validos`. Execução liberada só para `authenticated` e `service_role`.
+- Front: `src/lib/chapters.ts` (normalização do JSON vindo de qualquer cliente, formatação de tempo, capítulo atual e posição na barra), `src/components/player/ChaptersPanel.tsx` (lista clicável com o trecho em reprodução marcado), marcadores clicáveis na barra do player, painel na página da aula e editor de capítulos no formulário do admin (com aviso quando o início passa do fim do vídeo e bloqueio quando dois capítulos começam no mesmo segundo), textos nos três idiomas.
+- Aula concluída continua concluída ao rever um trecho, e os atalhos do player (Espaço, setas) não roubam o foco de botões da interface.
+- Validado em produção com transação + `ROLLBACK`: vazio e lista válida aceitos; 51 itens, nulo, objeto, título vazio, início em texto, negativo e fracionado recusados; escrita inválida bloqueada pelo CHECK (23514); admin consegue gravar; validador reconhecido só por `authenticated`. Depois de aplicar, 25/25 aulas com `chapters = '[]'`.
+- Testes e gates: `src/test/chapters.test.tsx` 21 casos; suíte 78 arquivos / **615 testes**; `tsc -b` 0 erro; eslint sem erro novo; build ok; guarda de Supabase 396 chamadas / 0 violações; inventário de schema em dia (604 colunas).
+- Deploy provado no bundle servido de `https://multiplixe-v2.vercel.app`: `assets/index-BC8ViBZ3.js` contém "Capítulos do vídeo" e o aviso de dois capítulos no mesmo segundo.
 ---
 
 #### FUNC-020: Quiz Adaptativo ✅ CONCLUÍDO
@@ -2032,7 +2042,7 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 2 | ~10h |
 | Performance | 0 | — |
-| Funcionalidades | 4 | ~30h |
+| Funcionalidades | 3 | ~26h |
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
@@ -2041,7 +2051,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **19** | **~100h** |
+| **TOTAL PENDENTE** | **18** | **~96h** |
 
 ---
 

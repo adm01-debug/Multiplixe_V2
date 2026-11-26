@@ -131,3 +131,9 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   disso a função existia sem nenhum agendamento e nenhum chamador. A edge
   `cleanup-security-logs` é apenas um gatilho manual: exige sessão e papel `admin` em `user_roles`,
   porque apagar `blocked_ips` desbloqueia IPs que o rate limit barrou.
+- **Códigos de backup de MFA são segundo fator de verdade**: `user_mfa_settings.backup_codes` guarda
+  apenas o SHA-256 de cada código (`src/lib/backupCodes.ts`); o texto puro aparece uma vez, ao gerar.
+  O gate (`MFAChallengeGate`) aceita um código no lugar do TOTP, `useMFA.consumeBackupCode` apaga o
+  código usado (um por vez) e grava `last_mfa_at`, e a liberação vale só para a aba atual
+  (`sessionStorage`). Sem esse caminho, quem perdesse o autenticador ficava trancado fora do app —
+  os códigos eram gerados com `Math.random`, ficavam legíveis no banco e nada os conferia.

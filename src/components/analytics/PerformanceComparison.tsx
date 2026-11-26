@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Minus, Trophy, Clock, BookOpen, Target } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
@@ -47,6 +47,7 @@ const PerformanceComparison = ({ stats, className }: PerformanceComparisonProps)
           const TrendIcon = trend.icon;
           const Icon = stat.icon;
           const formatValue = stat.format || ((v: number) => v.toString());
+                    const peak = Math.max(stat.userValue, stat.averageValue, 1);
 
           return (
             <motion.div
@@ -78,7 +79,7 @@ const PerformanceComparison = ({ stats, className }: PerformanceComparisonProps)
                   <motion.div
                     className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary to-accent rounded-full"
                     initial={{ width: 0 }}
-                    animate={{ width: `${Math.min((stat.userValue / Math.max(stat.userValue, stat.averageValue)) * 100, 100)}%` }}
+                    animate={{ width: `${Math.min((stat.userValue / peak) * 100, 100)}%` }}
                     transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
                   />
                   
@@ -86,7 +87,7 @@ const PerformanceComparison = ({ stats, className }: PerformanceComparisonProps)
                   <div
                     className="absolute top-0 bottom-0 w-0.5 bg-foreground/50"
                     style={{
-                      left: `${Math.min((stat.averageValue / Math.max(stat.userValue, stat.averageValue)) * 100, 100)}%`,
+                      left: `${Math.min((stat.averageValue / peak) * 100, 100)}%`,
                     }}
                   />
                 </div>
@@ -132,29 +133,5 @@ const PerformanceComparison = ({ stats, className }: PerformanceComparisonProps)
   );
 };
 
-// Default stats example
-const defaultStats: ComparisonStat[] = [
-  {
-    label: "XP Total",
-    userValue: 2450,
-    averageValue: 1800,
-    icon: Trophy,
-    format: (v) => v.toLocaleString(),
-  },
-  {
-    label: "Horas de Estudo",
-    userValue: 24,
-    averageValue: 18,
-    unit: "h",
-    icon: Clock,
-  },
-  {
-    label: "Cursos Concluídos",
-    userValue: 5,
-    averageValue: 3,
-    icon: BookOpen,
-  },
-];
-
-export { PerformanceComparison, defaultStats };
+export { PerformanceComparison };
 export type { ComparisonStat };

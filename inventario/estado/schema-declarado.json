@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 63,
     "colunas": 525,
     "views": 1,
-    "funcoes": 47,
-    "funcoes_expostas_no_types": 35,
+    "funcoes": 48,
+    "funcoes_expostas_no_types": 36,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 58,
+    "migrations": 60,
     "alertas": 3,
     "problemas": 3
   },
@@ -42,7 +42,7 @@
       "indices": 0,
       "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
       "uso_no_codigo": {
-        "src": 2,
+        "src": 6,
         "edges": 0
       }
     },
@@ -84,7 +84,7 @@
       "indices": 0,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
-        "src": 4,
+        "src": 5,
         "edges": 0
       }
     },
@@ -130,7 +130,7 @@
       "indices": 1,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
-        "src": 25,
+        "src": 26,
         "edges": 2
       }
     },
@@ -700,7 +700,7 @@
       "indices": 0,
       "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
       "uso_no_codigo": {
-        "src": 8,
+        "src": 9,
         "edges": 1
       }
     },
@@ -1031,7 +1031,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
+      "criada_em": "20261126020000_gamificacao_conquistas_expandidas.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1128,7 +1128,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20251227191432_f0c5c527-6bc0-4b5d-9054-35014fedde57.sql",
+      "criada_em": "20261126020000_gamificacao_conquistas_expandidas.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1228,6 +1228,18 @@
         "edges": 0
       }
     },
+    "get_performance_comparison": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "{",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126030000_comparativo_desempenho.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_platform_stats": {
       "exposta_no_types": true,
       "args": [],
@@ -1265,7 +1277,7 @@
       "search_path": "public",
       "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
       "uso_no_codigo": {
-        "src": 1,
+        "src": 0,
         "edges": 0
       }
     },
@@ -1682,6 +1694,7 @@
         "check_due_assessment_notifications",
         "check_rate_limit",
         "check_streak_risk_notifications",
+        "get_recommended_courses",
         "get_user_permissions",
         "has_permission",
         "mcp_exec",

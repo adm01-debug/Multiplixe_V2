@@ -2591,7 +2591,23 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_platform_stats: {
+      get_performance_comparison: {
+              Args: never
+              Returns: {
+                courses_average: number
+                courses_completed: number
+                hours_average: number
+                hours_studied: number
+                lessons_average: number
+                lessons_completed: number
+                streak_average: number
+                streak_current: number
+                student_count: number
+                xp_average: number
+                xp_total: number
+              }[]
+            }
+            get_platform_stats: {
         Args: never
         Returns: {
           certificates_count: number

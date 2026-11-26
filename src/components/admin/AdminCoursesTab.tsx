@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,9 +13,17 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { CourseForm } from '@/components/admin/CourseForm';
 import { LessonsManager } from '@/components/admin/LessonsManager';
-import { Search, Loader2, Clock, Eye, Edit, Trash2, Plus, Play } from 'lucide-react';
+import { Search, Loader2, Clock, Eye, Edit, Trash2, Plus, Play, Tag, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 export interface AdminCourse {
@@ -48,8 +56,66 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
   const [deletingCourse, setDeletingCourse] = useState<AdminCourse | null>(null);
   const [lessonsManagerOpen, setLessonsManagerOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<AdminCourse | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkCategoryId, setBulkCategoryId] = useState('');
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    supabase
+      .from('categories')
+      .select('id, name')
+      .order('name')
+      .then(({ data }) => {
+        if (active && data) setCategories(data as { id: string; name: string }[]);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filteredCourses = useFuzzySearch(courses, ["title", "description", "instructor_name"], searchCourses);
+
+  const allFilteredSelected =
+    filteredCourses.length > 0 && filteredCourses.every((course) => selectedIds.includes(course.id));
+
+  const toggleSelected = (courseId: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(courseId) ? prev.filter((id) => id !== courseId) : [...prev, courseId],
+    );
+  };
+
+  const toggleSelectAll = () => {
+    setSelectedIds(allFilteredSelected ? [] : filteredCourses.map((course) => course.id));
+  };
+
+  type BulkPatch = Partial<Pick<AdminCourse, 'is_published' | 'is_featured' | 'category_id'>>;
+
+  const applyBulkUpdate = async (patch: BulkPatch, successMessage: string) => {
+    if (selectedIds.length === 0) return;
+    const { error } = await supabase.from('courses').update(patch).in('id', selectedIds);
+    if (error) {
+      toast.error('Erro ao atualizar cursos');
+      return;
+    }
+    setCourses((prev) => prev.map((course) => (selectedIds.includes(course.id) ? { ...course, ...patch } : course)));
+    setSelectedIds([]);
+    toast.success(successMessage);
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    const { error } = await supabase.from('courses').delete().in('id', selectedIds);
+    if (error) {
+      toast.error('Erro ao excluir cursos');
+      return;
+    }
+    setCourses((prev) => prev.filter((course) => !selectedIds.includes(course.id)));
+    toast.success(`${selectedIds.length} curso(s) excluido(s)`);
+    setSelectedIds([]);
+    setBulkDeleteOpen(false);
+  };
 
   const toggleCoursePublished = async (courseId: string, currentValue: boolean) => {
     const { error } = await supabase.from('courses').update({ is_published: !currentValue }).eq('id', courseId);
@@ -95,10 +161,66 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
         </Button>
       </div>
 
+      {selectedIds.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 p-3">
+          <span className="text-sm font-medium">{selectedIds.length} selecionado(s)</span>
+          <Button size="sm" variant="outline" onClick={() => applyBulkUpdate({ is_published: true }, 'Cursos publicados')}>
+            Publicar
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => applyBulkUpdate({ is_published: false }, 'Cursos despublicados')}>
+            Despublicar
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => applyBulkUpdate({ is_featured: true }, 'Cursos destacados')}>
+            Destacar
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => applyBulkUpdate({ is_featured: false }, 'Cursos removidos dos destaques')}>
+            Remover destaque
+          </Button>
+          <div className="flex items-center gap-2">
+            <Select value={bulkCategoryId} onValueChange={setBulkCategoryId}>
+              <SelectTrigger className="h-9 w-48" aria-label="Categoria para aplicar em massa">
+                <SelectValue placeholder="Categoria" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={!bulkCategoryId}
+              onClick={() => applyBulkUpdate({ category_id: bulkCategoryId }, 'Categoria atribuida')}
+            >
+              <Tag className="h-4 w-4 mr-1" />
+              Aplicar
+            </Button>
+          </div>
+          <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" aria-label="Excluir cursos selecionados" onClick={() => setBulkDeleteOpen(true)}>
+            <Trash2 className="h-4 w-4 mr-1" />
+            Excluir
+          </Button>
+          <Button size="sm" variant="ghost" onClick={() => setSelectedIds([])}>
+            <X className="h-4 w-4 mr-1" />
+            Limpar selecao
+          </Button>
+        </div>
+      )}
+
       <div className="rounded-xl border border-border/50 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-10">
+                <Checkbox
+                  checked={allFilteredSelected}
+                  onCheckedChange={toggleSelectAll}
+                  aria-label="Selecionar todos os cursos"
+                />
+              </TableHead>
               <TableHead>Curso</TableHead>
               <TableHead>Nível</TableHead>
               <TableHead className="text-center">Aulas</TableHead>
@@ -110,12 +232,19 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
           </TableHeader>
           <TableBody>
             {loadingData ? (
-              <TableRow><TableCell colSpan={7} className="text-center py-8"><Loader2 className="h-6 w-6 animate-spin mx-auto" /></TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center py-8"><Loader2 className="h-6 w-6 animate-spin mx-auto" /></TableCell></TableRow>
             ) : filteredCourses.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Nenhum curso encontrado</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhum curso encontrado</TableCell></TableRow>
             ) : (
               filteredCourses.map((course) => (
                 <TableRow key={course.id}>
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedIds.includes(course.id)}
+                      onCheckedChange={() => toggleSelected(course.id)}
+                      aria-label={`Selecionar ${course.title}`}
+                    />
+                  </TableCell>
                   <TableCell className="font-medium">{course.title}</TableCell>
                   <TableCell><Badge variant="outline">{course.level}</Badge></TableCell>
                   <TableCell className="text-center">{course.total_lessons}</TableCell>
@@ -162,7 +291,26 @@ const AdminCoursesTab = ({ courses, setCourses, loadingData, onRefresh }: Props)
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+
+      <AlertDialog open={bulkDeleteOpen} onOpenChange={setBulkDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir {selectedIds.length} curso(s)</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acao remove os cursos selecionados junto com aulas, quizzes e progresso ligados a eles. Nao pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBulkDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Excluir {selectedIds.length}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>    </div>
   );
 };
 

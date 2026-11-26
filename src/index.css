@@ -13,12 +13,12 @@
   :root {
     /* === CORES VIBRANTES === */
     /* Primary: Electric Purple */
-    --primary: 270 91% 65%;
+    --primary: 270 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 270 91% 58%;
+    --primary-hover: 270 91% 54%;
     
     /* Secondary: Hot Pink */
-    --secondary: 330 81% 60%;
+    --secondary: 330 81% 47%;
     --secondary-foreground: 0 0% 100%;
     
     /* Accent: Cyber Cyan */
@@ -40,30 +40,30 @@
 
     /* === ESTADOS === */
     --muted: 260 15% 93%;
-    --muted-foreground: 260 10% 45%;
+    --muted-foreground: 260 10% 43%;
     
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 48%;
     --destructive-foreground: 0 0% 100%;
     
-    --success: 160 84% 39%;
+    --success: 160 84% 28%;
     --success-foreground: 0 0% 100%;
     
-    --warning: 38 92% 50%;
+    --warning: 38 92% 32%;
     --warning-foreground: 0 0% 100%;
     
-    --info: 217 91% 60%;
+    --info: 217 91% 52%;
     --info-foreground: 0 0% 100%;
 
     /* === BORDAS E INPUTS === */
     --border: 260 20% 88%;
-    --input: 260 20% 92%;
+    --input: 260 20% 62%;
     --ring: 270 91% 65%;
 
     /* === CONFIGURAÇÕES === */
     --radius: 1rem;
 
     /* === GRADIENTES VIBRANTES === */
-    --gradient-primary: linear-gradient(135deg, hsl(270 91% 65%) 0%, hsl(330 81% 60%) 50%, hsl(20 90% 60%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(270 91% 60%) 0%, hsl(330 81% 47%) 50%, hsl(20 88% 42%) 100%);
     --gradient-secondary: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(270 91% 65%) 100%);
     --gradient-hero: linear-gradient(135deg, hsl(270 91% 65% / 0.15) 0%, hsl(330 81% 60% / 0.1) 50%, hsl(20 90% 60% / 0.05) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(260 20% 98%) 100%);
@@ -91,7 +91,7 @@
     /* === SIDEBAR === */
     --sidebar-background: 260 20% 98%;
     --sidebar-foreground: 260 30% 15%;
-    --sidebar-primary: 270 91% 65%;
+    --sidebar-primary: 270 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 260 15% 93%;
     --sidebar-accent-foreground: 260 30% 15%;
@@ -110,12 +110,12 @@
     /* === NEON DARK THEME === */
     /* Primary: Neon Purple */
     --primary: 270 100% 70%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 250 30% 6%;
     --primary-hover: 270 100% 75%;
     
     /* Secondary: Neon Pink/Magenta */
     --secondary: 320 100% 65%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary-foreground: 250 30% 6%;
     
     /* Accent: Electric Cyan */
     --accent: 180 100% 60%;
@@ -139,20 +139,20 @@
     --muted-foreground: 250 10% 60%;
     
     --destructive: 0 90% 55%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 250 30% 6%;
     
     --success: 150 100% 45%;
-    --success-foreground: 0 0% 100%;
+    --success-foreground: 250 30% 6%;
     
     --warning: 45 100% 55%;
     --warning-foreground: 0 0% 10%;
     
     --info: 200 100% 60%;
-    --info-foreground: 0 0% 100%;
+    --info-foreground: 250 30% 6%;
 
     /* === BORDERS WITH GLOW === */
     --border: 260 30% 18%;
-    --input: 260 25% 14%;
+    --input: 260 25% 45%;
     --ring: 270 100% 70%;
 
     /* === NEON GRADIENTS === */
@@ -187,7 +187,7 @@
     --sidebar-background: 250 25% 6%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 270 100% 70%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary-foreground: 250 30% 6%;
     --sidebar-accent: 250 20% 14%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 260 30% 18%;

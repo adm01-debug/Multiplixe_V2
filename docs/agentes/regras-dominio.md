@@ -23,13 +23,13 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
 
 ## Login e acesso
 
-- **Gate de dom?nio no banco (desde 26/11/2026):** o cadastro passa pelo auth hook `before_user_created`
+- **Gate de domínio no banco (desde 26/11/2026):** o cadastro passa pelo auth hook `before_user_created`
   (`public.bloquear_cadastro_fora_do_dominio`, migration `20261129110000_gate_dominio_signup.sql`, declarado em
   `supabase/config.toml`), que recusa email fora de `platform_settings.allowed_email_domains`. Antes disso a regra
-  existia **s?** no formul?rio (`src/pages/Auth.tsx`, schema zod `createCorporateEmailSchema(allowedDomainsFrom(...))`)
-  e a API p?blica de signup (`disable_signup = false`) aceitava qualquer email ? com a policy
-  "Authenticated users can view lessons" (`USING true`), qualquer conta rec?m-criada lia todo o conte?do.
-  Ao mexer em login, mantenha os dois lados: o do banco ? o que vale.
+  existia **só** no formulário (`src/pages/Auth.tsx`, schema zod `createCorporateEmailSchema(allowedDomainsFrom(...))`)
+  e a API pública de signup (`disable_signup = false`) aceitava qualquer email — com a policy
+  "Authenticated users can view lessons" (`USING true`), qualquer conta recém-criada lia todo o conteúdo.
+  Ao mexer em login, mantenha os dois lados: o do banco é o que vale.
 - A lista de domínios aceitos agora vem do banco (`platform_settings`, chave `allowed_email_domains`), editável
   em Admin → Configurações; default `["promobrindes.com.br"]` em `src/lib/platformSettings.ts`. Por isso a
   policy `platform_settings_select_anon_dominios` libera a leitura dessa chave para `anon`: o login precisa
@@ -37,8 +37,13 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
 - Antes do `signIn`, o front chama a RPC `check_login_allowed({ p_email })` (`src/pages/Auth.tsx:55`), e o
   fluxo de falha usa `record_failed_login` / `reset_login_attempts` (tabelas `login_attempts`,
   `blocked_ips`, `whitelisted_ips`, `rate_limit_config`, `rate_limit_logs`).
-- OAuth (Google/Apple) passa pelo Lovable: `src/integrations/lovable/index.ts` chama
-  `@lovable.dev/cloud-auth-js` e só depois faz `supabase.auth.setSession`. Arquivo **gerado** — não editar.
+- OAuth social: `src/integrations/lovable/index.ts` (arquivo **gerado** — não editar) fala com o broker
+  `@lovable.dev/cloud-auth-js`, cuja rota `/~oauth/initiate` **só existe na hospedagem do Lovable**. Por isso a
+  decisão de como entrar com Google fica em `src/lib/socialLogin.ts`: broker em `*.lovable.app`/`*.lovable.dev`;
+  fora daí, OAuth nativo (`supabase.auth.signInWithOAuth`) **somente** se `external.google` estiver ligado em
+  `/auth/v1/settings`. Hoje está `false` (verificado 26/11/2026), então a produção Vercel **esconde** o botão em
+  vez de mostrar um botão quebrado. O gate de domínio do banco vale para SSO também: conta Google fora do
+  domínio é recusada no `before_user_created`.
 - Papel: `user_roles` + RPC `has_role` (`src/hooks/useAdminRole.ts:19`). **Nunca** em `profiles`. Permissão
   fina em `permissions`/`role_permissions` com `has_permission`/`get_user_permissions`.
 - Rota protegida = `<ProtectedRoute>`; rota de admin = `<ProtectedRoute requireAdmin>`

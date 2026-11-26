@@ -2005,6 +2005,18 @@ O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
 4. Testar fluxo completo
 ```
 
+**Evidência (2026-11-26) — pronto, falta só a credencial:**
+```text
+- O botão "Continuar com Google" chamava o broker do Lovable (rota relativa /~oauth/initiate, que
+  só existe na hospedagem Lovable) e quebrava na produção Vercel.
+- Agora src/lib/socialLogin.ts decide por host: broker em *.lovable.app/*.lovable.dev; fora daí,
+  OAuth nativo do Supabase somente se external.google = true em /auth/v1/settings; sem provedor, o
+  botão não aparece. src/pages/Auth.tsx usa essa decisão (8 testes em src/test/socialLogin.test.ts).
+- Único passo que falta: habilitar Google/Microsoft no Supabase com as credenciais OAuth do dono.
+  Verificado agora: GET /auth/v1/settings -> external.google = false, external.azure = false.
+- Gate de domínio vale para SSO: before_user_created recusa conta fora do domínio corporativo.
+```
+
 ---
 
 #### INT-004: Webhooks para Eventos ✅ CONCLUÍDO

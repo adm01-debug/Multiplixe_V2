@@ -1,4 +1,5 @@
 import { Zap, Calendar } from 'lucide-react';
+import AvatarUpload from '@/components/profile/AvatarUpload';
 
 interface Props {
   userName: string;
@@ -7,9 +8,11 @@ interface Props {
   levelIcon: string;
   levelNumber: number;
   memberSinceDate: string;
+  avatarUrl?: string | null;
+  onAvatarChange?: (url: string | null) => void;
 }
 
-const ProfileHeader = ({ userName, userEmail, totalXP, levelIcon, levelNumber, memberSinceDate }: Props) => (
+const ProfileHeader = ({ userName, userEmail, totalXP, levelIcon, levelNumber, memberSinceDate, avatarUrl, onAvatarChange }: Props) => (
   <div className="relative mb-12 rounded-[2rem] overflow-hidden neon-card">
     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-background" />
     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-primary/30 to-accent/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
@@ -18,10 +21,15 @@ const ProfileHeader = ({ userName, userEmail, totalXP, levelIcon, levelNumber, m
       <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-50" />
-          <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white shadow-xl">
-            <span className="text-4xl md:text-5xl font-bold">{userName.charAt(0).toUpperCase()}</span>
+                  <div className="relative">
+                    <AvatarUpload
+                      currentAvatarUrl={avatarUrl}
+                      userName={userName}
+                      size="lg"
+                      onAvatarChange={onAvatarChange}
+                    />
           </div>
-          <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                  <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg z-10 pointer-events-none">
             <span className="text-lg">{levelIcon}</span>
           </div>
         </div>

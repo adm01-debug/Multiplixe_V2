@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -136,9 +137,18 @@ const ActivityTimeline = ({ limit = 10 }: ActivityTimelineProps) => {
     enabled: !!user,
   });
 
-  if (isLoading) {
-    return (
-      <div className="space-y-4">
+  const [period, setPeriod] = useState<"7d" | "30d" | "all">("all");
+
+    const visibleActivities = useMemo(() => {
+      if (period === "all") return activities;
+      const days = period === "7d" ? 7 : 30;
+      const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+      return activities.filter((a) => new Date(a.timestamp).getTime() >= cutoff);
+    }, [activities, period]);
+
+    if (isLoading) {
+      return (
+        <div className="space-y-4">
         {[1, 2, 3].map((i) => (
           <div key={i} className="flex gap-4 animate-pulse">
             <div className="w-10 h-10 rounded-full bg-muted" />
@@ -164,11 +174,41 @@ const ActivityTimeline = ({ limit = 10 }: ActivityTimelineProps) => {
 
   return (
     <div className="relative">
-      {/* Timeline line */}
-      <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 via-border to-transparent" />
+        <div className="flex items-center gap-2 mb-6" role="group" aria-label="Filtrar atividades por período">
+          {([
+            { id: "7d", label: "7 dias" },
+            { id: "30d", label: "30 dias" },
+            { id: "all", label: "Tudo" },
+          ] as const).map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => setPeriod(option.id)}
+              aria-pressed={period === option.id}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                period === option.id
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card/60 text-muted-foreground border-border/50 hover:bg-muted"
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
 
-      <div className="space-y-6">
-        {activities.map((activity, index) => {
+        {visibleActivities.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <Clock className="h-12 w-12 mx-auto mb-3 opacity-30" />
+            <p>Nenhuma atividade neste período</p>
+            <p className="text-sm">Escolha um período maior para ver seu histórico.</p>
+          </div>
+        ) : (
+          <>
+            {/* Timeline line */}
+            <div className="absolute left-5 top-14 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 via-border to-transparent" />
+
+            <div className="space-y-6">
+              {visibleActivities.map((activity, index) => {
           const IconComponent = activity.icon;
           return (
             <motion.div
@@ -205,7 +245,9 @@ const ActivityTimeline = ({ limit = 10 }: ActivityTimelineProps) => {
             </motion.div>
           );
         })}
-      </div>
+                      </div>
+                    </>
+                  )}
     </div>
   );
 };

@@ -2,25 +2,24 @@
 
 Ler quando mexer em login, papéis, XP/gamificação, certificado, segurança ou rotas.
 
-## Incidente aberto — `migrate-helper` (segurança, prioridade)
+## Incidente resolvido — `migrate-helper` (segurança)
 
-`supabase/functions/migrate-helper/index.ts` existe no repo com:
-- **chave de acesso fixa no código** (constante `ACCESS_KEY`, comparada com o header `x-access-key`);
-- `action=credentials`, que devolve `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` e `SUPABASE_DB_URL`
-  (linhas 26-28) para quem acertar essa chave;
-- `verify_jwt = false` em `supabase/config.toml` (sem autenticação de usuário) e CORS `*`;
-- o próprio comentário do arquivo diz "Após a migração, remova esta função".
+Existia `supabase/functions/migrate-helper/index.ts` com chave de acesso fixa no código (header
+`x-access-key`), `action=credentials` devolvendo `SUPABASE_SERVICE_ROLE_KEY`/`SUPABASE_DB_URL` para quem
+acertasse a chave, `verify_jwt = false` e CORS `*`.
 
-Histórico: o commit `a124f9f` (`security: remove migrate-helper edge function (exposes service_role key)`)
-apagou a função; o commit seguinte do Lovable (`580966a`) **trouxe de volta**. Se ela estiver publicada no
-projeto `ywsblgsikhiscvpmopkp`, qualquer um com a chave do arquivo lê o `service_role` — acesso total ao
-banco, ignorando RLS. **Publicada ou não: NÃO VERIFICADO** (sem MCP deste projeto,
-`docs/agentes/banco.md`).
+Histórico: `a124f9f` apagou a função; o commit seguinte do Lovable (`580966a`) **trouxe de volta**.
 
-Regra para o agente: **não é fix de oportunidade** — apagar o arquivo só no repo não resolve (o Lovable
-reintroduz e a função continua publicada). O caminho é: dono remove a função no Lovable Cloud **e** rotaciona
-a `service_role`, e só então o arquivo sai do repo. Enquanto não houver essa ordem, trate como pendência
-conhecida; nunca cite a chave em chat, log ou PR.
+**Resolvido em 26/11/2026:**
+- Verificado por Management API (lista de edge functions do projeto `ywsblgsikhiscvpmopkp`): a função
+  **não estava publicada** — 13 funções ativas, nenhuma `migrate-helper`. O risco era latente (bastava um
+  deploy), não ativo naquela data.
+- Arquivo e pasta removidos do repo; bloco `[functions.migrate-helper]` removido de `supabase/config.toml`.
+- Guard `scripts/ci/edge-funcoes-proibidas.unit.mjs` (roda em `npm run guards`) deixa a CI vermelha se a
+  pasta ou o bloco de config voltarem — cobre a reintrodução pelo editor do Lovable.
+
+Pendente do dono (não é código): se a função chegou a ser publicada antes de 26/11/2026 — **NÃO
+VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave antiga em chat, log ou PR.
 
 ## Login e acesso
 

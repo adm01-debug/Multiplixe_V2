@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 69,
-    "tabelas_no_types": 69,
-    "tabelas_nas_migrations": 69,
-    "colunas": 587,
+    "tabelas": 70,
+    "tabelas_no_types": 70,
+    "tabelas_nas_migrations": 70,
+    "colunas": 603,
     "views": 1,
-    "funcoes": 73,
-    "funcoes_expostas_no_types": 50,
+    "funcoes": 80,
+    "funcoes_expostas_no_types": 52,
     "enums": 1,
-    "policies": 181,
+    "policies": 182,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 71,
+    "migrations": 72,
     "alertas": 3,
     "problemas": 3
   },
@@ -678,7 +678,7 @@
     "store_items": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 11,
+      "colunas": 14,
       "rls": true,
       "policies": 2,
       "triggers": [
@@ -745,7 +745,8 @@
       "rls": true,
       "policies": 2,
       "triggers": [
-        "trg_award_coins_from_achievement"
+        "trg_award_coins_from_achievement",
+        "trg_award_powerup_on_achievement"
       ],
       "indices": 0,
       "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
@@ -939,6 +940,22 @@
         "edges": 0
       }
     },
+    "user_powerups": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 13,
+      "rls": true,
+      "policies": 1,
+      "triggers": [
+        "update_user_powerups_updated_at"
+      ],
+      "indices": 2,
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "user_purchases": {
       "no_types": true,
       "nas_migrations": true,
@@ -1084,6 +1101,32 @@
     }
   },
   "funcoes": {
+    "activate_powerup": {
+      "exposta_no_types": true,
+      "args": [
+        "p_kind"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "active_xp_boost_multiplier": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "add_user_xp": {
       "exposta_no_types": true,
       "args": [
@@ -1176,6 +1219,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261127160000_moeda_virtual_nao_retroativa.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "award_powerup_on_achievement": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1301,6 +1356,18 @@
       "criada_em": "20261126020000_gamificacao_conquistas_expandidas.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "consume_streak_freeze": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },
@@ -1479,6 +1546,18 @@
         "edges": 0
       }
     },
+    "get_my_powerups": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_my_wallet": {
       "exposta_no_types": true,
       "args": [],
@@ -1497,7 +1576,7 @@
       "retorno": "Json",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261126060000_multiplicador_xp.sql",
+      "criada_em": "20261127180000_powerups.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1634,7 +1713,19 @@
       "retorno": null,
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261126060000_multiplicador_xp.sql",
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "grant_powerup": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1692,6 +1783,18 @@
       "uso_no_codigo": {
         "src": 1,
         "edges": 1
+      }
+    },
+    "has_streak_freeze": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
       }
     },
     "issue_certificate": {
@@ -1799,7 +1902,7 @@
       "retorno": "Json",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20261127140000_moeda_virtual.sql",
+      "criada_em": "20261127180000_powerups.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -2035,7 +2138,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20251224135554_5c37e348-13b9-4073-bc20-f0a7310a22d3.sql",
+      "criada_em": "20261127180000_powerups.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -2120,6 +2223,7 @@
         "user_daily_challenge_progress",
         "user_flashcard_progress",
         "user_leagues",
+        "user_powerups",
         "user_purchases"
       ]
     },

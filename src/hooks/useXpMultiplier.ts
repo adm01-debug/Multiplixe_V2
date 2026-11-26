@@ -7,6 +7,9 @@ export interface XpMultiplier {
   streak: number;
   streak_multiplier: number;
   weekend_multiplier: number;
+  /** Multiplicador do power-up ativo (1 quando nao ha impulsionador). */
+  boost_multiplier: number;
+  boost_expires_at: string | null;
   label: string;
 }
 
@@ -15,6 +18,8 @@ const DEFAULT_MULTIPLIER: XpMultiplier = {
   streak: 0,
   streak_multiplier: 1,
   weekend_multiplier: 1,
+  boost_multiplier: 1,
+  boost_expires_at: null,
   label: '',
 };
 
@@ -47,6 +52,8 @@ export const useXpMultiplier = () => {
       streak: Number(parsed.streak) || 0,
       streak_multiplier: Number(parsed.streak_multiplier) || 1,
       weekend_multiplier: Number(parsed.weekend_multiplier) || 1,
+          boost_multiplier: Number(parsed.boost_multiplier) || 1,
+          boost_expires_at: typeof parsed.boost_expires_at === 'string' ? parsed.boost_expires_at : null,
       label: typeof parsed.label === 'string' ? parsed.label : '',
     });
     setLoading(false);
@@ -58,7 +65,11 @@ export const useXpMultiplier = () => {
 
   useEffect(() => {
     window.addEventListener('focus', fetchMultiplier);
-    return () => window.removeEventListener('focus', fetchMultiplier);
+      window.addEventListener('powerup:activated', fetchMultiplier);
+      return () => {
+        window.removeEventListener('focus', fetchMultiplier);
+        window.removeEventListener('powerup:activated', fetchMultiplier);
+      };
   }, [fetchMultiplier]);
 
   const applyMultiplier = useCallback(

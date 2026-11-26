@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { t } from '@/lib/i18n';
 
 interface UserStreak {
   id: string;
@@ -17,6 +19,8 @@ interface StreakUpdateResult {
   new_streak: number;
   xp_awarded: number;
   is_new_record: boolean;
+  /** true quando uma Blindagem de Sequencia cobriu o dia perdido (GAME-007). */
+  freeze_used: boolean;
 }
 
 export const useStreaks = () => {
@@ -70,7 +74,11 @@ export const useStreaks = () => {
 
       // Return the first result from the function
       if (data && data.length > 0) {
-        return data[0] as StreakUpdateResult;
+              const resultado = data[0] as StreakUpdateResult;
+              if (resultado.freeze_used) {
+                toast.success(t('store.freezeSaved').replace('{n}', String(resultado.new_streak)));
+              }
+              return resultado;
       }
 
       return null;

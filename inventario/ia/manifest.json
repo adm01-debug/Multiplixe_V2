@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T07:24:24.393Z",
- "commit": "de3e3eefe8d6c08d50663d9cfc925458d5eca96f",
- "branch": "claude/feat-moeda-virtual-261126-0346",
+ "gerado_em": "2026-11-26T08:06:59.705Z",
+ "commit": "617492c6922ff734ce12082a97be596f2506b382",
+ "branch": "claude/feat-powerups-261126-0750",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "74816d4d21d8491d",
-  "baseline.json": "69f3c93b9fd069dc",
-  "componentes.json": "ceb97284f358ea01",
-  "grafo.json": "f171219f2db3c912",
-  "hooks.json": "9c78c6926f9bcf1a"
+  "INDEX.md": "956d713e232826e1",
+  "baseline.json": "d4ac877438e60444",
+  "componentes.json": "afddec7c7969c73b",
+  "grafo.json": "5fcd0d82fce2a94c",
+  "hooks.json": "39e661d4e5bab76d"
  },
  "contagens": {
-  "arquivos": 587,
-  "arquivos_de_codigo": 484,
-  "linhas_de_codigo": 67593,
+  "arquivos": 594,
+  "arquivos_de_codigo": 487,
+  "linhas_de_codigo": 68185,
   "componentes": 234,
-  "hooks": 121,
+  "hooks": 123,
   "paginas": 27,
-  "testes": 77,
+  "testes": 78,
   "edge_functions": 13,
   "rotas": 27,
-  "tabelas": 69,
-  "migrations": 71
+  "tabelas": 70,
+  "migrations": 72
  },
  "erros": []
 }

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 121,
+ "total": 123,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -29,6 +29,7 @@
  ],
  "sem_teste": [
   "useAchievements",
+  "useActivatePowerup",
   "useAdminFlashcards",
   "useAdminRole",
   "useAdminStoreItems",
@@ -76,6 +77,7 @@
   "usePlatformComparison",
   "usePlatformSettings",
   "usePomodoro",
+  "usePowerups",
   "usePrefetch",
   "usePrefetchQuery",
   "usePublicProfile",
@@ -128,6 +130,20 @@
     "src/pages/Dashboard.tsx",
     "src/pages/LessonPlayer.tsx",
     "src/pages/Profile.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useActivatePowerup": {
+   "arquivo": "src/hooks/usePowerups.ts",
+   "linhas": 62,
+   "tabelas": [],
+   "rpcs": [
+    "activate_powerup",
+    "get_my_powerups"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Store.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -184,7 +200,7 @@
   },
   "useAdminStoreItems": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -274,6 +290,7 @@
     "src/hooks/usePlatformComparison.ts",
     "src/hooks/usePlaybookComments.ts",
     "src/hooks/usePomodoro.ts",
+    "src/hooks/usePowerups.ts",
     "src/hooks/usePushNotifications.ts",
     "src/hooks/useQuizzes.ts",
     "src/hooks/useRateLimitLogs.ts",
@@ -603,7 +620,7 @@
   },
   "useDeleteStoreItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -826,7 +843,7 @@
   },
   "useGrantCoins": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1224,6 +1241,20 @@
    ],
    "coberto_por_teste": false
   },
+  "usePowerups": {
+   "arquivo": "src/hooks/usePowerups.ts",
+   "linhas": 62,
+   "tabelas": [],
+   "rpcs": [
+    "activate_powerup",
+    "get_my_powerups"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Store.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "usePrefetch": {
    "arquivo": "src/components/PrefetchLink.tsx",
    "linhas": 300,
@@ -1282,7 +1313,7 @@
   },
   "usePurchaseItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1439,7 +1470,7 @@
   },
   "useSaveStoreItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1556,7 +1587,7 @@
   },
   "useStoreItems": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1573,7 +1604,7 @@
   },
   "useStreaks": {
    "arquivo": "src/hooks/useStreaks.ts",
-   "linhas": 124,
+   "linhas": 132,
    "tabelas": [
     "user_streaks"
    ],
@@ -1633,14 +1664,15 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 149,
+   "linhas": 207,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [
     "src/components/LanguageToggle.tsx",
     "src/components/dashboard/DashboardHeader.tsx",
-    "src/components/navigation/MobileBottomNav.tsx"
+    "src/components/navigation/MobileBottomNav.tsx",
+    "src/pages/Store.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -1683,7 +1715,7 @@
   },
   "useToggleStoreItem": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1945,7 +1977,7 @@
   },
   "useWallet": {
    "arquivo": "src/hooks/useWallet.ts",
-   "linhas": 247,
+   "linhas": 249,
    "tabelas": [
     "store_items"
    ],
@@ -1978,7 +2010,7 @@
   },
   "useXpMultiplier": {
    "arquivo": "src/hooks/useXpMultiplier.ts",
-   "linhas": 77,
+   "linhas": 88,
    "tabelas": [],
    "rpcs": [
     "get_my_xp_multiplier"

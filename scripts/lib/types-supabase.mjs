@@ -90,11 +90,21 @@ export function chavesDeNivel1(corpo) {
 /** `nome: tipo` de primeiro nivel (uma por linha, como o gerador emite). */
 export function camposDe(corpo) {
   const campos = {};
-  // Uma declaracao por linha e o que o gerador do Supabase emite, mas `Args` as vezes vem na
-  // mesma linha separada por `;` — por isso o split duplo (`;` nao aparece dentro de tipo).
-  for (const linha of corpo.split('\n')) {
+  const linhas = corpo.split('\n');
+  // Declaracao de primeiro nivel e a que fica no menor recuo do bloco: assim o parser nao
+  // depende de um numero fixo de espacos (o types.ts usa recuos diferentes por bloco).
+  const recuo = (linha) => linha.match(/^[ \t]*/)[0].length;
+  const recuoBase = linhas.reduce(
+    (min, linha) => (linha.trim() === '' ? min : Math.min(min, recuo(linha))),
+    Infinity,
+  );
+
+  for (const linha of linhas) {
+    if (linha.trim() === '' || recuo(linha) > recuoBase) continue;
+    // Uma declaracao por linha e o que o gerador do Supabase emite, mas `Args` as vezes vem na
+    // mesma linha separada por `;` — por isso o split duplo (`;` nao aparece dentro de tipo).
     for (const parte of linha.split(';')) {
-      const m = parte.match(/^\s{0,16}([A-Za-z_][A-Za-z0-9_]*|"[^"]+")\??\s*:\s*(.+?)\s*$/);
+      const m = parte.match(/^\s*([A-Za-z_][A-Za-z0-9_]*|"[^"]+")\??\s*:\s*(.+?)\s*$/);
       if (!m) continue;
       const tipo = m[2].replace(/[,;]$/, '').trim();
       if (tipo === '{' || tipo === '[' || tipo === '') continue;

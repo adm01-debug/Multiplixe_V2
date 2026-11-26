@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 232,
+ "total": 234,
  "orfaos": [
   "src/components/admin/AdminTopPlaybooksWidget.tsx",
   "src/components/admin/AdminVideoEngagementWidget.tsx",
@@ -53,7 +53,7 @@
   {
    "arquivo": "src/App.tsx",
    "exports": [],
-   "linhas": 160,
+   "linhas": 162,
    "hooks": [
     "useAuth",
     "useSessionRotation"
@@ -372,6 +372,25 @@
    "edges": [
     "weekly-admin-digest"
    ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/AdminStoreTab.tsx",
+   "exports": [],
+   "linhas": 369,
+   "hooks": [
+    "useAdminStoreItems",
+    "useDeleteStoreItem",
+    "useFuzzySearch",
+    "useGrantCoins",
+    "useMemo",
+    "useSaveStoreItem",
+    "useState",
+    "useToggleStoreItem"
+   ],
+   "tabelas": [],
+   "edges": [],
    "usado_por": 1,
    "orfao": false
   },
@@ -1007,7 +1026,7 @@
   {
    "arquivo": "src/components/CommandPalette.tsx",
    "exports": [],
-   "linhas": 173,
+   "linhas": 174,
    "hooks": [
     "useAuth",
     "useEffect",
@@ -1058,10 +1077,11 @@
   {
    "arquivo": "src/components/dashboard/DashboardHeader.tsx",
    "exports": [],
-   "linhas": 118,
+   "linhas": 127,
    "hooks": [
     "usePrefetchQuery",
-    "useT"
+    "useT",
+    "useWallet"
    ],
    "tabelas": [],
    "edges": [],
@@ -1704,7 +1724,7 @@
   {
    "arquivo": "src/components/navigation/MobileBottomNav.tsx",
    "exports": [],
-   "linhas": 166,
+   "linhas": 168,
    "hooks": [
     "useLocation",
     "usePrefetchQuery",
@@ -2317,7 +2337,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 9,
+   "usado_por": 10,
    "orfao": false
   },
   {
@@ -2470,7 +2490,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 57,
+   "usado_por": 59,
    "orfao": false
   },
   {
@@ -2516,7 +2536,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 132,
+   "usado_por": 134,
    "orfao": false
   },
   {
@@ -2721,7 +2741,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 35,
+   "usado_por": 36,
    "orfao": false
   },
   {
@@ -2907,7 +2927,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 20,
+   "usado_por": 21,
    "orfao": false
   },
   {
@@ -3023,13 +3043,13 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 68,
+   "usado_por": 69,
    "orfao": false
   },
   {
    "arquivo": "src/pages/Admin.tsx",
    "exports": [],
-   "linhas": 311,
+   "linhas": 318,
    "hooks": [
     "useAdminRole",
     "useAuth",
@@ -3359,7 +3379,7 @@
   {
    "arquivo": "src/pages/Profile.tsx",
    "exports": [],
-   "linhas": 284,
+   "linhas": 322,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3367,7 +3387,8 @@
     "useEffect",
     "useNavigate",
     "useState",
-    "useUserXP"
+    "useUserXP",
+    "useWallet"
    ],
    "tabelas": [
     "profiles",
@@ -3461,6 +3482,22 @@
     "useDueAssessments",
     "useNavigate",
     "useUserAssessmentResults"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/Store.tsx",
+   "exports": [],
+   "linhas": 268,
+   "hooks": [
+    "useMemo",
+    "useNavigate",
+    "usePurchaseItem",
+    "useStoreItems",
+    "useWallet"
    ],
    "tabelas": [],
    "edges": [],

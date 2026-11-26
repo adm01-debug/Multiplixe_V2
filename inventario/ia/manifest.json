@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T06:34:28.261Z",
- "commit": "85cd87a5dbd870f459539f039774c870585574a3",
- "branch": "claude/feat-ligas-semanais-261126-0333",
+ "gerado_em": "2026-11-26T07:24:24.393Z",
+ "commit": "de3e3eefe8d6c08d50663d9cfc925458d5eca96f",
+ "branch": "claude/feat-moeda-virtual-261126-0346",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "6cba1801dd475fe9",
-  "baseline.json": "1498697c148a67f1",
-  "componentes.json": "234dea86f8bf4fe4",
-  "grafo.json": "36ee6d4b401f1421",
-  "hooks.json": "80249834e46ed578"
+  "INDEX.md": "74816d4d21d8491d",
+  "baseline.json": "69f3c93b9fd069dc",
+  "componentes.json": "ceb97284f358ea01",
+  "grafo.json": "f171219f2db3c912",
+  "hooks.json": "9c78c6926f9bcf1a"
  },
  "contagens": {
-  "arquivos": 578,
-  "arquivos_de_codigo": 479,
-  "linhas_de_codigo": 66405,
-  "componentes": 232,
-  "hooks": 113,
-  "paginas": 26,
-  "testes": 76,
+  "arquivos": 587,
+  "arquivos_de_codigo": 484,
+  "linhas_de_codigo": 67593,
+  "componentes": 234,
+  "hooks": 121,
+  "paginas": 27,
+  "testes": 77,
   "edge_functions": 13,
-  "rotas": 24,
-  "tabelas": 66,
-  "migrations": 67
+  "rotas": 27,
+  "tabelas": 69,
+  "migrations": 71
  },
  "erros": []
 }

@@ -2,11 +2,11 @@
   "format_version": 1,
   "fonte": "scripts/inventario/gerar-rotas.mjs (le src/App.tsx, CommandPalette, MobileBottomNav, useGlobalShortcuts, routePrefetch e os imports de cada pagina)",
   "resumo": {
-    "rotas": 26,
-    "protegidas": 19,
+    "rotas": 27,
+    "protegidas": 20,
     "so_admin": 2,
-    "entradas_na_ui": 120,
-    "hooks_distintos": 85,
+    "entradas_na_ui": 124,
+    "hooks_distintos": 93,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 73,
+      "arquivos_lidos": 75,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -170,6 +170,10 @@
         {
           "nome": "useViewMode",
           "arquivo": "src/components/catalog/ViewToggle.tsx"
+        },
+        {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
         }
       ],
       "buckets": [],
@@ -180,17 +184,20 @@
       ],
       "rpcs": [
         "add_user_xp",
+        "admin_grant_coins",
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
+        "get_my_wallet",
         "get_platform_stats",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
+        "purchase_store_item",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
@@ -220,6 +227,7 @@
         "rate_limit_config",
         "rate_limit_logs",
         "security_alerts",
+        "store_items",
         "user_achievements",
         "user_course_progress",
         "user_favorites",
@@ -248,7 +256,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 57,
+      "arquivos_lidos": 60,
       "hooks": [
         {
           "nome": "useAdminFlashcards",
@@ -257,6 +265,10 @@
         {
           "nome": "useAdminRole",
           "arquivo": "src/hooks/useAdminRole.ts"
+        },
+        {
+          "nome": "useAdminStoreItems",
+          "arquivo": "src/hooks/useWallet.ts"
         },
         {
           "nome": "useAuth",
@@ -279,6 +291,10 @@
           "arquivo": "src/hooks/usePlaybooks.ts"
         },
         {
+          "nome": "useDeleteStoreItem",
+          "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
           "nome": "useDeleteTrainingVideo",
           "arquivo": "src/hooks/useTrainingVideos.ts"
         },
@@ -289,6 +305,10 @@
         {
           "nome": "useFuzzySearch",
           "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useGrantCoins",
+          "arquivo": "src/hooks/useWallet.ts"
         },
         {
           "nome": "useOnboardingWorkflows",
@@ -319,6 +339,10 @@
           "arquivo": "src/hooks/usePlaybooks.ts"
         },
         {
+          "nome": "useSaveStoreItem",
+          "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
           "nome": "useSaveTrainingVideo",
           "arquivo": "src/hooks/useTrainingVideos.ts"
         },
@@ -333,6 +357,10 @@
         {
           "nome": "useToggleFlashcard",
           "arquivo": "src/hooks/useFlashcards.ts"
+        },
+        {
+          "nome": "useToggleStoreItem",
+          "arquivo": "src/hooks/useWallet.ts"
         },
         {
           "nome": "useTrainingVideos",
@@ -351,12 +379,15 @@
         "weekly-admin-digest"
       ],
       "rpcs": [
+        "admin_grant_coins",
         "create_audit_log",
         "get_due_assessments",
         "get_due_flashcards",
         "get_flashcard_overview",
         "get_leaderboard",
+        "get_my_wallet",
         "has_role",
+        "purchase_store_item",
         "register_playbook_view",
         "review_flashcard"
       ],
@@ -383,6 +414,7 @@
         "role_permissions",
         "security_alerts",
         "skill_assessments",
+        "store_items",
         "training_video_views",
         "training_videos",
         "user_achievements",
@@ -625,7 +657,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 68,
+      "arquivos_lidos": 70,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -754,6 +786,10 @@
         {
           "nome": "useViewMode",
           "arquivo": "src/components/catalog/ViewToggle.tsx"
+        },
+        {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
         }
       ],
       "buckets": [],
@@ -764,16 +800,19 @@
       ],
       "rpcs": [
         "add_user_xp",
+        "admin_grant_coins",
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
+        "get_my_wallet",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
+        "purchase_store_item",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
@@ -802,6 +841,7 @@
         "rate_limit_config",
         "rate_limit_logs",
         "security_alerts",
+        "store_items",
         "user_achievements",
         "user_course_progress",
         "user_favorites",
@@ -1002,7 +1042,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 98,
+      "arquivos_lidos": 100,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1169,6 +1209,10 @@
           "arquivo": "src/components/catalog/ViewToggle.tsx"
         },
         {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
           "nome": "useXpMultiplier",
           "arquivo": "src/hooks/useXpMultiplier.ts"
         }
@@ -1181,6 +1225,7 @@
       ],
       "rpcs": [
         "add_user_xp",
+        "admin_grant_coins",
         "check_and_award_achievements",
         "check_login_allowed",
         "claim_daily_challenge_reward",
@@ -1190,12 +1235,14 @@
         "get_due_assessments",
         "get_leaderboard",
         "get_my_challenges",
+        "get_my_wallet",
         "get_my_xp_multiplier",
         "get_quiz_review",
         "get_smart_recommendations",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
+        "purchase_store_item",
         "recalculate_user_goals",
         "record_failed_login",
         "reset_login_attempts",
@@ -1227,6 +1274,7 @@
         "rate_limit_logs",
         "security_alerts",
         "skill_assessments",
+        "store_items",
         "study_schedule",
         "user_achievements",
         "user_assessment_results",
@@ -1315,6 +1363,54 @@
       "tabelas": [
         "password_reset_requests",
         "profiles"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/loja",
+      "rotulo_tecnico": "Loja",
+      "componente": "Store",
+      "arquivo": "src/pages/Store.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "command-palette",
+        "menu-mobile",
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 7,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "usePurchaseItem",
+          "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
+          "nome": "useStoreItems",
+          "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "admin_grant_coins",
+        "create_audit_log",
+        "get_my_wallet",
+        "purchase_store_item"
+      ],
+      "tabelas": [
+        "store_items"
       ],
       "imports_quebrados": []
     },
@@ -1420,7 +1516,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 34,
+      "arquivos_lidos": 36,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1459,6 +1555,10 @@
           "arquivo": "src/hooks/useUserXP.ts"
         },
         {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
+        },
+        {
           "nome": "useXPHistory",
           "arquivo": "src/hooks/useXPHistory.ts"
         }
@@ -1473,11 +1573,14 @@
       ],
       "rpcs": [
         "add_user_xp",
+        "admin_grant_coins",
         "check_and_award_achievements",
         "create_audit_log",
         "get_department_leaderboard",
+        "get_my_wallet",
         "get_performance_comparison",
         "get_xp_history",
+        "purchase_store_item",
         "verify_certificate_by_code"
       ],
       "tabelas": [
@@ -1485,6 +1588,7 @@
         "audit_logs",
         "certificates",
         "profiles",
+        "store_items",
         "user_achievements",
         "user_course_progress",
         "user_lesson_progress",
@@ -1761,7 +1865,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 56,
+      "arquivos_lidos": 58,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1890,6 +1994,10 @@
         {
           "nome": "useViewMode",
           "arquivo": "src/components/catalog/ViewToggle.tsx"
+        },
+        {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
         }
       ],
       "buckets": [],
@@ -1900,16 +2008,19 @@
       ],
       "rpcs": [
         "add_user_xp",
+        "admin_grant_coins",
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
+        "get_my_wallet",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
+        "purchase_store_item",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
@@ -1938,6 +2049,7 @@
         "rate_limit_config",
         "rate_limit_logs",
         "security_alerts",
+        "store_items",
         "user_achievements",
         "user_course_progress",
         "user_favorites",
@@ -1968,7 +2080,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 60,
+      "arquivos_lidos": 62,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2097,6 +2209,10 @@
         {
           "nome": "useViewMode",
           "arquivo": "src/components/catalog/ViewToggle.tsx"
+        },
+        {
+          "nome": "useWallet",
+          "arquivo": "src/hooks/useWallet.ts"
         }
       ],
       "buckets": [],
@@ -2107,16 +2223,19 @@
       ],
       "rpcs": [
         "add_user_xp",
+        "admin_grant_coins",
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
+        "get_my_wallet",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
+        "purchase_store_item",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
@@ -2145,6 +2264,7 @@
         "rate_limit_config",
         "rate_limit_logs",
         "security_alerts",
+        "store_items",
         "user_achievements",
         "user_course_progress",
         "user_favorites",
@@ -2285,6 +2405,11 @@
     },
     {
       "origem": "command-palette",
+      "destino": "/loja",
+      "rotulo": "Loja de Recompensas"
+    },
+    {
+      "origem": "command-palette",
       "destino": "/onboarding",
       "rotulo": "Onboarding"
     },
@@ -2322,6 +2447,11 @@
       "origem": "menu-mobile",
       "destino": "/dashboard",
       "rotulo": "t('nav.dashboard')"
+    },
+    {
+      "origem": "menu-mobile",
+      "destino": "/loja",
+      "rotulo": "t('nav.store')"
     },
     {
       "origem": "menu-mobile",
@@ -2670,6 +2800,16 @@
     },
     {
       "origem": "navegacao-no-codigo",
+      "destino": "/loja",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/loja",
+      "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
       "destino": "/onboarding",
       "rotulo": "src/components/dashboard/OnboardingWidget.tsx"
     },
@@ -2859,6 +2999,12 @@
         "/trilhas"
       ]
     },
+    "useAdminStoreItems": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useAnnouncements": {
       "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
       "rotas": [
@@ -2880,6 +3026,7 @@
         "/curso/:slug/aula/:lessonId",
         "/dashboard",
         "/flashcards",
+        "/loja",
         "/onboarding",
         "/onboarding/executar",
         "/perfil",
@@ -3003,6 +3150,12 @@
         "/playbook/:slug"
       ]
     },
+    "useDeleteStoreItem": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useDeleteTrainingVideo": {
       "arquivo": "src/hooks/useTrainingVideos.ts",
       "rotas": [
@@ -3080,6 +3233,12 @@
       "arquivo": "src/hooks/useGoals.ts",
       "rotas": [
         "/dashboard"
+      ]
+    },
+    "useGrantCoins": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/admin"
       ]
     },
     "useInfiniteScroll": {
@@ -3248,6 +3407,12 @@
         "/usuario/:id"
       ]
     },
+    "usePurchaseItem": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/loja"
+      ]
+    },
     "usePushNotifications": {
       "arquivo": "src/hooks/usePushNotifications.ts",
       "rotas": [
@@ -3312,6 +3477,12 @@
         "/admin"
       ]
     },
+    "useSaveStoreItem": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
     "useSaveTrainingVideo": {
       "arquivo": "src/hooks/useTrainingVideos.ts",
       "rotas": [
@@ -3346,6 +3517,12 @@
       "arquivo": "src/hooks/useSmartRecommendations.ts",
       "rotas": [
         "/dashboard"
+      ]
+    },
+    "useStoreItems": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/loja"
       ]
     },
     "useStreaks": {
@@ -3412,6 +3589,12 @@
     },
     "useToggleFlashcard": {
       "arquivo": "src/hooks/useFlashcards.ts",
+      "rotas": [
+        "/admin"
+      ]
+    },
+    "useToggleStoreItem": {
+      "arquivo": "src/hooks/useWallet.ts",
       "rotas": [
         "/admin"
       ]
@@ -3505,6 +3688,18 @@
         "/",
         "/catalogo",
         "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useWallet": {
+      "arquivo": "src/hooks/useWallet.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/loja",
+        "/perfil",
         "/trilha/:slug",
         "/trilhas"
       ]

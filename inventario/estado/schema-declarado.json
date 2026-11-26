@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 66,
-    "tabelas_no_types": 66,
-    "tabelas_nas_migrations": 66,
-    "colunas": 561,
+    "tabelas": 69,
+    "tabelas_no_types": 69,
+    "tabelas_nas_migrations": 69,
+    "colunas": 587,
     "views": 1,
-    "funcoes": 66,
-    "funcoes_expostas_no_types": 46,
+    "funcoes": 73,
+    "funcoes_expostas_no_types": 50,
     "enums": 1,
-    "policies": 178,
+    "policies": 181,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 67,
+    "migrations": 71,
     "alertas": 3,
     "problemas": 3
   },
@@ -100,6 +100,20 @@
       "uso_no_codigo": {
         "src": 3,
         "edges": 1
+      }
+    },
+    "coin_transactions": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 7,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
       }
     },
     "course_discussions": {
@@ -661,6 +675,22 @@
         "edges": 0
       }
     },
+    "store_items": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 2,
+      "triggers": [
+        "update_store_items_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 6,
+        "edges": 0
+      }
+    },
     "study_schedule": {
       "no_types": true,
       "nas_migrations": true,
@@ -713,8 +743,10 @@
       "nas_migrations": true,
       "colunas": 5,
       "rls": true,
-      "policies": 3,
-      "triggers": [],
+      "policies": 2,
+      "triggers": [
+        "trg_award_coins_from_achievement"
+      ],
       "indices": 0,
       "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
       "uso_no_codigo": {
@@ -907,6 +939,20 @@
         "edges": 0
       }
     },
+    "user_purchases": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 6,
+      "rls": true,
+      "policies": 1,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "user_quiz_attempts": {
       "no_types": true,
       "nas_migrations": true,
@@ -970,10 +1016,11 @@
     "user_xp": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 12,
+      "colunas": 14,
       "rls": true,
       "policies": 3,
       "triggers": [
+        "trg_guard_user_xp_coins",
         "update_user_xp_updated_at"
       ],
       "indices": 0,
@@ -990,6 +1037,7 @@
       "rls": true,
       "policies": 1,
       "triggers": [
+        "trg_award_coins_from_xp",
         "trg_goals_after_xp_history"
       ],
       "indices": 2,
@@ -1052,6 +1100,39 @@
         "edges": 0
       }
     },
+    "admin_grant_coins": {
+      "exposta_no_types": true,
+      "args": [
+        "p_amount",
+        "p_reason",
+        "p_user_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "apply_coin_transaction": {
+      "exposta_no_types": true,
+      "args": [
+        "p_amount",
+        "p_description",
+        "p_source",
+        "p_user_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "audit_admin_changes": {
       "exposta_no_types": false,
       "args": null,
@@ -1071,6 +1152,30 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20260417001322_acd29c09-2a1b-40ff-8f7c-f3296f175093.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "award_coins_from_achievement": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "award_coins_from_xp": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127160000_moeda_virtual_nao_retroativa.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0
@@ -1374,6 +1479,18 @@
         "edges": 0
       }
     },
+    "get_my_wallet": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_my_xp_multiplier": {
       "exposta_no_types": true,
       "args": [],
@@ -1523,6 +1640,18 @@
         "edges": 0
       }
     },
+    "guard_user_xp_coins": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261127170000_moeda_virtual_guarda_sobra_xp.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "handle_new_user": {
       "exposta_no_types": false,
       "args": null,
@@ -1659,6 +1788,20 @@
       "criada_em": "20261125190500_admin_gestao_usuarios.sql",
       "uso_no_codigo": {
         "src": 0,
+        "edges": 0
+      }
+    },
+    "purchase_store_item": {
+      "exposta_no_types": true,
+      "args": [
+        "p_item_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261127140000_moeda_virtual.sql",
+      "uso_no_codigo": {
+        "src": 1,
         "edges": 0
       }
     },
@@ -1968,6 +2111,7 @@
     {
       "tipo": "tabela_sem_uso_no_codigo",
       "detalhe": [
+        "coin_transactions",
         "daily_challenges",
         "password_reset_tokens",
         "platform_stats_cache",
@@ -1975,12 +2119,14 @@
         "saved_filters",
         "user_daily_challenge_progress",
         "user_flashcard_progress",
-        "user_leagues"
+        "user_leagues",
+        "user_purchases"
       ]
     },
     {
       "tipo": "funcao_sem_uso_no_codigo",
       "detalhe": [
+        "apply_coin_transaction",
         "check_due_assessment_notifications",
         "check_rate_limit",
         "check_streak_risk_notifications",

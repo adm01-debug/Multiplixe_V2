@@ -2028,6 +2028,105 @@ export type Database = {
         }
         Relationships: []
       }
+      coin_transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          source: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          source: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          source?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      store_items: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean
+          name: string
+          price_coins: number
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          price_coins?: number
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          price_coins?: number
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_purchases: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string
+          price_paid: number
+          quantity: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id: string
+          price_paid: number
+          quantity?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string
+          price_paid?: number
+          quantity?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_goals: {
         Row: {
           completed: boolean | null
@@ -2453,6 +2552,8 @@ export type Database = {
       }
       user_xp: {
         Row: {
+          coins: number
+          coins_xp_remainder: number
           created_at: string
           current_level: number
           id: string
@@ -2467,6 +2568,8 @@ export type Database = {
           xp_multiplier: number
         }
         Insert: {
+          coins?: number
+          coins_xp_remainder?: number
           created_at?: string
           current_level?: number
           id?: string
@@ -2481,6 +2584,8 @@ export type Database = {
           xp_multiplier?: number
         }
         Update: {
+          coins?: number
+          coins_xp_remainder?: number
           created_at?: string
           current_level?: number
           id?: string
@@ -2804,6 +2909,7 @@ export type Database = {
         }[]
       }
       get_my_league: { Args: never; Returns: Json }
+      get_my_wallet: { Args: never; Returns: Json }
       get_my_xp_multiplier: {
         Args: never
         Returns: Json
@@ -2968,6 +3074,15 @@ export type Database = {
       }
       refresh_leagues: {
         Args: { p_zone?: number; p_min_jogadores?: number }
+        Returns: Json
+      }
+      purchase_store_item: { Args: { p_item_id: string }; Returns: Json }
+      admin_grant_coins: {
+        Args: { p_user_id: string; p_amount: number; p_reason: string }
+        Returns: Json
+      }
+      apply_coin_transaction: {
+        Args: { p_user_id: string; p_amount: number; p_source: string; p_description: string }
         Returns: Json
       }
       refresh_platform_stats: { Args: never; Returns: undefined }

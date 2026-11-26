@@ -120,3 +120,7 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   Sem o gate o TOTP é decorativo: a senha já abriria todas as telas. A edge `verify-mfa` **não** eleva a
   sessão do navegador (o nível AAL mora nos tokens do cliente), então a verificação do login é feita pelo
   SDK e o carimbo em `user_mfa_settings.last_mfa_at` é gravado pelo próprio gate.
+- **Edge com `verify_jwt = false` não pode confiar no corpo**: `detect-new-device` lia `user_id`/`user_email`
+  do JSON e gravava em `known_devices` e `security_alerts` — com a chave publicável qualquer um poderia
+  registrar o próprio dispositivo como "conhecido" na conta de outra pessoa. Agora exige sessão
+  (`verify_jwt = true`) e tira a identidade do token (`auth.getUser()`); o front envia só IP e user agent.

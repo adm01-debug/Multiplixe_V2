@@ -19,18 +19,13 @@ interface KnownDevice {
 }
 
 // Input validation
-function validateInput(body: unknown): { user_id: string; user_email: string; ip_address: string; user_agent: string } {
+function validateInput(body: unknown): { ip_address: string; user_agent: string } {
   if (!body || typeof body !== "object") {
     throw new Error("Invalid request body");
   }
-  const { user_id, user_email, ip_address, user_agent } = body as Record<string, unknown>;
 
-  if (typeof user_id !== "string" || !user_id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-    throw new Error("Invalid user_id");
-  }
-  if (typeof user_email !== "string" || !user_email.includes("@")) {
-    throw new Error("Invalid user_email");
-  }
+  const { ip_address, user_agent } = body as Record<string, unknown>;
+
   if (typeof ip_address !== "string" || ip_address.length > 45) {
     throw new Error("Invalid ip_address");
   }
@@ -38,7 +33,7 @@ function validateInput(body: unknown): { user_id: string; user_email: string; ip
     throw new Error("Invalid user_agent");
   }
 
-  return { user_id, user_email, ip_address, user_agent };
+  return { ip_address, user_agent };
 }
 
 const generateDeviceFingerprint = (userAgent: string): string => {
@@ -170,8 +165,34 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const rawBody = await req.json();
-    const { user_id, user_email, ip_address, user_agent } = validateInput(rawBody);
+    // A identidade vem do token da sessão: o corpo da requisição é forjável e,
+        // com verify_jwt desligado, qualquer um poderia registrar um dispositivo
+        // "conhecido" na conta de outra pessoa.
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader) {
+          return new Response(JSON.stringify({ error: 'Missing authorization' }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 401,
+          });
+        }
+
+        const supabaseAuth = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+          { global: { headers: { Authorization: authHeader } } }
+        );
+
+        const { data: userData, error: userError } = await supabaseAuth.auth.getUser();
+        if (userError || !userData.user) {
+          return new Response(JSON.stringify({ error: 'Invalid session' }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 401,
+          });
+        }
+
+        const user_id = userData.user.id;
+        const user_email = userData.user.email ?? '';
+        const { ip_address, user_agent } = validateInput(await req.json());
 
     const deviceFingerprint = generateDeviceFingerprint(user_agent);
     const deviceName = getDeviceName(user_agent);

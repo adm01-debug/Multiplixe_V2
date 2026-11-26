@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 74,
-    "tabelas_no_types": 74,
-    "tabelas_nas_migrations": 74,
-    "colunas": 653,
+    "tabelas": 76,
+    "tabelas_no_types": 76,
+    "tabelas_nas_migrations": 76,
+    "colunas": 674,
     "views": 1,
-    "funcoes": 100,
-    "funcoes_expostas_no_types": 65,
+    "funcoes": 106,
+    "funcoes_expostas_no_types": 66,
     "enums": 1,
-    "policies": 192,
-    "cron_jobs": 2,
+    "policies": 198,
+    "cron_jobs": 3,
     "buckets": 1,
-    "migrations": 82,
+    "migrations": 83,
     "alertas": 3,
     "problemas": 3
   },
@@ -94,7 +94,9 @@
       "colunas": 7,
       "rls": true,
       "policies": 2,
-      "triggers": [],
+      "triggers": [
+        "trg_webhook_certificado_emitido"
+      ],
       "indices": 0,
       "criada_em": "20251224143442_e5427263-43c5-4e32-9ddf-498b0bab8632.sql",
       "uso_no_codigo": {
@@ -817,7 +819,8 @@
       "policies": 2,
       "triggers": [
         "trg_award_coins_from_achievement",
-        "trg_award_powerup_on_achievement"
+        "trg_award_powerup_on_achievement",
+        "trg_webhook_conquista_desbloqueada"
       ],
       "indices": 0,
       "criada_em": "20251224134827_733a96cd-fdf1-4e8b-a2aa-e3d5bcae49c9.sql",
@@ -847,7 +850,8 @@
       "rls": true,
       "policies": 3,
       "triggers": [
-        "trg_goals_after_course_progress"
+        "trg_goals_after_course_progress",
+        "trg_webhook_curso_concluido"
       ],
       "indices": 3,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
@@ -1146,6 +1150,36 @@
       "criada_em": "20251231124542_9f8578bf-c5b3-454c-9ccf-04203d628cb0.sql",
       "uso_no_codigo": {
         "src": 4,
+        "edges": 0
+      }
+    },
+    "webhook_deliveries": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 11,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 2,
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 6
+      }
+    },
+    "webhook_endpoints": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 4,
+      "triggers": [
+        "trg_webhook_endpoints_updated_at"
+      ],
+      "indices": 0,
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 5,
         "edges": 0
       }
     },
@@ -1568,6 +1602,34 @@
       "criada_em": "20261128160000_reputacao.sql",
       "uso_no_codigo": {
         "src": 1,
+        "edges": 0
+      }
+    },
+    "enfileirar_webhook": {
+      "exposta_no_types": true,
+      "args": [
+        "p_endpoint_id",
+        "p_evento",
+        "p_payload"
+      ],
+      "retorno": "number",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "enfileirar_webhook_interno": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },
@@ -2385,6 +2447,42 @@
         "edges": 0
       }
     },
+    "tg_webhook_certificado_emitido": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "tg_webhook_conquista_desbloqueada": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "tg_webhook_curso_concluido": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "trg_recalculate_user_goals": {
       "exposta_no_types": false,
       "args": null,
@@ -2487,6 +2585,18 @@
         "edges": 0
       }
     },
+    "webhook_eventos_suportados": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261129090000_webhooks_eventos.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "xp_display": {
       "exposta_no_types": false,
       "args": null,
@@ -2524,6 +2634,11 @@
       "agenda": "0 * * * *",
       "chama_edge": null,
       "definido_em": "20260727133033_4b9c6252-9303-4759-b333-9ca33dcd9af9.sql"
+    },
+    "webhook-dispatch": {
+      "agenda": "* * * * *",
+      "chama_edge": "webhook-dispatch",
+      "definido_em": "20261129090000_webhooks_eventos.sql"
     },
     "weekly-admin-digest": {
       "agenda": "0 9 * * 1",

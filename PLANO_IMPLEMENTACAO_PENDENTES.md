@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (83)
+### ✅ Melhorias JÁ IMPLEMENTADAS (85)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -42,11 +42,13 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 | SEO-001 | Meta Tags Dinâmicas (DynamicSEO.tsx) | ✅ Implementado |
 | UI-012 | Tema de Cores Personalizável (themePresets.ts, ThemeCustomizer.tsx) | ✅ Implementado |
 | UI-009 | Preview de Vídeo no Hover do Card (CourseCard.tsx) | ✅ Implementado |
+| FUNC-007 | Sistema de Mentoria (Mentorship.tsx, mentorship_requests) | ✅ Implementado |
+| FUNC-017 | Transcrição de Vídeos (TranscriptPanel.tsx, lessons.transcript) | ✅ Implementado |
 | + outros componentes de onboarding, analytics, security | ✅ |
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (16)
+## ⏳ MELHORIAS PENDENTES (14)
 
 ### 🎨 UX/UI - 0 Pendentes
 
@@ -375,7 +377,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 3 Pendentes
+### 🚀 FUNCIONALIDADES - 1 Pendente
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -494,7 +496,7 @@ QR de verificacao ficou fora: exigiria uma dependencia de encoder de QR (nao exi
 
 ---
 
-#### FUNC-007: Sistema de Mentoria
+#### FUNC-007: Sistema de Mentoria ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 12h  
 **Descrição:** Não há conexão entre usuários experientes e iniciantes.
@@ -507,6 +509,18 @@ QR de verificacao ficou fora: exigiria uma dependencia de encoder de QR (nao exi
 4. Notificações para mentores
 5. (Fase futura: chat integrado, agendamento)
 ```
+
+**Entregue em 26/11/2026**
+
+Quem queria ajuda não tinha onde procurar, e quem já dominava o assunto não tinha como se oferecer: nenhuma ponte entre os dois.
+
+- `supabase/migrations/20261128140000_mentoria.sql` (aplicada em produção): colunas `profiles.is_mentor`, `mentor_topics` e `mentor_bio` com dois CHECKs (bio até 400, tópicos como lista JSON); tabela `mentorship_requests` com RLS (4 políticas), 2 índices, índice único parcial que impede dois pedidos pendentes para o mesmo mentor e trigger de `updated_at`; ACL restrita a `authenticated` (arw), `anon` sem acesso.
+- 5 funções `security definer` (`mentor_disponivel`, `get_mentors`, `get_my_mentorship`, `respond_mentorship_request`, `notificar_mentoria`) com EXECUTE só para `authenticated`/`service_role`: a lista de mentores precisa passar por RPC porque `profiles` só é legível pelo próprio dono, e a política de INSERT usa o helper `mentor_disponivel` (RLS voltaria a se aplicar na subconsulta).
+- Front: `src/pages/Mentorship.tsx` (rota `/mentoria` com abas mentores | pedidos | mentor e atalho `?aba=`), `src/hooks/useMentorship.ts`, `src/lib/mentorship.ts`, entradas no menu do dashboard e na busca global, textos nos três idiomas.
+- As 5 notificações de mentoria apontam para `/mentoria?aba=pedidos`, então o aviso leva direto ao pedido em vez de só anunciar.
+- Testes e gates: `src/test/mentoria.test.tsx` e `src/test/mentoriaHook.test.ts` (28 casos novos); suíte 690 testes em 82 arquivos; `tsc` 0 erro; eslint sem erro novo; build ok; guarda de Supabase 0 violações; inventário regenerado.
+- PR #83 mergeada em `main` (`dc9419a`); deploy provado no bundle servido de `https://multiplixe-v2.vercel.app`: `assets/Mentorship-DwJA27IG.js` (HTTP 200) contém `get_mentors`, `get_my_mentorship` e `respond_mentorship_request`.
+- Limite conhecido: nenhum usuário está marcado como mentor em produção, então a lista abre vazia até alguém preencher o perfil de mentor.
 
 ---
 
@@ -754,7 +768,7 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 
 ---
 
-#### FUNC-017: Transcrição de Vídeos
+#### FUNC-017: Transcrição de Vídeos ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Vídeos não têm transcrição.
@@ -767,6 +781,17 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 4. Permitir busca na transcrição
 5. Admin pode adicionar transcrição manualmente
 ```
+
+**Entregue em 26/11/2026**
+
+Aula em vídeo só dava para assistir do começo: não havia como ler o conteúdo, buscar um assunto nem pular direto ao ponto.
+
+- `supabase/migrations/20261128120000_aula_transcricao.sql` (aplicada em produção): coluna `lessons.transcript` (`text`, opcional) com CHECK de tamanho (até 200 mil caracteres); conferido em produção que a coluna e o CHECK existem e que `authenticated` lê e grava.
+- Front: `src/lib/transcricao.ts` (aceita `m:ss` e `h:mm:ss`, separadores e colchetes, limites de 3.000 trechos e 600 caracteres por linha), `src/components/player/TranscriptPanel.tsx` (busca, trecho em reprodução destacado e clicável para pular no vídeo, rolagem automática que acompanha o tempo) e painel na página da aula.
+- Estados da consulta de transcrição: carregando (esqueleto), erro com botão "Tentar novamente" e vazio — textos nos três idiomas.
+- Editor de transcrição no formulário de aula do admin, para colar o texto manualmente.
+- Testes e gates: `src/test/transcricao.test.tsx` (11 casos); suíte 690 testes em 82 arquivos; `tsc` 0 erro; eslint sem erro novo (1 aviso `exhaustive-deps` herdado do `main`); build ok; guarda de Supabase 402 chamadas / 0 violações; inventário em dia.
+- PR #81 mergeada em `main` (`221562e`); deploy provado no bundle servido de `https://multiplixe-v2.vercel.app`: `assets/LessonPlayer-B2PhZ5Wi.js` (HTTP 200) contém `transcript.loading`, `transcript.error` e `transcript.retry`.
 
 ---
 

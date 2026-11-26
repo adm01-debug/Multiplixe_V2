@@ -113,3 +113,10 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
 - **Edge function que escreve com `service_role`**: exige JWT do usuário e confere o papel em
   `user_roles` antes de agir (padrão em `approve-password-reset` e `admin-user-actions`); `CORS` é
   `*` porque a chamada é autenticada por header, não por cookie.
+- **2FA só existe de verdade com gate no login**: quando a conta tem TOTP verificado o Supabase abre a
+  sessão em `aal1` e anuncia `aal2` como próximo nível. `src/components/security/MFAChallengeGate.tsx`
+  (montado dentro do `AuthProvider` em `src/App.tsx`) bloqueia o app enquanto os níveis divergem e só
+  libera após `mfa.verify`; a regra fica em `src/lib/mfaGate.ts`, coberta por `src/test/mfaGate.test.ts`.
+  Sem o gate o TOTP é decorativo: a senha já abriria todas as telas. A edge `verify-mfa` **não** eleva a
+  sessão do navegador (o nível AAL mora nos tokens do cliente), então a verificação do login é feita pelo
+  SDK e o carimbo em `user_mfa_settings.last_mfa_at` é gravado pelo próprio gate.

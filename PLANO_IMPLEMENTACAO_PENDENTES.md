@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (82)
+### ✅ Melhorias JÁ IMPLEMENTADAS (83)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -41,13 +41,14 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 | A11Y-002 | Navegação por Teclado (CommandPalette) | ✅ Parcial |
 | SEO-001 | Meta Tags Dinâmicas (DynamicSEO.tsx) | ✅ Implementado |
 | UI-012 | Tema de Cores Personalizável (themePresets.ts, ThemeCustomizer.tsx) | ✅ Implementado |
+| UI-009 | Preview de Vídeo no Hover do Card (CourseCard.tsx) | ✅ Implementado |
 | + outros componentes de onboarding, analytics, security | ✅ |
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (17)
+## ⏳ MELHORIAS PENDENTES (16)
 
-### 🎨 UX/UI - 1 Pendente
+### 🎨 UX/UI - 0 Pendentes
 
 #### UI-004: Feedback Visual em Ações ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -133,12 +134,16 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-#### UI-009: Preview de Vídeo no Hover do Card
-**Prioridade:** 🟢 Baixa  
-**Esforço:** 6h  
-**Descrição:** Cards de curso são estáticos.
+#### UI-009: Preview de Vídeo no Hover do Card ✅ CONCLUÍDO
 
-**Implementação:**
+**Evidência (2026-11-28, PR #80 — squash `d52def3`):**
+- Coluna `courses.video_preview_url` (text, nullable) com check `^https://` — migration `supabase/migrations/20261127195000_curso_video_preview_hover.sql` aplicada em produção; `has_column_privilege('anon'|'authenticated', 'courses', 'video_preview_url', 'select'|'update')` = `true`; teste negativo com `http://` devolveu `23514 violates check constraint`.
+- `CourseCard.tsx` renderiza `<video poster={thumbnail} muted loop playsInline preload="none" aria-hidden>` após 350ms de hover (só na visão em grade), respeitando `prefers-reduced-motion`; sai do DOM no `mouseleave` e em caso de `onError`.
+- Admin: campo "Vídeo de preview (hover)" no `CourseForm`, com validação de URL **https** (o `http://` agora é barrado no campo, não só no banco).
+- Testes: 4 casos em `src/test/catalogViewMode.test.tsx` (monta/desmonta o vídeo, curso sem preview, reduced-motion). Suíte: 651 testes, 0 falhas.
+- Deploy provado: chunk servido `https://multiplixe-v2.vercel.app/assets/Catalog-wGyzVxBS.js` contém `video_preview_url`; commit `d52def3` com status `Vercel success`.
+
+**Implementação original:**
 ```
 1. Adicionar thumbnail_gif ou video_preview_url na tabela courses
 2. Criar migration para novo campo
@@ -279,7 +284,7 @@ O `CacheIndicator` já existia (criado por trabalho anterior) e estava plugado e
 
 ---
 
-### ⚡ PERFORMANCE - 1 Pendente
+### ⚡ PERFORMANCE - 0 Pendentes
 
 #### PERF-002: Memoização de Componentes ✅ CONCLUÍDO
 **Prioridade:** 🔴 Alta  
@@ -1206,7 +1211,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-### 🔍 SEO - 1 Pendente
+### 🔍 SEO - 0 Pendentes
 
 #### SEO-002: Structured Data (JSON-LD) ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -2058,7 +2063,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 1 | ~6h |
+| UX/UI | 0 | — |
 | Performance | 0 | — |
 | Funcionalidades | 3 | ~26h |
 | Acessibilidade | 0 | — |
@@ -2069,7 +2074,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **17** | **~92h** |
+| **TOTAL PENDENTE** | **16** | **~86h** |
 
 ---
 

@@ -1565,6 +1565,47 @@ export type Database = {
           },
         ]
       }
+      study_schedule: {
+        Row: {
+          completed: boolean
+          course_id: string | null
+          created_at: string
+          duration_minutes: number
+          id: string
+          scheduled_date: string
+          scheduled_time: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          course_id?: string | null
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          scheduled_date: string
+          scheduled_time?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          course_id?: string | null
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          scheduled_date?: string
+          scheduled_time?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "study_schedule_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       training_video_views: {
         Row: {
           completed: boolean

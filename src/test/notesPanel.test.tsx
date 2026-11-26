@@ -81,7 +81,7 @@ describe("NotesPanel (FUNC-003)", () => {
 
   it("exporta as notas em markdown", async () => {
     state.notes = [note];
-    const createObjectURL = vi.fn(() => "blob:notas");
+    const createObjectURL = vi.fn((_blob: Blob) => "blob:notas");
     const revokeObjectURL = vi.fn();
     Object.defineProperty(URL, "createObjectURL", { writable: true, value: createObjectURL });
     Object.defineProperty(URL, "revokeObjectURL", { writable: true, value: revokeObjectURL });

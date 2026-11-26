@@ -5,8 +5,8 @@
     "rotas": 24,
     "protegidas": 18,
     "so_admin": 2,
-    "entradas_na_ui": 111,
-    "hooks_distintos": 67,
+    "entradas_na_ui": 117,
+    "hooks_distintos": 74,
     "problemas": 0
   },
   "rotas": [
@@ -20,7 +20,7 @@
       "com_parametro": false,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 1,
+      "arquivos_lidos": 2,
       "hooks": [],
       "buckets": [],
       "edges": [],
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 69,
+      "arquivos_lidos": 71,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -82,6 +82,10 @@
         {
           "nome": "useFuzzySearchWithMatches",
           "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useInfiniteScroll",
+          "arquivo": "src/hooks/useInfiniteScroll.ts"
         },
         {
           "nome": "useLeaderboard",
@@ -136,6 +140,10 @@
           "arquivo": "src/hooks/useStreaks.ts"
         },
         {
+          "nome": "useStudyCalendar",
+          "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
           "nome": "useT",
           "arquivo": "src/lib/i18n.ts"
         },
@@ -158,6 +166,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useViewMode",
+          "arquivo": "src/components/catalog/ViewToggle.tsx"
         }
       ],
       "buckets": [],
@@ -539,7 +551,8 @@
       "redireciona": null,
       "entradas_na_ui": [
         "atalho-teclado",
-        "command-palette"
+        "command-palette",
+        "navegacao-no-codigo"
       ],
       "arquivos_lidos": 8,
       "hooks": [
@@ -581,7 +594,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 60,
+      "arquivos_lidos": 65,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -622,6 +635,10 @@
         {
           "nome": "useFuzzySearchWithMatches",
           "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useInfiniteScroll",
+          "arquivo": "src/hooks/useInfiniteScroll.ts"
         },
         {
           "nome": "useLeaderboard",
@@ -680,6 +697,10 @@
           "arquivo": "src/hooks/useStreaks.ts"
         },
         {
+          "nome": "useStudyCalendar",
+          "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
           "nome": "useToast",
           "arquivo": "src/hooks/use-toast.ts"
         },
@@ -698,6 +719,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useViewMode",
+          "arquivo": "src/components/catalog/ViewToggle.tsx"
         }
       ],
       "buckets": [],
@@ -773,6 +798,10 @@
       "arquivos_lidos": 15,
       "hooks": [
         {
+          "nome": "useAnnouncements",
+          "arquivo": "src/components/accessibility/LiveAnnouncer.tsx"
+        },
+        {
           "nome": "useAuth",
           "arquivo": "src/hooks/useAuth.tsx"
         },
@@ -837,6 +866,10 @@
         {
           "nome": "useAchievements",
           "arquivo": "src/hooks/useAchievements.ts"
+        },
+        {
+          "nome": "useAnnouncements",
+          "arquivo": "src/components/accessibility/LiveAnnouncer.tsx"
         },
         {
           "nome": "useAuth",
@@ -935,7 +968,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 84,
+      "arquivos_lidos": 94,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -992,6 +1025,10 @@
         {
           "nome": "useGoals",
           "arquivo": "src/hooks/useGoals.ts"
+        },
+        {
+          "nome": "useInfiniteScroll",
+          "arquivo": "src/hooks/useInfiniteScroll.ts"
         },
         {
           "nome": "useLeaderboard",
@@ -1058,8 +1095,20 @@
           "arquivo": "src/hooks/useStreaks.ts"
         },
         {
+          "nome": "useStudyCalendar",
+          "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
+          "nome": "useStudySchedule",
+          "arquivo": "src/hooks/useStudySchedule.ts"
+        },
+        {
           "nome": "useT",
           "arquivo": "src/lib/i18n.ts"
+        },
+        {
+          "nome": "useTelemetry",
+          "arquivo": "src/hooks/useTelemetry.ts"
         },
         {
           "nome": "useToast",
@@ -1080,6 +1129,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useViewMode",
+          "arquivo": "src/components/catalog/ViewToggle.tsx"
         }
       ],
       "buckets": [],
@@ -1102,6 +1155,7 @@
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
+        "recalculate_user_goals",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
@@ -1133,6 +1187,7 @@
         "rate_limit_logs",
         "security_alerts",
         "skill_assessments",
+        "study_schedule",
         "user_achievements",
         "user_assessment_results",
         "user_course_progress",
@@ -1283,7 +1338,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 21,
+      "arquivos_lidos": 29,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1292,6 +1347,10 @@
         {
           "nome": "useAuth",
           "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useAvatarUpload",
+          "arquivo": "src/hooks/useAvatarUpload.ts"
         },
         {
           "nome": "useCertificates",
@@ -1306,6 +1365,10 @@
           "arquivo": "src/lib/i18n.ts"
         },
         {
+          "nome": "useTelemetry",
+          "arquivo": "src/hooks/useTelemetry.ts"
+        },
+        {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
         },
@@ -1314,7 +1377,9 @@
           "arquivo": "src/hooks/useXPHistory.ts"
         }
       ],
-      "buckets": [],
+      "buckets": [
+        "avatars"
+      ],
       "edges": [
         "detect-new-device",
         "export-user-data",
@@ -1330,11 +1395,13 @@
       ],
       "tabelas": [
         "achievements",
+        "audit_logs",
         "certificates",
         "profiles",
         "user_achievements",
         "user_course_progress",
         "user_lesson_progress",
+        "user_streaks",
         "user_xp"
       ],
       "imports_quebrados": []
@@ -1591,7 +1658,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 52,
+      "arquivos_lidos": 54,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1632,6 +1699,10 @@
         {
           "nome": "useFuzzySearchWithMatches",
           "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useInfiniteScroll",
+          "arquivo": "src/hooks/useInfiniteScroll.ts"
         },
         {
           "nome": "useLeaderboard",
@@ -1690,6 +1761,10 @@
           "arquivo": "src/hooks/useStreaks.ts"
         },
         {
+          "nome": "useStudyCalendar",
+          "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
           "nome": "useToast",
           "arquivo": "src/hooks/use-toast.ts"
         },
@@ -1708,6 +1783,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useViewMode",
+          "arquivo": "src/components/catalog/ViewToggle.tsx"
         }
       ],
       "buckets": [],
@@ -1785,7 +1864,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 55,
+      "arquivos_lidos": 57,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1826,6 +1905,10 @@
         {
           "nome": "useFuzzySearchWithMatches",
           "arquivo": "src/hooks/useFuzzySearch.ts"
+        },
+        {
+          "nome": "useInfiniteScroll",
+          "arquivo": "src/hooks/useInfiniteScroll.ts"
         },
         {
           "nome": "useLeaderboard",
@@ -1884,6 +1967,10 @@
           "arquivo": "src/hooks/useStreaks.ts"
         },
         {
+          "nome": "useStudyCalendar",
+          "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
           "nome": "useToast",
           "arquivo": "src/hooks/use-toast.ts"
         },
@@ -1902,6 +1989,10 @@
         {
           "nome": "useUserXP",
           "arquivo": "src/hooks/useUserXP.ts"
+        },
+        {
+          "nome": "useViewMode",
+          "arquivo": "src/components/catalog/ViewToggle.tsx"
         }
       ],
       "buckets": [],
@@ -2264,6 +2355,11 @@
     },
     {
       "origem": "navegacao-no-codigo",
+      "destino": "/biblioteca-videos",
+      "rotulo": "src/pages/NotFound.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
       "destino": "/catalogo",
       "rotulo": "src/components/catalog/CatalogHeader.tsx"
     },
@@ -2276,6 +2372,11 @@
       "origem": "navegacao-no-codigo",
       "destino": "/catalogo",
       "rotulo": "src/components/dashboard/DashboardHero.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
+      "rotulo": "src/components/favorites/FavoritesSection.tsx"
     },
     {
       "origem": "navegacao-no-codigo",
@@ -2330,6 +2431,11 @@
     {
       "origem": "navegacao-no-codigo",
       "destino": "/catalogo",
+      "rotulo": "src/pages/NotFound.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/catalogo",
       "rotulo": "src/pages/Profile.tsx"
     },
     {
@@ -2371,6 +2477,11 @@
       "origem": "navegacao-no-codigo",
       "destino": "/dashboard",
       "rotulo": "src/pages/LearningPaths.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
+      "rotulo": "src/pages/NotFound.tsx"
     },
     {
       "origem": "navegacao-no-codigo",
@@ -2445,6 +2556,11 @@
     {
       "origem": "navegacao-no-codigo",
       "destino": "/playbooks",
+      "rotulo": "src/pages/NotFound.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/playbooks",
       "rotulo": "src/pages/PlaybookDetail.tsx"
     },
     {
@@ -2471,6 +2587,11 @@
       "origem": "navegacao-no-codigo",
       "destino": "/trilhas",
       "rotulo": "src/pages/LearningPathDetail.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/trilhas",
+      "rotulo": "src/pages/NotFound.tsx"
     },
     {
       "origem": "prefetch",
@@ -2586,6 +2707,13 @@
         "/trilhas"
       ]
     },
+    "useAnnouncements": {
+      "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
+      "rotas": [
+        "/curso/:slug",
+        "/curso/:slug/aula/:lessonId"
+      ]
+    },
     "useAuth": {
       "arquivo": "src/hooks/useAuth.tsx",
       "rotas": [
@@ -2607,6 +2735,12 @@
         "/seguranca",
         "/trilha/:slug",
         "/trilhas"
+      ]
+    },
+    "useAvatarUpload": {
+      "arquivo": "src/hooks/useAvatarUpload.ts",
+      "rotas": [
+        "/perfil"
       ]
     },
     "useCategories": {
@@ -2768,6 +2902,16 @@
       "arquivo": "src/hooks/useGoals.ts",
       "rotas": [
         "/dashboard"
+      ]
+    },
+    "useInfiniteScroll": {
+      "arquivo": "src/hooks/useInfiniteScroll.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
       ]
     },
     "useLeaderboard": {
@@ -3013,6 +3157,22 @@
         "/trilhas"
       ]
     },
+    "useStudyCalendar": {
+      "arquivo": "src/hooks/useStudyCalendar.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useStudySchedule": {
+      "arquivo": "src/hooks/useStudySchedule.ts",
+      "rotas": [
+        "/dashboard"
+      ]
+    },
     "useSubmitAssessment": {
       "arquivo": "src/hooks/useSkillAssessments.ts",
       "rotas": [
@@ -3023,6 +3183,13 @@
       "arquivo": "src/lib/i18n.ts",
       "rotas": [
         "/",
+        "/dashboard",
+        "/perfil"
+      ]
+    },
+    "useTelemetry": {
+      "arquivo": "src/hooks/useTelemetry.ts",
+      "rotas": [
         "/dashboard",
         "/perfil"
       ]
@@ -3120,6 +3287,16 @@
         "/curso/:slug/aula/:lessonId",
         "/dashboard",
         "/perfil",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
+    "useViewMode": {
+      "arquivo": "src/components/catalog/ViewToggle.tsx",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
         "/trilha/:slug",
         "/trilhas"
       ]

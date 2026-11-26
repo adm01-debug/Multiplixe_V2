@@ -2711,6 +2711,10 @@ export type Database = {
         }
       }
       mcp_exec: { Args: { max_rows?: number; sql: string }; Returns: Json }
+      recalculate_user_goals: {
+        Args: { p_user_id?: string }
+        Returns: undefined
+      }
       record_failed_login: {
         Args: { p_email: string; p_ip_address?: unknown }
         Returns: {

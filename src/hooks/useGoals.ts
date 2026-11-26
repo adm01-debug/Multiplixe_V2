@@ -46,6 +46,10 @@ export function useGoals() {
     queryKey: ["goals", user?.id],
     queryFn: async () => {
       if (!user) return [];
+          // progresso real vem do banco (FUNC-012): recalcula antes de ler, assim metas
+          // criadas depois de o aluno ja ter estudado aparecem com o valor correto
+          const { error: recalcError } = await supabase.rpc("recalculate_user_goals");
+          if (recalcError && recalcError.code !== "PGRST202") throw recalcError;
       const { data, error } = await supabase
         .from("user_goals")
         .select("*")
@@ -117,37 +121,6 @@ export function useGoals() {
     },
   });
 
-  const updateGoalProgress = useMutation({
-    mutationFn: async ({ id, currentValue }: { id: string; currentValue: number }) => {
-      if (!user) throw new Error("User not authenticated");
-      
-      const goal = goals.find((g) => g.id === id);
-      const completed = goal ? currentValue >= goal.target_value : false;
-
-      const { data, error } = await supabase
-        .from("user_goals")
-        .update({
-          current_value: currentValue,
-          completed,
-          completed_at: completed ? new Date().toISOString() : null,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", id)
-        .eq("user_id", user.id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["goals", user?.id] });
-      if (data?.completed) {
-        toast.success("🏆 Parabéns! Você atingiu sua meta!");
-      }
-    },
-  });
-
   const deleteGoal = useMutation({
     mutationFn: async (id: string) => {
       if (!user) throw new Error("User not authenticated");
@@ -174,7 +147,6 @@ export function useGoals() {
     isLoading,
     error,
     createGoal: createGoal.mutate,
-    updateGoalProgress: updateGoalProgress.mutate,
     deleteGoal: deleteGoal.mutate,
     isCreating: createGoal.isPending,
   };

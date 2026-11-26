@@ -1,5 +1,6 @@
 // Weekly Admin Digest — agrega KPIs dos últimos 7 dias e envia por e-mail aos admins.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { exigirSegredoDoCron } from "../_shared/cronAuth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -195,6 +196,9 @@ async function getAdminEmails(
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+
+    const naoAutorizado = exigirSegredoDoCron(req);
+    if (naoAutorizado) return naoAutorizado;
 
   try {
     let payload: DigestPayload = {};

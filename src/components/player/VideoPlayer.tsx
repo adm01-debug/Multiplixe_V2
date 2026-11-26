@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState, useEffect, useCallback } from "react";
 import { SpeedIndicator, SkipIndicator, PlayOverlay, TitleOverlay } from "./VideoOverlays";
 import VideoControls, { getSpeedLabel } from "./VideoControls";
 
@@ -7,13 +7,18 @@ interface VideoPlayerProps {
   title: string;
   onProgress?: (currentTime: number, duration: number) => void;
   onComplete?: () => void;
+  onTimeUpdate?: (seconds: number) => void;
   initialPosition?: number;
   autoPlay?: boolean;
 }
 
-const VideoPlayer = ({
-  src, title, onProgress, onComplete, initialPosition = 0, autoPlay = false,
-}: VideoPlayerProps) => {
+export interface VideoPlayerHandle {
+  seek: (seconds: number) => void;
+}
+
+const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({
+  src, title, onProgress, onComplete, initialPosition = 0, autoPlay = false, onTimeUpdate,
+}, ref) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressInterval = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -30,6 +35,17 @@ const VideoPlayer = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showSpeedIndicator, setShowSpeedIndicator] = useState(false);
   const [showSkipIndicator, setShowSkipIndicator] = useState<{ direction: 'forward' | 'backward'; seconds: number } | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    seek: (seconds: number) => {
+      const video = videoRef.current;
+      if (!video) return;
+      const target = Math.max(0, Math.min(seconds, video.duration || seconds));
+      video.currentTime = target;
+      setCurrentTime(target);
+      video.play().catch(() => {});
+    },
+  }), []);
 
   const handleMouseMove = useCallback(() => {
     setShowControls(true);
@@ -48,7 +64,10 @@ const VideoPlayer = ({
       if (initialPosition > 0 && initialPosition < video.duration) video.currentTime = initialPosition;
       if (autoPlay) video.play().catch(() => {});
     };
-    const handleTimeUpdate = () => setCurrentTime(video.currentTime);
+    const handleTimeUpdate = () => {
+      setCurrentTime(video.currentTime);
+      onTimeUpdate?.(video.currentTime);
+    };
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
     const handleEnded = () => { setIsPlaying(false); onComplete?.(); };
@@ -66,7 +85,7 @@ const VideoPlayer = ({
       video.removeEventListener("pause", handlePause);
       video.removeEventListener("ended", handleEnded);
     };
-  }, [initialPosition, autoPlay, onComplete]);
+  }, [initialPosition, autoPlay, onComplete, onTimeUpdate]);
 
   useEffect(() => {
     if (isPlaying && onProgress) {
@@ -195,6 +214,6 @@ const VideoPlayer = ({
       />
     </div>
   );
-};
+});
 
 export default VideoPlayer;

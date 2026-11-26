@@ -12,7 +12,7 @@ import { usePlatformSettings } from "@/hooks/usePlatformSettings";
 import { xpRewardsFrom, XP_REWARDS_KEY } from "@/lib/platformSettings";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import VideoPlayer from "@/components/player/VideoPlayer";
+import VideoPlayer, { type VideoPlayerHandle } from "@/components/player/VideoPlayer";
 import FloatingProgress from "@/components/player/FloatingProgress";
 import LessonPlayerHeader from "@/components/player/LessonPlayerHeader";
 import LessonPlayerSidebar from "@/components/player/LessonPlayerSidebar";
@@ -43,6 +43,8 @@ const LessonPlayer = () => {
   const { state: pomodoroState, startWork } = usePomodoro();
   const celebratedLessons = useRef<Set<string>>(new Set());
   const streakUpdatedToday = useRef(false);
+  const playerRef = useRef<VideoPlayerHandle>(null);
+  const videoTimeRef = useRef(0);
 
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -120,6 +122,12 @@ const LessonPlayer = () => {
 
   useEffect(() => { if (lessonId && lessons.length > 0) { const lesson = lessons.find((l) => l.id === lessonId); if (lesson) setCurrentLesson(lesson); } }, [lessonId, lessons]);
 
+  useEffect(() => { videoTimeRef.current = 0; }, [currentLesson?.id]);
+
+  const handleVideoTimeUpdate = useCallback((seconds: number) => { videoTimeRef.current = seconds; }, []);
+  const getVideoTime = useCallback(() => videoTimeRef.current, []);
+  const handleSeekToVideoTime = useCallback((seconds: number) => { playerRef.current?.seek(seconds); }, []);
+
   const handleProgress = useCallback(async (currentTime: number, duration: number) => {
     if (!user || !currentLesson || !course) return;
     const isCompleted = currentTime / duration >= 0.9;
@@ -178,7 +186,7 @@ const LessonPlayer = () => {
           <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar && !focusMode ? 'lg:mr-80 xl:mr-96' : ''}`}>
             <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`}>
               <div className="rounded-2xl overflow-hidden shadow-2xl mb-6">
-                {currentLesson.video_url ? <VideoPlayer src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} initialPosition={currentProgress?.last_position_seconds || 0} /> : (
+                {currentLesson.video_url ? <VideoPlayer ref={playerRef} src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} onTimeUpdate={handleVideoTimeUpdate} initialPosition={currentProgress?.last_position_seconds || 0} /> : (
                   <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 flex flex-col items-center justify-center gap-4"><div className="p-6 bg-card/50 backdrop-blur-sm rounded-full"><Play className="h-12 w-12 text-muted-foreground" /></div><p className="text-muted-foreground font-medium">Vídeo não disponível</p></div>
                 )}
               </div>
@@ -187,7 +195,7 @@ const LessonPlayer = () => {
                 <div className="flex flex-wrap items-center gap-3">
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full"><Sparkles className="h-4 w-4 text-primary" /><span className="text-sm font-semibold text-primary">Aula {currentIndex + 1} de {lessons.length}</span></div>
                   {currentProgress?.is_completed && <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 rounded-full"><CheckCircle className="h-4 w-4 text-emerald-500" /><span className="text-sm font-semibold text-emerald-600">Concluída</span></div>}
-                  <NotesPanel lessonId={currentLesson.id} courseId={course.id} currentTime={0} />
+                  <NotesPanel lessonId={currentLesson.id} courseId={course.id} getCurrentTime={getVideoTime} onSeekToTime={handleSeekToVideoTime} />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground">{currentLesson.title}</h1>
                 {currentLesson.description && <p className="text-muted-foreground leading-relaxed max-w-3xl">{currentLesson.description}</p>}

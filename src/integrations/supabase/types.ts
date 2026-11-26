@@ -1265,6 +1265,7 @@ export type Database = {
       quiz_questions: {
         Row: {
           created_at: string
+          difficulty_level: string
           explanation: string | null
           id: string
           order_index: number
@@ -1273,6 +1274,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          difficulty_level?: string
           explanation?: string | null
           id?: string
           order_index?: number
@@ -1281,6 +1283,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          difficulty_level?: string
           explanation?: string | null
           id?: string
           order_index?: number
@@ -2162,7 +2165,9 @@ export type Database = {
       user_quiz_attempts: {
         Row: {
           answers: Json | null
+          by_difficulty: Json | null
           completed_at: string
+          difficulty_level: string | null
           id: string
           passed: boolean
           quiz_id: string
@@ -2170,11 +2175,14 @@ export type Database = {
           started_at: string
           total_questions: number
           user_id: string
+          weighted_score: number | null
           xp_earned: number
         }
         Insert: {
           answers?: Json | null
+          by_difficulty?: Json | null
           completed_at?: string
+          difficulty_level?: string | null
           id?: string
           passed: boolean
           quiz_id: string
@@ -2182,11 +2190,14 @@ export type Database = {
           started_at?: string
           total_questions: number
           user_id: string
+          weighted_score?: number | null
           xp_earned?: number
         }
         Update: {
           answers?: Json | null
+          by_difficulty?: Json | null
           completed_at?: string
+          difficulty_level?: string | null
           id?: string
           passed?: boolean
           quiz_id?: string
@@ -2194,6 +2205,7 @@ export type Database = {
           started_at?: string
           total_questions?: number
           user_id?: string
+          weighted_score?: number | null
           xp_earned?: number
         }
         Relationships: [
@@ -2565,6 +2577,10 @@ export type Database = {
         }
         Returns: string
       }
+      get_adaptive_quiz_plan: {
+        Args: { p_limit?: number; p_quiz_id: string }
+        Returns: Json
+      }
       get_category_leaderboard: {
         Args: { p_category_id?: string; p_limit?: number }
         Returns: {
@@ -2804,11 +2820,15 @@ export type Database = {
       submit_quiz_attempt: {
         Args: { p_answers: Json; p_quiz_id: string }
         Returns: {
+          by_difficulty: Json
           correct_count: number
           passed: boolean
           passing_score: number
+          recommended_difficulty: string
           score: number
           total_questions: number
+          weighted_score: number
+          xp_bonus: number
         }[]
       }
       update_user_streak: {

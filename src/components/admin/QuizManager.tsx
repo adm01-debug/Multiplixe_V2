@@ -24,6 +24,7 @@ interface QuizQuestion {
   question_text: string;
   explanation: string;
   order_index: number;
+  difficulty_level?: 'facil' | 'medio' | 'dificil';
   options: QuizOption[];
 }
 
@@ -78,6 +79,7 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
         question_text: g.question_text,
         explanation: g.explanation ?? '',
         order_index: baseIndex + i,
+        difficulty_level: 'medio',
         options: g.options.map((o, oi) => ({
           option_text: o.option_text,
           is_correct: o.is_correct,
@@ -107,9 +109,10 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
         time_limit_seconds: data.time_limit_seconds, cooldown_hours: data.cooldown_hours || 24,
         questions: data.quiz_questions
           .sort((a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index)
-          .map((q: { id: string; question_text: string; explanation: string | null; order_index: number; quiz_options: Array<{ id: string; option_text: string; is_correct: boolean; order_index: number }> }) => ({
+          .map((q: { id: string; question_text: string; explanation: string | null; order_index: number; difficulty_level?: string | null; quiz_options: Array<{ id: string; option_text: string; is_correct: boolean; order_index: number }> }) => ({
             id: q.id, question_text: q.question_text, explanation: q.explanation || '',
             order_index: q.order_index,
+            difficulty_level: (q.difficulty_level as 'facil' | 'medio' | 'dificil' | null) || 'medio',
             options: q.quiz_options
               .sort((a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index)
               .map((o: { id: string; option_text: string; is_correct: boolean; order_index: number }) => ({
@@ -125,6 +128,7 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
       ...prev,
       questions: [...prev.questions, {
         question_text: '', explanation: '', order_index: prev.questions.length,
+        difficulty_level: 'medio',
         options: [
           { option_text: '', is_correct: true, order_index: 0 },
           { option_text: '', is_correct: false, order_index: 1 },
@@ -208,6 +212,7 @@ export const QuizManager = ({ lessonId, courseId, onClose }: QuizManagerProps) =
         const { data: newQuestion, error: questionError } = await supabase.from('quiz_questions').insert({
           quiz_id: newQuiz.id, question_text: question.question_text,
           explanation: question.explanation || null, order_index: question.order_index,
+          difficulty_level: question.difficulty_level ?? 'medio',
         }).select().single();
         if (questionError) throw questionError;
 

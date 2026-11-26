@@ -6,15 +6,15 @@
     "tabelas": 63,
     "tabelas_no_types": 63,
     "tabelas_nas_migrations": 63,
-    "colunas": 528,
+    "colunas": 532,
     "views": 1,
-    "funcoes": 57,
-    "funcoes_expostas_no_types": 40,
+    "funcoes": 61,
+    "funcoes_expostas_no_types": 41,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 64,
+    "migrations": 65,
     "alertas": 3,
     "problemas": 3
   },
@@ -130,7 +130,7 @@
       "indices": 1,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
-        "src": 26,
+        "src": 28,
         "edges": 2
       }
     },
@@ -526,11 +526,11 @@
     "quiz_questions": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 6,
+      "colunas": 7,
       "rls": true,
       "policies": 2,
       "triggers": [],
-      "indices": 2,
+      "indices": 3,
       "criada_em": "20251224144630_c94e702a-d64b-453f-a07c-82da51467186.sql",
       "uso_no_codigo": {
         "src": 3,
@@ -862,7 +862,7 @@
     "user_quiz_attempts": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 10,
+      "colunas": 13,
       "rls": true,
       "policies": 2,
       "triggers": [
@@ -1199,6 +1199,21 @@
       "criada_em": "20260102115559_.sql",
       "uso_no_codigo": {
         "src": 0,
+        "edges": 0
+      }
+    },
+    "get_adaptive_quiz_plan": {
+      "exposta_no_types": true,
+      "args": [
+        "p_limit",
+        "p_quiz_id"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126180000_quiz_adaptativo.sql",
+      "uso_no_codigo": {
+        "src": 1,
         "edges": 0
       }
     },
@@ -1560,6 +1575,42 @@
         "edges": 0
       }
     },
+    "quiz_difficulty_weight": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261126180000_quiz_adaptativo.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "quiz_difficulty_xp_bonus": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261126180000_quiz_adaptativo.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "quiz_recommended_difficulty": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261126180000_quiz_adaptativo.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "recalculate_user_goals": {
       "exposta_no_types": true,
       "args": [
@@ -1650,7 +1701,7 @@
       "retorno": "{",
       "security_definer": true,
       "search_path": "public",
-      "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
+      "criada_em": "20261126180000_quiz_adaptativo.sql",
       "uso_no_codigo": {
         "src": 2,
         "edges": 0

@@ -22,12 +22,21 @@ interface Quiz {
     question_text: string;
     explanation: string | null;
     order_index: number;
+    difficulty_level: string | null;
     quiz_options: Array<{
       id: string;
       option_text: string;
       order_index: number;
     }>;
   }>;
+  adaptive_plan?: {
+    quiz_id: string;
+    target_difficulty: 'facil' | 'medio' | 'dificil';
+    question_ids: string[];
+    limit: number;
+    total_available: number;
+    counts: Partial<Record<'facil' | 'medio' | 'dificil', { total: number }>>;
+  } | null;
 }
 
 interface QuizCardProps {

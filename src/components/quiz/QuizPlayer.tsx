@@ -7,6 +7,8 @@ import { CheckCircle, XCircle, Trophy, Clock, Star, ArrowRight, RotateCcw, Alert
 import { cn } from '@/lib/utils';
 import { useConfirmExit } from '@/hooks/useConfirmExit';
 import QuizReview from './QuizReview';
+import QuizAdaptiveResult from './QuizAdaptiveResult';
+import { difficultyBadgeClass, difficultyLabel, type AdaptiveQuizPlan } from '@/lib/quizAdaptive';
 import { useAnnouncements } from '@/components/accessibility/LiveAnnouncer';
 import { buildQuizReview, type QuizReviewData, type QuizReviewPayload } from '@/lib/quizReview';
 import {
@@ -32,6 +34,7 @@ interface QuizQuestion {
   question_text: string;
   explanation: string | null;
   order_index: number;
+  difficulty_level?: string | null;
   quiz_options: QuizOption[];
 }
 
@@ -43,13 +46,23 @@ interface Quiz {
   xp_reward: number;
   time_limit_seconds: number | null;
   quiz_questions: QuizQuestion[];
+  adaptive_plan?: AdaptiveQuizPlan | null;
 }
 
 interface QuizPlayerProps {
   quiz: Quiz;
   onComplete: (
     answers: Record<string, string>
-  ) => Promise<{ score: number; passed: boolean; xpEarned: number; attemptId?: string } | null>;
+  ) => Promise<{
+    score: number;
+    passed: boolean;
+    xpEarned: number;
+    attemptId?: string;
+    weightedScore?: number;
+    xpBonus?: number;
+    byDifficulty?: Record<string, { total: number; correct: number }>;
+    recommendedDifficulty?: string;
+  } | null>;
   onClose: () => void;
   loading?: boolean;
   /** Carrega a revisão (gabarito + explicações) de uma tentativa já gravada. */
@@ -60,7 +73,16 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading, onLoadReview }:
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
-  const [result, setResult] = useState<{ score: number; passed: boolean; xpEarned: number; attemptId?: string } | null>(null);
+  const [result, setResult] = useState<{
+    score: number;
+    passed: boolean;
+    xpEarned: number;
+    attemptId?: string;
+    weightedScore?: number;
+    xpBonus?: number;
+    byDifficulty?: Record<string, { total: number; correct: number }>;
+    recommendedDifficulty?: string;
+  } | null>(null);
   const [review, setReview] = useState<QuizReviewData | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(quiz.time_limit_seconds);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -177,6 +199,12 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading, onLoadReview }:
     if (showResult && result && review) {
       return (
         <div className="w-full max-w-2xl mx-auto space-y-4">
+          <QuizAdaptiveResult
+            weightedScore={result.weightedScore}
+            xpBonus={result.xpBonus}
+            byDifficulty={result.byDifficulty}
+            recommendedDifficulty={result.recommendedDifficulty}
+          />
           {result.xpEarned > 0 && (
             <div className="flex items-center justify-center gap-2 p-4 bg-primary/10 rounded-lg">
               <Star className="w-6 h-6 text-primary" />
@@ -224,6 +252,13 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading, onLoadReview }:
             <div className="text-5xl font-bold mb-2">{result.score}%</div>
             <p className="text-muted-foreground">Pontuação</p>
           </div>
+
+          <QuizAdaptiveResult
+            weightedScore={result.weightedScore}
+            xpBonus={result.xpBonus}
+            byDifficulty={result.byDifficulty}
+            recommendedDifficulty={result.recommendedDifficulty}
+          />
 
           {result.xpEarned > 0 && (
             <div className="flex items-center justify-center gap-2 p-4 bg-primary/10 rounded-lg">
@@ -275,6 +310,18 @@ export const QuizPlayer = ({ quiz, onComplete, onClose, loading, onLoadReview }:
                   </div>
         </div>
         <Progress value={progress} className="h-2" />
+        {quiz.adaptive_plan?.target_difficulty && (
+          <div className="flex flex-wrap items-center gap-2 mt-3">
+            <Badge variant="outline" className={difficultyBadgeClass(quiz.adaptive_plan.target_difficulty)}>
+              Nível adaptativo: {difficultyLabel(quiz.adaptive_plan.target_difficulty)}
+            </Badge>
+            {currentQuestion?.difficulty_level && (
+              <Badge variant="secondary">
+                Questão {difficultyLabel(currentQuestion.difficulty_level)}
+              </Badge>
+            )}
+          </div>
+        )}
         <CardTitle className="mt-4 text-lg">{quiz.title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">

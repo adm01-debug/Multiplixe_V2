@@ -44,6 +44,17 @@ describe('quizSchema', () => {
 
   it('rejeita quiz sem título', () => expect(quizSchema.safeParse(quiz({ title: '  ' })).success).toBe(false));
 
+  it('aplica o nível médio quando a questão não informa dificuldade (FUNC-020)', () => {
+    const parsed = quizSchema.safeParse(quiz({}));
+    expect(parsed.success && parsed.data.questions[0].difficulty_level).toBe('medio');
+
+    const hard = quizSchema.safeParse(quiz({ questions: [{ question_text: 'Q1', explanation: '', order_index: 0, difficulty_level: 'dificil', options: [option('a', true, 0), option('b', false, 1)] }] }));
+    expect(hard.success && hard.data.questions[0].difficulty_level).toBe('dificil');
+
+    const invalid = quiz({ questions: [{ question_text: 'Q1', explanation: '', order_index: 0, difficulty_level: 'impossivel', options: [option('a', true, 0), option('b', false, 1)] }] });
+    expect(quizSchema.safeParse(invalid).success).toBe(false);
+  });
+
   it('rejeita quiz sem questões', () => expect(quizSchema.safeParse(quiz({ questions: [] })).success).toBe(false));
 
   it('rejeita questão sem texto', () => {

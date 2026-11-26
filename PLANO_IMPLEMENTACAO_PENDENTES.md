@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (37)
+## ⏳ MELHORIAS PENDENTES (36)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -422,7 +422,7 @@ ALTER TABLE public.user_notes ENABLE ROW LEVEL SECURITY;
 
 ---
 
-#### FUNC-011: Agenda de Estudos
+#### FUNC-011: Agenda de Estudos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 6h  
 **Descrição:** Não há planejamento de estudos.
@@ -448,6 +448,28 @@ CREATE TABLE public.study_schedule (
 4. Mostrar no Dashboard
 5. (Futuro: lembretes por email, integração Google Calendar)
 ```
+
+**Entrega (2026-11-26):**
+```text
+- StudyCalendar.tsx e useStudyCalendar.ts existiam completos e nunca eram renderizados por nenhuma rota
+  (orfaos). Agora aparecem no Dashboard, na secao Agenda de Estudos, ao lado do painel de agendamento.
+- useStudyCalendar ja montava os itens do mes juntando aulas concluidas (user_lesson_progress),
+  tentativas de quiz (user_quiz_attempts) e conquistas (user_achievements); o calendario mostra um
+  indicador por atividade do dia, com tooltip por item e legenda por tipo.
+- O que faltava para a agenda existir de verdade era o agendamento: a tabela public.study_schedule nao
+  existia em producao (migration 20261125235500_study_schedule). Criada com RLS habilitado e quatro
+  policies (select/insert/update/delete) restritas ao dono da linha, indice (user_id, scheduled_date)
+  e grants para authenticated.
+- Novo hook useStudySchedule (criar, concluir/reabrir e excluir blocos de estudo) e novo painel
+  StudySchedulePanel (dialog com curso opcional, data, hora e duracao; lista de proximos blocos e de
+  concluidos recentes), montado no Dashboard junto do calendario.
+- Acessibilidade: labels em todos os campos do dialog, aria-label nos botoes de icone, aria-pressed no
+  botao de concluir e rotulos que descrevem o bloco (curso + data).
+- RLS provado em producao com dois usuarios reais: leitura pelo dono = 1 linha; leitura pelo outro
+  usuario = 0 linhas; insert forjando user_id alheio = 403 (row-level security); update e delete na
+  linha alheia = 0 linhas afetadas; update e delete na propria linha = aplicados.
+```
+
 
 ---
 
@@ -1615,7 +1637,7 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 6 | ~18h |
 | Performance | 2 | ~7h |
-| Funcionalidades | 10 | ~57h |
+| Funcionalidades | 9 | ~51h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
@@ -1624,7 +1646,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **38** | **~221h** |
+| **TOTAL PENDENTE** | **37** | **~215h** |
 
 ---
 

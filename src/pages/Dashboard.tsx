@@ -25,6 +25,9 @@ import ContinueLearningWidget from '@/components/dashboard/ContinueLearningWidge
 import OnboardingWidget from '@/components/dashboard/OnboardingWidget';
 import DueAssessmentsWidget from '@/components/dashboard/DueAssessmentsWidget';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
+import StudyCalendar from '@/components/calendar/StudyCalendar';
+import StudySchedulePanel from '@/components/calendar/StudySchedulePanel';
+import { useStudyCalendar } from '@/hooks/useStudyCalendar';
 
 // Lazy load heavy widgets (recharts/framer)
 const SmartRecommendations = lazy(() => import('@/components/dashboard/SmartRecommendations'));
@@ -38,7 +41,7 @@ import { useCourses } from '@/hooks/useCachedQuery';
 import { useFavorites } from '@/hooks/useFavorites';
 import type { ContinueCourseData, PathSuggestion } from '@/lib/continueLearning';
 import {
-  Trophy, Loader2, Sparkles, Flame, Zap, TrendingUp, Play, ArrowRight,
+  Trophy, Loader2, Sparkles, Flame, Zap, TrendingUp, Play, ArrowRight, CalendarDays,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -71,6 +74,7 @@ const Dashboard = () => {
   const { levelUpData, clearLevelUp } = useLevelUp(totalXP);
   const { achievements: allAchievements, newAchievements, dismissAchievement, checkAchievements, isUnlocked, unlockedCount, totalCount } = useAchievements();
   const { currentStreak, longestStreak, isStreakAtRisk, hasStudiedToday } = useStreaks();
+  const { currentMonth, setCurrentMonth, goToToday, scheduleItems, isLoading: calendarLoading } = useStudyCalendar();
   const { isAdmin } = useAdminRole();
   const { isStale: coursesStale, isFetching: coursesFetching, refetch: refetchCourses } = useCourses();
   const { favorites } = useFavorites();
@@ -250,6 +254,29 @@ const Dashboard = () => {
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}><LevelProgress totalXP={totalXP} /></motion.section>
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
           <StreakDisplay currentStreak={currentStreak} longestStreak={longestStreak} isAtRisk={isStreakAtRisk} hasStudiedToday={hasStudiedToday} />
+        </motion.section>
+
+        <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>
+          <motion.div className="flex items-center justify-between mb-6" variants={itemVariants}>
+            <div className="flex items-center gap-4">
+              <motion.div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20" whileHover={{ scale: 1.1, rotate: 5 }}>
+                <CalendarDays className="h-6 w-6 text-primary neon-icon" />
+              </motion.div>
+              <div>
+                <h3 className="text-2xl font-display font-bold text-foreground">Agenda de Estudos</h3>
+                <p className="text-sm text-muted-foreground">Suas aulas, quizzes e conquistas do mês</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" aria-label="Voltar para o mês atual" onClick={goToToday} className="rounded-xl gap-2 text-primary hover:text-primary hover:bg-primary/10 neon-button">
+              Hoje
+            </Button>
+          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {calendarLoading ? <WidgetFallback /> : (
+              <StudyCalendar currentMonth={currentMonth} onMonthChange={setCurrentMonth} scheduleItems={scheduleItems} />
+            )}
+            <StudySchedulePanel />
+          </div>
         </motion.section>
 
         <motion.section className="mb-12" variants={sectionVariants} initial="hidden" animate="visible" viewport={{ once: true }}>

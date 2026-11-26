@@ -22,13 +22,13 @@ import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import NotesPanel from "@/components/notes/NotesPanel";
 import ChaptersPanel from "@/components/player/ChaptersPanel";
-import TranscriptPanel from "@/components/player/TranscriptPanel";
+import { TranscriptPanel } from "@/components/player/TranscriptPanel";
 import { parseChapters } from "@/lib/chapters";
 import { toast } from "sonner";
 import { Sparkles, ChevronLeft, ChevronRight, BookOpen, Loader2, CheckCircle, Trophy, Play } from "lucide-react";
 
 interface Course { id: string; title: string; slug: string; }
-interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; chapters: unknown; transcript: string | null; }
+interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; chapters: unknown; }
 interface LessonProgress { lesson_id: string; is_completed: boolean; last_position_seconds: number; }
 
 const LessonPlayer = () => {
@@ -54,6 +54,7 @@ const LessonPlayer = () => {
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
   const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
   const [videoSeconds, setVideoSeconds] = useState(0);
+  const [transcript, setTranscript] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSidebar, setShowSidebar] = useState(true);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
@@ -111,7 +112,7 @@ const LessonPlayer = () => {
       const { data: courseData, error: courseError } = await supabase.from("courses").select("id, title, slug").eq("slug", slug).eq("is_published", true).maybeSingle();
       if (courseError || !courseData) { toast.error("Curso não encontrado"); navigate("/catalogo"); return; }
       setCourse(courseData);
-      const { data: lessonsData } = await supabase.from("lessons").select("*").eq("course_id", courseData.id).order("order_index");
+      const { data: lessonsData } = await supabase.from("lessons").select("id, title, description, video_url, duration_seconds, order_index, is_free, course_id, chapters").eq("course_id", courseData.id).order("order_index");
       if (lessonsData) {
         setLessons(lessonsData);
         if (lessonId) { const lesson = lessonsData.find((l) => l.id === lessonId); if (lesson) setCurrentLesson(lesson); else if (lessonsData.length > 0) navigate(`/curso/${slug}/aula/${lessonsData[0].id}`, { replace: true }); }
@@ -127,6 +128,18 @@ const LessonPlayer = () => {
   useEffect(() => { if (lessonId && lessons.length > 0) { const lesson = lessons.find((l) => l.id === lessonId); if (lesson) setCurrentLesson(lesson); } }, [lessonId, lessons]);
 
   useEffect(() => { videoTimeRef.current = 0; setVideoSeconds(0); }, [currentLesson?.id]);
+
+  // transcricao so da aula atual: o restante da lista nao carrega o texto
+  useEffect(() => {
+    const id = currentLesson?.id;
+    setTranscript(null);
+    if (!id) return;
+    let cancelado = false;
+    supabase.from("lessons").select("transcript").eq("id", id).maybeSingle().then(({ data }) => {
+      if (!cancelado) setTranscript((data?.transcript as string | null | undefined) ?? null);
+    });
+    return () => { cancelado = true; };
+  }, [currentLesson?.id]);
 
   const handleVideoTimeUpdate = useCallback((seconds: number) => { videoTimeRef.current = seconds; setVideoSeconds((anterior) => (Math.floor(anterior) === Math.floor(seconds) ? anterior : seconds)); }, []);
   const getVideoTime = useCallback(() => videoTimeRef.current, []);
@@ -198,7 +211,7 @@ const LessonPlayer = () => {
               </div>
 
               <ChaptersPanel chapters={chapters} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
-              <TranscriptPanel transcript={currentLesson.transcript} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
+              <TranscriptPanel transcript={transcript} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
 
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-3">

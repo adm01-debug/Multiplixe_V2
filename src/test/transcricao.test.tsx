@@ -7,7 +7,7 @@ import {
   indiceDaLinhaAtiva,
   parseTranscricao,
 } from "@/lib/transcricao";
-import TranscriptPanel from "@/components/player/TranscriptPanel";
+import { TranscriptPanel } from "@/components/player/TranscriptPanel";
 import { t } from "@/lib/i18n";
 
 describe("parseTranscricao", () => {

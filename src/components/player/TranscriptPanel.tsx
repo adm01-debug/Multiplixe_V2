@@ -15,6 +15,7 @@ interface TranscriptPanelProps {
 export function TranscriptPanel({ transcript, currentSeconds, onSeek }: TranscriptPanelProps) {
   const { t } = useT();
   const [busca, setBusca] = useState('');
+  const refLista = useRef<HTMLOListElement | null>(null);
   const refAtiva = useRef<HTMLLIElement | null>(null);
 
   const linhas = useMemo(() => parseTranscricao(transcript), [transcript]);
@@ -23,9 +24,14 @@ export function TranscriptPanel({ transcript, currentSeconds, onSeek }: Transcri
 
   useEffect(() => {
     if (busca !== '') return;
+    const lista = refLista.current;
     const elemento = refAtiva.current;
-    if (elemento && typeof elemento.scrollIntoView === 'function') {
-      elemento.scrollIntoView({ block: 'nearest' });
+    if (!lista || !elemento) return;
+
+    // rola somente a lista: a posicao do video na pagina nao muda
+    const topo = elemento.offsetTop - lista.offsetTop;
+    if (topo < lista.scrollTop || topo + elemento.offsetHeight > lista.scrollTop + lista.clientHeight) {
+      lista.scrollTop = Math.max(0, topo - lista.clientHeight / 2 + elemento.offsetHeight / 2);
     }
   }, [ativa, busca]);
 
@@ -53,7 +59,7 @@ export function TranscriptPanel({ transcript, currentSeconds, onSeek }: Transcri
       {visiveis.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t('transcript.searchEmpty')}</p>
       ) : (
-        <ol className="max-h-72 space-y-0.5 overflow-y-auto pr-1">
+        <ol ref={refLista} className="relative max-h-72 space-y-0.5 overflow-y-auto pr-1">
           {visiveis.map(({ indice, linha }) => {
             const ativo = indice === ativa;
             return (
@@ -82,5 +88,3 @@ export function TranscriptPanel({ transcript, currentSeconds, onSeek }: Transcri
     </div>
   );
 }
-
-export default TranscriptPanel;

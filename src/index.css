@@ -954,3 +954,80 @@
   animation-duration: 1s !important;
   animation-iteration-count: infinite !important;
 }
+
+/* ============================================
+   MODO ALTO CONTRASTE — A11Y-010
+   Ativado pelo HighContrastToggle, que grava a classe
+   no <html> (também aplica sozinho quando o sistema
+   pede mais contraste via prefers-contrast: more).
+   ============================================ */
+.high-contrast {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
+  --surface: 0 0% 100%;
+  --surface-foreground: 0 0% 0%;
+  --muted: 0 0% 88%;
+  --muted-foreground: 0 0% 15%;
+  --primary: 270 100% 30%;
+  --primary-foreground: 0 0% 100%;
+  --primary-hover: 270 100% 24%;
+  --secondary: 330 100% 30%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 0 0% 0%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 100% 30%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 160 100% 20%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 100% 26%;
+  --warning-foreground: 0 0% 100%;
+  --info: 217 100% 30%;
+  --info-foreground: 0 0% 100%;
+  --border: 0 0% 0%;
+  --input: 0 0% 0%;
+  --ring: 270 100% 30%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 0 0% 0%;
+}
+
+.dark.high-contrast {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 0%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 0%;
+  --popover-foreground: 0 0% 100%;
+  --surface: 0 0% 0%;
+  --surface-foreground: 0 0% 100%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 100%;
+  --primary: 270 100% 80%;
+  --primary-foreground: 0 0% 0%;
+  --primary-hover: 270 100% 86%;
+  --secondary: 330 100% 80%;
+  --secondary-foreground: 0 0% 0%;
+  --accent: 180 100% 70%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 100% 78%;
+  --destructive-foreground: 0 0% 0%;
+  --success: 160 100% 70%;
+  --success-foreground: 0 0% 0%;
+  --warning: 38 100% 70%;
+  --warning-foreground: 0 0% 0%;
+  --info: 217 100% 78%;
+  --info-foreground: 0 0% 0%;
+  --border: 0 0% 100%;
+  --input: 0 0% 100%;
+  --ring: 180 100% 70%;
+  --sidebar-background: 0 0% 0%;
+  --sidebar-foreground: 0 0% 100%;
+}
+
+.high-contrast *:focus-visible {
+  outline: 3px solid hsl(var(--ring)) !important;
+  outline-offset: 2px !important;
+}

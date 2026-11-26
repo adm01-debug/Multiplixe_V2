@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 101,
+    "hooks_distintos": 103,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 77,
+      "arquivos_lidos": 78,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -128,6 +128,10 @@
           "arquivo": "src/hooks/usePushNotifications.ts"
         },
         {
+          "nome": "usePuxarParaAtualizar",
+          "arquivo": "src/hooks/useGestosMobile.ts"
+        },
+        {
           "nome": "useQuizzes",
           "arquivo": "src/hooks/useQuizzes.ts"
         },
@@ -146,6 +150,10 @@
         {
           "nome": "useStudyCalendar",
           "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
+          "nome": "useSwipeHorizontal",
+          "arquivo": "src/hooks/useGestosMobile.ts"
         },
         {
           "nome": "useT",
@@ -661,7 +669,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 73,
+      "arquivos_lidos": 74,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -752,6 +760,10 @@
           "arquivo": "src/hooks/usePushNotifications.ts"
         },
         {
+          "nome": "usePuxarParaAtualizar",
+          "arquivo": "src/hooks/useGestosMobile.ts"
+        },
+        {
           "nome": "useQuizzes",
           "arquivo": "src/hooks/useQuizzes.ts"
         },
@@ -770,6 +782,10 @@
         {
           "nome": "useStudyCalendar",
           "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
+          "nome": "useSwipeHorizontal",
+          "arquivo": "src/hooks/useGestosMobile.ts"
         },
         {
           "nome": "useT",
@@ -946,7 +962,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 41,
+      "arquivos_lidos": 42,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -995,6 +1011,10 @@
         {
           "nome": "useStreaks",
           "arquivo": "src/hooks/useStreaks.ts"
+        },
+        {
+          "nome": "useSwipeHorizontal",
+          "arquivo": "src/hooks/useGestosMobile.ts"
         },
         {
           "nome": "useT",
@@ -1062,7 +1082,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 102,
+      "arquivos_lidos": 103,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1173,6 +1193,10 @@
           "arquivo": "src/hooks/usePushNotifications.ts"
         },
         {
+          "nome": "usePuxarParaAtualizar",
+          "arquivo": "src/hooks/useGestosMobile.ts"
+        },
+        {
           "nome": "useQuizzes",
           "arquivo": "src/hooks/useQuizzes.ts"
         },
@@ -1199,6 +1223,10 @@
         {
           "nome": "useStudySchedule",
           "arquivo": "src/hooks/useStudySchedule.ts"
+        },
+        {
+          "nome": "useSwipeHorizontal",
+          "arquivo": "src/hooks/useGestosMobile.ts"
         },
         {
           "nome": "useT",
@@ -1959,7 +1987,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 61,
+      "arquivos_lidos": 62,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2050,6 +2078,10 @@
           "arquivo": "src/hooks/usePushNotifications.ts"
         },
         {
+          "nome": "usePuxarParaAtualizar",
+          "arquivo": "src/hooks/useGestosMobile.ts"
+        },
+        {
           "nome": "useQuizzes",
           "arquivo": "src/hooks/useQuizzes.ts"
         },
@@ -2068,6 +2100,10 @@
         {
           "nome": "useStudyCalendar",
           "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
+          "nome": "useSwipeHorizontal",
+          "arquivo": "src/hooks/useGestosMobile.ts"
         },
         {
           "nome": "useT",
@@ -2182,7 +2218,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 65,
+      "arquivos_lidos": 66,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2273,6 +2309,10 @@
           "arquivo": "src/hooks/usePushNotifications.ts"
         },
         {
+          "nome": "usePuxarParaAtualizar",
+          "arquivo": "src/hooks/useGestosMobile.ts"
+        },
+        {
           "nome": "useQuizzes",
           "arquivo": "src/hooks/useQuizzes.ts"
         },
@@ -2291,6 +2331,10 @@
         {
           "nome": "useStudyCalendar",
           "arquivo": "src/hooks/useStudyCalendar.ts"
+        },
+        {
+          "nome": "useSwipeHorizontal",
+          "arquivo": "src/hooks/useGestosMobile.ts"
         },
         {
           "nome": "useT",
@@ -3585,6 +3629,16 @@
         "/trilhas"
       ]
     },
+    "usePuxarParaAtualizar": {
+      "arquivo": "src/hooks/useGestosMobile.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
+      ]
+    },
     "useQuizStatsData": {
       "arquivo": "src/components/admin/quiz-stats/useQuizStatsData.ts",
       "rotas": [
@@ -3729,6 +3783,17 @@
       "arquivo": "src/hooks/useSkillAssessments.ts",
       "rotas": [
         "/avaliacao/:id"
+      ]
+    },
+    "useSwipeHorizontal": {
+      "arquivo": "src/hooks/useGestosMobile.ts",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
       ]
     },
     "useT": {

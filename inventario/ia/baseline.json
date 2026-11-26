@@ -2,13 +2,13 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "a1fee212ece8a2840284c93edb9fd6ebf7c44669",
-  "branch": "claude/feat-func-017-transcricao-aula-2611280745",
-  "data_commit": "2026-11-26T07:17:41-03:00",
+  "commit": "da7a4469cf60d364bb8f919d5a685b744ca6d98f",
+  "branch": "claude/feat-mob-002-gestos-261126-0800",
+  "data_commit": "2026-11-26T08:22:33-03:00",
   "ultimos_commits": [
-   "a1fee21 fix: corrige auto-rolagem da transcricao e estados de carregamento/erro",
-   "f9431bf fix: carrega so a transcricao da aula atual e rola apenas a lista",
-   "5ed6b36 feat: transcricao de video com busca e salto por trecho (FUNC-017)",
+   "da7a446 feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar)",
+   "27a4c58 chore: marca FUNC-007 (mentoria) e FUNC-017 (transcricao) como implementadas (#84)",
+   "221562e feat: transcrição de vídeo com busca e salto por trecho (FUNC-017) (#81)",
    "dc9419a feat: sistema de mentoria entre colegas (FUNC-007) (#83)",
    "9504633 chore: marca UI-009 como concluido no plano (#82)",
    "d52def3 feat: preview em video no hover do card de curso (UI-009) (#80)",
@@ -20,7 +20,7 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 50
+    "mudancas": 51
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
@@ -32,15 +32,15 @@
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/ia/componentes.json",
@@ -48,15 +48,15 @@
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "src/pages/Profile.tsx",
@@ -64,7 +64,7 @@
    },
    {
     "arquivo": "src/lib/i18n.ts",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "src/index.css",
@@ -75,7 +75,7 @@
     "mudancas": 6
    },
    {
-    "arquivo": "src/pages/LessonPlayer.tsx",
+    "arquivo": "src/pages/Catalog.tsx",
     "mudancas": 6
    },
    {
@@ -91,7 +91,7 @@
     "mudancas": 5
    },
    {
-    "arquivo": "src/pages/Catalog.tsx",
+    "arquivo": "src/pages/LessonPlayer.tsx",
     "mudancas": 5
    },
    {
@@ -101,13 +101,13 @@
   ]
  },
  "contagens": {
-  "arquivos": 613,
-  "arquivos_de_codigo": 500,
-  "linhas_de_codigo": 71062,
+  "arquivos": 616,
+  "arquivos_de_codigo": 503,
+  "linhas_de_codigo": 71470,
   "componentes": 237,
-  "hooks": 129,
+  "hooks": 131,
   "paginas": 28,
-  "testes": 83,
+  "testes": 85,
   "edge_functions": 13,
   "rotas": 28,
   "tabelas": 71,
@@ -142,13 +142,13 @@
   "scripts/lib": 2,
   "src/App.tsx": 1,
   "src/components": 261,
-  "src/hooks": 64,
+  "src/hooks": 65,
   "src/index.css": 1,
   "src/integrations": 3,
   "src/lib": 28,
   "src/main.tsx": 1,
   "src/pages": 28,
-  "src/test": 83,
+  "src/test": 85,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
@@ -225,6 +225,10 @@
    "linhas": 359
   },
   {
+   "arquivo": "src/lib/i18n.ts",
+   "linhas": 358
+  },
+  {
    "arquivo": "src/components/admin/CourseForm.tsx",
    "linhas": 357
   },
@@ -243,10 +247,6 @@
   {
    "arquivo": "src/components/landing/FeaturesSection.tsx",
    "linhas": 343
-  },
-  {
-   "arquivo": "src/lib/i18n.ts",
-   "linhas": 342
   },
   {
    "arquivo": "src/components/EmptyState.tsx",

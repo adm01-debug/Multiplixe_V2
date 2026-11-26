@@ -81,7 +81,7 @@ const VideoControls = ({
             })}
           </div>
         )}
-        <Slider value={[currentTime]} max={duration || 100} step={0.1} onValueChange={onSeek} className="cursor-pointer" />
+        <Slider data-gesto-ignorar="true" value={[currentTime]} max={duration || 100} step={0.1} onValueChange={onSeek} className="cursor-pointer" />
       </div>
 
       <div className="flex items-center justify-between gap-2">
@@ -101,7 +101,7 @@ const VideoControls = ({
               {isMuted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
             </button>
             <div className="w-0 group-hover/volume:w-20 overflow-hidden transition-all duration-300">
-              <Slider value={[isMuted ? 0 : volume]} max={1} step={0.01} onValueChange={onVolumeChange} />
+              <Slider data-gesto-ignorar="true" value={[isMuted ? 0 : volume]} max={1} step={0.01} onValueChange={onVolumeChange} />
             </div>
           </div>
 

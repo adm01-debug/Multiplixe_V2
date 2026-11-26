@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `a1fee212ece8a2840284c93edb9fd6ebf7c44669` · branch `claude/feat-func-017-transcricao-aula-2611280745` · 2026-11-26T07:17:41-03:00
+Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-002-gestos-261126-0800` · 2026-11-26T08:22:33-03:00
 
 ## Como usar
 
@@ -21,11 +21,11 @@ Commit: `a1fee212ece8a2840284c93edb9fd6ebf7c44669` · branch `claude/feat-func-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 613 (500) |
-| linhas de codigo | 71062 |
+| arquivos (codigo) | 616 (503) |
+| linhas de codigo | 71470 |
 | paginas / rotas | 28 / 28 |
-| componentes / hooks | 237 / 129 |
-| arquivos de teste | 83 |
+| componentes / hooks | 237 / 131 |
+| arquivos de teste | 85 |
 | edge functions | 13 |
 | tabelas / migrations | 71 / 76 |
 
@@ -118,16 +118,16 @@ Commit: `a1fee212ece8a2840284c93edb9fd6ebf7c44669` · branch `claude/feat-func-0
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (50)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (51)
 - `src/integrations/supabase/types.ts` (20)
 - `inventario/estado/schema-declarado.json` (19)
-- `inventario/ia/baseline.json` (17)
-- `inventario/ia/INDEX.md` (17)
-- `inventario/ia/manifest.json` (17)
+- `inventario/ia/baseline.json` (18)
+- `inventario/ia/INDEX.md` (18)
+- `inventario/ia/manifest.json` (18)
 - `inventario/ia/componentes.json` (15)
-- `inventario/ia/grafo.json` (13)
-- `inventario/estado/rotas.json` (12)
-- `inventario/ia/hooks.json` (12)
+- `inventario/ia/grafo.json` (14)
+- `inventario/estado/rotas.json` (13)
+- `inventario/ia/hooks.json` (13)
 
 ## Scripts npm
 

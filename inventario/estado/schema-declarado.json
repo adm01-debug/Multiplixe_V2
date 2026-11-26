@@ -6,15 +6,15 @@
     "tabelas": 70,
     "tabelas_no_types": 70,
     "tabelas_nas_migrations": 70,
-    "colunas": 603,
+    "colunas": 604,
     "views": 1,
-    "funcoes": 80,
+    "funcoes": 81,
     "funcoes_expostas_no_types": 52,
     "enums": 1,
     "policies": 182,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 72,
+    "migrations": 73,
     "alertas": 3,
     "problemas": 3
   },
@@ -298,7 +298,7 @@
     "lessons": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 10,
+      "colunas": 11,
       "rls": true,
       "policies": 1,
       "triggers": [
@@ -1243,6 +1243,18 @@
       "security_definer": false,
       "search_path": null,
       "criada_em": "20261126050000_desafios_semanais.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "chapters_validos": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": false,
+      "search_path": "public",
+      "criada_em": "20261127190000_capitulos_aula.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

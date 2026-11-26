@@ -21,11 +21,13 @@ import StreakCelebration from "@/components/StreakCelebration";
 import { QuizCard } from "@/components/quiz/QuizCard";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import NotesPanel from "@/components/notes/NotesPanel";
+import ChaptersPanel from "@/components/player/ChaptersPanel";
+import { parseChapters } from "@/lib/chapters";
 import { toast } from "sonner";
 import { Sparkles, ChevronLeft, ChevronRight, BookOpen, Loader2, CheckCircle, Trophy, Play } from "lucide-react";
 
 interface Course { id: string; title: string; slug: string; }
-interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; }
+interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; chapters: unknown; }
 interface LessonProgress { lesson_id: string; is_completed: boolean; last_position_seconds: number; }
 
 const LessonPlayer = () => {
@@ -50,6 +52,7 @@ const LessonPlayer = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
   const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
+  const [videoSeconds, setVideoSeconds] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showSidebar, setShowSidebar] = useState(true);
   const [currentNewAchievement, setCurrentNewAchievement] = useState<typeof newAchievements[0] | null>(null);
@@ -122,10 +125,11 @@ const LessonPlayer = () => {
 
   useEffect(() => { if (lessonId && lessons.length > 0) { const lesson = lessons.find((l) => l.id === lessonId); if (lesson) setCurrentLesson(lesson); } }, [lessonId, lessons]);
 
-  useEffect(() => { videoTimeRef.current = 0; }, [currentLesson?.id]);
+  useEffect(() => { videoTimeRef.current = 0; setVideoSeconds(0); }, [currentLesson?.id]);
 
-  const handleVideoTimeUpdate = useCallback((seconds: number) => { videoTimeRef.current = seconds; }, []);
+  const handleVideoTimeUpdate = useCallback((seconds: number) => { videoTimeRef.current = seconds; setVideoSeconds((anterior) => (Math.floor(anterior) === Math.floor(seconds) ? anterior : seconds)); }, []);
   const getVideoTime = useCallback(() => videoTimeRef.current, []);
+  const chapters = useMemo(() => parseChapters(currentLesson?.chapters), [currentLesson?.chapters]);
   const handleSeekToVideoTime = useCallback((seconds: number) => { playerRef.current?.seek(seconds); }, []);
 
   const handleProgress = useCallback(async (currentTime: number, duration: number) => {
@@ -186,10 +190,12 @@ const LessonPlayer = () => {
           <main className={`flex-1 flex flex-col transition-all duration-300 ${showSidebar && !focusMode ? 'lg:mr-80 xl:mr-96' : ''}`}>
             <div className={`flex-1 p-4 lg:p-6 ${focusMode ? 'max-w-6xl mx-auto w-full' : ''}`}>
               <div className="rounded-2xl overflow-hidden shadow-2xl mb-6">
-                {currentLesson.video_url ? <VideoPlayer ref={playerRef} src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} onTimeUpdate={handleVideoTimeUpdate} initialPosition={currentProgress?.last_position_seconds || 0} /> : (
+                {currentLesson.video_url ? <VideoPlayer ref={playerRef} src={currentLesson.video_url} title={currentLesson.title} onProgress={handleProgress} onComplete={handleComplete} onTimeUpdate={handleVideoTimeUpdate} initialPosition={currentProgress?.last_position_seconds || 0} chapters={chapters} /> : (
                   <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 flex flex-col items-center justify-center gap-4"><div className="p-6 bg-card/50 backdrop-blur-sm rounded-full"><Play className="h-12 w-12 text-muted-foreground" /></div><p className="text-muted-foreground font-medium">Vídeo não disponível</p></div>
                 )}
               </div>
+
+              <ChaptersPanel chapters={chapters} currentSeconds={videoSeconds} onSeek={handleSeekToVideoTime} />
 
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-3">

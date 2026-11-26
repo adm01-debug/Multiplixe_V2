@@ -1664,14 +1664,16 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 207,
+   "linhas": 244,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "usado_por": [
     "src/components/LanguageToggle.tsx",
+    "src/components/admin/LessonForm.tsx",
     "src/components/dashboard/DashboardHeader.tsx",
     "src/components/navigation/MobileBottomNav.tsx",
+    "src/components/player/ChaptersPanel.tsx",
     "src/pages/Store.tsx"
    ],
    "coberto_por_teste": true

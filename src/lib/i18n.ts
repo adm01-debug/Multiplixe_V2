@@ -44,6 +44,18 @@ const dict = {
       powerupActivateError: "Não foi possível ativar o power-up. Tente novamente.",
       freezeSaved: "Sua Blindagem de Sequência salvou a sequência: você manteve {n} dias.",
     },
+    chapters: {
+      title: "Capítulos",
+      now: "Assistindo",
+      jumpTo: "Ir para",
+      adminTitle: "Capítulos do vídeo",
+      adminEmpty: "Sem capítulos. Adicione para o aluno pular direto ao assunto.",
+      add: "Adicionar capítulo",
+      namePlaceholder: "Ex.: Introdução",
+      startLabel: "Início (segundos)",
+      remove: "Remover capítulo",
+      afterEnd: "Há capítulo marcado depois do fim do vídeo. Confira o tempo de início.",
+    },
     common: {
       search: "Buscar",
       loading: "Carregando...",
@@ -93,6 +105,18 @@ const dict = {
       freezeNoActivation: "No activation needed: it is used on its own when you miss a day.",
       powerupActivateError: "We could not activate the power-up. Please try again.",
       freezeSaved: "Your Streak Shield saved your streak: you kept {n} days.",
+    },
+    chapters: {
+      title: "Chapters",
+      now: "Watching",
+      jumpTo: "Go to",
+      adminTitle: "Video chapters",
+      adminEmpty: "No chapters yet. Add them so learners can jump straight to the topic.",
+      add: "Add chapter",
+      namePlaceholder: "e.g. Introduction",
+      startLabel: "Start (seconds)",
+      remove: "Remove chapter",
+      afterEnd: "A chapter starts after the end of the video. Check the start time.",
     },
     common: {
       search: "Search",
@@ -144,6 +168,18 @@ const dict = {
       powerupActivateError: "No fue posible activar el power-up. Inténtalo de nuevo.",
       freezeSaved: "Tu Escudo de Racha salvó la racha: mantuviste {n} días.",
     },
+    chapters: {
+      title: "Capítulos",
+      now: "Viendo",
+      jumpTo: "Ir a",
+      adminTitle: "Capítulos del video",
+      adminEmpty: "Sin capítulos. Agrégalos para que el alumno vaya directo al tema.",
+      add: "Añadir capítulo",
+      namePlaceholder: "Ej.: Introducción",
+      startLabel: "Inicio (segundos)",
+      remove: "Eliminar capítulo",
+      afterEnd: "Hay un capítulo marcado después del final del video. Revisa el tiempo de inicio.",
+    },
     common: {
       search: "Buscar",
       loading: "Cargando...",
@@ -162,6 +198,7 @@ export type DictPath =
   | `nav.${keyof Dict["nav"]}`
   | `dashboard.${keyof Dict["dashboard"]}`
   | `store.${keyof Dict["store"]}`
+  | `chapters.${keyof Dict["chapters"]}`
   | `common.${keyof Dict["common"]}`;
 
 const listeners = new Set<(l: Locale) => void>();

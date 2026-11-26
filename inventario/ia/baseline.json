@@ -2,12 +2,12 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "617492c6922ff734ce12082a97be596f2506b382",
-  "branch": "claude/feat-powerups-261126-0750",
-  "data_commit": "2026-11-26T05:03:52-03:00",
+  "commit": "51c7545a8f9e18b00e602a2319548162ac054383",
+  "branch": "claude/feat-func-019-capitulos-261126-0520",
+  "data_commit": "2026-11-26T05:14:36-03:00",
   "ultimos_commits": [
-   "617492c fix: fechar os achados do review dos power-ups (GAME-007)",
-   "0345fd2 feat: dar efeito real aos power-ups da loja (GAME-007)",
+   "51c7545 chore: marcar GAME-007 (power-ups) como concluido no plano (#75)",
+   "06ae69a feat: dar efeito real aos power-ups da loja (GAME-007) (#74)",
    "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
    "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)",
    "53f669a chore: marcar GAME-003 (ligas semanais) como concluido no plano (#71)",
@@ -20,43 +20,43 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 46
+    "mudancas": 47
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 17
+    "mudancas": 16
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 17
+    "mudancas": 16
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 14
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 14
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 14
+    "mudancas": 13
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 11
+    "mudancas": 10
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 10
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 10
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 9
+    "mudancas": 8
    },
    {
     "arquivo": "src/pages/Profile.tsx",
@@ -101,17 +101,17 @@
   ]
  },
  "contagens": {
-  "arquivos": 594,
-  "arquivos_de_codigo": 487,
-  "linhas_de_codigo": 68185,
-  "componentes": 234,
+  "arquivos": 600,
+  "arquivos_de_codigo": 490,
+  "linhas_de_codigo": 68625,
+  "componentes": 235,
   "hooks": 123,
   "paginas": 27,
-  "testes": 78,
+  "testes": 79,
   "edge_functions": 13,
   "rotas": 27,
   "tabelas": 70,
-  "migrations": 72
+  "migrations": 73
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -121,8 +121,10 @@
   "PLANO_IMPLEMENTACAO_PENDENTES.md": 1,
   "PLANO_MELHORIAS.md": 1,
   "README.md": 1,
+  "_check-cap.sql": 1,
   "_probe.sql": 1,
   "_valida-achados.sql": 1,
+  "_valida-capitulos.sql": 1,
   "_valida-contra.sql": 1,
   "bun.lock": 1,
   "bun.lockb": 1,
@@ -139,18 +141,18 @@
   "scripts/ci": 11,
   "scripts/lib": 2,
   "src/App.tsx": 1,
-  "src/components": 259,
+  "src/components": 260,
   "src/hooks": 63,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 24,
+  "src/lib": 25,
   "src/main.tsx": 1,
   "src/pages": 27,
-  "src/test": 78,
+  "src/test": 79,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 72,
+  "supabase/migrations": 73,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -164,7 +166,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3336
+   "linhas": 3339
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",

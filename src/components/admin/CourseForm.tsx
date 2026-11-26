@@ -34,6 +34,7 @@ const courseSchema = z.object({
   is_published: z.boolean(),
   is_featured: z.boolean(),
   category_id: z.string().optional(),
+  video_preview_url: z.union([z.string().url('URL inválida'), z.literal('')]).optional(),
 });
 
 type CourseFormData = z.infer<typeof courseSchema>;
@@ -54,6 +55,7 @@ interface Course {
   is_published: boolean;
   is_featured: boolean;
   category_id: string | null;
+  video_preview_url: string | null;
 }
 
 interface CourseFormProps {
@@ -86,6 +88,7 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
       is_published: false,
       is_featured: false,
       category_id: '',
+      video_preview_url: '',
     },
   });
 
@@ -112,6 +115,7 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
         is_published: course.is_published,
         is_featured: course.is_featured,
         category_id: course.category_id || '',
+        video_preview_url: course.video_preview_url || '',
       });
     } else {
       reset({
@@ -124,6 +128,7 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
         is_published: false,
         is_featured: false,
         category_id: '',
+        video_preview_url: '',
       });
     }
   }, [course, reset]);
@@ -151,6 +156,7 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
         is_published: data.is_published,
         is_featured: data.is_featured,
         category_id: data.category_id || null,
+        video_preview_url: data.video_preview_url || null,
       };
 
       if (course) {
@@ -288,6 +294,21 @@ export function CourseForm({ open, onOpenChange, course, onSuccess }: CourseForm
               {...register('instructor_name')}
               placeholder="Ex: João Silva"
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="video_preview_url">Vídeo de preview (hover)</Label>
+            <Input
+              id="video_preview_url"
+              {...register('video_preview_url')}
+              placeholder="https://exemplo.com/preview.mp4"
+            />
+            <p className="text-xs text-muted-foreground">
+              Opcional. Video curto (mp4/webm, sem audio) exibido quando o mouse para sobre o card.
+            </p>
+            {errors.video_preview_url && (
+              <p className="text-sm text-destructive">{errors.video_preview_url.message}</p>
+            )}
           </div>
 
           <div className="flex items-center gap-8">

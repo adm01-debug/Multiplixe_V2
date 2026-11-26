@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { act, render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -13,6 +13,7 @@ const { courses } = vi.hoisted(() => ({
       slug: "curso-alfa",
       description: "Descricao Alfa",
       thumbnail_url: null,
+      video_preview_url: "https://cdn.exemplo.com/alfa.mp4",
       duration_minutes: 60,
       level: "Iniciante",
       instructor_name: "Ana",
@@ -27,6 +28,7 @@ const { courses } = vi.hoisted(() => ({
       slug: "curso-beta",
       description: "Descricao Beta",
       thumbnail_url: null,
+      video_preview_url: null,
       duration_minutes: 90,
       level: "Intermediario",
       instructor_name: "Bruno",
@@ -111,5 +113,82 @@ describe("alternancia grade/lista do catalogo (UI-008)", () => {
 
     expect(listView()).not.toBeInTheDocument();
     expect(localStorage.getItem("catalog-view")).toBe("grid");
+  });
+});
+
+describe("preview em video no hover do card (UI-009)", () => {
+  const matchMediaOriginal = window.matchMedia;
+
+  const cardDe = (titulo: string) => {
+    const link = screen.getByLabelText(`Curso: ${titulo}`);
+    return link.firstElementChild as HTMLElement;
+  };
+
+  afterEach(() => {
+    vi.useRealTimers();
+    window.matchMedia = matchMediaOriginal;
+  });
+
+  it("monta o video do preview quando o mouse para no card", () => {
+    vi.useFakeTimers();
+    renderCatalog();
+
+    fireEvent.mouseEnter(cardDe("Curso Alfa"));
+    expect(document.querySelector("video")).toBeNull();
+
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+
+    const video = document.querySelector("video") as HTMLVideoElement;
+    expect(video).not.toBeNull();
+    expect(video).toHaveAttribute("src", "https://cdn.exemplo.com/alfa.mp4");
+    expect(video).toHaveAttribute("preload", "none");
+    expect(video).toHaveAttribute("aria-hidden", "true");
+    expect(video.muted).toBe(true);
+    expect(video).toHaveAttribute("loop");
+  });
+
+  it("nao monta video quando o curso nao tem preview", () => {
+    vi.useFakeTimers();
+    renderCatalog();
+
+    fireEvent.mouseEnter(cardDe("Curso Beta"));
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+
+    expect(document.querySelector("video")).toBeNull();
+  });
+
+  it("nao monta video com prefers-reduced-motion", () => {
+    vi.useFakeTimers();
+    window.matchMedia = ((query: string) => ({
+      ...matchMediaOriginal(query),
+      matches: query.includes("reduce"),
+    })) as typeof window.matchMedia;
+    renderCatalog();
+
+    fireEvent.mouseEnter(cardDe("Curso Alfa"));
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+
+    expect(document.querySelector("video")).toBeNull();
+  });
+
+  it("desmonta o video quando o mouse sai do card", () => {
+    vi.useFakeTimers();
+    renderCatalog();
+    const card = cardDe("Curso Alfa");
+
+    fireEvent.mouseEnter(card);
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+    expect(document.querySelector("video")).not.toBeNull();
+
+    fireEvent.mouseLeave(card);
+    expect(document.querySelector("video")).toBeNull();
   });
 });

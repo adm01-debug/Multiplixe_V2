@@ -21,6 +21,7 @@ const KeyboardShortcutsModal = lazy(() => import("@/components/KeyboardShortcuts
 const PWAInstallPrompt = lazy(() => import("@/components/pwa/PWAInstallPrompt"));
 const NotificationPermissionBanner = lazy(() => import("@/components/security/NotificationPermissionBanner"));
 import SkipLinks from "@/components/accessibility/SkipLinks";
+import AccessibilityWidget from "@/components/accessibility/AccessibilityWidget";
 import ScrollToTop from "@/components/navigation/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PageLoader from "@/components/PageLoader";
@@ -104,6 +105,7 @@ const App = () => (
               <SessionRotationGuard />
               <ConditionalPomodoroButton />
               <ConditionalMobileNav />
+              <AccessibilityWidget />
               <Suspense fallback={null}>
                 <ConditionalNotificationBanner />
                 <PWAInstallPrompt />

@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (46)
+## ⏳ MELHORIAS PENDENTES (45)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -597,7 +597,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 5 Pendentes
+### ♿ ACESSIBILIDADE - 4 Pendentes
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -757,7 +757,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-010: Modo Alto Contraste
+#### A11Y-010: Modo Alto Contraste ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 3h  
 **Descrição:** Não há modo de alto contraste.
@@ -768,6 +768,24 @@ leitor de tela) e 17 só com `placeholder`.
 2. Toggle em configurações/perfil
 3. Respeitar prefers-contrast: more
 4. Testar com ferramentas de acessibilidade
+```
+
+**Entrega (2026-11-26):**
+```
+- HighContrastToggle.tsx já existia (aplica .high-contrast no <html>, grava a escolha em
+  localStorage["high-contrast-mode"] e respeita prefers-contrast: more) mas nunca era
+  renderizado e a classe não tinha uma única regra CSS. Trabalho parado de outro agente.
+- src/components/accessibility/AccessibilityWidget.tsx (novo): botão flutuante
+  "Opções de acessibilidade" (bottom-left, z-40) que revela os controles; fica sempre montado
+  para a preferência salva valer logo no carregamento, mesmo com o painel fechado.
+- Montado em App.tsx junto dos outros flutuantes (ConditionalPomodoroButton, MobileBottomNav).
+- src/index.css: variáveis de alto contraste para os temas claro (.high-contrast) e escuro
+  (.dark.high-contrast) — fundo/texto/bordas no máximo de contraste, cores de estado
+  recalibradas e anel de foco de 3px sempre visível (WCAG 1.4.11 / 2.4.7).
+- src/test/highContrast.test.tsx (novo, 9 casos): estado inicial, ligar/desligar com
+  persistência, aplicação automática por prefers-contrast, preferência salva vencendo o
+  sistema, widget abrindo, contraste ligado pelo widget e preferência aplicada com painel
+  fechado.
 ```
 
 ---
@@ -1442,7 +1460,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 5 | ~11h |
+| Acessibilidade | 4 | ~8h |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1450,7 +1468,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **49** | **~250h** |
+| **TOTAL PENDENTE** | **48** | **~247h** |
 
 ---
 

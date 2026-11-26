@@ -391,7 +391,7 @@ ALTER TABLE public.user_notes ENABLE ROW LEVEL SECURITY;
 
 ---
 
-#### FUNC-010: Exportar Progresso
+#### FUNC-010: Exportar Progresso ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Usuário não pode exportar seu progresso.
@@ -406,6 +406,18 @@ ALTER TABLE public.user_notes ENABLE ROW LEVEL SECURITY;
    - Conquistas
 3. Usar jsPDF (já instalado)
 4. Botão no Profile.tsx
+```
+
+**Entrega (2026-11-26):**
+```text
+- ExportProgress.tsx existia completo (259 linhas: Dialog com pre-visualizacao + geracao de
+  PDF via jsPDF) e nenhuma rota o importava. Montado no header da secao Estatisticas do
+  Profile, com lazy load para o jsPDF nao entrar no bundle inicial do perfil.
+- O PDF usa tabelas conferidas em producao: user_course_progress (+ courses.duration_minutes),
+  user_lesson_progress, user_achievements, user_streaks, certificates e os dados de
+  useUserXP (XP total e nivel).
+- src/test/profileExportProgress.test.tsx: 3 casos (botao presente na pagina, pre-visualizacao
+  abre no clique, PDF gerado com nome progresso-<usuario>-<data>.pdf).
 ```
 
 ---
@@ -1603,7 +1615,7 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 6 | ~18h |
 | Performance | 2 | ~7h |
-| Funcionalidades | 11 | ~61h |
+| Funcionalidades | 10 | ~57h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
@@ -1612,7 +1624,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **39** | **~225h** |
+| **TOTAL PENDENTE** | **38** | **~221h** |
 
 ---
 

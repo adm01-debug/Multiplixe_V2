@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-012-reputacao-261126-0900` · 2026-11-26T08:57:46-03:00
+Commit: `24fca8300c1b79e5c57852ea98a858a33457c714` · branch `main` · 2026-11-26T09:34:45-03:00
 
 ## Como usar
 
@@ -21,17 +21,17 @@ Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 622 (507) |
-| linhas de codigo | 71873 |
+| arquivos (codigo) | 628 (512) |
+| linhas de codigo | 73006 |
 | paginas / rotas | 28 / 28 |
-| componentes / hooks | 238 / 132 |
-| arquivos de teste | 86 |
+| componentes / hooks | 240 / 137 |
+| arquivos de teste | 87 |
 | edge functions | 13 |
-| tabelas / migrations | 71 / 78 |
+| tabelas / migrations | 73 / 79 |
 
 ## Divida medida
 
-`: any`: 2 · `console.log`: 14 · `@ts-ignore`: 1 · `eslint-disable`: 2 · TODO/FIXME: 5 · arquivos > 500 linhas: 4
+`: any`: 2 · `console.log`: 14 · `@ts-ignore`: 1 · `eslint-disable`: 2 · TODO/FIXME: 5 · arquivos > 500 linhas: 5
 
 ## Rotas
 
@@ -39,7 +39,7 @@ Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-0
 |---|---|---|---|---|---|
 | `*` | src/pages/NotFound.tsx | nao | — | 0 | — |
 | `/` | src/pages/Index.tsx | nao | navegacao-no-codigo, prefetch | 35 | detect-new-device, export-user-data, generate-certificate |
-| `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 36 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
+| `/admin` | src/pages/Admin.tsx | admin | navegacao-no-codigo, prefetch | 37 | admin-user-actions, approve-password-reset, detect-new-device, weekly-admin-digest |
 | `/admin/security` | src/pages/RateLimitDashboard.tsx | admin | prefetch | 5 | detect-new-device |
 | `/auth` | src/pages/Auth.tsx | nao | navegacao-no-codigo, prefetch | 1 | detect-new-device |
 | `/avaliacao/:id` | src/pages/AssessmentRunner.tsx | sim | — | 4 | detect-new-device |
@@ -86,14 +86,14 @@ Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-0
 
 ## Banco (declarado pelo repo)
 
-71 tabelas · 187 policies · 91 funcoes · 2 cron jobs · 1 bucket(s) · 78 migrations
+73 tabelas · 190 policies · 95 funcoes · 2 cron jobs · 1 bucket(s) · 79 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
-| `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_powerups, user_purchases |
-| `funcao_sem_uso_no_codigo` | apply_coin_transaction, atualizar_reputacao, calcular_reputacao, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, recalcular_reputacao_perfil, refresh_platform_stats, verify_path_certificate_by_code |
+| `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, department_challenge_claims, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_powerups, user_purchases |
+| `funcao_sem_uso_no_codigo` | apply_coin_transaction, atualizar_reputacao, calcular_reputacao, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, department_challenge_progresso, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, recalcular_reputacao_perfil, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
 ### Cron
@@ -105,20 +105,20 @@ Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-0
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (136)
-- `src/integrations/supabase/client.ts` (106)
-- `src/hooks/useAuth.tsx` (72)
+- `src/components/ui/button.tsx` (138)
+- `src/integrations/supabase/client.ts` (108)
+- `src/hooks/useAuth.tsx` (73)
+- `src/components/ui/card.tsx` (68)
 - `src/lib/utils.ts` (68)
-- `src/components/ui/card.tsx` (66)
-- `src/components/ui/badge.tsx` (60)
-- `src/components/ui/input.tsx` (38)
-- `src/components/ui/dialog.tsx` (36)
-- `src/components/ui/label.tsx` (26)
-- `src/components/ui/progress.tsx` (23)
+- `src/components/ui/badge.tsx` (62)
+- `src/components/ui/input.tsx` (39)
+- `src/components/ui/dialog.tsx` (37)
+- `src/components/ui/label.tsx` (27)
+- `src/components/ui/progress.tsx` (25)
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (52)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (53)
 - `src/integrations/supabase/types.ts` (21)
 - `inventario/estado/schema-declarado.json` (20)
 - `inventario/ia/baseline.json` (19)

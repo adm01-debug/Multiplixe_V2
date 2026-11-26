@@ -2,6 +2,7 @@
 // Assina o corpo com HMAC-SHA256 (header X-Multiplixe-Signature) e retenta com backoff.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { assinar, proximaTentativa } from "./assinatura.ts";
+import { exigirSegredoDoCron } from "../_shared/cronAuth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -168,6 +169,9 @@ const entregar = async (supabase: Supa, entrega: Pendente) => {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+
+    const naoAutorizado = exigirSegredoDoCron(req);
+    if (naoAutorizado) return naoAutorizado;
 
   const json = (corpo: unknown, status = 200) =>
     new Response(JSON.stringify(corpo), {

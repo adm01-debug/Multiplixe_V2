@@ -105,7 +105,7 @@ const ThemeCustomizer = () => {
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          size="icon"
+          size="icon" aria-label="Personalizar tema"
           className="rounded-xl border-border/50 hover:bg-primary/10 hover:text-primary hover:border-primary/50"
         >
           <Palette className="h-4 w-4" />

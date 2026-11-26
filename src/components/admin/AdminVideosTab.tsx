@@ -55,8 +55,8 @@ const AdminVideosTab = () => {
                   <p className="text-xs text-muted-foreground">{v.category} · {v.view_count} views {!v.is_published && '· Rascunho'}</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="icon" variant="ghost" onClick={() => setEditing(v)}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => confirm('Excluir?') && del.mutate(v.id)}><Trash2 className="h-4 w-4" /></Button>
+                  <Button size="icon" aria-label="Editar vídeo" variant="ghost" onClick={() => setEditing(v)}><Pencil className="h-4 w-4" /></Button>
+                  <Button size="icon" aria-label="Excluir vídeo" variant="ghost" onClick={() => confirm('Excluir?') && del.mutate(v.id)}><Trash2 className="h-4 w-4" /></Button>
                 </div>
               </CardContent>
             </Card>

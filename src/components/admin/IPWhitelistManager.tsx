@@ -252,7 +252,7 @@ const IPWhitelistManager = () => {
                       <TableCell className="text-center">
                         <Button
                           variant="ghost"
-                          size="icon"
+                          size="icon" aria-label="Excluir IP permitido"
                           className="h-8 w-8 text-destructive hover:text-destructive"
                           onClick={() => {
                             setSelectedIP(ip);

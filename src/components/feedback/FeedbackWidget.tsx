@@ -138,7 +138,7 @@ const FeedbackWidget = () => {
                   </div>
                   <Button
                     variant="ghost"
-                    size="icon"
+                    size="icon" aria-label="Fechar feedback"
                     onClick={() => setIsOpen(false)}
                     className="h-8 w-8 rounded-xl"
                   >

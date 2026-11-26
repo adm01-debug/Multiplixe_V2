@@ -78,7 +78,7 @@ const QuizQuestionCard = ({
                 className={option.is_correct ? 'border-green-500' : ''}
               />
               {question.options.length > 2 && (
-                <Button variant="ghost" size="icon" onClick={() => onRemoveOption(oIndex)}>
+                <Button variant="ghost" size="icon" aria-label="Remover opção" onClick={() => onRemoveOption(oIndex)}>
                   <Trash2 className="w-4 h-4 text-muted-foreground" />
                 </Button>
               )}

@@ -44,7 +44,7 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
+          <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-1 p-1 bg-muted/50 rounded-2xl neon-border">
             <PrefetchLink to="/dashboard" prefetch="intent" className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white rounded-xl shadow-lg neon-button">
               {t('nav.dashboard')}
             </PrefetchLink>
@@ -97,7 +97,7 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="icon" onClick={onSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border">
+                  <Button variant="outline" size="icon" aria-label="Sair da conta" onClick={onSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border">
                     <LogOut className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>

@@ -277,7 +277,7 @@ export function LearningPathCoursesManager({
                       <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
-                          size="icon"
+                          size="icon" aria-label="Mover curso para cima"
                           className="h-8 w-8"
                           onClick={() => moveCourse(index, 'up')}
                           disabled={index === 0 || saving}
@@ -286,7 +286,7 @@ export function LearningPathCoursesManager({
                         </Button>
                         <Button
                           variant="ghost"
-                          size="icon"
+                          size="icon" aria-label="Mover curso para baixo"
                           className="h-8 w-8"
                           onClick={() => moveCourse(index, 'down')}
                           disabled={index === pathCourses.length - 1 || saving}
@@ -295,7 +295,7 @@ export function LearningPathCoursesManager({
                         </Button>
                         <Button
                           variant="ghost"
-                          size="icon"
+                          size="icon" aria-label="Remover curso da trilha"
                           className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
                           onClick={() => removeCourse(pc.id)}
                           disabled={saving}

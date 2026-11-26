@@ -41,7 +41,7 @@ const MobileBottomNav = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+    <nav aria-label="Navegação inferior" className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
       {/* Glass background with gradient border */}
       <div className="absolute inset-0 bg-background/90 backdrop-blur-2xl border-t border-gradient-to-r from-primary/20 via-accent/20 to-primary/20" />
       

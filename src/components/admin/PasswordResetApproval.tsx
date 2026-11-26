@@ -94,7 +94,7 @@ const PasswordResetApproval = () => {
             </div>
             <div className="flex items-center gap-2">
               {pendingRequests.length > 0 && <Badge variant="destructive">{pendingRequests.length} pendente(s)</Badge>}
-              <Button variant="outline" size="icon" onClick={fetchRequests}><RefreshCw className="h-4 w-4" /></Button>
+              <Button variant="outline" size="icon" aria-label="Atualizar solicitações" onClick={fetchRequests}><RefreshCw className="h-4 w-4" /></Button>
             </div>
           </div>
         </CardHeader>

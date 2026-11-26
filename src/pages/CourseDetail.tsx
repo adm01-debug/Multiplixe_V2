@@ -106,7 +106,7 @@ const CourseDetail = () => {
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm neon-button">{userName.charAt(0).toUpperCase()}</div>
                 <span className="text-sm font-medium text-foreground">{userName}</span>
               </Link>
-              <Button variant="outline" size="icon" onClick={handleSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"><LogOut className="h-4 w-4" /></Button>
+              <Button variant="outline" size="icon" aria-label="Sair da conta" onClick={handleSignOut} className="rounded-xl border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 h-11 w-11 neon-border"><LogOut className="h-4 w-4" /></Button>
             </div>
           </div>
         </div>

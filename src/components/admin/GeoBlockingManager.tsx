@@ -145,7 +145,7 @@ const GeoBlockingManager = () => {
                       <TableCell className="text-muted-foreground max-w-[200px] truncate">{country.reason || '—'}</TableCell>
                       <TableCell className="text-muted-foreground">{format(new Date(country.created_at), "dd/MM/yyyy", { locale: ptBR })}</TableCell>
                       <TableCell className="text-center"><Switch checked={country.is_active} onCheckedChange={() => handleToggleActive(country)} /></TableCell>
-                      <TableCell className="text-center"><Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => { setSelectedCountry(country); setDeleteDialogOpen(true); }}><Trash2 className="h-4 w-4" /></Button></TableCell>
+                      <TableCell className="text-center"><Button variant="ghost" size="icon" aria-label="Excluir bloqueio" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => { setSelectedCountry(country); setDeleteDialogOpen(true); }}><Trash2 className="h-4 w-4" /></Button></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

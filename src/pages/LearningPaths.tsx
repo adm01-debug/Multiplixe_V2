@@ -77,7 +77,7 @@ export default function LearningPaths() {
           <div className="container mx-auto flex h-16 items-center justify-between px-4">
             <div className="flex items-center gap-4">
               <Link to="/dashboard">
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" aria-label="Voltar ao painel">
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>

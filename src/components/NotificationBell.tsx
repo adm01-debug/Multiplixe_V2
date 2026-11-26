@@ -155,7 +155,7 @@ const NotificationBell = () => {
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button
                         variant="ghost"
-                        size="icon"
+                        size="icon" aria-label="Excluir notificação"
                         className="h-6 w-6 text-muted-foreground hover:text-destructive"
                         onClick={(e) => {
                           e.stopPropagation();

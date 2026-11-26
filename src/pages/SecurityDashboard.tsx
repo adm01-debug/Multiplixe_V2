@@ -91,7 +91,7 @@ const SecurityDashboard = () => {
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => navigate(-1)}><ArrowLeft className="h-5 w-5" /></Button>
+              <Button variant="ghost" size="icon" aria-label="Voltar" onClick={() => navigate(-1)}><ArrowLeft className="h-5 w-5" /></Button>
               <div><h1 className="text-3xl font-bold">Painel de Segurança</h1><p className="text-muted-foreground">Gerencie suas configurações de segurança em um só lugar</p></div>
             </div>
             <Button variant="outline" onClick={() => { refetchSessions(); refetchAlerts(); }}><RefreshCw className="h-4 w-4 mr-2" />Atualizar</Button>

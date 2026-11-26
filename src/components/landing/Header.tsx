@@ -53,7 +53,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-1">
             <HoverCard openDelay={100} closeDelay={200}>
               <HoverCardTrigger asChild>
                 <motion.button className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors font-medium rounded-xl hover:bg-muted/50 flex items-center gap-1"
@@ -137,7 +137,7 @@ const Header = () => {
                     </span>
                   </SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col gap-2 mt-8">
+                <nav aria-label="Navegação mobile" className="flex flex-col gap-2 mt-8">
                   <a href="#recursos" className="text-muted-foreground hover:text-foreground transition-colors font-medium py-3 px-4 rounded-xl hover:bg-muted/50 flex items-center gap-2">
                     <Flame className="h-4 w-4" />Recursos
                   </a>

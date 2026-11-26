@@ -57,7 +57,7 @@ const Leaderboard = () => {
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
-                size="icon"
+                size="icon" aria-label="Voltar"
                 onClick={() => navigate(-1)}
                 className="hover:bg-primary/10"
               >
@@ -90,7 +90,7 @@ const Leaderboard = () => {
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
-              size="icon"
+              size="icon" aria-label="Voltar"
               onClick={() => navigate(-1)}
               className="hover:bg-primary/10"
             >

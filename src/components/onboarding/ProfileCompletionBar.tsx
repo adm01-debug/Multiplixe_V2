@@ -152,7 +152,7 @@ const ProfileCompletionBar = () => {
           </Button>
           <Button
             variant="ghost"
-            size="icon"
+            size="icon" aria-label="Dispensar barra de progresso"
             onClick={handleDismiss}
             className="h-8 w-8 text-muted-foreground hover:text-foreground"
           >

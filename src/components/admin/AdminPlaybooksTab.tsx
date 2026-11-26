@@ -60,8 +60,8 @@ const AdminPlaybooksTab = () => {
                   <p className="text-xs text-muted-foreground">{p.category} · {p.view_count} views</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="icon" variant="ghost" onClick={() => setEditing({ ...p, tags: p.tags })}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => confirm('Excluir?') && del.mutate(p.id)}><Trash2 className="h-4 w-4" /></Button>
+                  <Button size="icon" aria-label="Editar playbook" variant="ghost" onClick={() => setEditing({ ...p, tags: p.tags })}><Pencil className="h-4 w-4" /></Button>
+                  <Button size="icon" aria-label="Excluir playbook" variant="ghost" onClick={() => confirm('Excluir?') && del.mutate(p.id)}><Trash2 className="h-4 w-4" /></Button>
                 </div>
               </CardContent>
             </Card>

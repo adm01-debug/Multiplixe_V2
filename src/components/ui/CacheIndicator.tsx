@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Database, Cloud, RefreshCw } from "lucide-react";
+import { Database, Cloud, RefreshCw, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 
 interface CacheIndicatorProps {
   isStale: boolean;
@@ -18,7 +19,9 @@ const CacheIndicator = ({
   showLabel = false,
   onRefresh
 }: CacheIndicatorProps) => {
-  const getStatus = () => {
+  const isOnline = useOnlineStatus();
+    const getStatus = () => {
+      if (!isOnline) return { icon: WifiOff, label: "Offline", color: "text-amber-500", tooltip: "Sem conexão - exibindo dados salvos" };
     if (isFetching) return { icon: RefreshCw, label: "Atualizando...", color: "text-primary", tooltip: "Atualizando dados..." };
     if (isStale) return { icon: Database, label: "Cache", color: "text-muted-foreground", tooltip: "Dados em cache - clique para atualizar" };
     return { icon: Cloud, label: "Atualizado", color: "text-emerald-500", tooltip: "Dados atualizados" };
@@ -41,11 +44,11 @@ const CacheIndicator = ({
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.2 }}
       onClick={handleClick}
-      disabled={isFetching || !onRefresh}
+      disabled={isFetching || !onRefresh || !isOnline}
       className={cn(
         "inline-flex items-center gap-1.5 text-xs transition-colors",
         status.color,
-        onRefresh && !isFetching && "hover:text-primary cursor-pointer",
+        onRefresh && !isFetching && isOnline && "hover:text-primary cursor-pointer",
         isFetching && "cursor-wait",
         !onRefresh && "cursor-default",
         className

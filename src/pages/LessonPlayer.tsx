@@ -32,9 +32,8 @@ import { useSwipeHorizontal } from "@/hooks/useGestosMobile";
 import { useT } from "@/lib/i18n";
 import { toast } from "sonner";
 import { Sparkles, ChevronLeft, ChevronRight, BookOpen, Loader2, CheckCircle, Trophy, Play } from "lucide-react";
+import type { AulaComConteudo, CursoMinimo } from '@/types';
 
-interface Course { id: string; title: string; slug: string; }
-interface Lesson { id: string; title: string; description: string | null; video_url: string | null; duration_seconds: number; order_index: number; is_free: boolean; course_id: string; chapters: unknown; }
 interface LessonProgress { lesson_id: string; is_completed: boolean; last_position_seconds: number; }
 
 const LessonPlayer = () => {
@@ -56,9 +55,9 @@ const LessonPlayer = () => {
   const playerRef = useRef<VideoPlayerHandle>(null);
   const videoTimeRef = useRef(0);
 
-  const [course, setCourse] = useState<Course | null>(null);
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
+  const [course, setCourse] = useState<CursoMinimo | null>(null);
+  const [lessons, setLessons] = useState<AulaComConteudo[]>([]);
+  const [currentLesson, setCurrentLesson] = useState<AulaComConteudo | null>(null);
   const [lessonsProgress, setLessonsProgress] = useState<LessonProgress[]>([]);
   const [videoSeconds, setVideoSeconds] = useState(0);
   const [transcript, setTranscript] = useState<string | null>(null);

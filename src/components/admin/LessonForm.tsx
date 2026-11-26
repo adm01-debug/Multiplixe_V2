@@ -19,6 +19,7 @@ import { useT } from '@/lib/i18n';
 import { CHAPTERS_MAX, CHAPTER_TITLE_MAX, formatChapterTime, parseChapters, type LessonChapter } from '@/lib/chapters';
 import type { Json } from '@/integrations/supabase/types';
 import { toast } from 'sonner';
+import type { AulaComConteudo } from '@/types';
 
 const lessonSchema = z.object({
   title: z.string().min(1, 'Título é obrigatório').max(200),
@@ -32,24 +33,11 @@ const lessonSchema = z.object({
 
 type LessonFormData = z.infer<typeof lessonSchema>;
 
-interface Lesson {
-  id: string;
-  title: string;
-  description: string | null;
-  video_url: string | null;
-  duration_seconds: number | null;
-  order_index: number;
-  is_free: boolean;
-  course_id: string;
-  chapters?: unknown;
-  transcript?: string | null;
-}
-
 interface LessonFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   courseId: string;
-  lesson?: Lesson | null;
+  lesson?: AulaComConteudo | null;
   nextOrderIndex?: number;
   onSuccess: () => void;
 }

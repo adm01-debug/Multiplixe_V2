@@ -28,20 +28,11 @@ import {
 } from "@/components/ui/stagger-container";
 import { Loader2, Search, Filter, ChevronDown } from "lucide-react";
 import type { FuseResultMatch } from "fuse.js";
+import type { Categoria, CursoComCategoria } from '@/types';
 
 const VIRTUALIZATION_THRESHOLD = 20;
 const COURSES_PER_PAGE = 12;
 
-interface Category {
-  id: string; name: string; slug: string; description: string | null; icon: string | null; color: string | null;
-}
-
-interface Course {
-  id: string; title: string; slug: string; description: string | null; thumbnail_url: string | null;
-  video_preview_url: string | null;
-  duration_minutes: number | null; level: string | null; instructor_name: string | null;
-  total_lessons: number | null; is_featured: boolean | null; category_id: string | null; categories: Category | null;
-}
 
 const Catalog = () => {
   const navigate = useNavigate();
@@ -65,7 +56,7 @@ const Catalog = () => {
   
 
   const fuzzySearchResults = useFuzzySearchWithMatches(
-    courses as Course[], ["title", "description", "instructor_name", "categories.name"], debouncedSearch
+    courses as CursoComCategoria[], ["title", "description", "instructor_name", "categories.name"], debouncedSearch
   );
 
   const matchesMap = useMemo(() => {
@@ -170,7 +161,7 @@ const Catalog = () => {
             <div className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 space-y-5 neon-card">
               <div>
                 <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2"><span>📂</span> Categorias</p>
-                <CategoryFilter categories={categories as Category[]} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
+                <CategoryFilter categories={categories as Categoria[]} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
               </div>
               <div className="border-t border-border/50 pt-5">
                 <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2"><span>📊</span> Nível de Dificuldade</p>
@@ -194,7 +185,7 @@ const Catalog = () => {
           <ViewToggle value={viewMode} onChange={setViewMode} />
         </div>
 
-        {/* Course Grid */}
+        {/* CursoComCategoria Grid */}
         {loading ? (
           <CourseGridSkeleton count={8} />
         ) : filteredCourses.length > 0 ? (

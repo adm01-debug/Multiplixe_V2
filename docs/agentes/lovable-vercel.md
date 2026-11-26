@@ -59,19 +59,19 @@ O projeto tem **16 env vars, todas em `production`, todas vindas de uma integra�
 
 ## Edge functions
 
-12 funções em `supabase/functions/`, `verify_jwt` declarado em `supabase/config.toml`:
+13 funções em `supabase/functions/`, `verify_jwt` declarado em `supabase/config.toml`:
 
 | Função | `verify_jwt` | Observação |
 |---|---|---|
-| `generate-certificate` · `approve-password-reset` · `cleanup-security-logs` · `send-security-alert` · `export-user-data` · `ai-playbook-summarize` · `ai-quiz-generator` · `verify-mfa` | `true` | exige sessão |
-| `detect-new-device` · `generate-sitemap` · `weekly-admin-digest` | `false` | público por design (sitemap, digest agendado, device fingerprint) |
-| `migrate-helper` | `false` | **não deveria existir** — ver `docs/agentes/regras-dominio.md` |
+| `generate-certificate` · `approve-password-reset` · `cleanup-security-logs` · `send-security-alert` · `export-user-data` · `ai-playbook-summarize` · `ai-quiz-generator` · `verify-mfa` · `admin-user-actions` | `true` | exige sessão |
+| `detect-new-device` · `generate-sitemap` · `weekly-admin-digest` · `webhook-dispatch` | `false` | público por design (sitemap, digest agendado, device fingerprint, dispatcher por token assinado) |
 
 - `ai-playbook-summarize` e `ai-quiz-generator` usam `LOVABLE_API_KEY` (Lovable AI Gateway);
   `approve-password-reset`, `weekly-admin-digest` e `detect-new-device` usam `RESEND_API_KEY` (e-mail).
-- **Deploy das edges é do Lovable.** Não há workflow, nem `supabase` CLI configurado, nem MCP deste projeto:
-  alterar código de edge no repo **não publica nada**. Mudança de edge que precisa entrar em produção =
-  chame o dono (ou peça que ele rode pelo Lovable). Diga isso na PR em vez de dar a função como "pronta".
+- **O editor do Lovable commitar na `main` não publica edge:** não há workflow que faça deploy. Mas o agente
+  **pode** publicar via Management API/CLI — provado em 26/11/2026 (`webhook-dispatch` v5,
+  `weekly-admin-digest` v2, deploy de edge via `supabase functions deploy <slug> --use-api`). Então:
+  mudança de edge que precisa entrar em produção = deploy explícito + prova da versão publicada na PR.
 - `verify-mfa` existe em `supabase/functions/` mas **não** está declarada em `config.toml`: fica no default
   (`verify_jwt = true`). Se precisar mudar, declare.
 

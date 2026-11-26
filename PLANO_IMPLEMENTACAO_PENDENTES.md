@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (46)
+### ✅ Melhorias JÁ IMPLEMENTADAS (56)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,9 +44,9 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (29)
+## ⏳ MELHORIAS PENDENTES (43)
 
-### 🎨 UX/UI - 8 Pendentes
+### 🎨 UX/UI - 5 Pendentes
 
 #### UI-004: Feedback Visual em Ações
 **Prioridade:** 🟡 Média  
@@ -226,7 +226,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-### ⚡ PERFORMANCE - 2 Pendentes
+### ⚡ PERFORMANCE - 1 Pendente
 
 #### PERF-002: Memoização de Componentes ✅ CONCLUÍDO
 **Prioridade:** 🔴 Alta  
@@ -306,7 +306,7 @@ contagem total e os filtros de categoria/nivel sao client-side - seria regressao
 
 ---
 
-### 🚀 FUNCIONALIDADES - 11 Pendentes
+### 🚀 FUNCIONALIDADES - 10 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -356,7 +356,7 @@ USING (auth.uid() = user_id);
 
 ---
 
-#### FUNC-003: Notas nas Aulas
+#### FUNC-003: Notas nas Aulas ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 6h  
 **Descrição:** Usuários não podem fazer anotações durante aulas.
@@ -384,6 +384,15 @@ ALTER TABLE public.user_notes ENABLE ROW LEVEL SECURITY;
 4. Permitir marcar timestamp do vídeo
 5. Exportar notas em markdown
 ```
+
+**Entregue em 26/11/2026**
+
+A tabela `user_notes`, o hook `useNotes` e o `NotesPanel` (criar, editar, excluir) já existiam, mas o painel era montado no `LessonPlayer` com `currentTime={0}` fixo: toda nota nascia no segundo 0 e o botão de timestamp não movia o vídeo. Faltava também o export em markdown.
+
+- `src/components/player/VideoPlayer.tsx`: ganhou a prop `onTimeUpdate` (tempo real do elemento `<video>`) e o handle `VideoPlayerHandle.seek()`, exposto via `forwardRef` + `useImperativeHandle`.
+- `src/pages/LessonPlayer.tsx`: guarda o tempo atual em `videoTimeRef` (sem re-render a cada `timeupdate`), passa `getCurrentTime` ao painel e `handleSeekToVideoTime`, que executa o seek no player; o tempo volta a zero ao trocar de aula.
+- `src/components/notes/NotesPanel.tsx`: salva a nota com o tempo real do vídeo, mostra o tempo ao vivo (1x/s enquanto o painel está aberto) e ganhou "Exportar em Markdown" (`notesToMarkdown` + download de `anotacoes-aula.md`).
+- `src/test/notesPanel.test.tsx` (novo, 6 casos): formato do markdown, ordem das notas, lista vazia, salvamento no tempo real (125s, não 0), seek pelo timestamp e conteúdo do arquivo exportado.
 
 ---
 
@@ -1061,7 +1070,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-### 🔍 SEO - 5 Pendentes
+### 🔍 SEO - 2 Pendentes
 
 #### SEO-002: Structured Data (JSON-LD)
 **Prioridade:** 🟢 Baixa  
@@ -1341,7 +1350,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-### 🛠️ MELHORIAS ADMINISTRATIVAS - 5 Pendentes
+### 🛠️ MELHORIAS ADMINISTRATIVAS - 4 Pendentes
 
 #### ✅ ADMIN-002: Gestão de Usuários Avançada — CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -1568,7 +1577,7 @@ CREATE TABLE public.webhook_endpoints (
 
 ---
 
-### 🔧 REFATORAÇÕES TÉCNICAS - 5 Pendentes
+### 🔧 REFATORAÇÕES TÉCNICAS - 4 Pendentes
 
 #### REF-001: Componentização do Header
 **Prioridade:** 🟡 Média  
@@ -1660,7 +1669,7 @@ CREATE TABLE public.webhook_endpoints (
 ## 📅 CRONOGRAMA DE IMPLEMENTAÇÃO SUGERIDO
 
 ### 🔴 Fase 1: Críticas (Semana 1-2)
-**Prioridade: Alta | Esforço Total: ~20h**
+**Prioridade: Alta | Esforço Total: ~4h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -1675,14 +1684,14 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🟡 Fase 2: Importantes (Semana 3-4)
-**Prioridade: Média | Esforço Total: ~30h**
+**Prioridade: Média | Esforço Total: ~17h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
 | FUNC-002 | Favoritar Cursos | ✅ 4h |
 | FUNC-015 | Recomendações Personalizadas | 4h |
 | FUNC-012 | Metas de Aprendizado | 4h |
-| UI-015 | Avatar Upload | 4h |
+| UI-015 | Avatar Upload | ✅ 4h |
 | GAME-004 | Conquistas Expandidas | 4h |
 | ADMIN-002 | Gestão de Usuários Avançada | ✅ 4h |
 | REF-002 | Layout Wrapper | 3h |
@@ -1691,13 +1700,13 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🟢 Fase 3: Melhorias (Semana 5-6)
-**Prioridade: Média-Baixa | Esforço Total: ~28h**
+**Prioridade: Média-Baixa | Esforço Total: ~4h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
-| FUNC-003 | Notas nas Aulas | 6h |
-| FUNC-011 | Agenda de Estudos | 6h |
-| FUNC-013 | Activity Timeline | 4h |
+| FUNC-003 | Notas nas Aulas | ✅ 6h |
+| FUNC-011 | Agenda de Estudos | ✅ 6h |
+| FUNC-013 | Activity Timeline | ✅ 4h |
 | PERF-003 | Paginação Catálogo | ✅ 3h |
 | SEO-006 | Core Web Vitals | 4h |
 | A11Y-005 | Skip Links | ✅ 1h |
@@ -1707,16 +1716,16 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🔵 Fase 4: Nice-to-Have (Semana 7-8)
-**Prioridade: Baixa | Esforço Total: ~26h**
+**Prioridade: Baixa | Esforço Total: ~18h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
 | GAME-003 | Sistema de Ligas | 6h |
-| FUNC-022 | Compartilhar Conquistas | 4h |
+| FUNC-022 | Compartilhar Conquistas | ✅ 4h |
 | INT-003 | SSO Google/Microsoft | 4h |
 | ADMIN-003 | Gestão de Conquistas | 4h |
 | FUNC-005 | Melhorar Certificado PDF | 3h |
-| UI-008 | Grid/Lista Toggle | 4h |
+| UI-008 | Grid/Lista Toggle | ✅ 4h |
 | REF-005 | Constants File | 1h |
 
 ---
@@ -1736,7 +1745,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **30** | **~200h** |
+| **TOTAL PENDENTE** | **43** | **~199h** |
 
 ---
 

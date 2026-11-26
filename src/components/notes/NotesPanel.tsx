@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNotes, Note } from "@/hooks/useNotes";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import {
   Save,
   X,
   FileText,
+  Download,
   Loader2,
 } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
@@ -28,6 +29,7 @@ interface NotesPanelProps {
   lessonId: string;
   courseId: string;
   currentTime?: number;
+  getCurrentTime?: () => number;
   onSeekToTime?: (seconds: number) => void;
 }
 
@@ -37,18 +39,46 @@ const formatTime = (seconds: number) => {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
-const NotesPanel = ({ lessonId, courseId, currentTime = 0, onSeekToTime }: NotesPanelProps) => {
+export const notesToMarkdown = (notes: Note[]) =>
+  [
+    "# Minhas anotacoes",
+    "",
+    ...notes.map((note) => `- **[${formatTime(note.timestamp_seconds)}]** ${note.content}`),
+    "",
+  ].join("\n");
+
+const NotesPanel = ({ lessonId, courseId, currentTime = 0, getCurrentTime, onSeekToTime }: NotesPanelProps) => {
   const { notes, addNote, updateNote, deleteNote, isAdding, isUpdating } = useNotes(lessonId, courseId);
   const [newNote, setNewNote] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [liveTime, setLiveTime] = useState(currentTime);
+
+  useEffect(() => {
+    if (!isOpen || !getCurrentTime) return;
+    setLiveTime(getCurrentTime());
+    const interval = setInterval(() => setLiveTime(getCurrentTime()), 1000);
+    return () => clearInterval(interval);
+  }, [isOpen, getCurrentTime]);
+
+  const currentVideoTime = getCurrentTime ? getCurrentTime() : currentTime;
 
   const handleAddNote = () => {
     if (newNote.trim()) {
-      addNote({ content: newNote.trim(), timestampSeconds: Math.floor(currentTime) });
+      addNote({ content: newNote.trim(), timestampSeconds: Math.floor(currentVideoTime) });
       setNewNote("");
     }
+  };
+
+  const handleExport = () => {
+    const blob = new Blob([notesToMarkdown(notes)], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "anotacoes-aula.md";
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleStartEdit = (note: Note) => {
@@ -92,6 +122,12 @@ const NotesPanel = ({ lessonId, courseId, currentTime = 0, onSeekToTime }: Notes
             <FileText className="h-5 w-5 text-primary" />
             Minhas Anotações
           </SheetTitle>
+          {notes.length > 0 && (
+            <Button variant="outline" size="sm" onClick={handleExport} className="mt-2 w-full gap-2">
+              <Download className="h-4 w-4" />
+              Exportar em Markdown
+            </Button>
+          )}
         </SheetHeader>
 
         <div className="mt-6 space-y-4">
@@ -99,7 +135,7 @@ const NotesPanel = ({ lessonId, courseId, currentTime = 0, onSeekToTime }: Notes
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Clock className="h-4 w-4" />
-              <span>Tempo atual: {formatTime(currentTime)}</span>
+              <span>Tempo atual: {formatTime(liveTime)}</span>
             </div>
             <Textarea
               placeholder="Adicione uma nota sobre este momento da aula..."

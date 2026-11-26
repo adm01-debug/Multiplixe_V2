@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (81)
+### ✅ Melhorias JÁ IMPLEMENTADAS (82)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -40,13 +40,14 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 | REF-003 | Hooks de Fetch Centralizados (useCachedQuery) | ✅ Implementado |
 | A11Y-002 | Navegação por Teclado (CommandPalette) | ✅ Parcial |
 | SEO-001 | Meta Tags Dinâmicas (DynamicSEO.tsx) | ✅ Implementado |
+| UI-012 | Tema de Cores Personalizável (themePresets.ts, ThemeCustomizer.tsx) | ✅ Implementado |
 | + outros componentes de onboarding, analytics, security | ✅ |
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (19)
+## ⏳ MELHORIAS PENDENTES (17)
 
-### 🎨 UX/UI - 2 Pendentes
+### 🎨 UX/UI - 1 Pendente
 
 #### UI-004: Feedback Visual em Ações ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -172,7 +173,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-#### UI-012: Tema de Cores Personalizável
+#### UI-012: Tema de Cores Personalizável ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 4h  
 **Descrição:** Tema fixo, sem opção de personalização.
@@ -183,6 +184,23 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 2. Permitir escolha entre 3-5 paletas de cores
 3. Salvar preferência no localStorage
 4. Adicionar em Profile ou Settings
+```
+
+**Evidência (2026-11-26, PR #78):**
+```text
+- src/lib/themePresets.ts: 5 paletas (violet padrao, ocean, forest, sunset, gold), tokens
+  claro/escuro, normalizarPaleta, aplicarPaleta e aplicarPaletaSalva.
+- src/index.css: 8 blocos [data-accent=...] / .dark[data-accent=...] derivados do catalogo;
+  teste de sincronia CSS x catalogo em src/test/themePresets.test.tsx impede drift.
+- src/main.tsx: aplicarPaletaSalva() aplica a paleta antes do primeiro render (sem flash).
+- src/components/ui/ThemeCustomizer.tsx: seletor com aria-pressed, selo "Em uso", reset e i18n.
+- src/hooks/useUserPreferences.ts: persiste em localStorage com merge nao-destrutivo
+  (lerSalvas), evitando que uma tela sobrescreva a preferencia salva por outra.
+- src/pages/Profile.tsx e src/components/landing/Header.tsx: pontos de entrada (desktop e menu mobile).
+- Testes: themePresets.test.tsx (18), colorContrast.test.ts (20) — contraste AA de tokens e
+  gradientes das paletas claras; suite completa 79 arquivos/647 testes, 0 falhas.
+- Deploy verificado em https://multiplixe-v2.vercel.app (CSS com --primary: 200 91% 35% e
+  gradiente hsl(186 100% 28%); bundle JS com "Por do Sol").
 ```
 
 ---
@@ -2040,7 +2058,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 2 | ~10h |
+| UX/UI | 1 | ~6h |
 | Performance | 0 | — |
 | Funcionalidades | 3 | ~26h |
 | Acessibilidade | 0 | — |
@@ -2051,7 +2069,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **18** | **~96h** |
+| **TOTAL PENDENTE** | **17** | **~92h** |
 
 ---
 

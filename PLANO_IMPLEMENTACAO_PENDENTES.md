@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (73)
+### ✅ Melhorias JÁ IMPLEMENTADAS (74)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,9 +44,9 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (26)
+## ⏳ MELHORIAS PENDENTES (25)
 
-### 🎨 UX/UI - 4 Pendentes
+### 🎨 UX/UI - 3 Pendentes
 
 #### UI-004: Feedback Visual em Ações ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -229,7 +229,7 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 
 ---
 
-#### UI-016: Indicador de Cache/Offline
+#### UI-016: Indicador de Cache/Offline ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** Usuário não sabe quando está vendo dados em cache.
@@ -241,6 +241,14 @@ passando; guards 88 testes (85 pass / 3 skip / 0 fail); `vite build` exit 0.
 3. Integrar com queryClient
 4. Mostrar quando offline
 ```
+
+**Status:** ✅ CONCLUÍDO
+
+O `CacheIndicator` já existia (criado por trabalho anterior) e estava plugado em Dashboard, Catálogo e Trilhas, mas só sabia de cache: nada avisava o usuário quando ele estava **sem internet** — exatamente o caso em que os dados na tela são os salvos.
+
+- `src/hooks/useOnlineStatus.ts` (novo): estado de conexão com listeners `online`/`offline` e limpeza no unmount.
+- `src/components/ui/CacheIndicator.tsx`: passa a consumir o hook. Offline ganha prioridade sobre cache e refetch (ícone `WifiOff`, cor âmbar, rótulo "Offline"), o botão fica desabilitado e o tooltip explica "Sem conexão - exibindo dados salvos". Como o componente já estava nos três lugares, os três ganharam o aviso sem tocar nas páginas.
+- `src/test/cacheIndicator.test.tsx` (novo, 4 casos): dados frescos, dados em cache, refetch em andamento e offline bloqueando o recarregamento.
 
 ---
 
@@ -1968,7 +1976,7 @@ CREATE TABLE public.webhook_endpoints (
 
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
-| UX/UI | 4 | ~14h |
+| UX/UI | 3 | ~12h |
 | Performance | 1 | ~4h |
 | Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
@@ -1979,7 +1987,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **26** | **~138h** |
+| **TOTAL PENDENTE** | **25** | **~136h** |
 
 ---
 

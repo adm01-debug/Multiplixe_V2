@@ -51,9 +51,10 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (10)
+## ⏳ MELHORIAS PENDENTES (4)
 
-Cada categoria abaixo lista as seções com status; o que não tem `✅ CONCLUÍDO` é pendente: FUNC-016, ADMIN-006, INT-001, INT-002, INT-003, INT-004, REF-001, REF-002, REF-004 e REF-005 (10 itens, ~44h).
+Cada categoria abaixo lista as seções com status; o que não tem `✅ CONCLUÍDO` é pendente: ADMIN-006, INT-001, INT-002 e INT-003 (4 itens, ~20h).
+Os 4 dependem de credencial/conta externa que só o dono do negócio pode fornecer — `RESEND_API_KEY` (ADMIN-006), webhook do Slack (INT-001) e apps OAuth do Google/Microsoft (INT-002 e INT-003) — confirmado em 2026-11-26 consultando os secrets do projeto Supabase: só existem as chaves `SUPABASE_*`.
 
 ### 🎨 UX/UI - 0 Pendentes
 
@@ -756,7 +757,7 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 
 ---
 
-#### FUNC-016: Modo Offline para Vídeos
+#### FUNC-016: Modo Offline para Vídeos ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 8h  
 **Descrição:** Vídeos não podem ser baixados.
@@ -771,6 +772,18 @@ Existiam duas implementacoes de recomendacao e nenhuma montada na tela: o `Smart
 6. (Complexidade alta - considerar para fase futura)
 ```
 
+**Evidência (2026-11-26):**
+```text
+- src/lib/videoOffline.ts (310 linhas): IndexedDB `multiplixe-offline` (stores videos/progresso),
+  LIMITE_BYTES de 400MB, download em streaming com progresso e cancelamento, fila de progresso
+  quando offline, sincronizarProgresso() ao voltar online e fallback em memoria sem IndexedDB.
+- src/hooks/useVideoOffline.ts, src/components/player/VideoOfflineControls.tsx (botao baixar,
+  progresso, "disponivel offline", remover e "Remover todas") e 13 chaves offline.* no i18n (3 idiomas).
+- src/pages/LessonPlayer.tsx reproduz do arquivo local quando existe e enfileira o progresso offline.
+- src/test/videoOffline.test.tsx: 16 testes passando (suite completa 775/775).
+- Producao (https://multiplixe-v2.vercel.app): o chunk assets/LessonPlayer-*.js responde 200 e contem
+  `multiplixe-offline`, `offline.baixar` e `offline.pendente`.
+```
 ---
 
 #### FUNC-017: Transcrição de Vídeos ✅ CONCLUÍDO
@@ -1919,7 +1932,7 @@ O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
 
 ---
 
-### 🔗 INTEGRAÇÕES - 4 Pendentes
+### 🔗 INTEGRAÇÕES - 1 Pendente
 
 #### INT-001: Integração com Slack
 **Prioridade:** 🟢 Baixa  
@@ -1966,7 +1979,7 @@ O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
 
 ---
 
-#### INT-004: Webhooks para Eventos
+#### INT-004: Webhooks para Eventos ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Não há webhooks.
@@ -1990,11 +2003,19 @@ CREATE TABLE public.webhook_endpoints (
 4. Edge function para disparar webhooks
 ```
 
+**Evidência (2026-11-26):**
+```text
+- Migration 20261129090000_webhooks_eventos.sql: public.webhook_endpoints, public.webhook_deliveries
+  e triggers trg_webhook_curso_concluido, trg_webhook_certificado_emitido,
+  trg_webhook_conquista_desbloqueada (+1) com a edge function supabase/functions/webhook-dispatch.
+- Confirmado no banco de producao: to_regclass("public.webhook_endpoints") e
+  to_regclass("public.webhook_deliveries") resolvem e existem 4 triggers trg_webhook%.
+```
 ---
 
-### 🔧 REFATORAÇÕES TÉCNICAS - 4 Pendentes
+### 🔧 REFATORAÇÕES TÉCNICAS - 0 Pendentes
 
-#### REF-001: Componentização do Header
+#### REF-001: Componentização do Header ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Header duplicado em várias páginas.
@@ -2007,9 +2028,18 @@ CREATE TABLE public.webhook_endpoints (
 4. Manter Header.tsx apenas para landing
 ```
 
+**Evidência (2026-11-26):**
+```text
+- PR #97 (squash em main c53a8a4): src/components/layout/PageHeader.tsx e
+  src/components/layout/AppLayout.tsx substituem o cabecalho e o shell copiados em 9 paginas
+  (Admin, Flashcards, Leaderboard, Mentorship, PlaybookDetail, Playbooks, SalesOnboarding,
+  SkillAssessments, VideoLibrary): +317/-316, sem mudanca de markup nem de classe CSS.
+- Verificado: tsc -b exit 0, eslint 0 erro, guards 85/0, build exit 0 e CI verde (TypeScript,
+  Inventario, Devin e Vercel) antes do merge.
+```
 ---
 
-#### REF-002: Layout Wrapper
+#### REF-002: Layout Wrapper ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 3h  
 **Descrição:** Estrutura de página duplicada.
@@ -2022,9 +2052,18 @@ CREATE TABLE public.webhook_endpoints (
 4. Simplificar código das páginas
 ```
 
+**Evidência (2026-11-26):**
+```text
+- PR #97 (squash em main c53a8a4): src/components/layout/PageHeader.tsx e
+  src/components/layout/AppLayout.tsx substituem o cabecalho e o shell copiados em 9 paginas
+  (Admin, Flashcards, Leaderboard, Mentorship, PlaybookDetail, Playbooks, SalesOnboarding,
+  SkillAssessments, VideoLibrary): +317/-316, sem mudanca de markup nem de classe CSS.
+- Verificado: tsc -b exit 0, eslint 0 erro, guards 85/0, build exit 0 e CI verde (TypeScript,
+  Inventario, Devin e Vercel) antes do merge.
+```
 ---
 
-#### REF-004: Tipos Centralizados
+#### REF-004: Tipos Centralizados ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 2h  
 **Descrição:** Tipos duplicados em componentes.
@@ -2037,9 +2076,18 @@ CREATE TABLE public.webhook_endpoints (
 4. Remover definições duplicadas
 ```
 
+**Evidência (2026-11-26):**
+```text
+- PR #99: src/types/index.ts exporta Categoria, CursoMinimo, CursoResumo, CursoComCategoria, Aula e
+  AulaComConteudo como Pick<Tables<...>> do schema gerado; 6 arquivos migrados (-73/+19 linhas).
+- Ficaram locais os tipos que descrevem so a tela (CourseProgress3D com completed/current/locked,
+  VirtualizedCourseGrid com progress), que nao sao linha de tabela.
+- Verificado: tsc -b exit 0, eslint 0 erro, guards 85/0, inventario:check em dia, build exit 0,
+  suite 775/775 testes passando.
+```
 ---
 
-#### REF-005: Constants File
+#### REF-005: Constants File ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 1h  
 **Descrição:** Valores hardcoded espalhados.
@@ -2052,6 +2100,16 @@ CREATE TABLE public.webhook_endpoints (
 4. Outros valores hardcoded
 ```
 
+**Evidência (2026-11-26):**
+```text
+- PR #98 (squash em main f9fb382): src/lib/constants.ts exporta SITE_URL com override por
+  VITE_SITE_URL (tipada em src/vite-env.d.ts); DynamicSEO e 7 paginas deixaram de repetir o dominio.
+- Verificado: o dominio aparece uma unica vez no artefato (chunk DynamicSEO-*.js) em vez de em cada
+  chunk de pagina; tsc -b, eslint, guards 85/0, inventario e build exit 0.
+- XP_PER_LESSON/XP_PER_COURSE nao foram criados de proposito: esses numeros sao do banco
+  (public.add_user_xp, xp_multiplier_for, platform_settings) e a constante no front seria uma
+  segunda fonte de verdade.
+```
 ---
 
 #### REF-006: Error Boundary ✅ CONCLUÍDO
@@ -2084,7 +2142,7 @@ CREATE TABLE public.webhook_endpoints (
 ## 📅 CRONOGRAMA DE IMPLEMENTAÇÃO SUGERIDO
 
 ### 🔴 Fase 1: Críticas (Semana 1-2)
-**Prioridade: Alta | Esforço Total: ~4h**
+**Prioridade: Alta | Esforço Total: ~0h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -2094,12 +2152,12 @@ CREATE TABLE public.webhook_endpoints (
 | REF-006 | Error Boundary | ✅ 2h |
 | UI-011 | Modal Confirmação Saída | ✅ 2h |
 | FUNC-021 | Revisão de Quiz | ✅ 3h |
-| REF-001 | Componentização Header | 4h |
+| REF-001 | Componentização Header | ✅ 4h |
 
 ---
 
 ### 🟡 Fase 2: Importantes (Semana 3-4)
-**Prioridade: Média | Esforço Total: ~5h**
+**Prioridade: Média | Esforço Total: ~0h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -2109,8 +2167,8 @@ CREATE TABLE public.webhook_endpoints (
 | UI-015 | Avatar Upload | ✅ 4h |
 | GAME-004 | Conquistas Expandidas | ✅ 4h |
 | ADMIN-002 | Gestão de Usuários Avançada | ✅ 4h |
-| REF-002 | Layout Wrapper | 3h |
-| REF-004 | Tipos Centralizados | 2h |
+| REF-002 | Layout Wrapper | ✅ 3h |
+| REF-004 | Tipos Centralizados | ✅ 2h |
 
 ---
 
@@ -2131,7 +2189,7 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🔵 Fase 4: Nice-to-Have (Semana 7-8)
-**Prioridade: Baixa | Esforço Total: ~5h**
+**Prioridade: Baixa | Esforço Total: ~4h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
@@ -2141,7 +2199,7 @@ CREATE TABLE public.webhook_endpoints (
 | ADMIN-003 | Gestão de Conquistas | ✅ 4h |
 | FUNC-005 | Melhorar Certificado PDF | ✅ 3h |
 | UI-008 | Grid/Lista Toggle | ✅ 4h |
-| REF-005 | Constants File | 1h |
+| REF-005 | Constants File | ✅ 1h |
 
 ---
 
@@ -2151,16 +2209,16 @@ CREATE TABLE public.webhook_endpoints (
 |-----------|-----------|--------------|
 | UX/UI | 0 | — |
 | Performance | 0 | — |
-| Funcionalidades | 1 | ~8h |
+| Funcionalidades | 0 | — |
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
 | Gamificação | 0 | — |
 | Administrativas | 1 | ~4h |
 | Mobile | 0 | — |
-| Integração | 4 | ~22h |
-| Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **10** | **~44h** |
+| Integração | 3 | ~16h |
+| Refatorações | 0 | — |
+| **TOTAL PENDENTE** | **4** | **~20h** |
 
 ---
 

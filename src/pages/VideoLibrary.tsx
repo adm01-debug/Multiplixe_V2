@@ -12,6 +12,7 @@ import { useTrainingVideos, useUpdateVideoProgress, type TrainingVideo } from '@
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import EmptyState from '@/components/SimpleEmptyState';
 import DynamicSEO from '@/components/seo/DynamicSEO';
+import { SITE_URL } from '@/lib/constants';
 
 const formatDuration = (s: number) => {
   const m = Math.floor(s / 60);
@@ -63,7 +64,7 @@ const VideoLibrary = () => {
       seo={{
         title: "Biblioteca de Vídeos",
         description: "Demos de produto e treinamentos rápidos para o time de vendas.",
-        url: "https://multiplixe-v2.vercel.app/biblioteca-videos",
+        url: `${SITE_URL}/biblioteca-videos`,
       }}
       cabecalho={
         <PageHeader

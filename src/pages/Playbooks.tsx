@@ -12,6 +12,7 @@ import { usePlaybooks } from '@/hooks/usePlaybooks';
 import { useFuzzySearch } from '@/hooks/useFuzzySearch';
 import EmptyState from '@/components/SimpleEmptyState';
 import DynamicSEO from '@/components/seo/DynamicSEO';
+import { SITE_URL } from '@/lib/constants';
 
 const Playbooks = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Playbooks = () => {
       seo={{
         title: "Sales Playbooks",
         description: "Biblioteca de scripts, objeções e processos de vendas para vendedores Promo Brindes.",
-        url: "https://multiplixe-v2.vercel.app/playbooks",
+        url: `${SITE_URL}/playbooks`,
       }}
       cabecalho={
         <PageHeader

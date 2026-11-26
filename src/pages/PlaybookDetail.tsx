@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import DynamicSEO from '@/components/seo/DynamicSEO';
 import PlaybookComments from '@/components/playbooks/PlaybookComments';
 import PlaybookDetailSkeleton from '@/components/skeletons/PlaybookDetailSkeleton';
+import { SITE_URL } from '@/lib/constants';
 
 const PlaybookDetail = () => {
   const { slug = '' } = useParams();
@@ -64,7 +65,7 @@ const PlaybookDetail = () => {
       seo={{
         title: playbook.title,
         description: playbook.summary || `Playbook de vendas: ${playbook.title}`,
-        url: `https://multiplixe-v2.vercel.app/playbook/${playbook.slug}`,
+        url: `${SITE_URL}/playbook/${playbook.slug}`,
         type: "article",
       }}
       cabecalho={

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { SITE_URL } from '@/lib/constants';
 
 interface DynamicSEOProps {
   title?: string;
@@ -17,14 +18,13 @@ interface DynamicSEOProps {
   };
 }
 
-const BASE_URL = 'https://multiplixe-v2.vercel.app';
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=630';
 
 const DynamicSEO = ({ 
   title = 'MULTIPLIXE - Plataforma de Desenvolvimento Profissional',
   description = 'Plataforma exclusiva de treinamento e desenvolvimento profissional da Promo Brindes. Cursos, trilhas e gamificação para impulsionar sua carreira.',
   image = DEFAULT_IMAGE,
-  url = BASE_URL,
+  url = SITE_URL,
   type = 'website',
     course,
     noIndex = false
@@ -37,14 +37,14 @@ const DynamicSEO = ({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'MULTIPLIXE',
-      url: BASE_URL,
+      url: SITE_URL,
       description: 'Plataforma de desenvolvimento profissional da Promo Brindes',
       publisher: {
         '@type': 'Organization',
         name: 'Promo Brindes',
         logo: {
           '@type': 'ImageObject',
-          url: `${BASE_URL}/favicon.ico`
+          url: `${SITE_URL}/favicon.ico`
         }
       }
     };
@@ -58,7 +58,7 @@ const DynamicSEO = ({
         provider: {
           '@type': 'Organization',
           name: course.provider,
-          sameAs: BASE_URL
+          sameAs: SITE_URL
         },
         instructor: course.instructor ? {
           '@type': 'Person',

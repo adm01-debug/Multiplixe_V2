@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import LevelProgress from '@/components/LevelProgress';
+import { MinhaReputacaoCard } from '@/components/profile/ReputacaoCard';
 import { CertificateCard } from '@/components/CertificateCard';
 
 // Lazy load heavy widgets
@@ -223,6 +224,7 @@ const Profile = () => {
           </div>
         </section>
         <section className="mb-12"><LevelProgress totalXP={totalXP} /></section>
+        <MinhaReputacaoCard />
         <Suspense fallback={null}><PersonalImpactWidget /></Suspense>
 
         <section className="mb-12">

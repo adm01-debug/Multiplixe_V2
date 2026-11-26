@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 237,
+ "total": 238,
  "orfaos": [
   "src/components/admin/AdminTopPlaybooksWidget.tsx",
   "src/components/admin/AdminVideoEngagementWidget.tsx",
@@ -2114,6 +2114,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/profile/ReputacaoCard.tsx",
+   "exports": [
+    "MinhaReputacaoCard",
+    "ReputacaoCard"
+   ],
+   "linhas": 115,
+   "hooks": [
+    "useReputacao",
+    "useT"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/ProtectedRoute.tsx",
    "exports": [],
    "linhas": 39,
@@ -2569,7 +2585,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 135,
+   "usado_por": 136,
    "orfao": false
   },
   {
@@ -3076,7 +3092,7 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 71,
+   "usado_por": 72,
    "orfao": false
   },
   {
@@ -3437,7 +3453,7 @@
   {
    "arquivo": "src/pages/Profile.tsx",
    "exports": [],
-   "linhas": 324,
+   "linhas": 326,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3462,9 +3478,10 @@
   {
    "arquivo": "src/pages/PublicProfile.tsx",
    "exports": [],
-   "linhas": 200,
+   "linhas": 213,
    "hooks": [
-    "usePublicProfile"
+    "usePublicProfile",
+    "useT"
    ],
    "tabelas": [],
    "edges": [],

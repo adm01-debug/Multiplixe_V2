@@ -4,8 +4,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Award, BookOpenCheck, Flame, Lock, Sparkles, ArrowLeft, UserX, Trophy } from 'lucide-react';
+import { Award, BookOpenCheck, Flame, Lock, Sparkles, ArrowLeft, UserX, Trophy, ShieldCheck } from 'lucide-react';
 import { usePublicProfile } from '@/hooks/usePublicProfile';
+import { nivelDaReputacao } from '@/lib/reputacao';
+import { useT } from '@/lib/i18n';
 
 const initialsOf = (name?: string | null) => {
   if (!name) return '?';
@@ -25,6 +27,7 @@ const formatDate = (value?: string | null) => {
 const PublicProfile = () => {
   const { id } = useParams<{ id: string }>();
   const { profile, loading, error } = usePublicProfile(id);
+  const { t } = useT();
 
   if (loading) {
     return (
@@ -88,6 +91,8 @@ const PublicProfile = () => {
   const person = profile!.profile!;
   const achievements = profile!.achievements ?? [];
   const courses = profile!.completed_courses ?? [];
+  const reputacao = profile!.profile!.reputation ?? 0;
+  const nivelReputacao = nivelDaReputacao(reputacao);
 
   return (
     <main id="main-content" className="container mx-auto px-4 py-10 max-w-4xl">
@@ -114,6 +119,9 @@ const PublicProfile = () => {
                 <Sparkles className="h-3 w-3 mr-1" /> Nível {profile!.xp?.current_level ?? 1}
               </Badge>
               <Badge variant="outline" className="rounded-lg">
+                <ShieldCheck className="h-3 w-3 mr-1 text-violet-500" /> {t('reputation.level')} {nivelReputacao.nivel} {t('reputation.badge')}
+              </Badge>
+              <Badge variant="outline" className="rounded-lg">
                 <Flame className="h-3 w-3 mr-1 text-orange-500" /> {profile!.streak?.current ?? 0} dias de sequência
               </Badge>
             </div>
@@ -128,7 +136,7 @@ const PublicProfile = () => {
         </div>
       </section>
 
-      <section className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="rounded-2xl bg-card/80 border border-border/50 p-5">
           <Trophy className="h-5 w-5 text-amber-500 mb-2" />
           <div className="text-2xl font-display font-bold text-foreground">{achievements.length}</div>
@@ -143,6 +151,11 @@ const PublicProfile = () => {
           <Award className="h-5 w-5 text-blue-500 mb-2" />
           <div className="text-2xl font-display font-bold text-foreground">{profile!.certificates_count ?? 0}</div>
           <p className="text-sm text-muted-foreground">Certificados</p>
+        </div>
+        <div className="rounded-2xl bg-card/80 border border-border/50 p-5">
+          <ShieldCheck className="h-5 w-5 text-violet-500 mb-2" />
+          <div className="text-2xl font-display font-bold text-foreground">{reputacao.toLocaleString('pt-BR')}</div>
+          <p className="text-sm text-muted-foreground">{t('reputation.cardLabel')} · {t('reputation.level')} {nivelReputacao.nivel}</p>
         </div>
       </section>
 

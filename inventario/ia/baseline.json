@@ -2,65 +2,65 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "da7a4469cf60d364bb8f919d5a685b744ca6d98f",
-  "branch": "claude/feat-mob-002-gestos-261126-0800",
-  "data_commit": "2026-11-26T08:22:33-03:00",
+  "commit": "e7d87e412d9b1a0f781d4b57333c95dacf9194d7",
+  "branch": "claude/feat-game-012-reputacao-261126-0900",
+  "data_commit": "2026-11-26T08:57:46-03:00",
   "ultimos_commits": [
-   "da7a446 feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar)",
+   "e7d87e4 feat: reputacao social no perfil (GAME-012)",
+   "3d945ba chore: marca MOB-002 (gestos mobile) como concluido no plano (#86)",
+   "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)",
    "27a4c58 chore: marca FUNC-007 (mentoria) e FUNC-017 (transcricao) como implementadas (#84)",
    "221562e feat: transcrição de vídeo com busca e salto por trecho (FUNC-017) (#81)",
    "dc9419a feat: sistema de mentoria entre colegas (FUNC-007) (#83)",
    "9504633 chore: marca UI-009 como concluido no plano (#82)",
    "d52def3 feat: preview em video no hover do card de curso (UI-009) (#80)",
    "c4f9cbf chore: marca UI-012 como concluido no plano (#79)",
-   "07320d1 feat: tema de cores personalizavel (UI-012) (#78)",
-   "c30b81e chore: marcar FUNC-019 (capitulos no video) como concluido no plano (#77)",
-   "eea0c25 feat: capitulos de tempo no video da aula (FUNC-019) (#76)"
+   "07320d1 feat: tema de cores personalizavel (UI-012) (#78)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 51
+    "mudancas": 52
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 20
+    "mudancas": 21
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 19
+    "mudancas": 20
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": "src/pages/Profile.tsx",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "src/lib/i18n.ts",
@@ -101,17 +101,17 @@
   ]
  },
  "contagens": {
-  "arquivos": 616,
-  "arquivos_de_codigo": 503,
-  "linhas_de_codigo": 71470,
-  "componentes": 237,
-  "hooks": 131,
+  "arquivos": 622,
+  "arquivos_de_codigo": 507,
+  "linhas_de_codigo": 71873,
+  "componentes": 238,
+  "hooks": 132,
   "paginas": 28,
-  "testes": 85,
+  "testes": 86,
   "edge_functions": 13,
   "rotas": 28,
   "tabelas": 71,
-  "migrations": 76
+  "migrations": 78
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -141,18 +141,18 @@
   "scripts/ci": 11,
   "scripts/lib": 2,
   "src/App.tsx": 1,
-  "src/components": 261,
-  "src/hooks": 65,
+  "src/components": 262,
+  "src/hooks": 66,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 28,
+  "src/lib": 29,
   "src/main.tsx": 1,
   "src/pages": 28,
-  "src/test": 85,
+  "src/test": 86,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 76,
+  "supabase/migrations": 78,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -166,7 +166,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3400
+   "linhas": 3413
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -191,6 +191,10 @@
   {
    "arquivo": "src/components/admin/AdminAchievementsTab.tsx",
    "linhas": 458
+  },
+  {
+   "arquivo": "src/lib/i18n.ts",
+   "linhas": 440
   },
   {
    "arquivo": "src/components/quiz/QuizPlayer.tsx",
@@ -225,10 +229,6 @@
    "linhas": 359
   },
   {
-   "arquivo": "src/lib/i18n.ts",
-   "linhas": 358
-  },
-  {
    "arquivo": "src/components/admin/CourseForm.tsx",
    "linhas": 357
   },
@@ -257,12 +257,12 @@
    "linhas": 335
   },
   {
-   "arquivo": "src/test/adminAchievements.test.tsx",
-   "linhas": 325
+   "arquivo": "src/pages/Profile.tsx",
+   "linhas": 326
   },
   {
-   "arquivo": "src/pages/Profile.tsx",
-   "linhas": 324
+   "arquivo": "src/test/adminAchievements.test.tsx",
+   "linhas": 325
   }
  ],
  "qualidade": {

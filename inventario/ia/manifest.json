@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T11:26:04.928Z",
- "commit": "da7a4469cf60d364bb8f919d5a685b744ca6d98f",
- "branch": "claude/feat-mob-002-gestos-261126-0800",
+ "gerado_em": "2026-11-26T12:11:18.315Z",
+ "commit": "e7d87e412d9b1a0f781d4b57333c95dacf9194d7",
+ "branch": "claude/feat-game-012-reputacao-261126-0900",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "616a7bb878c1b012",
-  "baseline.json": "35dcf12c3238211e",
-  "componentes.json": "08a6facea77c3580",
-  "grafo.json": "1b3d49868a85456c",
-  "hooks.json": "4fcc6d27afb7ea24"
+  "INDEX.md": "a53e42ab16c487f0",
+  "baseline.json": "894151305462f04c",
+  "componentes.json": "13941179fec9647d",
+  "grafo.json": "7781a770c264c933",
+  "hooks.json": "ff089b52f8b50714"
  },
  "contagens": {
-  "arquivos": 616,
-  "arquivos_de_codigo": 503,
-  "linhas_de_codigo": 71470,
-  "componentes": 237,
-  "hooks": 131,
+  "arquivos": 622,
+  "arquivos_de_codigo": 507,
+  "linhas_de_codigo": 71873,
+  "componentes": 238,
+  "hooks": 132,
   "paginas": 28,
-  "testes": 85,
+  "testes": 86,
   "edge_functions": 13,
   "rotas": 28,
   "tabelas": 71,
-  "migrations": 76
+  "migrations": 78
  },
  "erros": []
 }

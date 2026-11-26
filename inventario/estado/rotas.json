@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 127,
-    "hooks_distintos": 103,
+    "hooks_distintos": 104,
     "problemas": 0
   },
   "rotas": [
@@ -895,7 +895,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 16,
+      "arquivos_lidos": 18,
       "hooks": [
         {
           "nome": "useAnnouncements",
@@ -934,6 +934,7 @@
         "submit_quiz_attempt"
       ],
       "tabelas": [
+        "audit_logs",
         "course_discussions",
         "courses",
         "discussion_replies",
@@ -1638,7 +1639,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 36,
+      "arquivos_lidos": 39,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1663,6 +1664,10 @@
         {
           "nome": "usePerformanceComparison",
           "arquivo": "src/hooks/usePerformanceComparison.ts"
+        },
+        {
+          "nome": "useReputacao",
+          "arquivo": "src/hooks/useReputacao.ts"
         },
         {
           "nome": "useT",
@@ -1698,6 +1703,7 @@
         "admin_grant_coins",
         "check_and_award_achievements",
         "create_audit_log",
+        "detalhar_reputacao",
         "get_department_leaderboard",
         "get_my_wallet",
         "get_performance_comparison",
@@ -2444,11 +2450,15 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 3,
+      "arquivos_lidos": 5,
       "hooks": [
         {
           "nome": "usePublicProfile",
           "arquivo": "src/hooks/usePublicProfile.ts"
+        },
+        {
+          "nome": "useT",
+          "arquivo": "src/lib/i18n.ts"
         }
       ],
       "buckets": [],
@@ -3674,6 +3684,12 @@
         "/playbook/:slug"
       ]
     },
+    "useReputacao": {
+      "arquivo": "src/hooks/useReputacao.ts",
+      "rotas": [
+        "/perfil"
+      ]
+    },
     "useRequestMentorship": {
       "arquivo": "src/hooks/useMentorship.ts",
       "rotas": [
@@ -3806,7 +3822,8 @@
         "/loja",
         "/perfil",
         "/trilha/:slug",
-        "/trilhas"
+        "/trilhas",
+        "/usuario/:id"
       ]
     },
     "useTelemetry": {

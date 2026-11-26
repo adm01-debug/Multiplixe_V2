@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-002-gestos-261126-0800` · 2026-11-26T08:22:33-03:00
+Commit: `e7d87e412d9b1a0f781d4b57333c95dacf9194d7` · branch `claude/feat-game-012-reputacao-261126-0900` · 2026-11-26T08:57:46-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 
 | | |
 |---|---|
-| arquivos (codigo) | 616 (503) |
-| linhas de codigo | 71470 |
+| arquivos (codigo) | 622 (507) |
+| linhas de codigo | 71873 |
 | paginas / rotas | 28 / 28 |
-| componentes / hooks | 237 / 131 |
-| arquivos de teste | 85 |
+| componentes / hooks | 238 / 132 |
+| arquivos de teste | 86 |
 | edge functions | 13 |
-| tabelas / migrations | 71 / 76 |
+| tabelas / migrations | 71 / 78 |
 
 ## Divida medida
 
@@ -46,7 +46,7 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 | `/avaliacoes` | src/pages/SkillAssessments.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | detect-new-device |
 | `/biblioteca-videos` | src/pages/VideoLibrary.tsx | sim | atalho-teclado, command-palette, navegacao-no-codigo | 2 | — |
 | `/catalogo` | src/pages/Catalog.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 34 | detect-new-device, export-user-data, generate-certificate |
-| `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 13 | detect-new-device |
+| `/curso/:slug` | src/pages/CourseDetail.tsx | sim | — | 14 | detect-new-device |
 | `/curso/:slug/aula/:lessonId` | src/pages/LessonPlayer.tsx | sim | prefetch | 17 | detect-new-device, generate-certificate |
 | `/dashboard` | src/pages/Dashboard.tsx | sim | atalho-teclado, command-palette, menu-mobile, navegacao-no-codigo, prefetch | 40 | detect-new-device, export-user-data, generate-certificate |
 | `/flashcards` | src/pages/Flashcards.tsx | sim | command-palette, navegacao-no-codigo | 1 | detect-new-device |
@@ -86,14 +86,14 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 
 ## Banco (declarado pelo repo)
 
-71 tabelas · 186 policies · 86 funcoes · 2 cron jobs · 1 bucket(s) · 76 migrations
+71 tabelas · 187 policies · 91 funcoes · 2 cron jobs · 1 bucket(s) · 78 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
 | `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_powerups, user_purchases |
-| `funcao_sem_uso_no_codigo` | apply_coin_transaction, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, refresh_platform_stats, verify_path_certificate_by_code |
+| `funcao_sem_uso_no_codigo` | apply_coin_transaction, atualizar_reputacao, calcular_reputacao, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, mentor_disponivel, recalcular_reputacao_perfil, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
 ### Cron
@@ -105,29 +105,29 @@ Commit: `da7a4469cf60d364bb8f919d5a685b744ca6d98f` · branch `claude/feat-mob-00
 
 ## Hubs (mais importados)
 
-- `src/components/ui/button.tsx` (135)
-- `src/integrations/supabase/client.ts` (105)
-- `src/hooks/useAuth.tsx` (71)
+- `src/components/ui/button.tsx` (136)
+- `src/integrations/supabase/client.ts` (106)
+- `src/hooks/useAuth.tsx` (72)
 - `src/lib/utils.ts` (68)
 - `src/components/ui/card.tsx` (66)
 - `src/components/ui/badge.tsx` (60)
 - `src/components/ui/input.tsx` (38)
 - `src/components/ui/dialog.tsx` (36)
 - `src/components/ui/label.tsx` (26)
-- `src/components/ui/progress.tsx` (22)
+- `src/components/ui/progress.tsx` (23)
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (51)
-- `src/integrations/supabase/types.ts` (20)
-- `inventario/estado/schema-declarado.json` (19)
-- `inventario/ia/baseline.json` (18)
-- `inventario/ia/INDEX.md` (18)
-- `inventario/ia/manifest.json` (18)
-- `inventario/ia/componentes.json` (15)
-- `inventario/ia/grafo.json` (14)
-- `inventario/estado/rotas.json` (13)
-- `inventario/ia/hooks.json` (13)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (52)
+- `src/integrations/supabase/types.ts` (21)
+- `inventario/estado/schema-declarado.json` (20)
+- `inventario/ia/baseline.json` (19)
+- `inventario/ia/INDEX.md` (19)
+- `inventario/ia/manifest.json` (19)
+- `inventario/ia/componentes.json` (16)
+- `inventario/ia/grafo.json` (15)
+- `inventario/estado/rotas.json` (14)
+- `inventario/ia/hooks.json` (14)
 
 ## Scripts npm
 

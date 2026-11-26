@@ -60,6 +60,8 @@ export function LearningPathsManager() {
   const [formOpen, setFormOpen] = useState(false);
   const [editingPath, setEditingPath] = useState<LearningPath | null>(null);
   const [deletingPath, setDeletingPath] = useState<LearningPath | null>(null);
+  const [savingDeletion, setSavingDeletion] = useState(false);
+  const [busyPathId, setBusyPathId] = useState<string | null>(null);
   const [coursesManagerOpen, setCoursesManagerOpen] = useState(false);
   const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
 
@@ -98,53 +100,70 @@ export function LearningPathsManager() {
   }, []);
 
   const togglePublished = async (pathId: string, currentValue: boolean) => {
-    const { error } = await supabase
-      .from('learning_paths')
-      .update({ is_published: !currentValue })
-      .eq('id', pathId);
+      if (busyPathId) return;
+      setBusyPathId(pathId);
+      try {
+        const { error } = await supabase
+          .from('learning_paths')
+          .update({ is_published: !currentValue })
+          .eq('id', pathId);
 
-    if (error) {
-      toast.error('Erro ao atualizar trilha');
-    } else {
-      setLearningPaths(prev =>
-        prev.map(p => p.id === pathId ? { ...p, is_published: !currentValue } : p)
-      );
-      toast.success(`Trilha ${!currentValue ? 'publicada' : 'despublicada'}`);
+        if (error) {
+          toast.error('Erro ao atualizar trilha');
+        } else {
+          setLearningPaths(prev =>
+            prev.map(p => p.id === pathId ? { ...p, is_published: !currentValue } : p)
+          );
+          toast.success(`Trilha ${!currentValue ? 'publicada' : 'despublicada'}`);
+        }
+      } finally {
+        setBusyPathId(null);
     }
   };
 
   const toggleFeatured = async (pathId: string, currentValue: boolean) => {
-    const { error } = await supabase
-      .from('learning_paths')
-      .update({ is_featured: !currentValue })
-      .eq('id', pathId);
+      if (busyPathId) return;
+      setBusyPathId(pathId);
+      try {
+        const { error } = await supabase
+          .from('learning_paths')
+          .update({ is_featured: !currentValue })
+          .eq('id', pathId);
 
-    if (error) {
-      toast.error('Erro ao atualizar trilha');
-    } else {
-      setLearningPaths(prev =>
-        prev.map(p => p.id === pathId ? { ...p, is_featured: !currentValue } : p)
-      );
-      toast.success(`Trilha ${!currentValue ? 'destacada' : 'removida dos destaques'}`);
+        if (error) {
+          toast.error('Erro ao atualizar trilha');
+        } else {
+          setLearningPaths(prev =>
+            prev.map(p => p.id === pathId ? { ...p, is_featured: !currentValue } : p)
+          );
+          toast.success(`Trilha ${!currentValue ? 'destacada' : 'removida dos destaques'}`);
+        }
+      } finally {
+        setBusyPathId(null);
     }
   };
 
   const handleDelete = async () => {
-    if (!deletingPath) return;
+      if (!deletingPath || savingDeletion) return;
 
-    const { error } = await supabase
-      .from('learning_paths')
-      .delete()
-      .eq('id', deletingPath.id);
+      setSavingDeletion(true);
+      try {
+        const { error } = await supabase
+          .from('learning_paths')
+          .delete()
+          .eq('id', deletingPath.id);
 
-    if (error) {
-      toast.error('Erro ao excluir trilha');
-    } else {
-      toast.success('Trilha excluída com sucesso!');
-      setLearningPaths(prev => prev.filter(p => p.id !== deletingPath.id));
+        if (error) {
+          toast.error('Erro ao excluir trilha');
+        } else {
+          toast.success('Trilha excluída com sucesso!');
+          setLearningPaths(prev => prev.filter(p => p.id !== deletingPath.id));
+        }
+
+        setDeletingPath(null);
+      } finally {
+        setSavingDeletion(false);
     }
-
-    setDeletingPath(null);
   };
 
   const handleFormSuccess = () => {
@@ -244,12 +263,14 @@ export function LearningPathsManager() {
                   <TableCell className="text-center">
                     <Switch
                       checked={path.is_published}
+                                          disabled={busyPathId === path.id}
                       onCheckedChange={() => togglePublished(path.id, path.is_published)}
                     />
                   </TableCell>
                   <TableCell className="text-center">
                     <Switch
                       checked={path.is_featured}
+                                          disabled={busyPathId === path.id}
                       onCheckedChange={() => toggleFeatured(path.id, path.is_featured)}
                     />
                   </TableCell>
@@ -338,9 +359,10 @@ export function LearningPathsManager() {
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
+                          disabled={savingDeletion}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Excluir
+                          {savingDeletion ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Excluir'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

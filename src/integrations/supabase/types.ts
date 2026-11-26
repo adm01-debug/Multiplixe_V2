@@ -2067,6 +2067,9 @@ export type Database = {
           id: string
           is_active: boolean
           name: string
+                    powerup_duration_minutes: number | null
+                    powerup_kind: string | null
+                    powerup_multiplier: number | null
           price_coins: number
           slug: string
           sort_order: number
@@ -2080,6 +2083,9 @@ export type Database = {
           id?: string
           is_active?: boolean
           name: string
+                    powerup_duration_minutes?: number | null
+                    powerup_kind?: string | null
+                    powerup_multiplier?: number | null
           price_coins?: number
           slug: string
           sort_order?: number
@@ -2093,6 +2099,9 @@ export type Database = {
           id?: string
           is_active?: boolean
           name?: string
+                    powerup_duration_minutes?: number | null
+                    powerup_kind?: string | null
+                    powerup_multiplier?: number | null
           price_coins?: number
           slug?: string
           sort_order?: number
@@ -2100,6 +2109,54 @@ export type Database = {
         }
         Relationships: []
       }
+                user_powerups: {
+                  Row: {
+                    activated_at: string | null
+                    consumed_at: string | null
+                    created_at: string
+                    duration_minutes: number
+                    expires_at: string | null
+                    id: string
+                    item_id: string | null
+                    kind: string
+                    multiplier: number | null
+                    purchase_id: string | null
+                    source: string
+                    updated_at: string
+                    user_id: string
+                  }
+                  Insert: {
+                    activated_at?: string | null
+                    consumed_at?: string | null
+                    created_at?: string
+                    duration_minutes?: number
+                    expires_at?: string | null
+                    id?: string
+                    item_id?: string | null
+                    kind: string
+                    multiplier?: number | null
+                    purchase_id?: string | null
+                    source?: string
+                    updated_at?: string
+                    user_id: string
+                  }
+                  Update: {
+                    activated_at?: string | null
+                    consumed_at?: string | null
+                    created_at?: string
+                    duration_minutes?: number
+                    expires_at?: string | null
+                    id?: string
+                    item_id?: string | null
+                    kind?: string
+                    multiplier?: number | null
+                    purchase_id?: string | null
+                    source?: string
+                    updated_at?: string
+                    user_id?: string
+                  }
+                  Relationships: []
+                }
       user_purchases: {
         Row: {
           created_at: string
@@ -2724,6 +2781,10 @@ export type Database = {
       }
     }
     Functions: {
+          activate_powerup: {
+            Args: { p_kind?: string }
+            Returns: Json
+          }
       add_user_xp: {
         Args: { p_amount: number; p_source?: string; p_user_id: string }
         Returns: {
@@ -2909,6 +2970,7 @@ export type Database = {
         }[]
       }
       get_my_league: { Args: never; Returns: Json }
+            get_my_powerups: { Args: never; Returns: Json }
       get_my_wallet: { Args: never; Returns: Json }
       get_my_xp_multiplier: {
         Args: never
@@ -3112,6 +3174,7 @@ export type Database = {
       update_user_streak: {
         Args: { p_user_id: string }
         Returns: {
+                freeze_used: boolean
           is_new_record: boolean
           new_streak: number
           streak_updated: boolean

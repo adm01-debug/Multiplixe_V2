@@ -6,7 +6,7 @@
     "protegidas": 20,
     "so_admin": 2,
     "entradas_na_ui": 124,
-    "hooks_distintos": 93,
+    "hooks_distintos": 95,
     "problemas": 0
   },
   "rotas": [
@@ -1380,11 +1380,19 @@
         "menu-mobile",
         "navegacao-no-codigo"
       ],
-      "arquivos_lidos": 7,
+      "arquivos_lidos": 9,
       "hooks": [
+        {
+          "nome": "useActivatePowerup",
+          "arquivo": "src/hooks/usePowerups.ts"
+        },
         {
           "nome": "useAuth",
           "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "usePowerups",
+          "arquivo": "src/hooks/usePowerups.ts"
         },
         {
           "nome": "usePurchaseItem",
@@ -1404,8 +1412,10 @@
         "detect-new-device"
       ],
       "rpcs": [
+        "activate_powerup",
         "admin_grant_coins",
         "create_audit_log",
+        "get_my_powerups",
         "get_my_wallet",
         "purchase_store_item"
       ],
@@ -2972,6 +2982,12 @@
         "/trilhas"
       ]
     },
+    "useActivatePowerup": {
+      "arquivo": "src/hooks/usePowerups.ts",
+      "rotas": [
+        "/loja"
+      ]
+    },
     "useAddPlaybookComment": {
       "arquivo": "src/hooks/usePlaybookComments.ts",
       "rotas": [
@@ -3390,6 +3406,12 @@
         "/dashboard",
         "/trilha/:slug",
         "/trilhas"
+      ]
+    },
+    "usePowerups": {
+      "arquivo": "src/hooks/usePowerups.ts",
+      "rotas": [
+        "/loja"
       ]
     },
     "usePrefetchQuery": {

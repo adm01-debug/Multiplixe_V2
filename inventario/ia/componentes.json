@@ -3043,7 +3043,7 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 69,
+   "usado_por": 70,
    "orfao": false
   },
   {
@@ -3491,10 +3491,12 @@
   {
    "arquivo": "src/pages/Store.tsx",
    "exports": [],
-   "linhas": 268,
+   "linhas": 367,
    "hooks": [
+    "useActivatePowerup",
     "useMemo",
     "useNavigate",
+    "usePowerups",
     "usePurchaseItem",
     "useStoreItems",
     "useWallet"

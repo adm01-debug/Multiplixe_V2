@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 121,
+ "total": 123,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -29,6 +29,7 @@
  ],
  "sem_teste": [
   "useAchievements",
+  "useActivatePowerup",
   "useAdminFlashcards",
   "useAdminRole",
   "useAdminStoreItems",
@@ -76,6 +77,7 @@
   "usePlatformComparison",
   "usePlatformSettings",
   "usePomodoro",
+  "usePowerups",
   "usePrefetch",
   "usePrefetchQuery",
   "usePublicProfile",
@@ -128,6 +130,20 @@
     "src/pages/Dashboard.tsx",
     "src/pages/LessonPlayer.tsx",
     "src/pages/Profile.tsx"
+   ],
+   "coberto_por_teste": false
+  },
+  "useActivatePowerup": {
+   "arquivo": "src/hooks/usePowerups.ts",
+   "linhas": 54,
+   "tabelas": [],
+   "rpcs": [
+    "activate_powerup",
+    "get_my_powerups"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Store.tsx"
    ],
    "coberto_por_teste": false
   },
@@ -274,6 +290,7 @@
     "src/hooks/usePlatformComparison.ts",
     "src/hooks/usePlaybookComments.ts",
     "src/hooks/usePomodoro.ts",
+    "src/hooks/usePowerups.ts",
     "src/hooks/usePushNotifications.ts",
     "src/hooks/useQuizzes.ts",
     "src/hooks/useRateLimitLogs.ts",
@@ -1224,6 +1241,20 @@
    ],
    "coberto_por_teste": false
   },
+  "usePowerups": {
+   "arquivo": "src/hooks/usePowerups.ts",
+   "linhas": 54,
+   "tabelas": [],
+   "rpcs": [
+    "activate_powerup",
+    "get_my_powerups"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/pages/Store.tsx"
+   ],
+   "coberto_por_teste": false
+  },
   "usePrefetch": {
    "arquivo": "src/components/PrefetchLink.tsx",
    "linhas": 300,
@@ -1573,7 +1604,7 @@
   },
   "useStreaks": {
    "arquivo": "src/hooks/useStreaks.ts",
-   "linhas": 124,
+   "linhas": 133,
    "tabelas": [
     "user_streaks"
    ],
@@ -1978,7 +2009,7 @@
   },
   "useXpMultiplier": {
    "arquivo": "src/hooks/useXpMultiplier.ts",
-   "linhas": 77,
+   "linhas": 88,
    "tabelas": [],
    "rpcs": [
     "get_my_xp_multiplier"

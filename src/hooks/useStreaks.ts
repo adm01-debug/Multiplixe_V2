@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -17,6 +18,8 @@ interface StreakUpdateResult {
   new_streak: number;
   xp_awarded: number;
   is_new_record: boolean;
+  /** true quando uma Blindagem de Sequencia cobriu o dia perdido (GAME-007). */
+  freeze_used: boolean;
 }
 
 export const useStreaks = () => {
@@ -70,7 +73,13 @@ export const useStreaks = () => {
 
       // Return the first result from the function
       if (data && data.length > 0) {
-        return data[0] as StreakUpdateResult;
+              const resultado = data[0] as StreakUpdateResult;
+              if (resultado.freeze_used) {
+                toast.success(
+                  'Sua Blindagem de Sequencia salvou a sequencia: voce manteve ' + resultado.new_streak + ' dias.',
+                );
+              }
+              return resultado;
       }
 
       return null;

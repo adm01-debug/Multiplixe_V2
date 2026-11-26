@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 484,
- "arestas": 1317,
+ "nos": 487,
+ "arestas": 1323,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -10,11 +10,11 @@
   },
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 103
+   "importado_por": 104
   },
   {
    "arquivo": "src/hooks/useAuth.tsx",
-   "importado_por": 69
+   "importado_por": 70
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -1673,6 +1673,11 @@
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/usePowerups.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/lib/powerups.ts"
+  ],
   "src/hooks/usePublicProfile.ts": [
    "src/integrations/supabase/client.ts"
   ],
@@ -1778,6 +1783,7 @@
   "src/lib/platformSettings.ts": [
    "src/integrations/supabase/types.ts"
   ],
+  "src/lib/powerups.ts": [],
   "src/lib/queryClient.ts": [
    "src/lib/telemetry.ts"
   ],
@@ -2123,7 +2129,9 @@
    "src/components/ui/button.tsx",
    "src/components/ui/select.tsx",
    "src/components/ui/tabs.tsx",
+   "src/hooks/usePowerups.ts",
    "src/hooks/useWallet.ts",
+   "src/lib/powerups.ts",
    "src/lib/store.ts"
   ],
   "src/pages/VerifyCertificate.tsx": [
@@ -2276,6 +2284,9 @@
    "src/lib/platformSettings.ts"
   ],
   "src/test/playbookCommentsHook.test.ts": [],
+  "src/test/powerups.test.ts": [
+   "src/lib/powerups.ts"
+  ],
   "src/test/profileAvatar.test.tsx": [
    "src/components/profile/ProfileHeader.tsx"
   ],

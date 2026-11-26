@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `de3e3eefe8d6c08d50663d9cfc925458d5eca96f` · branch `claude/feat-moeda-virtual-261126-0346` · 2026-11-26T04:19:40-03:00
+Commit: `5e2594bafbd2390e948302a343a0557976701526` · branch `claude/feat-powerups-261126-0750` · 2026-11-26T04:35:16-03:00
 
 ## Como usar
 
@@ -21,13 +21,13 @@ Commit: `de3e3eefe8d6c08d50663d9cfc925458d5eca96f` · branch `claude/feat-moeda-
 
 | | |
 |---|---|
-| arquivos (codigo) | 587 (484) |
-| linhas de codigo | 67593 |
+| arquivos (codigo) | 591 (487) |
+| linhas de codigo | 68059 |
 | paginas / rotas | 27 / 27 |
-| componentes / hooks | 234 / 121 |
-| arquivos de teste | 77 |
+| componentes / hooks | 234 / 123 |
+| arquivos de teste | 78 |
 | edge functions | 13 |
-| tabelas / migrations | 69 / 71 |
+| tabelas / migrations | 70 / 72 |
 
 ## Divida medida
 
@@ -85,13 +85,13 @@ Commit: `de3e3eefe8d6c08d50663d9cfc925458d5eca96f` · branch `claude/feat-moeda-
 
 ## Banco (declarado pelo repo)
 
-69 tabelas · 181 policies · 73 funcoes · 2 cron jobs · 1 bucket(s) · 71 migrations
+70 tabelas · 182 policies · 80 funcoes · 2 cron jobs · 1 bucket(s) · 72 migrations
 
 > nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.
 
 | alerta | o que |
 |---|---|
-| `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_purchases |
+| `tabela_sem_uso_no_codigo` | coin_transactions, daily_challenges, password_reset_tokens, platform_stats_cache, playbook_views, saved_filters, user_daily_challenge_progress, user_flashcard_progress, user_leagues, user_powerups, user_purchases |
 | `funcao_sem_uso_no_codigo` | apply_coin_transaction, check_due_assessment_notifications, check_rate_limit, check_streak_risk_notifications, get_recommended_courses, get_user_permissions, has_permission, mcp_exec, refresh_platform_stats, verify_path_certificate_by_code |
 | `bucket_publico` | avatars |
 
@@ -105,8 +105,8 @@ Commit: `de3e3eefe8d6c08d50663d9cfc925458d5eca96f` · branch `claude/feat-moeda-
 ## Hubs (mais importados)
 
 - `src/components/ui/button.tsx` (134)
-- `src/integrations/supabase/client.ts` (103)
-- `src/hooks/useAuth.tsx` (69)
+- `src/integrations/supabase/client.ts` (104)
+- `src/hooks/useAuth.tsx` (70)
 - `src/lib/utils.ts` (67)
 - `src/components/ui/card.tsx` (65)
 - `src/components/ui/badge.tsx` (59)
@@ -117,16 +117,16 @@ Commit: `de3e3eefe8d6c08d50663d9cfc925458d5eca96f` · branch `claude/feat-moeda-
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (45)
-- `inventario/estado/schema-declarado.json` (17)
-- `src/integrations/supabase/types.ts` (16)
-- `inventario/ia/baseline.json` (14)
-- `inventario/ia/INDEX.md` (14)
-- `inventario/ia/manifest.json` (14)
-- `inventario/ia/componentes.json` (11)
-- `inventario/estado/rotas.json` (9)
-- `inventario/ia/grafo.json` (9)
-- `src/pages/Profile.tsx` (9)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (46)
+- `inventario/estado/schema-declarado.json` (15)
+- `src/integrations/supabase/types.ts` (15)
+- `inventario/ia/baseline.json` (12)
+- `inventario/ia/INDEX.md` (12)
+- `inventario/ia/manifest.json` (12)
+- `inventario/ia/componentes.json` (9)
+- `inventario/estado/rotas.json` (8)
+- `inventario/ia/grafo.json` (8)
+- `src/pages/Profile.tsx` (8)
 
 ## Scripts npm
 

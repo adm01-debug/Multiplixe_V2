@@ -2,65 +2,65 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "de3e3eefe8d6c08d50663d9cfc925458d5eca96f",
-  "branch": "claude/feat-moeda-virtual-261126-0346",
-  "data_commit": "2026-11-26T04:19:40-03:00",
+  "commit": "5e2594bafbd2390e948302a343a0557976701526",
+  "branch": "claude/feat-powerups-261126-0750",
+  "data_commit": "2026-11-26T04:35:16-03:00",
   "ultimos_commits": [
-   "de3e3ee fix: XP antigo nao vira moeda retroativa na loja (GAME-006)",
-   "a67a922 fix: proteger saldo de moedas e corrigir conversao de XP (GAME-006)",
-   "6a1bffb feat: moeda virtual, carteira e loja de recompensas (GAME-006)",
+   "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
+   "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)",
    "53f669a chore: marcar GAME-003 (ligas semanais) como concluido no plano (#71)",
    "5c62c2e feat: ligas semanais com promocao e rebaixamento (GAME-003) (#70)",
    "875fa6b chore: marcar FUNC-009 (flashcards SRS) como concluido no plano (#69)",
    "3600e01 feat: flashcards de revisao com repeticao espacada (FUNC-009) (#68)",
    "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)",
    "6b9fbfc feat: quiz adaptativo com niveis de dificuldade (FUNC-020) (#66)",
-   "53e46c3 feat: tooltips informativos nas ações de admin e nos cards de estatística (UI-006) (#65)"
+   "53e46c3 feat: tooltips informativos nas ações de admin e nos cards de estatística (UI-006) (#65)",
+   "84e8d50 feat: indicador de cache agora avisa quando o usuário está offline (UI-016) (#64)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 45
+    "mudancas": 46
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 17
+    "mudancas": 15
    },
    {
     "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 16
+    "mudancas": 15
    },
    {
     "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 14
+    "mudancas": 12
    },
    {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 14
+    "mudancas": 12
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 14
+    "mudancas": 12
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 11
+    "mudancas": 9
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 9
+    "mudancas": 8
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 9
+    "mudancas": 8
    },
    {
     "arquivo": "src/pages/Profile.tsx",
-    "mudancas": 9
+    "mudancas": 8
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 8
+    "mudancas": 7
    },
    {
     "arquivo": "src/pages/Admin.tsx",
@@ -101,17 +101,17 @@
   ]
  },
  "contagens": {
-  "arquivos": 587,
-  "arquivos_de_codigo": 484,
-  "linhas_de_codigo": 67593,
+  "arquivos": 591,
+  "arquivos_de_codigo": 487,
+  "linhas_de_codigo": 68059,
   "componentes": 234,
-  "hooks": 121,
+  "hooks": 123,
   "paginas": 27,
-  "testes": 77,
+  "testes": 78,
   "edge_functions": 13,
   "rotas": 27,
-  "tabelas": 69,
-  "migrations": 71
+  "tabelas": 70,
+  "migrations": 72
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -137,17 +137,17 @@
   "scripts/lib": 2,
   "src/App.tsx": 1,
   "src/components": 259,
-  "src/hooks": 62,
+  "src/hooks": 63,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 23,
+  "src/lib": 24,
   "src/main.tsx": 1,
   "src/pages": 27,
-  "src/test": 77,
+  "src/test": 78,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
-  "supabase/migrations": 71,
+  "supabase/migrations": 72,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
   "tsconfig.app.tsbuildinfo": 1,
@@ -161,7 +161,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3273
+   "linhas": 3336
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -205,6 +205,10 @@
   },
   {
    "arquivo": "src/pages/Dashboard.tsx",
+   "linhas": 367
+  },
+  {
+   "arquivo": "src/pages/Store.tsx",
    "linhas": 367
   },
   {
@@ -254,10 +258,6 @@
   {
    "arquivo": "src/pages/Admin.tsx",
    "linhas": 318
-  },
-  {
-   "arquivo": "src/components/quiz/CourseQuizModal.tsx",
-   "linhas": 315
   }
  ],
  "qualidade": {

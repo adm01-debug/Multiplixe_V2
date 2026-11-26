@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 235,
+ "total": 236,
  "orfaos": [
   "src/components/admin/AdminTopPlaybooksWidget.tsx",
   "src/components/admin/AdminVideoEngagementWidget.tsx",
@@ -52,7 +52,7 @@
   {
    "arquivo": "src/App.tsx",
    "exports": [],
-   "linhas": 162,
+   "linhas": 164,
    "hooks": [
     "useAuth",
     "useSessionRotation"
@@ -294,7 +294,7 @@
   {
    "arquivo": "src/components/admin/AdminCoursesTab.tsx",
    "exports": [],
-   "linhas": 334,
+   "linhas": 335,
    "hooks": [
     "useEffect",
     "useFuzzySearch",
@@ -532,7 +532,7 @@
    "exports": [
     "CourseForm"
    ],
-   "linhas": 331,
+   "linhas": 357,
    "hooks": [
     "useEffect",
     "useState"
@@ -940,9 +940,10 @@
   {
    "arquivo": "src/components/catalog/CourseCard.tsx",
    "exports": [],
-   "linhas": 270,
+   "linhas": 309,
    "hooks": [
     "useCallback",
+    "useEffect",
     "usePrefetchQuery",
     "useState"
    ],
@@ -1027,7 +1028,7 @@
   {
    "arquivo": "src/components/CommandPalette.tsx",
    "exports": [],
-   "linhas": 174,
+   "linhas": 175,
    "hooks": [
     "useAuth",
     "useEffect",
@@ -1078,7 +1079,7 @@
   {
    "arquivo": "src/components/dashboard/DashboardHeader.tsx",
    "exports": [],
-   "linhas": 127,
+   "linhas": 130,
    "hooks": [
     "usePrefetchQuery",
     "useT",
@@ -2352,7 +2353,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 10,
+   "usado_por": 11,
    "orfao": false
   },
   {
@@ -2505,7 +2506,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 59,
+   "usado_por": 60,
    "orfao": false
   },
   {
@@ -2551,7 +2552,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 134,
+   "usado_por": 135,
    "orfao": false
   },
   {
@@ -2756,7 +2757,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 36,
+   "usado_por": 37,
    "orfao": false
   },
   {
@@ -2902,7 +2903,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 19,
+   "usado_por": 20,
    "orfao": false
   },
   {
@@ -2942,7 +2943,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 21,
+   "usado_por": 22,
    "orfao": false
   },
   {
@@ -3008,7 +3009,7 @@
   {
    "arquivo": "src/components/VirtualizedCourseGrid.tsx",
    "exports": [],
-   "linhas": 129,
+   "linhas": 131,
    "hooks": [
     "useMemo",
     "useVirtualizer"
@@ -3058,7 +3059,7 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 70,
+   "usado_por": 71,
    "orfao": false
   },
   {
@@ -3126,7 +3127,7 @@
   {
    "arquivo": "src/pages/Catalog.tsx",
    "exports": [],
-   "linhas": 255,
+   "linhas": 256,
    "hooks": [
     "useAuth",
     "useCallback",
@@ -3324,6 +3325,27 @@
    ],
    "edges": [],
    "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/Mentorship.tsx",
+   "exports": [],
+   "linhas": 549,
+   "hooks": [
+    "useEffect",
+    "useMemo",
+    "useMentors",
+    "useMyMentorship",
+    "useNavigate",
+    "useRequestMentorship",
+    "useRespondMentorship",
+    "useSearchParams",
+    "useState",
+    "useUpdateMentorProfile"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
    "orfao": false
   },
   {

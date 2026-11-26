@@ -3,18 +3,18 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 70,
-    "tabelas_no_types": 70,
-    "tabelas_nas_migrations": 70,
-    "colunas": 604,
+    "tabelas": 71,
+    "tabelas_no_types": 71,
+    "tabelas_nas_migrations": 71,
+    "colunas": 618,
     "views": 1,
-    "funcoes": 81,
-    "funcoes_expostas_no_types": 52,
+    "funcoes": 86,
+    "funcoes_expostas_no_types": 56,
     "enums": 1,
-    "policies": 182,
+    "policies": 186,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 73,
+    "migrations": 75,
     "alertas": 3,
     "problemas": 3
   },
@@ -133,7 +133,7 @@
     "courses": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 15,
+      "colunas": 16,
       "rls": true,
       "policies": 1,
       "triggers": [
@@ -326,6 +326,23 @@
         "edges": 0
       }
     },
+    "mentorship_requests": {
+      "no_types": true,
+      "nas_migrations": true,
+      "colunas": 10,
+      "rls": true,
+      "policies": 4,
+      "triggers": [
+        "trg_notificar_mentoria",
+        "update_mentorship_requests_updated_at"
+      ],
+      "indices": 3,
+      "criada_em": "20261128140000_mentoria.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "newsletter_subscriptions": {
       "no_types": true,
       "nas_migrations": true,
@@ -511,7 +528,7 @@
     "profiles": {
       "no_types": true,
       "nas_migrations": true,
-      "colunas": 11,
+      "colunas": 14,
       "rls": true,
       "policies": 3,
       "triggers": [
@@ -521,7 +538,7 @@
       "indices": 0,
       "criada_em": "20251224123346_32bde7a7-2a75-40e4-891e-a371ed53a3f3.sql",
       "uso_no_codigo": {
-        "src": 21,
+        "src": 22,
         "edges": 6
       }
     },
@@ -1534,6 +1551,20 @@
         "edges": 0
       }
     },
+    "get_mentors": {
+      "exposta_no_types": true,
+      "args": [
+        "p_busca"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128140000_mentoria.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "get_my_challenges": {
       "exposta_no_types": true,
       "args": [],
@@ -1553,6 +1584,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261127120000_ligas_semanais.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_my_mentorship": {
+      "exposta_no_types": true,
+      "args": [],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128140000_mentoria.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
@@ -1858,6 +1901,32 @@
         "edges": 0
       }
     },
+    "mentor_disponivel": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "boolean",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128140000_mentoria.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "notificar_mentoria": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128140000_mentoria.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "notify_new_course": {
       "exposta_no_types": false,
       "args": null,
@@ -2049,6 +2118,22 @@
       "criada_em": "20251231132503_94852e06-5c0b-4e71-ab79-b3cf669bfc93.sql",
       "uso_no_codigo": {
         "src": 2,
+        "edges": 0
+      }
+    },
+    "respond_mentorship_request": {
+      "exposta_no_types": true,
+      "args": [
+        "p_id",
+        "p_nota",
+        "p_status"
+      ],
+      "retorno": "Json",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261128140000_mentoria.sql",
+      "uso_no_codigo": {
+        "src": 1,
         "edges": 0
       }
     },
@@ -2250,6 +2335,7 @@
         "get_user_permissions",
         "has_permission",
         "mcp_exec",
+        "mentor_disponivel",
         "refresh_platform_stats",
         "verify_path_certificate_by_code"
       ]

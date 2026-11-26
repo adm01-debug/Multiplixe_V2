@@ -2,11 +2,11 @@
   "format_version": 1,
   "fonte": "scripts/inventario/gerar-rotas.mjs (le src/App.tsx, CommandPalette, MobileBottomNav, useGlobalShortcuts, routePrefetch e os imports de cada pagina)",
   "resumo": {
-    "rotas": 27,
-    "protegidas": 20,
+    "rotas": 28,
+    "protegidas": 21,
     "so_admin": 2,
-    "entradas_na_ui": 124,
-    "hooks_distintos": 95,
+    "entradas_na_ui": 127,
+    "hooks_distintos": 101,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 76,
+      "arquivos_lidos": 77,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -110,6 +110,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "useOptionalAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
         },
         {
           "nome": "usePlatformSettings",
@@ -657,7 +661,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 72,
+      "arquivos_lidos": 73,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -726,6 +730,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "useOptionalAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
         },
         {
           "nome": "usePlatformSettings",
@@ -934,7 +942,7 @@
       "entradas_na_ui": [
         "prefetch"
       ],
-      "arquivos_lidos": 38,
+      "arquivos_lidos": 39,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -963,6 +971,10 @@
         {
           "nome": "useNotes",
           "arquivo": "src/hooks/useNotes.ts"
+        },
+        {
+          "nome": "useOptionalAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
         },
         {
           "nome": "usePlatformSettings",
@@ -1046,7 +1058,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 101,
+      "arquivos_lidos": 102,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1135,6 +1147,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "useOptionalAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
         },
         {
           "nome": "usePlatformSettings",
@@ -1429,6 +1445,62 @@
       ],
       "tabelas": [
         "store_items"
+      ],
+      "imports_quebrados": []
+    },
+    {
+      "caminho": "/mentoria",
+      "rotulo_tecnico": "Mentoria",
+      "componente": "Mentorship",
+      "arquivo": "src/pages/Mentorship.tsx",
+      "protegida": true,
+      "so_admin": false,
+      "com_parametro": false,
+      "redireciona": null,
+      "entradas_na_ui": [
+        "command-palette",
+        "navegacao-no-codigo"
+      ],
+      "arquivos_lidos": 7,
+      "hooks": [
+        {
+          "nome": "useAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
+        },
+        {
+          "nome": "useMentors",
+          "arquivo": "src/hooks/useMentorship.ts"
+        },
+        {
+          "nome": "useMyMentorship",
+          "arquivo": "src/hooks/useMentorship.ts"
+        },
+        {
+          "nome": "useRequestMentorship",
+          "arquivo": "src/hooks/useMentorship.ts"
+        },
+        {
+          "nome": "useRespondMentorship",
+          "arquivo": "src/hooks/useMentorship.ts"
+        },
+        {
+          "nome": "useUpdateMentorProfile",
+          "arquivo": "src/hooks/useMentorship.ts"
+        }
+      ],
+      "buckets": [],
+      "edges": [
+        "detect-new-device"
+      ],
+      "rpcs": [
+        "create_audit_log",
+        "get_mentors",
+        "get_my_mentorship",
+        "respond_mentorship_request"
+      ],
+      "tabelas": [
+        "mentorship_requests",
+        "profiles"
       ],
       "imports_quebrados": []
     },
@@ -1883,7 +1955,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 60,
+      "arquivos_lidos": 61,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1952,6 +2024,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "useOptionalAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
         },
         {
           "nome": "usePlatformSettings",
@@ -2098,7 +2174,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 64,
+      "arquivos_lidos": 65,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2167,6 +2243,10 @@
         {
           "nome": "useOnboardingTutorial",
           "arquivo": "src/components/onboarding/OnboardingTutorial.tsx"
+        },
+        {
+          "nome": "useOptionalAuth",
+          "arquivo": "src/hooks/useAuth.tsx"
         },
         {
           "nome": "usePlatformSettings",
@@ -2425,6 +2505,11 @@
       "origem": "command-palette",
       "destino": "/loja",
       "rotulo": "Loja de Recompensas"
+    },
+    {
+      "origem": "command-palette",
+      "destino": "/mentoria",
+      "rotulo": "Mentoria entre colegas"
     },
     {
       "origem": "command-palette",
@@ -2769,6 +2854,11 @@
     {
       "origem": "navegacao-no-codigo",
       "destino": "/dashboard",
+      "rotulo": "src/pages/Mentorship.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/dashboard",
       "rotulo": "src/pages/NotFound.tsx"
     },
     {
@@ -2825,6 +2915,11 @@
       "origem": "navegacao-no-codigo",
       "destino": "/loja",
       "rotulo": "src/pages/Profile.tsx"
+    },
+    {
+      "origem": "navegacao-no-codigo",
+      "destino": "/mentoria",
+      "rotulo": "src/components/dashboard/DashboardHeader.tsx"
     },
     {
       "origem": "navegacao-no-codigo",
@@ -3051,6 +3146,7 @@
         "/dashboard",
         "/flashcards",
         "/loja",
+        "/mentoria",
         "/onboarding",
         "/onboarding/executar",
         "/perfil",
@@ -3333,6 +3429,18 @@
         "/trilhas"
       ]
     },
+    "useMentors": {
+      "arquivo": "src/hooks/useMentorship.ts",
+      "rotas": [
+        "/mentoria"
+      ]
+    },
+    "useMyMentorship": {
+      "arquivo": "src/hooks/useMentorship.ts",
+      "rotas": [
+        "/mentoria"
+      ]
+    },
     "useNotes": {
       "arquivo": "src/hooks/useNotes.ts",
       "rotas": [
@@ -3359,6 +3467,17 @@
       "arquivo": "src/hooks/useOnboardingWorkflow.ts",
       "rotas": [
         "/admin"
+      ]
+    },
+    "useOptionalAuth": {
+      "arquivo": "src/hooks/useAuth.tsx",
+      "rotas": [
+        "/",
+        "/catalogo",
+        "/curso/:slug/aula/:lessonId",
+        "/dashboard",
+        "/trilha/:slug",
+        "/trilhas"
       ]
     },
     "usePasskeys": {
@@ -3487,6 +3606,18 @@
       "arquivo": "src/hooks/usePlaybooks.ts",
       "rotas": [
         "/playbook/:slug"
+      ]
+    },
+    "useRequestMentorship": {
+      "arquivo": "src/hooks/useMentorship.ts",
+      "rotas": [
+        "/mentoria"
+      ]
+    },
+    "useRespondMentorship": {
+      "arquivo": "src/hooks/useMentorship.ts",
+      "rotas": [
+        "/mentoria"
       ]
     },
     "useSaveAssessment": {
@@ -3636,6 +3767,12 @@
       "rotas": [
         "/admin",
         "/biblioteca-videos"
+      ]
+    },
+    "useUpdateMentorProfile": {
+      "arquivo": "src/hooks/useMentorship.ts",
+      "rotas": [
+        "/mentoria"
       ]
     },
     "useUpdateOnboardingProgress": {

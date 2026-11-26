@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 492,
- "arestas": 1355,
+ "nos": 497,
+ "arestas": 1375,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 134
+   "importado_por": 135
   },
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 104
+   "importado_por": 105
   },
   {
    "arquivo": "src/hooks/useAuth.tsx",
-   "importado_por": 70
+   "importado_por": 71
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,23 +22,23 @@
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 65
+   "importado_por": 66
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 59
+   "importado_por": 60
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 36
+   "importado_por": 37
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 35
+   "importado_por": 36
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 25
+   "importado_por": 26
   },
   {
    "arquivo": "src/components/ui/progress.tsx",
@@ -46,23 +46,27 @@
   },
   {
    "arquivo": "src/components/ui/textarea.tsx",
-   "importado_por": 21
+   "importado_por": 22
+  },
+  {
+   "arquivo": "src/components/ui/skeleton.tsx",
+   "importado_por": 20
   },
   {
    "arquivo": "src/components/ui/select.tsx",
    "importado_por": 19
   },
   {
-   "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 19
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 18
   },
   {
    "arquivo": "src/components/ui/icon-tooltip.tsx",
    "importado_por": 17
   },
   {
-   "arquivo": "src/components/ui/switch.tsx",
-   "importado_por": 17
+   "arquivo": "src/components/SimpleEmptyState.tsx",
+   "importado_por": 13
   },
   {
    "arquivo": "src/components/ui/table.tsx",
@@ -77,24 +81,20 @@
    "importado_por": 12
   },
   {
-   "arquivo": "src/components/SimpleEmptyState.tsx",
-   "importado_por": 12
+   "arquivo": "src/components/seo/DynamicSEO.tsx",
+   "importado_por": 11
   },
   {
    "arquivo": "src/components/ui/alert-dialog.tsx",
    "importado_por": 11
   },
   {
-   "arquivo": "src/lib/i18n.ts",
+   "arquivo": "src/components/ui/tabs.tsx",
    "importado_por": 11
   },
   {
-   "arquivo": "src/components/seo/DynamicSEO.tsx",
-   "importado_por": 10
-  },
-  {
-   "arquivo": "src/components/ui/tabs.tsx",
-   "importado_por": 10
+   "arquivo": "src/lib/i18n.ts",
+   "importado_por": 11
   },
   {
    "arquivo": "src/hooks/useFuzzySearch.ts",
@@ -105,11 +105,11 @@
    "importado_por": 9
   },
   {
-   "arquivo": "src/components/skeletons/PageSkeletons.tsx",
-   "importado_por": 8
+   "arquivo": "src/components/ui/avatar.tsx",
+   "importado_por": 9
   },
   {
-   "arquivo": "src/components/ui/avatar.tsx",
+   "arquivo": "src/components/skeletons/PageSkeletons.tsx",
    "importado_por": 8
   },
   {
@@ -1642,6 +1642,11 @@
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useMentorship.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/lib/mentorship.ts"
+  ],
   "src/hooks/useNotes.ts": [
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts"
@@ -1797,6 +1802,7 @@
   "src/lib/imageSrcSet.ts": [],
   "src/lib/leagues.ts": [],
   "src/lib/levelSystem.ts": [],
+  "src/lib/mentorship.ts": [],
   "src/lib/performanceComparison.ts": [],
   "src/lib/platformSettings.ts": [
    "src/integrations/supabase/types.ts"
@@ -2022,6 +2028,23 @@
    "src/integrations/supabase/client.ts",
    "src/lib/chapters.ts",
    "src/lib/platformSettings.ts"
+  ],
+  "src/pages/Mentorship.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/seo/DynamicSEO.tsx",
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useMentorship.ts",
+   "src/lib/mentorship.ts"
   ],
   "src/pages/NotFound.tsx": [
    "src/components/seo/DynamicSEO.tsx",
@@ -2301,6 +2324,11 @@
    "src/components/admin/QuizQuestionCard.tsx",
    "src/components/player/LessonList.tsx"
   ],
+  "src/test/mentoria.test.tsx": [
+   "src/lib/mentorship.ts",
+   "src/pages/Mentorship.tsx"
+  ],
+  "src/test/mentoriaHook.test.ts": [],
   "src/test/navigation.test.tsx": [],
   "src/test/notFound.test.tsx": [
    "src/pages/NotFound.tsx"
@@ -2446,6 +2474,7 @@
    "src/pages/LearningPathDetail.tsx",
    "src/pages/LearningPaths.tsx",
    "src/pages/LessonPlayer.tsx",
+   "src/pages/Mentorship.tsx",
    "src/pages/NotFound.tsx",
    "src/pages/OnboardingRuntime.tsx",
    "src/pages/PlaybookDetail.tsx",
@@ -2529,6 +2558,9 @@
   ],
   "src/test/goalProgress.test.ts": [
    "src/hooks/useGoals.ts"
+  ],
+  "src/test/mentoriaHook.test.ts": [
+   "src/hooks/useMentorship.ts"
   ],
   "src/test/navigation.test.tsx": [
    "src/components/landing/Header.tsx"

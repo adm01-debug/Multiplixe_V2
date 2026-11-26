@@ -8,6 +8,7 @@ import {
   domainListMessage,
   parseDomainsInput,
   quizDefaultsFrom,
+  mensagemErroCadastro,
   settingsMapFrom,
   xpRewardsFrom,
 } from '@/lib/platformSettings';
@@ -110,6 +111,26 @@ describe('platformSettings', () => {
         { key: 'xp_rewards', value: { lesson_completed: 1, course_completed: 2 }, description: null, updated_at: '2026-11-25T00:00:00Z' },
       ]);
       expect(Object.keys(map)).toEqual(['allowed_email_domains', 'xp_rewards']);
+    });
+  });
+
+  describe('mensagemErroCadastro', () => {
+    it('traduz o bloqueio do gate de domínio do banco', () => {
+      expect(
+        mensagemErroCadastro('Cadastro restrito a email corporativo (promobrindes.com.br).', ['promobrindes.com.br']),
+      ).toBe('Cadastro restrito. Apenas emails @promobrindes.com.br são permitidos.');
+    });
+
+    it('mantém o aviso de email já cadastrado', () => {
+      expect(mensagemErroCadastro('User already registered', ['promobrindes.com.br'])).toBe(
+        'Este email já está cadastrado.',
+      );
+    });
+
+    it('usa mensagem genérica para os demais erros', () => {
+      expect(mensagemErroCadastro('Database error saving new user', ['promobrindes.com.br'])).toBe(
+        'Erro ao criar conta.',
+      );
     });
   });
 });

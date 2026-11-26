@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 76,
     "colunas": 675,
     "views": 1,
-    "funcoes": 107,
+    "funcoes": 108,
     "funcoes_expostas_no_types": 66,
     "enums": 1,
     "policies": 198,
     "cron_jobs": 4,
     "buckets": 1,
-    "migrations": 84,
+    "migrations": 85,
     "alertas": 3,
     "problemas": 3
   },
@@ -1360,6 +1360,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261127180000_powerups.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
+    "bloquear_cadastro_fora_do_dominio": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129110000_gate_dominio_signup.sql",
       "uso_no_codigo": {
         "src": 0,
         "edges": 0

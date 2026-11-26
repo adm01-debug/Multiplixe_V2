@@ -1,5 +1,9 @@
 project_id = "ywsblgsikhiscvpmopkp"
 
+[auth.hook.before_user_created]
+enabled = true
+uri = "pg-functions://postgres/public/bloquear_cadastro_fora_do_dominio"
+
 [functions.generate-certificate]
 verify_jwt = true
 

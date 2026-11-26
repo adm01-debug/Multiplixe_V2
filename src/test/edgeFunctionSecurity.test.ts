@@ -124,6 +124,13 @@ describe("Edge Function Security - Input Validation", () => {
     it("should handle errors with proper error messages", () => {
       expect(code).toContain("errorMessage");
     });
+
+    it("should only run for an authenticated admin", () => {
+      expect(code).toContain("req.headers.get('Authorization')");
+      expect(code).toContain("auth.getUser()");
+      expect(code).toContain("user_roles");
+      expect(code).toContain("Apenas administradores");
+    });
   });
 });
 

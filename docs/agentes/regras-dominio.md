@@ -124,3 +124,10 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   do JSON e gravava em `known_devices` e `security_alerts` — com a chave publicável qualquer um poderia
   registrar o próprio dispositivo como "conhecido" na conta de outra pessoa. Agora exige sessão
   (`verify_jwt = true`) e tira a identidade do token (`auth.getUser()`); o front envia só IP e user agent.
+- **Limpeza automática de logs de segurança**: `public.cleanup_old_security_logs()` apaga
+  `rate_limit_logs` (mais de 7 dias), `blocked_ips` expirados, `password_reset_tokens` usados ou
+  vencidos e `user_sessions` vencidas. Ela só roda porque existe o job `cleanup-security-logs` no
+  `pg_cron` (`20 3 * * *`, migration `20261126160000_agendar_limpeza_logs_seguranca.sql`); antes
+  disso a função existia sem nenhum agendamento e nenhum chamador. A edge
+  `cleanup-security-logs` é apenas um gatilho manual: exige sessão e papel `admin` em `user_roles`,
+  porque apagar `blocked_ips` desbloqueia IPs que o rate limit barrou.

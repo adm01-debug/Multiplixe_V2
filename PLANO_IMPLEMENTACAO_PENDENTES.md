@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (41)
+## ⏳ MELHORIAS PENDENTES (40)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -597,7 +597,7 @@ CREATE TABLE public.user_goals (
 
 ---
 
-### ♿ ACESSIBILIDADE - 1 Pendente
+### ♿ ACESSIBILIDADE - Concluído ✅
 
 #### ✅ A11Y-001: Labels em Todos os Inputs — CONCLUÍDO
 
@@ -663,7 +663,7 @@ leitor de tela) e 17 só com `placeholder`.
 
 ---
 
-#### A11Y-004: Contraste de Cores
+#### A11Y-004: Contraste de Cores ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 2h  
 **Descrição:** Verificar ratio de contraste WCAG AA.
@@ -674,6 +674,35 @@ leitor de tela) e 17 só com `placeholder`.
 2. Ajustar cores que não passam 4.5:1
 3. Focar em: muted-foreground, border colors
 4. Testar em modo claro e escuro
+```
+
+**Entrega (2026-11-26):**
+```
+- Calculado o ratio real de cada par cor/fundo das variaveis HSL de src/index.css (conversao
+  HSL->sRGB->luminancia relativa, formula WCAG 2.2). Antes: 25 pares abaixo do minimo nos dois
+  temas. Exemplos: branco sobre --primary = 4.01 (claro) e 3.36 (escuro); --muted-foreground
+  sobre --muted = 4.49; texto --success sobre card = 2.59; --warning como texto = 2.14;
+  borda de --input sobre o fundo = 1.17.
+- Tema claro: cores de marca e de estado escurecidas ate o primeiro tom que passa como fundo
+  com texto branco E como texto sobre o fundo claro — --primary 65%->60%, --primary-hover
+  58%->54%, --secondary 60%->47%, --destructive 60%->48%, --success 39%->28%, --warning
+  50%->32%, --info 60%->52%, --sidebar-primary 65%->60%; --muted-foreground 45%->43%. O
+  gradiente do CTA acompanhou (270 91% 60% / 330 81% 47% / 20 88% 42%) porque o texto branco
+  em cima dele tambem era afetado.
+- Tema escuro: as cores neon sao claras de proposito, entao o texto em cima delas passou a ser
+  escuro (--*-foreground de branco para 250 30% 6% em primary, secondary, destructive, success,
+  info e sidebar-primary) em vez de apagar o neon. Resultado: 3.36 -> 5.83 no primary, 1.68 ->
+  11.66 no success, 2.17 -> 9.04 no info.
+- Bordas: --input (borda que identifica campo de formulario) subiu para 3:1 contra card e
+  fundo — claro 92%->62% (1.17 -> 3.16) e escuro 14%->45% (1.20 -> 3.06). --border continua
+  como divisor decorativo de superficie, isento pela nota de 1.4.11 (nao e o que identifica o
+  componente); o anel de foco (--ring) ja passava (3.81 no claro, 5.97 no escuro).
+- Guarda de regressao: src/test/colorContrast.test.ts le src/index.css, extrai as variaveis dos
+  blocos :root e .dark e falha se qualquer par texto/fundo cair abaixo de 4.5:1 ou se borda de
+  componente/anel de foco cair abaixo de 3:1. Com o CSS anterior ele reprovava em 5 assercoes
+  (4.49, 3.81, 3.36, 1.17 e 1.20).
+- Validado: tsc 0 erros; suite 47 arquivos / 445 testes; guards 88 (85 pass, 3 skip, 0 fail);
+  build de producao ok.
 ```
 
 ---
@@ -1528,7 +1557,7 @@ CREATE TABLE public.webhook_endpoints (
 | UX/UI | 8 | ~26h |
 | Performance | 2 | ~7h |
 | Funcionalidades | 13 | ~69h |
-| Acessibilidade | 1 | ~2h |
+| Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
 | SEO | 5 | ~11h |
 | Gamificação | 11 | ~59h |
@@ -1536,7 +1565,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 5 | ~12h |
-| **TOTAL PENDENTE** | **44** | **~239h** |
+| **TOTAL PENDENTE** | **43** | **~237h** |
 
 ---
 

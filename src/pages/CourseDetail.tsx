@@ -7,7 +7,7 @@ import LessonList from "@/components/player/LessonList";
 import CourseDetailHero from "@/components/course/CourseDetailHero";
 import CourseDetailSidebar from "@/components/course/CourseDetailSidebar";
 import { toast } from "sonner";
-import { GraduationCap, LogOut, ArrowLeft, Play, CheckCircle, Loader2, Sparkles, Target, TrendingUp, BookOpen } from "lucide-react";
+import { GraduationCap, LogOut, ArrowLeft, Play, CheckCircle, Loader2, Sparkles, Target, TrendingUp, BookOpen, Brain } from "lucide-react";
 import { CourseQuizModal } from "@/components/quiz/CourseQuizModal";
 import { useQuizzes } from "@/hooks/useQuizzes";
 import CourseDiscussions from "@/components/discussions/CourseDiscussions";
@@ -113,9 +113,14 @@ const CourseDetail = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <Button variant="ghost" size="sm" asChild className="mb-6 rounded-xl hover:bg-muted/50 neon-border">
-          <Link to="/catalogo"><ArrowLeft className="h-4 w-4 mr-2" />Voltar ao catálogo</Link>
-        </Button>
+        <div className="mb-6 flex flex-wrap items-center gap-2">
+          <Button variant="ghost" size="sm" asChild className="rounded-xl hover:bg-muted/50 neon-border">
+            <Link to="/catalogo"><ArrowLeft className="h-4 w-4 mr-2" />Voltar ao catálogo</Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild className="rounded-xl neon-border">
+            <Link to={`/flashcards?curso=${course.id}`}><Brain className="h-4 w-4 mr-2" />Revisar com flashcards</Link>
+          </Button>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">

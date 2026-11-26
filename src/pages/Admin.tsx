@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   GraduationCap, ArrowLeft, Loader2, BookOpen, Users, BarChart3,
   ShieldAlert, TrendingUp, Zap, Trophy, Route, Shield, Target,
-  FileText, Video, Sparkles, Settings,
+  FileText, Video, Sparkles, Settings, Brain,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AdminCourse } from '@/components/admin/AdminCoursesTab';
@@ -26,6 +26,7 @@ const AdminPlaybooksTab = lazy(() => import('@/components/admin/AdminPlaybooksTa
 const AdminVideosTab = lazy(() => import('@/components/admin/AdminVideosTab').catch((e) => { console.error('[Admin] Failed to load AdminVideosTab', e); throw e; }));
 const AdminWorkflowsTab = lazy(() => import('@/components/admin/AdminWorkflowsTab').catch((e) => { console.error('[Admin] Failed to load AdminWorkflowsTab', e); throw e; }));
 const AdminAssessmentsTab = lazy(() => import('@/components/admin/AdminAssessmentsTab').catch((e) => { console.error('[Admin] Failed to load AdminAssessmentsTab', e); throw e; }));
+const AdminFlashcardsTab = lazy(() => import('@/components/admin/AdminFlashcardsTab').catch((e) => { console.error('[Admin] Failed to load AdminFlashcardsTab', e); throw e; }));
 const AdminEngagementHeatmap = lazy(() => import('@/components/admin/AdminEngagementHeatmap').catch((e) => { console.error('[Admin] Failed to load AdminEngagementHeatmap', e); throw e; }));
 const AdminCohortRetention = lazy(() => import('@/components/admin/AdminCohortRetention').catch((e) => { console.error('[Admin] Failed to load AdminCohortRetention', e); throw e; }));
 const AdminTelemetryWidget = lazy(() => import('@/components/admin/AdminTelemetryWidget').catch((e) => { console.error('[Admin] Failed to load AdminTelemetryWidget', e); throw e; }));
@@ -212,6 +213,7 @@ const Admin = () => {
               <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1.5 inline-block align-middle" />Vídeos</TabsTrigger>
               <TabsTrigger value="workflows"><Sparkles className="h-4 w-4 mr-1.5 inline-block align-middle" />Workflows</TabsTrigger>
               <TabsTrigger value="assessments"><Target className="h-4 w-4 mr-1.5 inline-block align-middle" />Avaliações</TabsTrigger>
+            <TabsTrigger value="flashcards"><Brain className="h-4 w-4 mr-1.5 inline-block align-middle" />Flashcards</TabsTrigger>
               <TabsTrigger value="users"><Users className="h-4 w-4 mr-1.5 inline-block align-middle" />Usuários</TabsTrigger>
               <TabsTrigger value="quizzes"><Target className="h-4 w-4 mr-1.5 inline-block align-middle" />Quizzes</TabsTrigger>
               <TabsTrigger value="achievements"><Trophy className="h-4 w-4 mr-1.5 inline-block align-middle" />Conquistas</TabsTrigger>
@@ -250,6 +252,11 @@ const Admin = () => {
           <TabsContent value="assessments">
             <Suspense fallback={<TabFallback />}>
               <AdminAssessmentsTab />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="flashcards">
+            <Suspense fallback={<TabFallback />}>
+              <AdminFlashcardsTab />
             </Suspense>
           </TabsContent>
           <TabsContent value="users">

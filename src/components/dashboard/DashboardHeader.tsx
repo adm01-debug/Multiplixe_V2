@@ -4,7 +4,7 @@ import NotificationBell from '@/components/NotificationBell';
 import CacheIndicator from '@/components/ui/CacheIndicator';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route } from 'lucide-react';
+import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route, Brain } from 'lucide-react';
 import LanguageToggle from '@/components/LanguageToggle';
 import { useT } from '@/lib/i18n';
 
@@ -56,6 +56,9 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
             </PrefetchLink>
             <PrefetchLink to="/trilhas" prefetch="intent" onPrefetchData={prefetchLearningPaths} className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
               <Route className="h-4 w-4" />{t('nav.paths')}
+            </PrefetchLink>
+            <PrefetchLink to="/flashcards" prefetch="intent" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">
+              <Brain className="h-4 w-4" />{t('nav.flashcards')}
             </PrefetchLink>
             {isAdmin && (
               <PrefetchLink to="/admin" prefetch="intent" className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-xl transition-colors flex items-center gap-1.5">

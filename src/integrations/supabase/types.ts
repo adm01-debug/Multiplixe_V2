@@ -443,6 +443,60 @@ export type Database = {
           },
         ]
       }
+      flashcards: {
+        Row: {
+          back: string
+          course_id: string
+          created_at: string
+          created_by: string | null
+          front: string
+          hint: string | null
+          id: string
+          is_active: boolean
+          lesson_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          back: string
+          course_id: string
+          created_at?: string
+          created_by?: string | null
+          front: string
+          hint?: string | null
+          id?: string
+          is_active?: boolean
+          lesson_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          back?: string
+          course_id?: string
+          created_at?: string
+          created_by?: string | null
+          front?: string
+          hint?: string | null
+          id?: string
+          is_active?: boolean
+          lesson_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flashcards_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "flashcards_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       geo_blocking_config: {
         Row: {
           id: string
@@ -1891,6 +1945,59 @@ export type Database = {
           },
         ]
       }
+      user_flashcard_progress: {
+        Row: {
+          created_at: string
+          due_at: string
+          ease_factor: number
+          flashcard_id: string
+          id: string
+          interval_days: number
+          lapses: number
+          last_grade: number | null
+          last_reviewed_at: string | null
+          repetitions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_at?: string
+          ease_factor?: number
+          flashcard_id: string
+          id?: string
+          interval_days?: number
+          lapses?: number
+          last_grade?: number | null
+          last_reviewed_at?: string | null
+          repetitions?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          due_at?: string
+          ease_factor?: number
+          flashcard_id?: string
+          id?: string
+          interval_days?: number
+          lapses?: number
+          last_grade?: number | null
+          last_reviewed_at?: string | null
+          repetitions?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_flashcard_progress_flashcard_id_fkey"
+            columns: ["flashcard_id"]
+            isOneToOne: false
+            referencedRelation: "flashcards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_goals: {
         Row: {
           completed: boolean | null
@@ -2620,6 +2727,23 @@ export type Database = {
           title: string
         }[]
       }
+      get_due_flashcards: {
+        Args: { p_course_id?: string; p_limit?: number }
+        Returns: {
+          back: string
+          course_id: string
+          due_at: string
+          ease_factor: number
+          front: string
+          hint: string | null
+          id: string
+          interval_days: number
+          is_new: boolean
+          lesson_id: string | null
+          repetitions: number
+        }[]
+      }
+      get_flashcard_overview: { Args: never; Returns: Json }
       get_leaderboard: {
         Args: { p_limit?: number; p_period?: string }
         Returns: {
@@ -2817,6 +2941,10 @@ export type Database = {
         Returns: undefined
       }
       reset_login_attempts: { Args: { p_email: string }; Returns: undefined }
+      review_flashcard: {
+        Args: { p_flashcard_id: string; p_grade: number }
+        Returns: Json
+      }
       submit_quiz_attempt: {
         Args: { p_answers: Json; p_quiz_id: string }
         Returns: {

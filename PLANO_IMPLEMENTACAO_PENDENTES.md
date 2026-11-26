@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (77)
+### ✅ Melhorias JÁ IMPLEMENTADAS (78)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (22)
+## ⏳ MELHORIAS PENDENTES (21)
 
 ### 🎨 UX/UI - 2 Pendentes
 
@@ -1309,7 +1309,7 @@ Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) 
 Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
-### 🎮 GAMIFICAÇÃO - 6 Pendentes
+### 🎮 GAMIFICAÇÃO - 5 Pendentes
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1345,7 +1345,7 @@ O sistema de desafios era decorativo: `user_daily_challenge_progress` estava **v
 
 ---
 
-#### GAME-003: Sistema de Ligas
+#### GAME-003: Sistema de Ligas ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 6h  
 **Descrição:** Leaderboard único sem divisões.
@@ -1358,6 +1358,20 @@ O sistema de desafios era decorativo: `user_daily_challenge_progress` estava **v
 4. Top 10 sobe de liga, bottom 10 desce
 5. Cron job para atualização semanal
 ```
+
+**Entregue em 26/11/2026**
+
+O Ranking era único e sem divisões: não existia tabela de liga, promoção/rebaixamento nem qualquer tela mostrando a liga do aluno.
+
+- `supabase/migrations/20261127120000_ligas_semanais.sql` (nova, já aplicada em produção): tabela `public.user_leagues` (PK `user_id`, liga `bronze/prata/ouro/platina/diamante`, `week_start`, `last_change`, `last_change_at`, timestamps), índice `(league, week_start)`, RLS habilitado (aluno lê a própria linha, admin gerencia todas) e trigger de `updated_at`.
+- `refresh_leagues(p_zone default 10, p_min_jogadores default 20)` (SECURITY DEFINER, advisory lock): cria a linha de quem tem XP, fecha a semana anterior somando `user_xp_history` dentro de cada liga, promove o topo e rebaixa a base **só quando a liga tem o mínimo de jogadores**, e devolve `processados/promovidos/rebaixados/novos_participantes/por_liga`.
+- `get_my_league()` (SECURITY DEFINER): liga, nível, próxima liga, XP da semana, posição, zonas, semana vigente, data da virada, ranking top 30 da liga e última mudança do aluno. `revoke all from public, anon` + `grant execute to authenticated` nas duas funções.
+- `src/lib/leagues.ts` (novo): rótulos/cores das 5 ligas, `nextLeague`/`previousLeague` e `zoneOf`, que reproduz no front a mesma regra de zona aplicada no banco.
+- `src/hooks/useLeague.ts` (novo): lê `get_my_league` e expõe `recalc()` para o admin disparar `refresh_leagues`.
+- `src/components/leaderboard/LeaguePanel.tsx` (novo) + aba **"Minha Liga"** em `src/pages/Leaderboard.tsx`: liga atual, XP da semana com meta, zona atual, aviso da regra de mínimo de jogadores, próxima liga, ranking da liga com divisor de fim da zona de promoção e botão "Recalcular ligas agora" visível só para admin.
+- `src/integrations/supabase/types.ts` com `user_leagues`, `get_my_league` e `refresh_leagues`; `src/test/leagues.test.ts` (novo, 7 casos).
+
+Validado em produção em transação com ROLLBACK: com dois alunos na mesma liga e a semana anterior fechada, `refresh_leagues(1, 2)` devolveu `{"processados":2,"promovidos":1,"rebaixados":1,"por_liga":{"ouro":1,"bronze":1}}` — o maior XP subiu prata→ouro e o menor caiu prata→bronze; a chamada repetida devolveu `processados=0` (idempotente); `get_my_league()` rodando como `authenticated` devolveu liga, posição, XP da semana, ranking com `eu: true` e última mudança; `has_function_privilege` confirmou `authenticated=true` e `anon=false`, com `relrowsecurity=true`. Front: `tsc` 0 erros, suíte **75 arquivos / 572 testes** verdes, `vite build` ok e guards **88 pass / 0 fail**. Deploy provado no bundle servido: `assets/Leaderboard-3ULN3kRX.js` contém "Minha Liga", "Recalcular ligas agora", `get_my_league`, `refresh_leagues` e "Fim da zona de promocao".
 
 ---
 
@@ -1978,11 +1992,11 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🔵 Fase 4: Nice-to-Have (Semana 7-8)
-**Prioridade: Baixa | Esforço Total: ~11h**
+**Prioridade: Baixa | Esforço Total: ~5h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
-| GAME-003 | Sistema de Ligas | 6h |
+| GAME-003 | Sistema de Ligas | ✅ 6h |
 | FUNC-022 | Compartilhar Conquistas | ✅ 4h |
 | INT-003 | SSO Google/Microsoft | 4h |
 | ADMIN-003 | Gestão de Conquistas | ✅ 4h |
@@ -2002,12 +2016,12 @@ CREATE TABLE public.webhook_endpoints (
 | Acessibilidade | 0 | — |
 | Segurança | 0 | — |
 | SEO | 0 | — |
-| Gamificação | 6 | ~40h |
+| Gamificação | 5 | ~34h |
 | Administrativas | 1 | ~4h |
 | Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **22** | **~120h** |
+| **TOTAL PENDENTE** | **21** | **~114h** |
 
 ---
 

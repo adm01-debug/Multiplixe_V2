@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (56)
+### ✅ Melhorias JÁ IMPLEMENTADAS (57)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (43)
+## ⏳ MELHORIAS PENDENTES (42)
 
 ### 🎨 UX/UI - 5 Pendentes
 
@@ -306,7 +306,7 @@ contagem total e os filtros de categoria/nivel sao client-side - seria regressao
 
 ---
 
-### 🚀 FUNCIONALIDADES - 10 Pendentes
+### 🚀 FUNCIONALIDADES - 9 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -526,7 +526,7 @@ CREATE TABLE public.study_schedule (
 
 ---
 
-#### FUNC-012: Metas de Aprendizado
+#### FUNC-012: Metas de Aprendizado ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
 **Descrição:** Não há sistema de metas personalizadas.
@@ -553,6 +553,18 @@ CREATE TABLE public.user_goals (
 4. Notificação quando atingir meta
 5. Componente GoalProgress.tsx
 ```
+
+**Entregue em 26/11/2026**
+
+A tabela `user_goals`, o hook `useGoals` e o `GoalsWidget` existiam, mas `current_value` nunca era atualizado: o `updateGoalProgress` do hook não era chamado em nenhum lugar do front nem existia função/trigger no banco que mexesse em `user_goals`, então toda meta ficava travada em 0.
+
+- `supabase/migrations/20261126010000_metas_progresso_real.sql`: função `public.recalculate_user_goals(uuid)` (SECURITY DEFINER, só o próprio usuário) que deriva o progresso real — `xp_day` de `user_xp_history`, `lessons_week` de `user_lesson_progress.is_completed`, `hours_week` de `watched_seconds` e `courses_month` de `user_course_progress.completed_at`, sempre dentro da janela `start_date..end_date` da meta; marca `completed`/`completed_at` sozinho.
+- Triggers `trg_goals_after_lesson_progress`, `trg_goals_after_course_progress` e `trg_goals_after_xp_history`: cada aula concluída, curso concluído ou XP ganho atualiza as metas do aluno na hora (falha na meta nunca derruba o salvamento da aula).
+- `src/hooks/useGoals.ts`: recalcula antes de ler as metas (meta criada depois de o aluno já ter estudado já nasce com o valor certo) e remove o `updateGoalProgress` morto.
+- `src/test/goalProgress.test.ts` (novo, 3 casos): chama o recálculo, usa o valor gravado e tolera ambiente sem a função.
+
+Validado no banco de produção com o usuário real `96b716a2`: 4 metas de teste dentro de uma transação (rollback) deram `lessons_week = 1`, `courses_month = 0`, `xp_day = 0`, `hours_week = 0` — exatamente o que os dados reais mostram. Depois, com XP e tempo inseridos na transação, os triggers levaram as metas a `xp_day = 150` e `hours_week = 5` com `completed = true`.
+
 
 ---
 
@@ -1684,13 +1696,13 @@ CREATE TABLE public.webhook_endpoints (
 ---
 
 ### 🟡 Fase 2: Importantes (Semana 3-4)
-**Prioridade: Média | Esforço Total: ~17h**
+**Prioridade: Média | Esforço Total: ~13h**
 
 | ID | Melhoria | Esforço |
 |----|----------|---------|
 | FUNC-002 | Favoritar Cursos | ✅ 4h |
 | FUNC-015 | Recomendações Personalizadas | 4h |
-| FUNC-012 | Metas de Aprendizado | 4h |
+| FUNC-012 | Metas de Aprendizado | ✅ 4h |
 | UI-015 | Avatar Upload | ✅ 4h |
 | GAME-004 | Conquistas Expandidas | 4h |
 | ADMIN-002 | Gestão de Usuários Avançada | ✅ 4h |
@@ -1745,7 +1757,7 @@ CREATE TABLE public.webhook_endpoints (
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **43** | **~199h** |
+| **TOTAL PENDENTE** | **42** | **~195h** |
 
 ---
 

@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 63,
     "colunas": 525,
     "views": 1,
-    "funcoes": 45,
-    "funcoes_expostas_no_types": 34,
+    "funcoes": 47,
+    "funcoes_expostas_no_types": 35,
     "enums": 1,
     "policies": 170,
     "cron_jobs": 2,
     "buckets": 1,
-    "migrations": 57,
+    "migrations": 58,
     "alertas": 3,
     "problemas": 3
   },
@@ -130,7 +130,7 @@
       "indices": 1,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
-        "src": 24,
+        "src": 25,
         "edges": 2
       }
     },
@@ -724,7 +724,9 @@
       "colunas": 7,
       "rls": true,
       "policies": 3,
-      "triggers": [],
+      "triggers": [
+        "trg_goals_after_course_progress"
+      ],
       "indices": 3,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
       "uso_no_codigo": {
@@ -770,7 +772,7 @@
       "indices": 2,
       "criada_em": "20260112211157_6b295602-9bd8-4466-8402-2721dd2f0667.sql",
       "uso_no_codigo": {
-        "src": 4,
+        "src": 3,
         "edges": 0
       }
     },
@@ -797,6 +799,7 @@
       "rls": true,
       "policies": 3,
       "triggers": [
+        "trg_goals_after_lesson_progress",
         "update_user_lesson_progress_updated_at"
       ],
       "indices": 1,
@@ -933,7 +936,9 @@
       "colunas": 6,
       "rls": true,
       "policies": 1,
-      "triggers": [],
+      "triggers": [
+        "trg_goals_after_xp_history"
+      ],
       "indices": 2,
       "criada_em": "20251224142421_1ba36b19-9f29-4c42-885d-6097ba869c5a.sql",
       "uso_no_codigo": {
@@ -1461,6 +1466,20 @@
         "edges": 0
       }
     },
+    "recalculate_user_goals": {
+      "exposta_no_types": true,
+      "args": [
+        "p_user_id"
+      ],
+      "retorno": "undefined",
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126010000_metas_progresso_real.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
     "record_failed_login": {
       "exposta_no_types": true,
       "args": [
@@ -1528,6 +1547,18 @@
       "criada_em": "20260417145145_4d0c55a2-604b-48db-9b6b-7857217ebc85.sql",
       "uso_no_codigo": {
         "src": 2,
+        "edges": 0
+      }
+    },
+    "trg_recalculate_user_goals": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261126010000_metas_progresso_real.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },

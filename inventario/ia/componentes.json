@@ -32,7 +32,6 @@
   "src/components/ui/menubar.tsx",
   "src/components/ui/motion.tsx",
   "src/components/ui/sidebar.tsx",
-  "src/components/ui/ThemeCustomizer.tsx",
   "src/components/ui/toggle-group.tsx"
  ],
  "nomes_duplicados": {
@@ -1426,7 +1425,7 @@
   {
    "arquivo": "src/components/landing/Header.tsx",
    "exports": [],
-   "linhas": 174,
+   "linhas": 177,
    "hooks": [
     "useState"
    ],
@@ -2949,15 +2948,15 @@
   {
    "arquivo": "src/components/ui/ThemeCustomizer.tsx",
    "exports": [],
-   "linhas": 185,
+   "linhas": 125,
    "hooks": [
-    "useEffect",
-    "useState"
+    "useT",
+    "useUserPreferences"
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 2,
+   "orfao": false
   },
   {
    "arquivo": "src/components/ui/toast.tsx",
@@ -3049,7 +3048,7 @@
    "exports": [
     "AuthProvider"
    ],
-   "linhas": 137,
+   "linhas": 140,
    "hooks": [
     "useContext",
     "useEffect",
@@ -3395,7 +3394,7 @@
   {
    "arquivo": "src/pages/Profile.tsx",
    "exports": [],
-   "linhas": 322,
+   "linhas": 324,
    "hooks": [
     "useAchievements",
     "useAuth",

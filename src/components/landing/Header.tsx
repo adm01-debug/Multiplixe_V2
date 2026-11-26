@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import ThemeToggle from "@/components/ThemeToggle";
+import ThemeCustomizer from "@/components/ui/ThemeCustomizer";
 import LanguageToggle from "@/components/LanguageToggle";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -105,6 +106,7 @@ const Header = () => {
               whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} aria-label="Buscar cursos">
               <Search className="w-5 h-5" />
             </motion.button>
+            <ThemeCustomizer />
             <ThemeToggle />
             <LanguageToggle />
             <Link to="/auth">
@@ -150,7 +152,8 @@ const Header = () => {
                   ))}
                 </nav>
                 <div className="flex items-center justify-between pt-6 mt-6 border-t border-border/50">
-                  <span className="text-sm text-muted-foreground">Tema</span><ThemeToggle />
+                  <span className="text-sm text-muted-foreground">Tema</span>
+                  <div className="flex items-center gap-1"><ThemeCustomizer /><ThemeToggle /></div>
                 </div>
                 <div className="pt-6">
                   <Link to="/auth">

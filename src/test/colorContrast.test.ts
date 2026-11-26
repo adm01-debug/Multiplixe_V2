@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { PALETAS } from "@/lib/themePresets";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -114,4 +115,66 @@ describe.each([
   it("bordas de componente e anel de foco (3:1)", () => {
     for (const [fg, bg, min] of UI) check(theme, "componente ui", fg, bg, min);
   });
+});
+
+/** Tokens da paleta no mesmo nome usado no CSS, para reaproveitar as checagens acima. */
+function tokensDaPaleta(paleta: (typeof PALETAS)[number]["claro"]): Record<string, string> {
+  return {
+    primary: paleta.primary,
+    "primary-hover": paleta.primaryHover,
+    "primary-foreground": paleta.primaryForeground,
+    secondary: paleta.secondary,
+    "secondary-foreground": paleta.secondaryForeground,
+    accent: paleta.accent,
+    "accent-foreground": paleta.accentForeground,
+    ring: paleta.ring,
+    "sidebar-primary": paleta.primary,
+    "sidebar-primary-foreground": paleta.primaryForeground,
+  };
+}
+
+describe.each(PALETAS.map((p) => [p.id, p] as const))(
+  "paleta %s mantem contraste WCAG AA",
+  (nome, paleta) => {
+    it("tema claro", () => {
+      const tema = { ...light, ...tokensDaPaleta(paleta.claro) };
+      for (const [fg, bg, min] of [...TEXT, ...AS_TEXT, ...UI]) check(tema, `paleta ${nome}`, fg, bg, min);
+    });
+
+    it("tema escuro", () => {
+      const tema = { ...dark, ...tokensDaPaleta(paleta.escuro) };
+      for (const [fg, bg, min] of [...TEXT, ...AS_TEXT, ...UI]) check(tema, `paleta ${nome}`, fg, bg, min);
+    });
+  }
+);
+
+/** Pontos de `--gradient-*` de um bloco de paleta, no formato hsl do proprio CSS. */
+function pontosDoGradiente(seletorPaleta: string, variavel: string): string[] {
+  const re = new RegExp(seletorPaleta.replace(/[[\]]/g, "\\$&") + "\\s*{([\\s\\S]*?)}");
+  const alvo = css.match(re);
+  expect(alvo, `${seletorPaleta} ausente em src/index.css`).toBeTruthy();
+  const linha = alvo![1].match(new RegExp(variavel + ":\\s*([^;]+);"));
+  expect(linha, `${variavel} ausente em ${seletorPaleta}`).toBeTruthy();
+  return [...linha![1].matchAll(/hsl\((\d+) (\d+)% (\d+)%\)/g)].map((m) => `${m[1]} ${m[2]}% ${m[3]}%`);
+}
+
+const BRANCO = "0 0% 100%";
+
+describe("gradientes das paletas com texto branco (.btn-gradient)", () => {
+  it.each(["ocean", "forest", "sunset", "gold"])(
+    "paleta %s: todo ponto do gradiente claro suporta texto branco (AA)",
+    (paleta) => {
+      for (const variavel of ["--gradient-primary", "--gradient-secondary"]) {
+        const pontos = pontosDoGradiente(`:root[data-accent="${paleta}"]`, variavel);
+        expect(pontos.length, `${paleta} ${variavel} sem pontos`).toBeGreaterThan(1);
+        for (const ponto of pontos) {
+          const ratio = contrast(BRANCO, ponto);
+          expect(
+            ratio,
+            `${paleta} ${variavel} hsl(${ponto}) com texto branco = ${ratio.toFixed(2)} (minimo 4.5)`
+          ).toBeGreaterThanOrEqual(4.5);
+        }
+      }
+    }
+  );
 });

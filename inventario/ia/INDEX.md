@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `1f29df226ff107cbcfba4692596936556122d63c` · branch `claude/feat-func-019-capitulos-261126-0520` · 2026-11-26T05:22:47-03:00
+Commit: `93120e263dc11e6e1e01faf5750c630b19d95bbe` · branch `claude/feat-ui-012-tema-personalizavel-2611260700` · 2026-11-26T06:09:34-03:00
 
 ## Como usar
 
@@ -21,11 +21,11 @@ Commit: `1f29df226ff107cbcfba4692596936556122d63c` · branch `claude/feat-func-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 600 (490) |
-| linhas de codigo | 68700 |
+| arquivos (codigo) | 602 (492) |
+| linhas de codigo | 69208 |
 | paginas / rotas | 27 / 27 |
-| componentes / hooks | 235 / 123 |
-| arquivos de teste | 79 |
+| componentes / hooks | 235 / 124 |
+| arquivos de teste | 80 |
 | edge functions | 13 |
 | tabelas / migrations | 70 / 73 |
 
@@ -107,7 +107,7 @@ Commit: `1f29df226ff107cbcfba4692596936556122d63c` · branch `claude/feat-func-0
 - `src/components/ui/button.tsx` (134)
 - `src/integrations/supabase/client.ts` (104)
 - `src/hooks/useAuth.tsx` (70)
-- `src/lib/utils.ts` (67)
+- `src/lib/utils.ts` (68)
 - `src/components/ui/card.tsx` (65)
 - `src/components/ui/badge.tsx` (59)
 - `src/components/ui/input.tsx` (36)
@@ -117,7 +117,7 @@ Commit: `1f29df226ff107cbcfba4692596936556122d63c` · branch `claude/feat-func-0
 
 ## Mexido nos ultimos 90 dias
 
-- `PLANO_IMPLEMENTACAO_PENDENTES.md` (47)
+- `PLANO_IMPLEMENTACAO_PENDENTES.md` (48)
 - `inventario/estado/schema-declarado.json` (17)
 - `src/integrations/supabase/types.ts` (17)
 - `inventario/ia/baseline.json` (14)

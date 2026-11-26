@@ -37,7 +37,7 @@ const { docSave, invokeMock, tables, authValue, xpValue, achievementsValue, cert
   };
 });
 
-vi.mock("@/hooks/useAuth", () => ({ useAuth: () => authValue }));
+vi.mock("@/hooks/useAuth", () => ({ useAuth: () => authValue, useOptionalAuth: () => authValue }));
 vi.mock("@/hooks/useUserXP", () => ({ useUserXP: () => xpValue }));
 vi.mock("@/hooks/useAchievements", () => ({ useAchievements: () => achievementsValue }));
 vi.mock("@/hooks/useCertificates", () => ({ useCertificates: () => certificatesValue }));

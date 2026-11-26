@@ -2,25 +2,25 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "1f29df226ff107cbcfba4692596936556122d63c",
-  "branch": "claude/feat-func-019-capitulos-261126-0520",
-  "data_commit": "2026-11-26T05:22:47-03:00",
+  "commit": "93120e263dc11e6e1e01faf5750c630b19d95bbe",
+  "branch": "claude/feat-ui-012-tema-personalizavel-2611260700",
+  "data_commit": "2026-11-26T06:09:34-03:00",
   "ultimos_commits": [
-   "1f29df2 feat: capitulos de tempo no video da aula (FUNC-019)",
+   "93120e2 fix: corrige sobrescrita de preferencia, contraste do gradiente e testes",
+   "ccd99a7 feat: tema de cores personalizavel (UI-012)",
+   "c30b81e chore: marcar FUNC-019 (capitulos no video) como concluido no plano (#77)",
+   "eea0c25 feat: capitulos de tempo no video da aula (FUNC-019) (#76)",
    "51c7545 chore: marcar GAME-007 (power-ups) como concluido no plano (#75)",
    "06ae69a feat: dar efeito real aos power-ups da loja (GAME-007) (#74)",
    "5e2594b chore: marcar GAME-006 (moeda virtual e loja) como concluido no plano (#73)",
    "7eaa603 feat: moeda virtual, carteira e loja de recompensas (GAME-006) (#72)",
    "53f669a chore: marcar GAME-003 (ligas semanais) como concluido no plano (#71)",
-   "5c62c2e feat: ligas semanais com promocao e rebaixamento (GAME-003) (#70)",
-   "875fa6b chore: marcar FUNC-009 (flashcards SRS) como concluido no plano (#69)",
-   "3600e01 feat: flashcards de revisao com repeticao espacada (FUNC-009) (#68)",
-   "fab0b70 chore: marcar FUNC-020 (quiz adaptativo) como concluido no plano (#67)"
+   "5c62c2e feat: ligas semanais com promocao e rebaixamento (GAME-003) (#70)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 47
+    "mudancas": 48
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
@@ -60,7 +60,11 @@
    },
    {
     "arquivo": "src/pages/Profile.tsx",
-    "mudancas": 8
+    "mudancas": 9
+   },
+   {
+    "arquivo": "src/index.css",
+    "mudancas": 7
    },
    {
     "arquivo": "src/pages/Admin.tsx",
@@ -71,8 +75,12 @@
     "mudancas": 5
    },
    {
-    "arquivo": "src/index.css",
+    "arquivo": "src/lib/i18n.ts",
     "mudancas": 5
+   },
+   {
+    "arquivo": "docs/agentes/banco.md",
+    "mudancas": 4
    },
    {
     "arquivo": "docs/agentes/mapa-repo.md",
@@ -89,25 +97,17 @@
    {
     "arquivo": "src/App.tsx",
     "mudancas": 4
-   },
-   {
-    "arquivo": "src/components/admin/AdminCoursesTab.tsx",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "src/components/admin/QuizQuestionCard.tsx",
-    "mudancas": 4
    }
   ]
  },
  "contagens": {
-  "arquivos": 600,
-  "arquivos_de_codigo": 490,
-  "linhas_de_codigo": 68700,
+  "arquivos": 602,
+  "arquivos_de_codigo": 492,
+  "linhas_de_codigo": 69208,
   "componentes": 235,
-  "hooks": 123,
+  "hooks": 124,
   "paginas": 27,
-  "testes": 79,
+  "testes": 80,
   "edge_functions": 13,
   "rotas": 27,
   "tabelas": 70,
@@ -145,10 +145,10 @@
   "src/hooks": 63,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 25,
+  "src/lib": 26,
   "src/main.tsx": 1,
   "src/pages": 27,
-  "src/test": 79,
+  "src/test": 80,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
   "supabase/functions": 14,
@@ -249,16 +249,16 @@
    "linhas": 325
   },
   {
+   "arquivo": "src/pages/Profile.tsx",
+   "linhas": 324
+  },
+  {
    "arquivo": "src/components/admin/LearningPathCoursesManager.tsx",
    "linhas": 323
   },
   {
    "arquivo": "src/components/admin/LessonForm.tsx",
    "linhas": 323
-  },
-  {
-   "arquivo": "src/pages/Profile.tsx",
-   "linhas": 322
   },
   {
    "arquivo": "src/components/gamification/XPAnimations.tsx",
@@ -339,7 +339,7 @@
   "preview": "vite preview"
  },
  "alertas": {
-  "componentes_orfaos": 31,
+  "componentes_orfaos": 30,
   "componentes_com_nome_duplicado": 3,
   "hooks_sem_uso": 23,
   "ciclos_de_import": 0,

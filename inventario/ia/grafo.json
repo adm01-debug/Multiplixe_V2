@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 490,
- "arestas": 1342,
+ "nos": 492,
+ "arestas": 1355,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
@@ -18,7 +18,7 @@
   },
   {
    "arquivo": "src/lib/utils.ts",
-   "importado_por": 67
+   "importado_por": 68
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -85,6 +85,10 @@
    "importado_por": 11
   },
   {
+   "arquivo": "src/lib/i18n.ts",
+   "importado_por": 11
+  },
+  {
    "arquivo": "src/components/seo/DynamicSEO.tsx",
    "importado_por": 10
   },
@@ -98,10 +102,6 @@
   },
   {
    "arquivo": "src/components/PrefetchLink.tsx",
-   "importado_por": 9
-  },
-  {
-   "arquivo": "src/lib/i18n.ts",
    "importado_por": 9
   },
   {
@@ -161,7 +161,6 @@
   "src/components/ui/ActionFeedback.tsx",
   "src/components/ui/Banner.tsx",
   "src/components/ui/KeyboardShortcut.tsx",
-  "src/components/ui/ThemeCustomizer.tsx",
   "src/components/ui/accordion.tsx",
   "src/components/ui/aspect-ratio.tsx",
   "src/components/ui/breadcrumb.tsx",
@@ -1014,6 +1013,7 @@
    "src/components/LanguageToggle.tsx",
    "src/components/ThemeToggle.tsx",
    "src/components/landing/SearchOverlay.tsx",
+   "src/components/ui/ThemeCustomizer.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/hover-card.tsx",
    "src/components/ui/sheet.tsx"
@@ -1378,7 +1378,11 @@
   ],
   "src/components/ui/ThemeCustomizer.tsx": [
    "src/components/ui/button.tsx",
-   "src/components/ui/sheet.tsx"
+   "src/components/ui/sheet.tsx",
+   "src/hooks/useUserPreferences.ts",
+   "src/lib/i18n.ts",
+   "src/lib/themePresets.ts",
+   "src/lib/utils.ts"
   ],
   "src/components/ui/accordion.tsx": [
    "src/lib/utils.ts"
@@ -1748,7 +1752,8 @@
   ],
   "src/hooks/useUserPreferences.ts": [
    "src/hooks/useAuth.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/themePresets.ts"
   ],
   "src/hooks/useUserSessions.ts": [
    "src/hooks/useAuth.tsx",
@@ -1811,13 +1816,17 @@
   "src/lib/telemetry.ts": [
    "src/integrations/supabase/client.ts"
   ],
+  "src/lib/themePresets.ts": [
+   "src/lib/i18n.ts"
+  ],
   "src/lib/toastHelpers.ts": [],
   "src/lib/utils.ts": [],
   "src/main.tsx": [
    "src/App.tsx",
    "src/components/accessibility/LiveAnnouncer.tsx",
    "src/components/accessibility/ReducedMotionProvider.tsx",
-   "src/index.css"
+   "src/index.css",
+   "src/lib/themePresets.ts"
   ],
   "src/pages/Admin.tsx": [
    "src/components/admin/AdminCoursesTab.tsx",
@@ -2057,6 +2066,7 @@
    "src/components/LevelProgress.tsx",
    "src/components/profile/ProfileHeader.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/ui/ThemeCustomizer.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/icon-tooltip.tsx",
    "src/components/ui/progress.tsx",
@@ -2213,7 +2223,9 @@
    "src/lib/chapters.ts",
    "src/lib/i18n.ts"
   ],
-  "src/test/colorContrast.test.ts": [],
+  "src/test/colorContrast.test.ts": [
+   "src/lib/themePresets.ts"
+  ],
   "src/test/componentArchitecture.test.ts": [],
   "src/test/continueLearning.test.ts": [
    "src/lib/continueLearning.ts"
@@ -2372,6 +2384,11 @@
   ],
   "src/test/telemetryHook.test.ts": [
    "src/hooks/useTelemetry.ts"
+  ],
+  "src/test/themePresets.test.tsx": [
+   "src/components/ui/ThemeCustomizer.tsx",
+   "src/hooks/useUserPreferences.ts",
+   "src/lib/themePresets.ts"
   ],
   "src/test/toastHelpers.test.ts": [
    "src/lib/toastHelpers.ts"

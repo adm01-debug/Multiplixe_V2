@@ -10,6 +10,7 @@ import DepartmentLeaderboard from '@/components/leaderboard/DepartmentLeaderboar
 import DepartmentChallenges from '@/components/gamification/DepartmentChallenges';
 import CategoryLeaderboard from '@/components/leaderboard/CategoryLeaderboard';
 import LeaguePanel from '@/components/leaderboard/LeaguePanel';
+import StudyBuddies from '@/components/social/StudyBuddies';
 import EmptyState from '@/components/EmptyState';
 import { LeaderboardSkeleton } from '@/components/skeletons/PageSkeletons';
 import { Trophy, Star, TrendingUp, Users, Calendar, CalendarDays, Infinity, Building2, Award, Shield } from 'lucide-react';
@@ -239,6 +240,7 @@ const Leaderboard = () => {
             <div className="space-y-4">
             <DepartmentLeaderboard limit={20} />
             <DepartmentChallenges limit={5} />
+                        <StudyBuddies />
           </div>
           </TabsContent>
 

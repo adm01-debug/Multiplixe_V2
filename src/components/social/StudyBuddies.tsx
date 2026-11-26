@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Users, Flame, ChevronRight, Crown, Zap } from "lucide-react";
+import { Users, ChevronRight, Crown, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,11 +12,8 @@ interface StudyBuddy {
   id: string;
   name: string;
   avatar_url: string | null;
-  department: string | null;
   current_level: number;
   total_xp: number;
-  current_streak: number;
-  isOnline: boolean;
 }
 
 const StudyBuddies = () => {
@@ -32,99 +28,23 @@ const StudyBuddies = () => {
       setLoading(true);
 
       try {
-        // Get user's department
-        const { data: userProfile } = await supabase
-          .from("profiles")
-          .select("department")
-          .eq("user_id", user.id)
-          .single();
+        // Mesma fonte do ranking: get_leaderboard e SECURITY DEFINER, entao
+        // enxerga o nome e o XP de outros alunos (as tabelas profiles/user_xp
+        // tem RLS restrita ao proprio usuario).
+        const { data } = await supabase.rpc("get_leaderboard", { p_limit: 20, p_period: "all" });
+        const colegas = (data || [])
+          .filter((u: { user_id: string }) => u.user_id !== user.id)
+          .slice(0, 5);
 
-        // Fetch colleagues from same department
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select(`
-            user_id,
-            full_name,
-            avatar_url,
-            department
-          `)
-          .eq("department", userProfile?.department || "")
-          .neq("user_id", user.id)
-          .limit(5);
-
-        if (!profiles || profiles.length === 0) {
-          // If no colleagues, get top performers
-          const { data: topUsers } = await supabase
-            .from("user_xp")
-            .select(`
-              user_id,
-              current_level,
-              total_xp
-            `)
-            .neq("user_id", user.id)
-            .order("total_xp", { ascending: false })
-            .limit(5);
-
-          if (topUsers) {
-            const userIds = topUsers.map((u) => u.user_id);
-            const { data: topProfiles } = await supabase
-              .from("profiles")
-              .select("user_id, full_name, avatar_url, department")
-              .in("user_id", userIds);
-
-            const { data: streaks } = await supabase
-              .from("user_streaks")
-              .select("user_id, current_streak")
-              .in("user_id", userIds);
-
-            const buddiesData: StudyBuddy[] = topUsers.map((xp) => {
-              const profile = topProfiles?.find((p) => p.user_id === xp.user_id);
-              const streak = streaks?.find((s) => s.user_id === xp.user_id);
-              return {
-                id: xp.user_id,
-                name: profile?.full_name || "Usuário",
-                avatar_url: profile?.avatar_url,
-                department: profile?.department,
-                current_level: xp.current_level,
-                total_xp: xp.total_xp,
-                current_streak: streak?.current_streak || 0,
-                isOnline: Math.random() > 0.5, // Simulate online status
-              };
-            });
-
-            setBuddies(buddiesData);
-          }
-        } else {
-          // Get XP and streaks for colleagues
-          const userIds = profiles.map((p) => p.user_id);
-
-          const { data: xpData } = await supabase
-            .from("user_xp")
-            .select("user_id, current_level, total_xp")
-            .in("user_id", userIds);
-
-          const { data: streaks } = await supabase
-            .from("user_streaks")
-            .select("user_id, current_streak")
-            .in("user_id", userIds);
-
-          const buddiesData: StudyBuddy[] = profiles.map((profile) => {
-            const xp = xpData?.find((x) => x.user_id === profile.user_id);
-            const streak = streaks?.find((s) => s.user_id === profile.user_id);
-            return {
-              id: profile.user_id,
-              name: profile.full_name || "Usuário",
-              avatar_url: profile.avatar_url,
-              department: profile.department,
-              current_level: xp?.current_level || 1,
-              total_xp: xp?.total_xp || 0,
-              current_streak: streak?.current_streak || 0,
-              isOnline: Math.random() > 0.5,
-            };
-          });
-
-          setBuddies(buddiesData);
-        }
+        setBuddies(
+          colegas.map((u: { user_id: string; display_name: string | null; avatar_url: string | null; total_xp: number | null; current_level: number | null }) => ({
+            id: u.user_id,
+            name: u.display_name || "Colega",
+            avatar_url: u.avatar_url,
+            current_level: u.current_level || 1,
+            total_xp: u.total_xp || 0,
+          })),
+        );
       } catch {
         // Silent fail
       } finally {
@@ -188,7 +108,7 @@ const StudyBuddies = () => {
               Nenhum colega encontrado ainda.
             </p>
             <p className="text-sm text-muted-foreground/70 mt-1">
-              Complete seu perfil para conectar-se com colegas do seu departamento.
+              Assim que outros alunos aparecerem no ranking, eles ficam listados aqui.
             </p>
           </div>
         ) : (
@@ -202,7 +122,7 @@ const StudyBuddies = () => {
                 className="p-4 hover:bg-muted/50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  {/* Avatar with online indicator */}
+                  {/* Avatar */}
                   <div className="relative">
                     <Avatar className="h-12 w-12 border-2 border-border/50">
                       <AvatarImage src={buddy.avatar_url || undefined} />
@@ -210,9 +130,6 @@ const StudyBuddies = () => {
                         {buddy.name.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    {buddy.isOnline && (
-                      <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full" />
-                    )}
                     {/* Level badge */}
                     <span className="absolute -top-1 -right-1 bg-gradient-to-r from-primary to-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                       {buddy.current_level}
@@ -234,21 +151,11 @@ const StudyBuddies = () => {
                         <Zap className="h-3 w-3 text-amber-500" />
                         {buddy.total_xp.toLocaleString()} XP
                       </span>
-                      {buddy.current_streak > 0 && (
-                        <span className="flex items-center gap-1">
-                          <Flame className="h-3 w-3 text-rose-500" />
-                          {buddy.current_streak} dias
-                        </span>
-                      )}
+
                     </div>
                   </div>
 
-                  {/* Department badge */}
-                  {buddy.department && (
-                    <Badge variant="outline" className="text-xs capitalize shrink-0">
-                      {buddy.department}
-                    </Badge>
-                  )}
+
                 </div>
               </motion.div>
             ))}

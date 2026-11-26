@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (76)
+### ✅ Melhorias JÁ IMPLEMENTADAS (77)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (23)
+## ⏳ MELHORIAS PENDENTES (22)
 
 ### 🎨 UX/UI - 2 Pendentes
 
@@ -352,7 +352,7 @@ Efeito: o card de catalogo passou a pedir 320–640px no celular em vez de baixa
 
 ---
 
-### 🚀 FUNCIONALIDADES - 5 Pendentes
+### 🚀 FUNCIONALIDADES - 4 Pendentes
 
 #### FUNC-002: Favoritar Cursos ✅ CONCLUÍDO
 **Prioridade:** 🟡 Média  
@@ -487,7 +487,7 @@ QR de verificacao ficou fora: exigiria uma dependencia de encoder de QR (nao exi
 
 ---
 
-#### FUNC-009: Flashcards de Revisão
+#### FUNC-009: Flashcards de Revisão ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 8h  
 **Descrição:** Não há sistema de revisão espaçada.
@@ -500,6 +500,9 @@ QR de verificacao ficou fora: exigiria uma dependencia de encoder de QR (nao exi
 4. XP por revisões corretas
 5. Componente FlashcardPlayer.tsx
 ```
+
+**Status:** ✅ Implementado em 26/11.
+**Evidência:** migration `supabase/migrations/20261127090000_flashcards_srs.sql` aplicada em produção (tabelas `flashcards` e `user_flashcard_progress` + RPCs `review_flashcard`, `get_due_flashcards`, `get_flashcard_overview`, RLS nas duas tabelas); replay em transação com `rollback` provou os prazos (10min/1d/6d), o XP por nota (0/3/5/7) e as permissões (authenticated sim, anon não); 7 cartões semeados no curso Excel vinculados às aulas reais. Front: `src/pages/Flashcards.tsx` (rota `/flashcards`), `src/components/flashcards/FlashcardPlayer.tsx`, `src/components/admin/AdminFlashcardsTab.tsx`, `src/hooks/useFlashcards.ts`, `src/lib/flashcardSrs.ts` (6 testes). PR #68 mergeada em `main` (`3600e01`); deploy confirmado no bundle de produção (`Flashcards-CZXN0Wim.js`, `useFlashcards-IaR_niNG.js`, `AdminFlashcardsTab-Ce9rmoRz.js`).
 
 ---
 
@@ -1994,17 +1997,17 @@ CREATE TABLE public.webhook_endpoints (
 | Categoria | Pendentes | Esforço Est. |
 |-----------|-----------|--------------|
 | UX/UI | 2 | ~10h |
-| Performance | 1 | ~4h |
-| Funcionalidades | 11 | ~47h |
+| Performance | 0 | — |
+| Funcionalidades | 4 | ~30h |
 | Acessibilidade | 0 | — |
-| Segurança | 3 | ~6h |
+| Segurança | 0 | — |
 | SEO | 0 | — |
-| Gamificação | 11 | ~59h |
-| Administrativas | 5 | ~20h |
-| Mobile | 2 | ~7h |
+| Gamificação | 6 | ~40h |
+| Administrativas | 1 | ~4h |
+| Mobile | 1 | ~4h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **23** | **~128h** |
+| **TOTAL PENDENTE** | **22** | **~120h** |
 
 ---
 

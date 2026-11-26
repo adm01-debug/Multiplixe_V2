@@ -11,7 +11,7 @@
 
 Após análise exaustiva do repositório, identifiquei **102 melhorias** no plano original (27/12/2024). Muitas já foram implementadas com sucesso. Este documento lista apenas as **PENDENTES**.
 
-### ✅ Melhorias JÁ IMPLEMENTADAS (87)
+### ✅ Melhorias JÁ IMPLEMENTADAS (88)
 
 | ID | Melhoria | Status |
 |----|----------|--------|
@@ -34,6 +34,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 | FUNC-018 | Velocidade de Vídeo Personalizada | ✅ Implementado |
 | GAME-001 | Desafios Diários (DailyChallenges.tsx) | ✅ Implementado |
 | GAME-012 | Sistema de Reputação (ReputacaoCard, detalhar_reputacao) | ✅ Implementado |
+| GAME-008 | Missões Coletivas por Departamento (DepartmentChallenges, department_challenges) | ✅ Implementado |
 | MOB-001 | PWA Completo (manifest.json, sw.js) | ✅ Implementado |
 | MOB-003 | Bottom Navigation (MobileBottomNav.tsx) | ✅ Implementado |
 | MOB-002 | Gestos Mobile (useGestosMobile.ts, swipe e pull-to-refresh) | ✅ Implementado |
@@ -1369,7 +1370,7 @@ Baseline medido com Lighthouse 12 (Chrome headless, mobile, throttling padrão) 
 Medição local sobre o build de produção (`vite preview`, mesmo Lighthouse mobile): **Performance 0.83**, FCP 3,0 s, **LCP 3,9 s**, CLS 0, TBT 30 ms; `render-blocking-resources` caiu para só o CSS da aplicação (1058 ms) e nenhuma requisição de fonte externa. `dist/index.html` não pré-carrega mais `chart-vendor`. Suíte 69 arquivos / 541 testes, `tsc -b` 0 erro, eslint limpo.
 ---
 
-### 🎮 GAMIFICAÇÃO - 2 Pendentes
+### 🎮 GAMIFICAÇÃO - 1 Pendente
 
 #### GAME-002: Desafios Semanais ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
@@ -1558,7 +1559,7 @@ O aluno ganhava moeda (GAME-006) mas não tinha o que fazer com ela além de cos
 - Deploy provado no bundle servido de `https://multiplixe-v2.vercel.app`: `assets/index-DgPT0H73.js` contém "Nenhum power-up na mochila" e a mensagem da blindagem traduzida.
 ---
 
-#### GAME-008: Missões de Equipe/Departamento
+#### GAME-008: Missões de Equipe/Departamento ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 8h  
 **Descrição:** Gamificação é individual.
@@ -1570,6 +1571,19 @@ O aluno ganhava moeda (GAME-006) mas não tinha o que fazer com ela além de cos
 3. Missões colaborativas por departamento
 4. Já existe DepartmentLeaderboard - expandir
 ```
+
+**Entregue em 26/11/2026**
+
+`profiles.department` existia, mas nenhuma missão olhava para o time: todo XP e toda meta eram individuais.
+
+- `supabase/migrations/20261128180000_desafios_departamento.sql` (nova, já aplicada em produção): tabelas `department_challenges` (título, descrição, `department` nulo = todos, métrica `xp|lessons|courses`, meta > 0, recompensa ≥ 0, janela com `ends_at > starts_at`, `is_active`, autor) e `department_challenge_claims` (única por `challenge_id + user_id`, FK em cascata); `department_challenge_progresso(uuid)` soma o progresso real da equipe na janela (XP por `user_xp_history`, aulas por `user_lesson_progress`, cursos por `user_course_progress`) e devolve participantes e membros do escopo; `get_my_department_challenges()` entrega só as missões que valem para o usuário (globais + as do seu departamento); `resgatar_desafio_departamento(uuid)` paga via `add_user_xp(..., 'department')` com `insert ... on conflict do nothing` e devolve `not_found | period | other_department | already_claimed | not_completed`; `get_admin_department_challenges()` (só admin, `42501` para os demais) com progresso, participantes e nº de resgates. RLS nas duas tabelas, policies por escopo, `anon` revogado e a função interna de progresso restrita a `service_role`. Índices por missão ativa, departamento e resgates. Duas missões semanais semeadas (500 XP em equipe → 100 XP; 20 aulas → 75 XP).
+- `src/hooks/useDepartmentChallenges.ts` (react-query + resgate com toast traduzido e invalidação do cache) e `src/hooks/useAdminMissions.ts` (criar, editar, ativar/desativar, excluir).
+- `src/components/gamification/DepartmentChallenges.tsx` na aba **Equipes** de `src/pages/Leaderboard.tsx`: barra de progresso coletivo, participantes/membros, prazo em dias, recompensa, botão "Resgatar bônus" e selo de bônus já resgatado, com estados de carregando, erro e vazio.
+- `src/components/admin/AdminMissionsTab.tsx` + aba **Missões** em `src/pages/Admin.tsx`: CRUD completo, switch de ativa, progresso, participantes e resgates por missão.
+- Textos nos três dicionários de `src/lib/i18n.ts` e tipos declarados em `src/integrations/supabase/types.ts`.
+
+**Verificado de verdade (produção, transação com ROLLBACK):** 30+ asserções na migration (progresso por XP, aulas e cursos, escopo de departamento devolvendo zero para o time alheio, dupla reclamação barrada, missão fora do período, `anon` e `authenticated` sem `execute` na função interna, painel do admin com `42501` para aluno) e aplicação real conferida (2 missões ativas, progresso real de 35 XP e 1 aula na semana, RLS `on` nas duas tabelas, `department_challenge_claims` vazia).
+- `tsc` 0 erros · `eslint` 0 nos arquivos novos · `vitest` 5/5 em `src/test/departmentChallenges.test.tsx` · guard de Supabase 0 violações · 85 testes unitários · `vite build` OK · produção serve `get_my_department_challenges`/`resgatar_desafio_departamento` no chunk `useDepartmentChallenges-D3pIcDdp.js` e a aba admin em `AdminMissionsTab-C5SLFPT8.js` (PR #89).
 
 ---
 

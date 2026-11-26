@@ -148,3 +148,14 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   `20261126170000_landing_publica_cursos_publicados.sql` cria a policy
   `Public can view published courses` (`to anon`, `using (is_published = true)`): só cursos publicados,
   o resto (`lessons`, progresso, dados de usuário) continua exigindo sessão.
+
+- **Função `SECURITY DEFINER` interna não pode ter `EXECUTE` público**: a chave publicável vai no
+  bundle do site, então qualquer `GRANT EXECUTE ... TO anon` é uma API pública. `recalculate_user_goals(uuid)`
+  e `get_performance_comparison()` estavam liberadas para `anon`: a primeira escrevia nas metas de **outra
+  conta** (a guarda interna só compara `auth.uid()` quando ele existe, e para anônimo é `NULL`), a segunda
+  devolvia médias da turma e `student_count`. A migration
+  `20261126190500_permissao_funcoes_internas_fora_do_anon.sql` revoga as duas de `anon` e nada mais:
+  `has_role` **não** é revogada, porque é avaliada dentro de policies abertas a `anon` (`achievements`,
+  `quizzes`, `learning_paths`, `profiles`) e revogá-la quebraria a leitura pública. Regra: ao criar
+  `SECURITY DEFINER`, `REVOKE EXECUTE ... FROM PUBLIC, anon` e libere só para `authenticated`/`service_role`,
+  com a checagem de dono dentro da função exigindo `auth.uid()` não nulo.

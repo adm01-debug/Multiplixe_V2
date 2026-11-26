@@ -164,7 +164,11 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   `user_roles`, `permissions`) não alcança isso. Mitigação em vigor: `src/hooks/useMFA.ts` (`disableTOTP`)
   recusa o fluxo sem `currentLevel === 'aal2'`; o e-mail de aviso de fator removido depende de SMTP próprio
   (hoje o projeto usa o SMTP compartilhado, `rate_limit_email_sent = 2`/h, por isso o aviso segue desligado).
-- **`quiz_options_public` roda como dono de propósito — não ligue `security_invoker` nela**: `quiz_options`
+  Como o banco não impede a remoção, ele **detecta**: o cron `reconciliar-segundo-fator` (`*/15`, job 12)
+  chama `public.reconciliar_segundo_fator()` (migration `20261129120000`), que compara
+  `user_mfa_settings.totp_enabled` com os fatores verificados de `auth.mfa_factors`, grava um
+  `security_alerts` de severidade `high` ("Segundo fator removido fora do app") e desliga o carimbo para a
+  tela não mentir. O alerta aparece no Painel de Segurança (a tabela está na publicação `supabase_realtime`).- **`quiz_options_public` roda como dono de propósito — não ligue `security_invoker` nela**: `quiz_options`
   tem RLS com policy só para `admin` (`Admins can manage options`), e o aluno lê as alternativas pela view
   (`src/hooks/useQuizzes.ts:73`, `src/pages/AssessmentRunner.tsx:43`, que existe para não expor `is_correct`).
   Medido em 26/11/2026 com a claim de um usuário comum: hoje a view devolve 68 linhas e a tabela devolve 0;

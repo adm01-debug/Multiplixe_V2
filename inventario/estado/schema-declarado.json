@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 75,
     "colunas": 669,
     "views": 1,
-    "funcoes": 110,
+    "funcoes": 111,
     "funcoes_expostas_no_types": 67,
     "enums": 1,
     "policies": 196,
-    "cron_jobs": 5,
+    "cron_jobs": 6,
     "buckets": 1,
-    "migrations": 91,
+    "migrations": 92,
     "alertas": 3,
     "problemas": 3
   },
@@ -2317,6 +2317,18 @@
         "edges": 0
       }
     },
+    "reconciliar_segundo_fator": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public, pg_temp",
+      "criada_em": "20261129120000_detectar_remocao_segundo_fator.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 0
+      }
+    },
     "record_failed_login": {
       "exposta_no_types": true,
       "args": [
@@ -2670,6 +2682,11 @@
       "agenda": "20 3 * * *",
       "chama_edge": null,
       "definido_em": "20261126160000_agendar_limpeza_logs_seguranca.sql"
+    },
+    "reconciliar-segundo-fator": {
+      "agenda": "*/15 * * * *",
+      "chama_edge": null,
+      "definido_em": "20261129120000_detectar_remocao_segundo_fator.sql"
     },
     "refresh-platform-stats": {
       "agenda": "0 * * * *",

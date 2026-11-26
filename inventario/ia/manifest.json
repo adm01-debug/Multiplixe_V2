@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T14:19:59.198Z",
- "commit": "8ba215859e3a5c65cb7fdd021883c39e08ae59cb",
+ "gerado_em": "2026-11-26T14:25:53.913Z",
+ "commit": "c61df0c22bae7d582e041bc18f6b1650720710d6",
  "branch": "claude/feat-game-009-eventos-sazonais-261126-1056",
  "gerador": "scripts/ai-context/gerar.mjs",
  "node": "v22.23.2",
  "arquivos": {
-  "INDEX.md": "e25e0dee8820bd19",
-  "baseline.json": "df22cfff5ec1532d",
+  "INDEX.md": "cb0467b7d669f71f",
+  "baseline.json": "35196fdaad3a599d",
   "componentes.json": "573882910966effd",
   "grafo.json": "14b706b4a6ce8edb",
   "hooks.json": "e9f0d076957c7aa9"
  },
  "contagens": {
-  "arquivos": 643,
+  "arquivos": 631,
   "arquivos_de_codigo": 521,
   "linhas_de_codigo": 74080,
   "componentes": 242,

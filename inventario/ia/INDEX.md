@@ -2,7 +2,7 @@
 
 > GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.
 
-Commit: `8ba215859e3a5c65cb7fdd021883c39e08ae59cb` · branch `claude/feat-game-009-eventos-sazonais-261126-1056` · 2026-11-26T11:16:21-03:00
+Commit: `c61df0c22bae7d582e041bc18f6b1650720710d6` · branch `claude/feat-game-009-eventos-sazonais-261126-1056` · 2026-11-26T11:20:43-03:00
 
 ## Como usar
 
@@ -21,7 +21,7 @@ Commit: `8ba215859e3a5c65cb7fdd021883c39e08ae59cb` · branch `claude/feat-game-0
 
 | | |
 |---|---|
-| arquivos (codigo) | 643 (521) |
+| arquivos (codigo) | 631 (521) |
 | linhas de codigo | 74080 |
 | paginas / rotas | 28 / 28 |
 | componentes / hooks | 242 / 142 |
@@ -119,15 +119,15 @@ Commit: `8ba215859e3a5c65cb7fdd021883c39e08ae59cb` · branch `claude/feat-game-0
 ## Mexido nos ultimos 90 dias
 
 - `PLANO_IMPLEMENTACAO_PENDENTES.md` (54)
+- `inventario/estado/schema-declarado.json` (23)
 - `src/integrations/supabase/types.ts` (23)
-- `inventario/estado/schema-declarado.json` (22)
-- `inventario/ia/baseline.json` (21)
-- `inventario/ia/INDEX.md` (21)
-- `inventario/ia/manifest.json` (21)
-- `inventario/ia/componentes.json` (18)
-- `inventario/ia/grafo.json` (17)
-- `inventario/estado/rotas.json` (16)
-- `inventario/ia/hooks.json` (16)
+- `inventario/ia/baseline.json` (22)
+- `inventario/ia/INDEX.md` (22)
+- `inventario/ia/manifest.json` (22)
+- `inventario/ia/componentes.json` (19)
+- `inventario/ia/grafo.json` (18)
+- `inventario/estado/rotas.json` (17)
+- `inventario/ia/hooks.json` (17)
 
 ## Scripts npm
 

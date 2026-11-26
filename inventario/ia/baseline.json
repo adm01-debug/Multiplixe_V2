@@ -2,10 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "8ba215859e3a5c65cb7fdd021883c39e08ae59cb",
+  "commit": "c61df0c22bae7d582e041bc18f6b1650720710d6",
   "branch": "claude/feat-game-009-eventos-sazonais-261126-1056",
-  "data_commit": "2026-11-26T11:16:21-03:00",
+  "data_commit": "2026-11-26T11:20:43-03:00",
   "ultimos_commits": [
+   "c61df0c fix: arredonda o multiplicador de XP como o banco e atualiza inventarios",
    "8ba2158 fix: mostra o multiplicador de XP com a mesma precisao do rotulo",
    "b6768c4 fix: corrige fuso do admin, precisao do XP e traducao da aba de eventos",
    "4e8723d feat: eventos sazonais com bonus de XP (GAME-009)",
@@ -14,8 +15,7 @@
    "24fca83 chore: marca GAME-012 (reputacao social) como concluido no plano",
    "cbdcd34 feat: reputacao social no perfil (GAME-012) (#87)",
    "3d945ba chore: marca MOB-002 (gestos mobile) como concluido no plano (#86)",
-   "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)",
-   "27a4c58 chore: marca FUNC-007 (mentoria) e FUNC-017 (transcricao) como implementadas (#84)"
+   "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)"
   ],
   "arquivos_mais_mudados_90d": [
    {
@@ -23,40 +23,40 @@
     "mudancas": 54
    },
    {
+    "arquivo": "inventario/estado/schema-declarado.json",
+    "mudancas": 23
+   },
+   {
     "arquivo": "src/integrations/supabase/types.ts",
     "mudancas": 23
    },
    {
-    "arquivo": "inventario/estado/schema-declarado.json",
+    "arquivo": "inventario/ia/baseline.json",
     "mudancas": 22
    },
    {
-    "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 21
-   },
-   {
     "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 21
+    "mudancas": 22
    },
    {
     "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 21
+    "mudancas": 22
    },
    {
     "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "inventario/ia/hooks.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "src/lib/i18n.ts",
@@ -101,7 +101,7 @@
   ]
  },
  "contagens": {
-  "arquivos": 643,
+  "arquivos": 631,
   "arquivos_de_codigo": 521,
   "linhas_de_codigo": 74080,
   "componentes": 242,
@@ -121,15 +121,6 @@
   "PLANO_IMPLEMENTACAO_PENDENTES.md": 1,
   "PLANO_MELHORIAS.md": 1,
   "README.md": 1,
-  "_check-cap.sql": 1,
-  "_probe.sql": 1,
-  "_valida-achados.sql": 1,
-  "_valida-capitulos.sql": 1,
-  "_valida-contra.sql": 1,
-  "_valida-game009-full.sql": 1,
-  "_valida-game009.sql": 1,
-  "_valida-precisao-full.sql": 1,
-  "_valida-precisao.sql": 1,
   "bun.lock": 1,
   "bun.lockb": 1,
   "components.json": 1,
@@ -139,7 +130,6 @@
   "package-lock.json": 1,
   "package.json": 1,
   "postcss.config.js": 1,
-  "pr-body.md": 1,
   "progress.txt": 1,
   "scripts/ai-context": 1,
   "scripts/ci": 11,
@@ -159,10 +149,8 @@
   "supabase/migrations": 81,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
-  "tsconfig.app.tsbuildinfo": 1,
   "tsconfig.json": 1,
   "tsconfig.node.json": 1,
-  "tsconfig.node.tsbuildinfo": 1,
   "vercel.json": 1,
   "vite.config.ts": 1,
   "vitest.config.ts": 1

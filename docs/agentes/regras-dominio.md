@@ -158,6 +158,12 @@ VERIFICADO** —, rotacionar a `service_role` no Supabase. Nunca cite a chave an
   `quizzes`, `learning_paths`, `profiles`) e revogá-la quebraria a leitura pública. Regra: ao criar
   `SECURITY DEFINER`, `REVOKE EXECUTE ... FROM PUBLIC, anon` e libere só para `authenticated`/`service_role`,
   com a checagem de dono dentro da função exigindo `auth.uid()` não nulo.
+- **Remover o fator TOTP (`unenroll`) é do serviço Auth, não do banco**: medido em 26/11/2026 — `DELETE
+  /auth/v1/factors/{id}` responde `200` com token `aal1`, e `mfa_allow_low_aal = false` não impede. Ou seja,
+  quem só tem a senha consegue apagar o segundo fator pela API; o RLS das tabelas (`user_mfa_settings`,
+  `user_roles`, `permissions`) não alcança isso. Mitigação em vigor: `src/hooks/useMFA.ts` (`disableTOTP`)
+  recusa o fluxo sem `currentLevel === 'aal2'`; o e-mail de aviso de fator removido depende de SMTP próprio
+  (hoje o projeto usa o SMTP compartilhado, `rate_limit_email_sent = 2`/h, por isso o aviso segue desligado).
 - **`quiz_options_public` roda como dono de propósito — não ligue `security_invoker` nela**: `quiz_options`
   tem RLS com policy só para `admin` (`Admins can manage options`), e o aluno lê as alternativas pela view
   (`src/hooks/useQuizzes.ts:73`, `src/pages/AssessmentRunner.tsx:43`, que existe para não expor `is_correct`).

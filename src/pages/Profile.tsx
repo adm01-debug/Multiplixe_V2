@@ -15,6 +15,7 @@ const AchievementsGrid = lazy(() => import('@/components/AchievementsGrid'));
 const XPEvolutionChart = lazy(() => import('@/components/XPEvolutionChart'));
 const PersonalImpactWidget = lazy(() => import('@/components/profile/PersonalImpactWidget'));
 const ActivityTimeline = lazy(() => import('@/components/activity/ActivityTimeline'));
+const ExportProgress = lazy(() => import('@/components/export/ExportProgress'));
 import { calculateUserLevel } from '@/lib/levelSystem';
 import EmptyState from '@/components/EmptyState';
 import ProfileHeader from '@/components/profile/ProfileHeader';
@@ -160,7 +161,7 @@ const Profile = () => {
         <section className="mb-12"><Suspense fallback={<ChartSkeleton height={300} />}><XPEvolutionChart /></Suspense></section>
 
         <section className="mb-12">
-          <div className="flex items-center gap-4 mb-6"><div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20"><Target className="h-6 w-6 text-blue-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Estatísticas</h3><p className="text-sm text-muted-foreground">Seu progresso de aprendizado</p></div></div>
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6"><div className="flex items-center gap-4"><div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20"><Target className="h-6 w-6 text-blue-500" /></div><div><h3 className="text-2xl font-display font-bold text-foreground">Estatísticas</h3><p className="text-sm text-muted-foreground">Seu progresso de aprendizado</p></div></div><Suspense fallback={null}><ExportProgress /></Suspense></div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {statCards.map((stat) => { const IC = stat.icon; return (
               <div key={stat.label} className="group relative p-6 rounded-2xl bg-card/80 border border-border/50 neon-card hover:-translate-y-1 transition-all duration-300">

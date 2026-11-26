@@ -44,7 +44,7 @@ Após análise exaustiva do repositório, identifiquei **102 melhorias** no plan
 
 ---
 
-## ⏳ MELHORIAS PENDENTES (30)
+## ⏳ MELHORIAS PENDENTES (29)
 
 ### 🎨 UX/UI - 8 Pendentes
 
@@ -1129,7 +1129,7 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 
 ---
 
-#### SEO-005: Página 404 Otimizada
+#### SEO-005: Página 404 Otimizada ✅ CONCLUÍDO
 **Prioridade:** 🟢 Baixa  
 **Esforço:** 2h  
 **Descrição:** NotFound.tsx existe mas pode melhorar.
@@ -1140,6 +1140,19 @@ Já aplicado por PR anterior e conferido **na produção** (resposta real de
 2. Adicionar sugestões de páginas
 3. Link para catálogo e dashboard
 4. Busca inline
+```
+
+**Entrega (2026-11-26):**
+```text
+- NotFound.tsx reescrito em portugues: ilustracao, titulo "Nao encontramos esta pagina", busca inline
+  que manda o termo para o catalogo (/catalogo?q=...), atalhos para inicio e dashboard e links para
+  catalogo, trilhas, playbooks e biblioteca de videos.
+- DynamicSEO ganhou a prop opcional noIndex; a 404 sai com meta robots "noindex, follow" (nao polui o
+  indice) e continua com title/description proprios.
+- Catalog passou a iniciar a busca pelo parametro q da URL, entao a busca da 404 chega filtrada de
+  verdade (antes o parametro era ignorado).
+- Testes: src/test/notFound.test.tsx (2 casos: conteudo/atalhos/noindex, busca levando o termo) e um
+  caso novo em src/test/catalogInfiniteScroll.test.tsx provando que /catalogo?q=Curso%2025 filtra a lista.
 ```
 
 ---
@@ -1717,13 +1730,13 @@ CREATE TABLE public.webhook_endpoints (
 | Funcionalidades | 11 | ~47h |
 | Acessibilidade | 0 | — |
 | Segurança | 3 | ~6h |
-| SEO | 3 | ~8h |
+| SEO | 2 | ~6h |
 | Gamificação | 11 | ~59h |
 | Administrativas | 5 | ~20h |
 | Mobile | 2 | ~7h |
 | Integração | 4 | ~22h |
 | Refatorações | 4 | ~10h |
-| **TOTAL PENDENTE** | **31** | **~202h** |
+| **TOTAL PENDENTE** | **30** | **~200h** |
 
 ---
 

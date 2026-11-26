@@ -1,4 +1,5 @@
 import { useCallback, useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,6 +42,7 @@ interface Course {
 
 const Catalog = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading: authLoading, signOut } = useAuth();
   const { data: courses = [], isLoading: coursesLoading, isStale: coursesStale, isFetching: coursesFetching, refetch: refetchCourses } = useCourses();
   const { data: categories = [], isLoading: categoriesLoading, isStale: categoriesStale, isFetching: categoriesFetching, refetch: refetchCategories } = useCategories();
@@ -49,7 +51,7 @@ const Catalog = () => {
   const isFetching = coursesFetching || categoriesFetching;
   const handleRefresh = useCallback(() => { refetchCourses(); refetchCategories(); }, [refetchCourses, refetchCategories]);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") ?? "");
   const debouncedSearch = useDebouncedValue(searchQuery, 300);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);

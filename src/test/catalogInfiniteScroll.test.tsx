@@ -49,11 +49,11 @@ vi.mock("@/hooks/useFavorites", () => ({
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
-const renderCatalog = () => {
+const renderCatalog = (initialEntries: string[] = ["/"]) => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
     <QueryClientProvider client={client}>
-      <MemoryRouter>
+      <MemoryRouter initialEntries={initialEntries}>
         <TooltipProvider>
           <Catalog />
         </TooltipProvider>
@@ -112,4 +112,16 @@ describe("paginacao do catalogo (PERF-003)", () => {
     expect(items.length).toBeLessThan(12);
     expect(loadMoreButton()).not.toBeInTheDocument();
   });
+
+      it("inicia a busca pelo parametro q da URL (atalho da pagina 404)", async () => {
+        localStorage.setItem("catalog-view", "list");
+        renderCatalog(["/catalogo?q=Curso%2025"]);
+
+        await waitFor(() => {
+          const items = screen.getAllByRole("listitem");
+          expect(items).toHaveLength(1);
+          expect(items[0].textContent).toContain("Curso 25");
+        });
+        expect(loadMoreButton()).not.toBeInTheDocument();
+      });
 });

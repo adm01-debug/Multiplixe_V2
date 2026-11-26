@@ -6,6 +6,7 @@ interface DynamicSEOProps {
   image?: string;
   url?: string;
   type?: 'website' | 'article' | 'course';
+  noIndex?: boolean;
   course?: {
     name: string;
     description: string;
@@ -25,7 +26,8 @@ const DynamicSEO = ({
   image = DEFAULT_IMAGE,
   url = BASE_URL,
   type = 'website',
-  course
+    course,
+    noIndex = false
 }: DynamicSEOProps) => {
   const fullTitle = title.includes('MULTIPLIXE') ? title : `${title} | MULTIPLIXE`;
   
@@ -79,7 +81,7 @@ const DynamicSEO = ({
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
       <meta name="description" content={description} />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={noIndex ? 'noindex, follow' : 'index, follow'} />
       <meta name="language" content="Portuguese" />
       <meta name="author" content="Promo Brindes" />
       

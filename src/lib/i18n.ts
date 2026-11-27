@@ -20,6 +20,7 @@ const dict = {
       onboarding: "Onboarding",
       assessments: "Avaliações",
       logout: "Sair",
+      search: "Buscar no Multiplixe",
     },
     dashboard: {
       welcome: "Bem-vindo",
@@ -255,6 +256,7 @@ const dict = {
       onboarding: "Onboarding",
       assessments: "Assessments",
       logout: "Sign out",
+      search: "Search Multiplixe",
     },
     dashboard: {
       welcome: "Welcome",

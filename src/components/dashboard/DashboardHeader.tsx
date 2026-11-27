@@ -4,7 +4,7 @@ import NotificationBell from '@/components/NotificationBell';
 import CacheIndicator from '@/components/ui/CacheIndicator';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route, Brain, ShoppingBag, UserCheck } from 'lucide-react';
+import { GraduationCap, Trophy, LogOut, Sparkles, Zap, ShieldAlert, Route, Brain, ShoppingBag, UserCheck, Search } from 'lucide-react';
 import LanguageToggle from '@/components/LanguageToggle';
 import { useT } from '@/lib/i18n';
 import { useWallet } from '@/hooks/useWallet';
@@ -81,6 +81,22 @@ const DashboardHeader = ({ userName, totalXP, isAdmin, coursesStale, coursesFetc
 
           <div className="flex items-center gap-3">
             <LanguageToggle />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label={t('nav.search')}
+                    onClick={() => document.dispatchEvent(new Event('multiplixe:abrir-busca'))}
+                    className="rounded-xl border-border/50 h-11 w-11 neon-border"
+                  >
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent><p>{t('nav.search')}</p></TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <TooltipProvider>
               <Tooltip><TooltipTrigger asChild><div><NotificationBell /></div></TooltipTrigger><TooltipContent><p>Notificações</p></TooltipContent></Tooltip>
             </TooltipProvider>

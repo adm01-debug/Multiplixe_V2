@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 76,
     "colunas": 679,
     "views": 1,
-    "funcoes": 111,
+    "funcoes": 112,
     "funcoes_expostas_no_types": 67,
     "enums": 1,
     "policies": 201,
     "cron_jobs": 8,
     "buckets": 1,
-    "migrations": 94,
+    "migrations": 95,
     "alertas": 3,
     "problemas": 3
   },
@@ -238,7 +238,8 @@
       "rls": true,
       "policies": 5,
       "triggers": [
-        "trg_feedback_updated_at"
+        "trg_feedback_updated_at",
+        "trg_notificar_admin_feedback"
       ],
       "indices": 2,
       "criada_em": "20261129140000_tabela_feedback.sql",
@@ -2508,6 +2509,18 @@
       "criada_em": "20261126180000_quiz_adaptativo.sql",
       "uso_no_codigo": {
         "src": 2,
+        "edges": 0
+      }
+    },
+    "tg_notificar_admin_feedback": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129150000_avisar_admin_feedback_novo.sql",
+      "uso_no_codigo": {
+        "src": 0,
         "edges": 0
       }
     },

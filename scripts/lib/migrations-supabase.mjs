@@ -19,6 +19,14 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const RAIZ_PADRAO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const DIR_PADRAO = 'supabase/migrations';
+
+/**
+ * Nome das policies que o replay reconstroi. Exportado para quem compara as migrations com o
+ * banco ao vivo (scripts/inventario/comparar-banco.mjs): a comparacao precisa do mesmo criterio
+ * de nome que o replay usa, senao acusa divergencia de policy escrita com ou sem aspas.
+ */
+export const nomesDePolicies = (schema) => Object.entries(schema.tabelas)
+  .flatMap(([tabela, t]) => (t.policies ?? []).map((nome) => `${tabela}.${nome}`));
 /** Nome de migration do Supabase: 14 digitos (AAAAMMDDHHMMSS) + _ + resto. */
 export const NOME_MIGRATION = /^(\d{14})_.*\.sql$/;
 

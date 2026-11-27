@@ -27,7 +27,7 @@ interface NotificationPreference {
 }
 
 const PushNotificationManager = () => {
-  const { isSupported, permission, requestPermission, isEnabled } = usePushNotifications();
+  const { isSupported, permission, requestPermission, isEnabled, disableNotifications } = usePushNotifications();
   const [preferences, setPreferences] = useState<NotificationPreference[]>([
     { 
       id: 'security', 
@@ -219,6 +219,10 @@ const PushNotificationManager = () => {
             <Monitor className="h-3.5 w-3.5" />
             <span>Notificações ativas neste dispositivo</span>
           </div>
+          <Button variant="outline" size="sm" onClick={() => disableNotifications()} className="mt-3">
+            <BellOff className="h-4 w-4 mr-2" />
+            Desativar neste dispositivo
+          </Button>
         </div>
       )}
     </motion.div>

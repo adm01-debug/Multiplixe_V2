@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { toast } from 'sonner';
+import { inscricaoPushAtiva, inscreverParaPush, desinscreverDoPush, suportaPush } from '@/lib/pushSubscription';
 
 interface SecurityAlert {
   id: string;
@@ -16,14 +17,16 @@ export const usePushNotifications = () => {
   const { user } = useAuth();
   const [permission, setPermission] = useState<NotificationPermission>('default');
   const [isSupported, setIsSupported] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     // Check if browser supports notifications
-    const supported = 'Notification' in window;
+    const supported = suportaPush();
     setIsSupported(supported);
     
     if (supported) {
       setPermission(Notification.permission);
+      void inscricaoPushAtiva().then(setIsSubscribed);
     }
   }, []);
 
@@ -34,9 +37,11 @@ export const usePushNotifications = () => {
     }
 
     try {
-      const result = await Notification.requestPermission();
+      const inscrito = await inscreverParaPush();
+      const result = Notification.permission;
       setPermission(result);
-      
+      setIsSubscribed(inscrito);
+
       if (result === 'granted') {
         toast.success('Notificações ativadas com sucesso!');
         return true;
@@ -49,7 +54,18 @@ export const usePushNotifications = () => {
       toast.error('Erro ao solicitar permissão de notificações');
       return false;
     }
-  }, [isSupported]);
+  }, [isSupported, user]);
+
+  const disableNotifications = useCallback(async (): Promise<boolean> => {
+    const saiu = await desinscreverDoPush();
+    if (saiu) {
+      setIsSubscribed(false);
+      toast.success('Notificações desativadas neste dispositivo');
+    } else {
+      toast.error('Não foi possível desativar as notificações');
+    }
+    return saiu;
+  }, []);
 
   const showNotification = useCallback((title: string, options?: NotificationOptions) => {
     if (!isSupported || permission !== 'granted') {
@@ -125,6 +141,8 @@ export const usePushNotifications = () => {
     permission,
     requestPermission,
     showNotification,
-    isEnabled: permission === 'granted'
+    disableNotifications,
+    isSubscribed,
+    isEnabled: permission === 'granted' && isSubscribed
   };
 };

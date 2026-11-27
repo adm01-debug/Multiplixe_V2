@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import { supabase } from '@/integrations/supabase/client';
@@ -59,6 +59,10 @@ const TabFallback = () => (
 
 const Admin = () => {
   const navigate = useNavigate();
+  // Permite abrir uma aba direto pela URL (ex.: a notificacao de feedback novo
+  // aponta para /admin?tab=feedback).
+  const [searchParams, setSearchParams] = useSearchParams();
+  const abaAtual = searchParams.get('tab') || 'courses';
     const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useAdminRole();
   const [courses, setCourses] = useState<AdminCourse[]>([]);
@@ -202,7 +206,15 @@ const Admin = () => {
           })}
         </div>
 
-        <Tabs defaultValue="courses" className="space-y-6">
+        <Tabs
+          value={abaAtual}
+          onValueChange={(aba) => {
+            const proximos = new URLSearchParams(searchParams);
+            proximos.set('tab', aba);
+            setSearchParams(proximos, { replace: true });
+          }}
+          className="space-y-6"
+        >
           <div className="relative z-0 overflow-x-auto pb-1">
             <TabsList className="flex w-max gap-1 bg-muted/50 p-1 rounded-lg">
               <TabsTrigger value="courses"><BookOpen className="h-4 w-4 mr-1.5 inline-block align-middle" />Cursos</TabsTrigger>

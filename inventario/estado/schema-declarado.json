@@ -8,13 +8,13 @@
     "tabelas_nas_migrations": 76,
     "colunas": 679,
     "views": 1,
-    "funcoes": 112,
+    "funcoes": 113,
     "funcoes_expostas_no_types": 67,
     "enums": 1,
     "policies": 201,
     "cron_jobs": 8,
     "buckets": 1,
-    "migrations": 95,
+    "migrations": 96,
     "alertas": 3,
     "problemas": 3
   },
@@ -1941,6 +1941,18 @@
       "security_definer": true,
       "search_path": "public",
       "criada_em": "20261128160000_reputacao.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 0
+      }
+    },
+    "get_quiz_options_publicas": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129160000_quiz_options_public_por_funcao.sql",
       "uso_no_codigo": {
         "src": 1,
         "edges": 0

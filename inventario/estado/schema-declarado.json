@@ -3,25 +3,27 @@
   "fonte": "scripts/inventario/gerar-schema.mjs (src/integrations/supabase/types.ts + replay de supabase/migrations/ + .from()/.rpc() em src/ e supabase/functions/)",
   "nao_verificado": "nada aqui prova o banco ao vivo: types.ts e uma foto do momento em que o Lovable o gerou e o replay e o que o repo pediu. Para o estado real: scripts/inventario/banco.sql + gerar-banco.mjs.",
   "resumo": {
-    "tabelas": 76,
+    "tabelas": 77,
     "tabelas_no_types": 76,
-    "tabelas_nas_migrations": 76,
+    "tabelas_nas_migrations": 77,
     "colunas": 679,
     "views": 1,
-    "funcoes": 113,
+    "funcoes": 116,
     "funcoes_expostas_no_types": 67,
     "enums": 1,
-    "policies": 201,
-    "cron_jobs": 8,
+    "policies": 203,
+    "cron_jobs": 9,
     "buckets": 1,
-    "migrations": 96,
-    "alertas": 3,
+    "migrations": 98,
+    "alertas": 4,
     "problemas": 3
   },
   "drift": {
     "criterio": "types.ts (foto do banco) x replay das migrations (o que o repo pede)",
     "so_no_types": [],
-    "so_nas_migrations": [],
+    "so_nas_migrations": [
+      "push_subscriptions"
+    ],
     "referenciadas_sem_create": {
       "user_roles": "20260417174055_98fdd75f-e029-41b3-84a6-bf5c614eddc2.sql"
     },
@@ -420,11 +422,11 @@
       "rls": true,
       "policies": 3,
       "triggers": [],
-      "indices": 6,
+      "indices": 7,
       "criada_em": "20251224141752_4d1be192-3452-4e9b-934d-41aba22063f6.sql",
       "uso_no_codigo": {
         "src": 5,
-        "edges": 2
+        "edges": 4
       }
     },
     "onboarding_workflows": {
@@ -583,6 +585,20 @@
       "uso_no_codigo": {
         "src": 20,
         "edges": 6
+      }
+    },
+    "push_subscriptions": {
+      "no_types": false,
+      "nas_migrations": true,
+      "colunas": 0,
+      "rls": true,
+      "policies": 2,
+      "triggers": [],
+      "indices": 1,
+      "criada_em": "20261129170000_web_push.sql",
+      "uso_no_codigo": {
+        "src": 2,
+        "edges": 3
       }
     },
     "quiz_options": {
@@ -2284,6 +2300,30 @@
         "edges": 0
       }
     },
+    "push_chave_privada": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129171000_enviar_push_cron.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 1
+      }
+    },
+    "push_vapid_public_key": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129170000_web_push.sql",
+      "uso_no_codigo": {
+        "src": 1,
+        "edges": 1
+      }
+    },
     "quiz_difficulty_weight": {
       "exposta_no_types": false,
       "args": null,
@@ -2424,6 +2464,18 @@
       "uso_no_codigo": {
         "src": 1,
         "edges": 0
+      }
+    },
+    "registrar_falha_push": {
+      "exposta_no_types": false,
+      "args": null,
+      "retorno": null,
+      "security_definer": true,
+      "search_path": "public",
+      "criada_em": "20261129171000_enviar_push_cron.sql",
+      "uso_no_codigo": {
+        "src": 0,
+        "edges": 1
       }
     },
     "reset_login_attempts": {
@@ -2744,6 +2796,11 @@
       "chama_edge": null,
       "definido_em": "20260727133033_4b9c6252-9303-4759-b333-9ca33dcd9af9.sql"
     },
+    "send-push": {
+      "agenda": "* * * * *",
+      "chama_edge": "send-push",
+      "definido_em": "20261129171000_enviar_push_cron.sql"
+    },
     "webhook-dispatch": {
       "agenda": "* * * * *",
       "chama_edge": "webhook-dispatch",
@@ -2767,6 +2824,12 @@
     }
   },
   "alertas": [
+    {
+      "tipo": "tabela_so_nas_migrations",
+      "detalhe": [
+        "push_subscriptions"
+      ]
+    },
     {
       "tipo": "tabela_sem_uso_no_codigo",
       "detalhe": [

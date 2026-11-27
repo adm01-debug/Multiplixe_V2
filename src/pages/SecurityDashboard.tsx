@@ -6,6 +6,7 @@ import { useMFA } from '@/hooks/useMFA';
 import { useUserSessions } from '@/hooks/useUserSessions';
 import { useSecurityAlerts } from '@/hooks/useSecurityAlerts';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
+import PushNotificationManager from '@/components/notifications/PushNotificationManager';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import NotificationPermissionBanner from '@/components/security/NotificationPermissionBanner';
 import SecurityScoreCard from '@/components/security/SecurityScoreCard';
@@ -180,6 +181,7 @@ const SecurityDashboard = () => {
             </TabsContent>
 
             <TabsContent value="alerts" className="space-y-4">
+              <PushNotificationManager />
               <Card>
                 <CardHeader><CardTitle>Alertas de Segurança</CardTitle><CardDescription>Histórico de atividades suspeitas e eventos de segurança</CardDescription></CardHeader>
                 <CardContent>

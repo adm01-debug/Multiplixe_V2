@@ -68,12 +68,12 @@ export const useQuizzes = () => {
       .order('order_index');
 
     const questionIds = (questions || []).map(q => q.id);
+    // A view quiz_options_public ignorava a RLS (rodava como dona) e vazava as opcoes
+    // de qualquer quiz; a leitura agora e pela RPC, que devolve so as colunas de exibicao.
     const { data: options } = questionIds.length > 0
-      ? await supabase
-          .from('quiz_options_public' as never)
-          .select('id, question_id, option_text, order_index')
-          .in('question_id', questionIds)
-          .order('order_index')
+      ? await supabase.rpc('get_quiz_options_publicas' as never, {
+          p_question_ids: questionIds,
+        } as never)
       : { data: [] as Array<{ id: string; question_id: string; option_text: string; order_index: number }> };
 
     const optsByQ = (options || []).reduce<Record<string, QuizOption[]>>((acc, o) => {

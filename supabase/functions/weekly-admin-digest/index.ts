@@ -231,8 +231,9 @@ Deno.serve(async (req) => {
 
     const admins = await getAdminEmails(supabase);
     if (!admins.length) {
+      console.error("digest sem destinatario: nenhum admin com e-mail");
       return new Response(
-        JSON.stringify({ ok: true, sent: 0, reason: "no_admins" }),
+        JSON.stringify({ ok: true, sent: 0, reason: "no_admin_email" }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }

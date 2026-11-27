@@ -61,8 +61,15 @@ const CommandPalette = () => {
         setOpen((o) => !o);
       }
     };
+    // Quem nao sabe o atalho abre a busca pelo botao do cabecalho, que dispara
+    // este evento em vez de ter que importar o palette em cada lugar.
+    const abrir = () => setOpen(true);
     document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    document.addEventListener("multiplixe:abrir-busca", abrir);
+    return () => {
+      document.removeEventListener("keydown", down);
+      document.removeEventListener("multiplixe:abrir-busca", abrir);
+    };
   }, []);
 
   const handleSelect = (url: string) => {

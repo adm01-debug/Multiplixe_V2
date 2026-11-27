@@ -19,6 +19,7 @@ import ScrollRestoration from "@/components/navigation/ScrollRestoration";
 const CommandPalette = lazy(() => import("@/components/CommandPalette"));
 const KeyboardShortcutsModal = lazy(() => import("@/components/KeyboardShortcutsModal"));
 const PWAInstallPrompt = lazy(() => import("@/components/pwa/PWAInstallPrompt"));
+const FeedbackWidget = lazy(() => import("@/components/feedback/FeedbackWidget"));
 const NotificationPermissionBanner = lazy(() => import("@/components/security/NotificationPermissionBanner"));
 import SkipLinks from "@/components/accessibility/SkipLinks";
 import AccessibilityWidget from "@/components/accessibility/AccessibilityWidget";
@@ -91,6 +92,14 @@ const ConditionalNotificationBanner = () => {
   return <NotificationPermissionBanner />;
 };
 
+// Botao flutuante de feedback: so faz sentido com sessao, porque o feedback e gravado
+// com o user_id de quem enviou.
+const ConditionalFeedbackWidget = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  return <FeedbackWidget />;
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -115,6 +124,7 @@ const App = () => (
               <Suspense fallback={null}>
                 <ConditionalNotificationBanner />
                 <PWAInstallPrompt />
+                              <ConditionalFeedbackWidget />
               </Suspense>
               <ScrollToTop />
               <ErrorBoundary>

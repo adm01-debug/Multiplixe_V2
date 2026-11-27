@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 type FeedbackType = "bug" | "idea" | "question" | "general";
 type Rating = "happy" | "neutral" | "sad";
@@ -49,14 +50,24 @@ const FeedbackWidget = () => {
       return;
     }
 
-    setIsSubmitting(true);
+    if (!user) {
+          toast.error("Entre na sua conta para enviar feedback");
+          return;
+        }
+
+        setIsSubmitting(true);
 
     try {
-      // In a real app, you'd save this to a feedback table
-      // For now, we'll just simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+          const { error } = await supabase.from("feedback").insert({
+            user_id: user.id,
+            tipo: selectedType ?? "general",
+            humor: selectedRating,
+            mensagem: message.trim(),
+            pagina: window.location.pathname,
+          });
 
-      // Feedback submitted successfully
+          if (error) throw new Error(error.message);
+
       setStep("success");
       toast.success("Feedback enviado! Obrigado!");
 
@@ -70,8 +81,8 @@ const FeedbackWidget = () => {
           setMessage("");
         }, 300);
       }, 2000);
-    } catch {
-      toast.error("Erro ao enviar feedback");
+        } catch (error) {
+          toast.error(error instanceof Error ? error.message : "Erro ao enviar feedback");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,6 +103,7 @@ const FeedbackWidget = () => {
       {/* Trigger button */}
       <motion.button
         onClick={() => setIsOpen(true)}
+              aria-label="Enviar feedback"
         className="fixed bottom-24 right-4 z-40 md:bottom-6 md:right-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent text-white shadow-lg shadow-primary/30 flex items-center justify-center hover:shadow-xl hover:shadow-primary/40 transition-shadow"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

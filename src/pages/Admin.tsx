@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   GraduationCap, Loader2, BookOpen, Users, BarChart3,
   ShieldAlert, TrendingUp, Zap, Trophy, Route, Shield, Target,
-  FileText, Video, Sparkles, Settings, Brain, ShoppingBag, Gift, CalendarDays, Webhook,
+  FileText, Video, Sparkles, Settings, Brain, ShoppingBag, Gift, CalendarDays, Webhook, MessageSquare,
 } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -40,6 +40,7 @@ const AdminVideoEngagementWidget = lazy(() => import('@/components/admin/AdminVi
 const PlatformSettingsTab = lazy(() => import('@/components/admin/PlatformSettingsTab').catch((e) => { console.error('[Admin] Failed to load PlatformSettingsTab', e); throw e; }));
 const AdminAchievementsTab = lazy(() => import('@/components/admin/AdminAchievementsTab').catch((e) => { console.error('[Admin] Failed to load AdminAchievementsTab', e); throw e; }));
 const AdminWebhooksTab = lazy(() => import('@/components/admin/AdminWebhooksTab').catch((e) => { console.error('[Admin] Failed to load AdminWebhooksTab', e); throw e; }));
+const AdminFeedbackInbox = lazy(() => import('@/components/admin/AdminFeedbackInbox').catch((e) => { console.error('[Admin] Failed to load AdminFeedbackInbox', e); throw e; }));
 
 interface PlatformStats {
   totalUsers: number;
@@ -220,6 +221,7 @@ const Admin = () => {
           <TabsTrigger value="webhooks"><Webhook className="h-4 w-4 mr-1.5 inline-block align-middle" />Webhooks</TabsTrigger>
               <TabsTrigger value="permissions"><Shield className="h-4 w-4 mr-1.5 inline-block align-middle" />Permissões</TabsTrigger>
               <TabsTrigger value="analytics"><TrendingUp className="h-4 w-4 mr-1.5 inline-block align-middle" />Analytics</TabsTrigger>
+             <TabsTrigger value="feedback"><MessageSquare className="h-4 w-4 mr-1.5 inline-block align-middle" />Feedback</TabsTrigger>
               <TabsTrigger value="stats"><BarChart3 className="h-4 w-4 mr-1.5 inline-block align-middle" />Stats</TabsTrigger>
               <TabsTrigger value="settings"><Settings className="h-4 w-4 mr-1.5 inline-block align-middle" />Configurações</TabsTrigger>
             </TabsList>
@@ -315,6 +317,11 @@ const Admin = () => {
                                 </div>
               </Suspense>
             </div>
+          </TabsContent>
+          <TabsContent value="feedback">
+            <Suspense fallback={<TabFallback />}>
+              <AdminFeedbackInbox />
+            </Suspense>
           </TabsContent>
           <TabsContent value="stats">
             <Suspense fallback={<TabFallback />}>

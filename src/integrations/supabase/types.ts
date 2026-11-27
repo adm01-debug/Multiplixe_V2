@@ -527,6 +527,45 @@ export type Database = {
           },
         ]
       }
+            feedback: {
+              Row: {
+                created_at: string
+                humor: string | null
+                id: string
+                mensagem: string
+                nota_interna: string | null
+                pagina: string | null
+                status: string
+                tipo: string
+                updated_at: string
+                user_id: string
+              }
+              Insert: {
+                created_at?: string
+                humor?: string | null
+                id?: string
+                mensagem: string
+                nota_interna?: string | null
+                pagina?: string | null
+                status?: string
+                tipo: string
+                updated_at?: string
+                user_id: string
+              }
+              Update: {
+                created_at?: string
+                humor?: string | null
+                id?: string
+                mensagem?: string
+                nota_interna?: string | null
+                pagina?: string | null
+                status?: string
+                tipo?: string
+                updated_at?: string
+                user_id?: string
+              }
+              Relationships: []
+            }
       flashcards: {
         Row: {
           back: string

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { decidirLoginGoogle, googleHabilitadoNoSupabase, usaBrokerLovable } from '@/lib/socialLogin';
+import { decidirLoginGoogle, googleHabilitadoNoSupabase, modosSociaisDisponiveis, usaBrokerLovable } from '@/lib/socialLogin';
 
 describe('usaBrokerLovable', () => {
   it('reconhece os hosts do Lovable', () => {
@@ -54,5 +54,33 @@ describe('googleHabilitadoNoSupabase', () => {
     const fetchImpl = vi.fn(async () => resposta({ external: { google: true } }));
     await expect(googleHabilitadoNoSupabase({ url: '', chave: '', fetchImpl: fetchImpl as unknown as typeof fetch })).resolves.toBe(false);
     expect(fetchImpl).not.toHaveBeenCalled();
+  });
+});
+
+describe('modosSociaisDisponiveis', () => {
+  const resposta = (corpo: unknown) => ({ ok: true, json: async () => corpo }) as Response;
+
+  it('lista so os provedores ligados no Supabase', async () => {
+    const fetchImpl = vi.fn(async (url: string) => resposta({ external: { google: true, azure: false } }));
+    const modos = await modosSociaisDisponiveis('multiplixe-v2.vercel.app', {
+      url: 'https://projeto.supabase.co', chave: 'k', fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+    expect(modos).toEqual({ google: 'supabase' });
+  });
+
+  it('inclui Microsoft (azure) quando o Entra ID esta habilitado', async () => {
+    const fetchImpl = vi.fn(async () => resposta({ external: { google: false, azure: true } }));
+    const modos = await modosSociaisDisponiveis('multiplixe-v2.vercel.app', {
+      url: 'https://projeto.supabase.co', chave: 'k', fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+    expect(modos).toEqual({ azure: 'supabase' });
+  });
+
+  it('sem provedor ligado nao mostra botao nenhum', async () => {
+    const fetchImpl = vi.fn(async () => resposta({ external: {} }));
+    const modos = await modosSociaisDisponiveis('multiplixe-v2.vercel.app', {
+      url: 'https://projeto.supabase.co', chave: 'k', fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+    expect(modos).toEqual({});
   });
 });

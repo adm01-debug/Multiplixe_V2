@@ -14,6 +14,9 @@
 
 export type ModoLoginGoogle = 'broker' | 'supabase' | 'indisponivel';
 
+export type ProvedorSocial = 'google' | 'azure';
+export type ProvedoresSociais = Partial<Record<ProvedorSocial, ModoLoginGoogle>>;
+
 const HOST_BROKER_LOVABLE = /(^|\.)lovable\.(app|dev)$/i;
 
 export function usaBrokerLovable(hostname: string): boolean {
@@ -35,7 +38,7 @@ type OpcoesConsulta = {
  * Lê `/auth/v1/settings` (rota pública, só precisa da chave publicável) e informa se o
  * provedor Google está ligado no Supabase.
  */
-export async function googleHabilitadoNoSupabase(opcoes: OpcoesConsulta = {}): Promise<boolean> {
+export async function googleHabilitadoNoSupabase(opcoes: OpcoesConsulta = {}, provedor: ProvedorSocial = 'google'): Promise<boolean> {
   const url = opcoes.url ?? import.meta.env.VITE_SUPABASE_URL;
   const chave = opcoes.chave ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   const fetchImpl = opcoes.fetchImpl ?? fetch;
@@ -43,9 +46,31 @@ export async function googleHabilitadoNoSupabase(opcoes: OpcoesConsulta = {}): P
   try {
     const resposta = await fetchImpl(url + '/auth/v1/settings', { headers: { apikey: chave } });
     if (!resposta.ok) return false;
-    const config = (await resposta.json()) as { external?: { google?: boolean } };
-    return config.external?.google === true;
+    const config = (await resposta.json()) as { external?: Record<string, boolean | undefined> };
+    return config.external?.[provedor] === true;
   } catch {
     return false;
   }
+}
+
+/**
+ * Resolve, para a UI, como entrar com cada provedor habilitado no projeto.
+ * Provedor desligado no Supabase nao entra no resultado (o botao nao aparece).
+ *
+ * Microsoft usa o provedor `azure` do Supabase: o nome vem do Azure AD, hoje Entra ID.
+ */
+export async function modosSociaisDisponiveis(
+  hostname: string,
+  opcoes: OpcoesConsulta = {},
+): Promise<ProvedoresSociais> {
+  const [google, azure] = await Promise.all([
+    googleHabilitadoNoSupabase(opcoes, 'google'),
+    googleHabilitadoNoSupabase(opcoes, 'azure'),
+  ]);
+  const modos: ProvedoresSociais = {};
+  const googleModo = decidirLoginGoogle(hostname, google);
+  if (googleModo !== 'indisponivel') modos.google = googleModo;
+  const azureModo = decidirLoginGoogle(hostname, azure);
+  if (azureModo !== 'indisponivel') modos.azure = azureModo;
+  return modos;
 }

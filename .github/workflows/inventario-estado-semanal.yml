@@ -99,12 +99,26 @@ jobs:
             echo "Inventário sem mudança de conteúdo — nenhum PR a abrir."
           fi
 
+      - name: Ha PAT para abrir PR
+        id: pat
+        env:
+          PAT: ${{ secrets.PAT_CLASSICO }}
+        run: |
+          if [ -n "$PAT" ]; then
+            echo "tem=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Inventario sem PAT_CLASSICO: fica so no artifact."
+          fi
+
       - name: Abrir ou atualizar PR do inventário
         id: pull-request
-        if: steps.mudou.outputs.valor == 'true'
+        if: steps.mudou.outputs.valor == 'true' && steps.pat.outputs.tem == 'true'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          token: ${{ github.token }}
+          # github.token nao abre PR neste repo ("Allow GitHub Actions to create and approve
+          # pull requests" esta desligado); PAT_CLASSICO e um PAT classico com escopo repo. Sem ele
+          # nao ha falha: o passo e pulado e o inventario segue no artifact do run.
+          token: ${{ secrets.PAT_CLASSICO || github.token }}
           base: main
           branch: automation/inventario-estado
           delete-branch: true

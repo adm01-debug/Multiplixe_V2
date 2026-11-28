@@ -1,23 +1,18 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 242,
+ "total": 249,
  "orfaos": [
-  "src/components/admin/AdminTopPlaybooksWidget.tsx",
-  "src/components/admin/AdminVideoEngagementWidget.tsx",
   "src/components/command/SearchResultGroup.tsx",
   "src/components/course/CourseProgress3D.tsx",
   "src/components/dialogs/ConfirmExitDialog.tsx",
-  "src/components/feedback/FeedbackWidget.tsx",
   "src/components/gamification/AchievementBadge.tsx",
   "src/components/gamification/DepartmentRanking.tsx",
   "src/components/gamification/WeeklyGoalTracker.tsx",
   "src/components/gamification/XPAnimations.tsx",
   "src/components/landing/GlobalSearchHint.tsx",
   "src/components/navigation/Breadcrumb.tsx",
-  "src/components/notifications/PushNotificationManager.tsx",
   "src/components/notifications/SmartReminders.tsx",
-  "src/components/social/StudyBuddies.tsx",
   "src/components/stats/LearningStats.tsx",
   "src/components/ui/ActionFeedback.tsx",
   "src/components/ui/Banner.tsx",
@@ -52,7 +47,7 @@
   {
    "arquivo": "src/App.tsx",
    "exports": [],
-   "linhas": 164,
+   "linhas": 177,
    "hooks": [
     "useAuth",
     "useSessionRotation"
@@ -344,6 +339,24 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/admin/AdminFeedbackInbox.tsx",
+   "exports": [],
+   "linhas": 219,
+   "hooks": [
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "feedback",
+    "profiles"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/admin/AdminFlashcardsTab.tsx",
    "exports": [],
    "linhas": 314,
@@ -457,8 +470,8 @@
     "playbooks"
    ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/admin/AdminUsersTab.tsx",
@@ -487,8 +500,8 @@
     "training_videos"
    ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/admin/AdminVideosTab.tsx",
@@ -498,6 +511,25 @@
     "useDeleteTrainingVideo",
     "useSaveTrainingVideo",
     "useTrainingVideos"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/AdminWebhooksTab.tsx",
+   "exports": [],
+   "linhas": 516,
+   "hooks": [
+    "useAdminWebhooks",
+    "useAlternarEndpoint",
+    "useExcluirEndpoint",
+    "useLimparEntregas",
+    "useMemo",
+    "useSalvarEndpoint",
+    "useState",
+    "useTestarEndpoint"
    ],
    "tabelas": [],
    "edges": [],
@@ -673,7 +705,7 @@
    "exports": [
     "LessonForm"
    ],
-   "linhas": 344,
+   "linhas": 332,
    "hooks": [
     "useEffect",
     "useMemo",
@@ -693,7 +725,7 @@
    "exports": [
     "LessonsManager"
    ],
-   "linhas": 310,
+   "linhas": 295,
    "hooks": [
     "useEffect",
     "useState"
@@ -966,7 +998,7 @@
   {
    "arquivo": "src/components/catalog/CategoryFilter.tsx",
    "exports": [],
-   "linhas": 63,
+   "linhas": 56,
    "hooks": [],
    "tabelas": [],
    "edges": [],
@@ -1006,6 +1038,20 @@
    "exports": [],
    "linhas": 41,
    "hooks": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/catalog/SavedFilters.tsx",
+   "exports": [],
+   "linhas": 124,
+   "hooks": [
+    "useAuth",
+    "useSavedFilters",
+    "useState"
+   ],
    "tabelas": [],
    "edges": [],
    "usado_por": 1,
@@ -1064,7 +1110,7 @@
   {
    "arquivo": "src/components/CommandPalette.tsx",
    "exports": [],
-   "linhas": 175,
+   "linhas": 182,
    "hooks": [
     "useAuth",
     "useEffect",
@@ -1115,7 +1161,7 @@
   {
    "arquivo": "src/components/dashboard/DashboardHeader.tsx",
    "exports": [],
-   "linhas": 130,
+   "linhas": 146,
    "hooks": [
     "usePrefetchQuery",
     "useT",
@@ -1262,15 +1308,17 @@
   {
    "arquivo": "src/components/feedback/FeedbackWidget.tsx",
    "exports": [],
-   "linhas": 306,
+   "linhas": 318,
    "hooks": [
     "useAuth",
     "useState"
    ],
-   "tabelas": [],
+   "tabelas": [
+    "feedback"
+   ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/flashcards/FlashcardPlayer.tsx",
@@ -1646,6 +1694,32 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/layout/AppLayout.tsx",
+   "exports": [
+    "AppLayout"
+   ],
+   "linhas": 23,
+   "hooks": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 9,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/layout/PageHeader.tsx",
+   "exports": [
+    "PageHeader"
+   ],
+   "linhas": 75,
+   "hooks": [
+    "useNavigate"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 9,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/LazyImage.tsx",
    "exports": [],
    "linhas": 160,
@@ -1861,7 +1935,7 @@
   {
    "arquivo": "src/components/NotificationBell.tsx",
    "exports": [],
-   "linhas": 180,
+   "linhas": 182,
    "hooks": [
     "useNavigate",
     "useNotifications",
@@ -1875,14 +1949,14 @@
   {
    "arquivo": "src/components/notifications/PushNotificationManager.tsx",
    "exports": [],
-   "linhas": 229,
+   "linhas": 233,
    "hooks": [
     "usePushNotifications"
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/notifications/SmartReminders.tsx",
@@ -2063,6 +2137,20 @@
    "exports": [],
    "linhas": 174,
    "hooks": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/player/VideoOfflineControls.tsx",
+   "exports": [
+    "VideoOfflineControls"
+   ],
+   "linhas": 100,
+   "hooks": [
+    "useT"
+   ],
    "tabelas": [],
    "edges": [],
    "usado_por": 1,
@@ -2379,6 +2467,24 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/security/MFAChallengeGate.tsx",
+   "exports": [],
+   "linhas": 243,
+   "hooks": [
+    "useAuth",
+    "useCallback",
+    "useEffect",
+    "useMFA",
+    "useState"
+   ],
+   "tabelas": [
+    "user_mfa_settings"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/security/MFAEnrollmentDialog.tsx",
    "exports": [],
    "linhas": 189,
@@ -2448,7 +2554,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 11,
+   "usado_por": 12,
    "orfao": false
   },
   {
@@ -2502,20 +2608,16 @@
   {
    "arquivo": "src/components/social/StudyBuddies.tsx",
    "exports": [],
-   "linhas": 263,
+   "linhas": 170,
    "hooks": [
     "useAuth",
     "useEffect",
     "useState"
    ],
-   "tabelas": [
-    "profiles",
-    "user_streaks",
-    "user_xp"
-   ],
+   "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/stats/LearningStats.tsx",
@@ -2601,7 +2703,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 64,
+   "usado_por": 66,
    "orfao": false
   },
   {
@@ -2647,7 +2749,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 140,
+   "usado_por": 146,
    "orfao": false
   },
   {
@@ -2840,7 +2942,7 @@
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "orfao": false
   },
   {
@@ -2852,7 +2954,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 40,
+   "usado_por": 43,
    "orfao": false
   },
   {
@@ -3038,7 +3140,7 @@
    "hooks": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 24,
+   "usado_por": 25,
    "orfao": false
   },
   {
@@ -3144,7 +3246,7 @@
    "exports": [
     "AuthProvider"
    ],
-   "linhas": 140,
+   "linhas": 138,
    "hooks": [
     "useContext",
     "useEffect",
@@ -3154,18 +3256,19 @@
    "edges": [
     "detect-new-device"
    ],
-   "usado_por": 74,
+   "usado_por": 77,
    "orfao": false
   },
   {
    "arquivo": "src/pages/Admin.tsx",
    "exports": [],
-   "linhas": 332,
+   "linhas": 354,
    "hooks": [
     "useAdminRole",
     "useAuth",
     "useEffect",
     "useNavigate",
+    "useSearchParams",
     "useState"
    ],
    "tabelas": [
@@ -3204,7 +3307,7 @@
   {
    "arquivo": "src/pages/Auth.tsx",
    "exports": [],
-   "linhas": 164,
+   "linhas": 195,
    "hooks": [
     "useAuth",
     "useCallback",
@@ -3222,7 +3325,7 @@
   {
    "arquivo": "src/pages/Catalog.tsx",
    "exports": [],
-   "linhas": 271,
+   "linhas": 278,
    "hooks": [
     "useAuth",
     "useCallback",
@@ -3298,7 +3401,7 @@
   {
    "arquivo": "src/pages/Flashcards.tsx",
    "exports": [],
-   "linhas": 217,
+   "linhas": 211,
    "hooks": [
     "useEffect",
     "useFlashcardOverview",
@@ -3340,7 +3443,7 @@
   {
    "arquivo": "src/pages/Leaderboard.tsx",
    "exports": [],
-   "linhas": 275,
+   "linhas": 256,
    "hooks": [
     "useAuth",
     "useCallback",
@@ -3396,7 +3499,7 @@
   {
    "arquivo": "src/pages/LessonPlayer.tsx",
    "exports": [],
-   "linhas": 276,
+   "linhas": 326,
    "hooks": [
     "useAchievements",
     "useAuth",
@@ -3414,7 +3517,8 @@
     "useSwipeHorizontal",
     "useT",
     "useUserPreferences",
-    "useUserXP"
+    "useUserXP",
+    "useVideoOffline"
    ],
    "tabelas": [
     "courses",
@@ -3429,13 +3533,12 @@
   {
    "arquivo": "src/pages/Mentorship.tsx",
    "exports": [],
-   "linhas": 549,
+   "linhas": 543,
    "hooks": [
     "useEffect",
     "useMemo",
     "useMentors",
     "useMyMentorship",
-    "useNavigate",
     "useRequestMentorship",
     "useRespondMentorship",
     "useSearchParams",
@@ -3480,7 +3583,7 @@
   {
    "arquivo": "src/pages/PlaybookDetail.tsx",
    "exports": [],
-   "linhas": 133,
+   "linhas": 134,
    "hooks": [
     "useEffect",
     "useNavigate",
@@ -3499,7 +3602,7 @@
   {
    "arquivo": "src/pages/Playbooks.tsx",
    "exports": [],
-   "linhas": 127,
+   "linhas": 121,
    "hooks": [
     "useFuzzySearch",
     "useMemo",
@@ -3582,7 +3685,7 @@
   {
    "arquivo": "src/pages/SalesOnboarding.tsx",
    "exports": [],
-   "linhas": 125,
+   "linhas": 119,
    "hooks": [
     "useDefaultWorkflowProgress",
     "useNavigate",
@@ -3596,7 +3699,7 @@
   {
    "arquivo": "src/pages/SecurityDashboard.tsx",
    "exports": [],
-   "linhas": 224,
+   "linhas": 226,
    "hooks": [
     "useAdminRole",
     "useAuth",
@@ -3614,7 +3717,7 @@
   {
    "arquivo": "src/pages/SkillAssessments.tsx",
    "exports": [],
-   "linhas": 127,
+   "linhas": 121,
    "hooks": [
     "useDueAssessments",
     "useNavigate",
@@ -3649,7 +3752,7 @@
    "exports": [
     "VerifyCertificate"
    ],
-   "linhas": 152,
+   "linhas": 154,
    "hooks": [
     "useCertificates",
     "useEffect",
@@ -3664,12 +3767,11 @@
   {
    "arquivo": "src/pages/VideoLibrary.tsx",
    "exports": [],
-   "linhas": 160,
+   "linhas": 154,
    "hooks": [
     "useEffect",
     "useFuzzySearch",
     "useMemo",
-    "useNavigate",
     "useState",
     "useTrainingVideos",
     "useUpdateVideoProgress"

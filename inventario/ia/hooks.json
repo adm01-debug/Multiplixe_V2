@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "total": 142,
+ "total": 150,
  "sem_uso": [
   "useAuditLog",
   "useCoisa",
@@ -40,7 +40,6 @@
   "useAvatarUpload",
   "useCategories",
   "useCategoryLeaderboard",
-  "useCertificates",
   "useCoisa",
   "useCourseDetail",
   "useCourses",
@@ -89,7 +88,6 @@
   "usePurchaseItem",
   "usePushNotifications",
   "useQuizStatsData",
-  "useQuizzes",
   "useRateLimitLogs",
   "useSalvarMissao",
   "useSaveFlashcard",
@@ -114,6 +112,7 @@
   "useUserXP",
   "useUserXPCached",
   "useVideoKeyboard",
+  "useVideoOffline",
   "useVideoShortcuts",
   "useViewMode",
   "useWallet",
@@ -248,6 +247,38 @@
    ],
    "coberto_por_teste": false
   },
+  "useAdminWebhooks": {
+   "arquivo": "src/hooks/useAdminWebhooks.ts",
+   "linhas": 302,
+   "tabelas": [
+    "webhook_deliveries",
+    "webhook_endpoints"
+   ],
+   "rpcs": [
+    "enfileirar_webhook"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWebhooksTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useAlternarEndpoint": {
+   "arquivo": "src/hooks/useAdminWebhooks.ts",
+   "linhas": 302,
+   "tabelas": [
+    "webhook_deliveries",
+    "webhook_endpoints"
+   ],
+   "rpcs": [
+    "enfileirar_webhook"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWebhooksTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useAlternarEvento": {
    "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
    "linhas": 144,
@@ -300,7 +331,7 @@
   },
   "useAuth": {
    "arquivo": "src/hooks/useAuth.tsx",
-   "linhas": 140,
+   "linhas": 138,
    "tabelas": [],
    "rpcs": [
     "create_audit_log"
@@ -316,6 +347,7 @@
     "src/components/admin/AdminFlashcardsTab.tsx",
     "src/components/admin/AdminUsersTab.tsx",
     "src/components/analytics/SkillRadarChart.tsx",
+    "src/components/catalog/SavedFilters.tsx",
     "src/components/discussions/CourseDiscussions.tsx",
     "src/components/export/ExportProgress.tsx",
     "src/components/favorites/FavoritesSection.tsx",
@@ -328,6 +360,7 @@
     "src/components/playbooks/PlaybookComments.tsx",
     "src/components/profile/PersonalImpactWidget.tsx",
     "src/components/quiz/CourseQuizModal.tsx",
+    "src/components/security/MFAChallengeGate.tsx",
     "src/components/social/StudyBuddies.tsx",
     "src/components/stats/LearningStats.tsx",
     "src/hooks/useAchievements.ts",
@@ -358,6 +391,7 @@
     "src/hooks/useQuizzes.ts",
     "src/hooks/useRateLimitLogs.ts",
     "src/hooks/useReputacao.ts",
+    "src/hooks/useSavedFilters.ts",
     "src/hooks/useSeasonalEvent.ts",
     "src/hooks/useSecurityAlerts.ts",
     "src/hooks/useSessionRotation.ts",
@@ -436,12 +470,13 @@
   },
   "useCertificates": {
    "arquivo": "src/hooks/useCertificates.ts",
-   "linhas": 115,
+   "linhas": 134,
    "tabelas": [
     "certificates"
    ],
    "rpcs": [
-    "verify_certificate_by_code"
+    "verify_certificate_by_code",
+    "verify_path_certificate_by_code"
    ],
    "edges": [
     "generate-certificate"
@@ -453,7 +488,7 @@
     "src/pages/Profile.tsx",
     "src/pages/VerifyCertificate.tsx"
    ],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useCoisa": {
    "arquivo": "scripts/ci/inventario-rotas.unit.mjs",
@@ -789,6 +824,22 @@
    ],
    "coberto_por_teste": true
   },
+  "useExcluirEndpoint": {
+   "arquivo": "src/hooks/useAdminWebhooks.ts",
+   "linhas": 302,
+   "tabelas": [
+    "webhook_deliveries",
+    "webhook_endpoints"
+   ],
+   "rpcs": [
+    "enfileirar_webhook"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWebhooksTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useExcluirEvento": {
    "arquivo": "src/hooks/useAdminSeasonalEvents.ts",
    "linhas": 144,
@@ -1105,6 +1156,22 @@
    ],
    "coberto_por_teste": false
   },
+  "useLimparEntregas": {
+   "arquivo": "src/hooks/useAdminWebhooks.ts",
+   "linhas": 302,
+   "tabelas": [
+    "webhook_deliveries",
+    "webhook_endpoints"
+   ],
+   "rpcs": [
+    "enfileirar_webhook"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWebhooksTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
   "useLiveAnnouncer": {
    "arquivo": "src/components/accessibility/LiveAnnouncer.tsx",
    "linhas": 111,
@@ -1116,13 +1183,16 @@
   },
   "useMFA": {
    "arquivo": "src/hooks/useMFA.ts",
-   "linhas": 250,
+   "linhas": 302,
    "tabelas": [
     "user_mfa_settings"
    ],
-   "rpcs": [],
+   "rpcs": [
+    "consumir_codigo_backup"
+   ],
    "edges": [],
    "usado_por": [
+    "src/components/security/MFAChallengeGate.tsx",
     "src/components/security/MFAEnrollmentDialog.tsx",
     "src/components/security/MFASettingsCard.tsx",
     "src/pages/SecurityDashboard.tsx"
@@ -1258,7 +1328,7 @@
   },
   "useOptionalAuth": {
    "arquivo": "src/hooks/useAuth.tsx",
-   "linhas": 140,
+   "linhas": 138,
    "tabelas": [],
    "rpcs": [
     "create_audit_log"
@@ -1487,7 +1557,7 @@
   },
   "usePushNotifications": {
    "arquivo": "src/hooks/usePushNotifications.ts",
-   "linhas": 131,
+   "linhas": 149,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1530,13 +1600,13 @@
    "arquivo": "src/hooks/useQuizzes.ts",
    "linhas": 273,
    "tabelas": [
-    "quiz_options_public",
     "quiz_questions",
     "quizzes",
     "user_quiz_attempts"
    ],
    "rpcs": [
     "get_adaptive_quiz_plan",
+    "get_quiz_options_publicas",
     "get_quiz_review",
     "submit_quiz_attempt"
    ],
@@ -1546,7 +1616,7 @@
     "src/components/quiz/QuizCard.tsx",
     "src/pages/CourseDetail.tsx"
    ],
-   "coberto_por_teste": false
+   "coberto_por_teste": true
   },
   "useRateLimitLogs": {
    "arquivo": "src/hooks/useRateLimitLogs.ts",
@@ -1634,6 +1704,22 @@
    "edges": [],
    "usado_por": [
     "src/pages/Mentorship.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSalvarEndpoint": {
+   "arquivo": "src/hooks/useAdminWebhooks.ts",
+   "linhas": 302,
+   "tabelas": [
+    "webhook_deliveries",
+    "webhook_endpoints"
+   ],
+   "rpcs": [
+    "enfileirar_webhook"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWebhooksTab.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -1755,6 +1841,19 @@
    "edges": [],
    "usado_por": [
     "src/components/admin/AdminWorkflowsTab.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useSavedFilters": {
+   "arquivo": "src/hooks/useSavedFilters.ts",
+   "linhas": 86,
+   "tabelas": [
+    "saved_filters"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/components/catalog/SavedFilters.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -1933,7 +2032,7 @@
   },
   "useT": {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 719,
+   "linhas": 773,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1947,9 +2046,11 @@
     "src/components/navigation/MobileBottomNav.tsx",
     "src/components/player/ChaptersPanel.tsx",
     "src/components/player/TranscriptPanel.tsx",
+    "src/components/player/VideoOfflineControls.tsx",
     "src/components/profile/ReputacaoCard.tsx",
     "src/components/ui/ThemeCustomizer.tsx",
     "src/hooks/useDepartmentChallenges.ts",
+    "src/hooks/useVideoOffline.ts",
     "src/pages/Catalog.tsx",
     "src/pages/LessonPlayer.tsx",
     "src/pages/PublicProfile.tsx",
@@ -1965,6 +2066,22 @@
    "edges": [],
    "usado_por": [
     "src/components/share/ShareAchievement.tsx"
+   ],
+   "coberto_por_teste": true
+  },
+  "useTestarEndpoint": {
+   "arquivo": "src/hooks/useAdminWebhooks.ts",
+   "linhas": 302,
+   "tabelas": [
+    "webhook_deliveries",
+    "webhook_endpoints"
+   ],
+   "rpcs": [
+    "enfileirar_webhook"
+   ],
+   "edges": [],
+   "usado_por": [
+    "src/components/admin/AdminWebhooksTab.tsx"
    ],
    "coberto_por_teste": true
   },
@@ -2253,6 +2370,17 @@
    "rpcs": [],
    "edges": [],
    "usado_por": [],
+   "coberto_por_teste": false
+  },
+  "useVideoOffline": {
+   "arquivo": "src/hooks/useVideoOffline.ts",
+   "linhas": 157,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "usado_por": [
+    "src/pages/LessonPlayer.tsx"
+   ],
    "coberto_por_teste": false
   },
   "useVideoShortcuts": {

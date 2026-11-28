@@ -114,6 +114,7 @@ jobs:
         id: pull-request
         if: steps.mudou.outputs.valor == 'true' && steps.pat.outputs.tem == 'true'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        continue-on-error: true   # inventario ja esta no artifact; PR e conveniencia
         with:
           # github.token nao abre PR neste repo ("Allow GitHub Actions to create and approve
           # pull requests" esta desligado); PAT_CLASSICO e um PAT classico com escopo repo. Sem ele

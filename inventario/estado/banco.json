@@ -1,0 +1,2083 @@
+{
+  "alertas": [
+    {
+      "detalhe": [
+        "push_subscriptions"
+      ],
+      "tipo": "tabela_so_no_banco"
+    }
+  ],
+  "cron": {
+    "historico": {
+      "bytes": 3579904,
+      "linhas": 7375,
+      "mais_antigo": "2026-08-12T15:00:00Z",
+      "mais_de_7_dias": 2472
+    },
+    "horas_paradas_7d": [],
+    "jobs": [
+      {
+        "agenda": "0 11 * * *",
+        "ativo": true,
+        "chama": [
+          "public.check_due_assessment_notifications"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 1,
+        "execucoes_7d": 2,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "avisar-avaliacoes-vencendo",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "0 21 * * *",
+        "ativo": true,
+        "chama": [
+          "public.check_streak_risk_notifications"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 1,
+        "execucoes_7d": 1,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "avisar-risco-de-sequencia",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "20 3 * * *",
+        "ativo": true,
+        "chama": [
+          "public.cleanup_old_security_logs"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 1,
+        "execucoes_7d": 2,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "cleanup-security-logs",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "*/15 * * * *",
+        "ativo": true,
+        "chama": [
+          "public.reconciliar_segundo_fator"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 96,
+        "execucoes_7d": 164,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "reconciliar-segundo-fator",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "0 * * * *",
+        "ativo": true,
+        "chama": [
+          "public.refresh_platform_stats"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 24,
+        "execucoes_7d": 168,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "refresh-platform-stats",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "* * * * *",
+        "ativo": true,
+        "chama": [
+          "net.http_post"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 1440,
+        "execucoes_7d": 1640,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "send-push",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "* * * * *",
+        "ativo": true,
+        "chama": [
+          "net.http_post"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 1440,
+        "execucoes_7d": 2925,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "webhook-dispatch",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "0 9 * * 1",
+        "ativo": true,
+        "chama": [
+          "net.http_post"
+        ],
+        "duracao_max_s_7d": 0,
+        "execucoes_24h": 0,
+        "execucoes_7d": 1,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "weekly-admin-digest",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      },
+      {
+        "agenda": "0 9 * * 1",
+        "ativo": true,
+        "chama": [
+          "public.enfileirar_ranking_semanal"
+        ],
+        "duracao_max_s_7d": null,
+        "execucoes_24h": 0,
+        "execucoes_7d": 0,
+        "falhas_24h": 0,
+        "falhas_7d": 0,
+        "nome": "weekly-ranking-webhook",
+        "taxa_falha_7d_pct": 0,
+        "ultima_falha": null
+      }
+    ]
+  },
+  "edge_functions": {
+    "no_repo": 13,
+    "no_repo_sem_deploy": [],
+    "publicadas": [
+      {
+        "atualizada_em": "2026-11-25T22:05Z",
+        "slug": "admin-user-actions",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 3
+      },
+      {
+        "atualizada_em": "2026-08-12T14:06Z",
+        "slug": "ai-playbook-summarize",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 3
+      },
+      {
+        "atualizada_em": "2026-08-12T14:06Z",
+        "slug": "ai-quiz-generator",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 3
+      },
+      {
+        "atualizada_em": "2026-11-25T19:39Z",
+        "slug": "approve-password-reset",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 4
+      },
+      {
+        "atualizada_em": "2026-11-26T18:08Z",
+        "slug": "cleanup-security-logs",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 4
+      },
+      {
+        "atualizada_em": "2026-11-26T18:03Z",
+        "slug": "detect-new-device",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 4
+      },
+      {
+        "atualizada_em": "2026-08-12T14:06Z",
+        "slug": "export-user-data",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 3
+      },
+      {
+        "atualizada_em": "2026-11-25T19:25Z",
+        "slug": "generate-certificate",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 4
+      },
+      {
+        "atualizada_em": "2026-11-26T18:58Z",
+        "slug": "generate-sitemap",
+        "status": "ACTIVE",
+        "verify_jwt": false,
+        "versao": 5
+      },
+      {
+        "atualizada_em": "2026-11-27T13:04Z",
+        "slug": "send-push",
+        "status": "ACTIVE",
+        "verify_jwt": false,
+        "versao": 3
+      },
+      {
+        "atualizada_em": "2026-11-26T18:20Z",
+        "slug": "send-security-alert",
+        "status": "ACTIVE",
+        "verify_jwt": true,
+        "versao": 4
+      },
+      {
+        "atualizada_em": "2026-11-26T19:19Z",
+        "slug": "webhook-dispatch",
+        "status": "ACTIVE",
+        "verify_jwt": false,
+        "versao": 8
+      },
+      {
+        "atualizada_em": "2026-11-27T13:15Z",
+        "slug": "weekly-admin-digest",
+        "status": "ACTIVE",
+        "verify_jwt": false,
+        "versao": 6
+      }
+    ],
+    "publicadas_sem_codigo_no_repo": []
+  },
+  "fonte": "scripts/inventario/banco.sql + GET /functions + .from() em src/ e supabase/functions/ (scripts/inventario/gerar-banco.mjs)",
+  "format_version": 1,
+  "funcoes": [
+    {
+      "nome": "activate_powerup",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "active_seasonal_multiplier",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "active_xp_boost_multiplier",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "add_user_xp",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "admin_grant_coins",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "apply_coin_transaction",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "atualizar_reputacao",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "audit_admin_changes",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "audit_sales_enablement_changes",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "award_coins_from_achievement",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "award_coins_from_xp",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "award_powerup_on_achievement",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "bloquear_cadastro_fora_do_dominio",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "calcular_reputacao",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "challenge_bucket",
+      "security_definer": false,
+      "tem_search_path": false
+    },
+    {
+      "nome": "chapters_validos",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "check_and_award_achievements",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "check_due_assessment_notifications",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "check_login_allowed",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "check_rate_limit",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "check_streak_risk_notifications",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "claim_daily_challenge_reward",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "cleanup_old_security_logs",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "complete_pomodoro_session",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "conquista_disponivel",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "consume_streak_freeze",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "consumir_codigo_backup",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "create_audit_log",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "create_notification",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "department_challenge_progresso",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "detalhar_reputacao",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "enfileirar_ranking_semanal",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "enfileirar_webhook",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "enfileirar_webhook_interno",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_active_seasonal_event",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_adaptive_quiz_plan",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_admin_department_challenges",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_category_leaderboard",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_department_leaderboard",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_due_assessments",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_due_flashcards",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_flashcard_overview",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_leaderboard",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_mentors",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_challenges",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_department_challenges",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_league",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_mentorship",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_powerups",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_wallet",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_my_xp_multiplier",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_performance_comparison",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_platform_stats",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_public_profile",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_quiz_options_publicas",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_quiz_review",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_recommended_courses",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_smart_recommendations",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_user_permissions",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_user_rank",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_xp_history",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "get_xp_multiplier",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "grant_powerup",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "guard_user_xp_coins",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "handle_new_user",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "has_permission",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "has_role",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "has_streak_freeze",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "issue_certificate",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "issue_learning_path_certificate",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "mcp_exec",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "mentor_disponivel",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "notificar_mentoria",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "notify_new_course",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "notify_new_playbook_comment",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "notify_onboarding_completion",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "protect_profile_admin_columns",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "proteger_marcacao_resposta",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "purchase_store_item",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "push_chave_privada",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "push_vapid_public_key",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "quiz_difficulty_weight",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "quiz_difficulty_xp_bonus",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "quiz_recommended_difficulty",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "recalcular_reputacao_perfil",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "recalculate_user_goals",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "reconciliar_segundo_fator",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "record_failed_login",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "refresh_challenge_progress",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "refresh_leagues",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "refresh_platform_stats",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "register_playbook_view",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "registrar_falha_push",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "reset_login_attempts",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "resgatar_desafio_departamento",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "respond_mentorship_request",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "review_flashcard",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "segundo_fator_verificado",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "set_seasonal_events_updated_at",
+      "security_definer": false,
+      "tem_search_path": false
+    },
+    {
+      "nome": "submit_quiz_attempt",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "tg_notificar_admin_feedback",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "tg_webhook_certificado_emitido",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "tg_webhook_conquista_desbloqueada",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "tg_webhook_curso_concluido",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "trg_recalculate_user_goals",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "trg_refresh_challenge_progress",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "update_discussion_votes",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "update_updated_at_column",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "update_user_streak",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "verify_certificate_by_code",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "verify_path_certificate_by_code",
+      "security_definer": true,
+      "tem_search_path": true
+    },
+    {
+      "nome": "webhook_eventos_suportados",
+      "security_definer": false,
+      "tem_search_path": true
+    },
+    {
+      "nome": "xp_display",
+      "security_definer": false,
+      "tem_search_path": false
+    },
+    {
+      "nome": "xp_multiplier_for",
+      "security_definer": false,
+      "tem_search_path": false
+    }
+  ],
+  "medido_em": "2026-11-28T16:04:39Z",
+  "resumo": {
+    "cron_ativos": 9,
+    "cron_jobs": 9,
+    "enums_public": 1,
+    "funcoes_public": 114,
+    "funcoes_secdef": 101,
+    "ledger_registros": 49,
+    "ledger_versao_max": "20260727133051",
+    "policies": 212,
+    "postgres": "17.6",
+    "tabelas_public": 77,
+    "tabelas_sem_rls": 0,
+    "tamanho_bytes": 25005203,
+    "triggers_public": 65,
+    "views_public": 1
+  },
+  "tabelas": [
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 23,
+      "linhas_exatas": true,
+      "nome": "achievements",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 6
+      }
+    },
+    {
+      "bytes": 172032,
+      "citada_no_banco": true,
+      "indices": 7,
+      "linhas": 31,
+      "linhas_exatas": true,
+      "nome": "audit_logs",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 24576,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "blocked_ips",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 6,
+      "linhas_exatas": true,
+      "nome": "categories",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "certificates",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "coin_transactions",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "course_discussions",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 8,
+      "linhas_exatas": true,
+      "nome": "courses",
+      "policies": 6,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 3,
+      "uso_no_codigo": {
+        "edges": 2,
+        "src": 28
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": true,
+      "indices": 1,
+      "linhas": 16,
+      "linhas_exatas": true,
+      "nome": "daily_challenges",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 24576,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "department_challenge_claims",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 2,
+      "linhas_exatas": true,
+      "nome": "department_challenges",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "discussion_replies",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 3,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "discussion_votes",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "feedback",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 7,
+      "linhas_exatas": true,
+      "nome": "flashcards",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": false,
+      "indices": 1,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "geo_blocking_config",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": false,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "geo_countries",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": false,
+      "indices": 3,
+      "linhas": 2,
+      "linhas_exatas": true,
+      "nome": "known_devices",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 4,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "learning_path_certificates",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 57344,
+      "citada_no_banco": false,
+      "indices": 3,
+      "linhas": 8,
+      "linhas_exatas": true,
+      "nome": "learning_path_courses",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 10
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": false,
+      "indices": 3,
+      "linhas": 3,
+      "linhas_exatas": true,
+      "nome": "learning_paths",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 14
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 25,
+      "linhas_exatas": true,
+      "nome": "lessons",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 11
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "login_attempts",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 4,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "mentorship_requests",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 81920,
+      "citada_no_banco": false,
+      "indices": 4,
+      "linhas": 3,
+      "linhas_exatas": true,
+      "nome": "newsletter_subscriptions",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 147456,
+      "citada_no_banco": true,
+      "indices": 8,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "notifications",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 4,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": false,
+      "indices": 1,
+      "linhas": 2,
+      "linhas_exatas": true,
+      "nome": "onboarding_workflows",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 3,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 81920,
+      "citada_no_banco": false,
+      "indices": 4,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "password_reset_requests",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 3,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 28,
+      "linhas_exatas": true,
+      "nome": "permissions",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": true,
+      "indices": 1,
+      "linhas": 3,
+      "linhas_exatas": true,
+      "nome": "platform_settings",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 57344,
+      "citada_no_banco": true,
+      "indices": 1,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "platform_stats_cache",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "playbook_comments",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 6,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "playbook_views",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 155648,
+      "citada_no_banco": true,
+      "indices": 7,
+      "linhas": 8,
+      "linhas_exatas": true,
+      "nome": "playbooks",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 7
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "pomodoro_sessions",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 98304,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 3,
+      "linhas_exatas": true,
+      "nome": "profiles",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 3,
+      "uso_no_codigo": {
+        "edges": 6,
+        "src": 20
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "push_subscriptions",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 3,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 68,
+      "linhas_exatas": true,
+      "nome": "quiz_options",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": false,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "quiz_performance_alerts",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 81920,
+      "citada_no_banco": true,
+      "indices": 4,
+      "linhas": 17,
+      "linhas_exatas": true,
+      "nome": "quiz_questions",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 5,
+      "linhas_exatas": true,
+      "nome": "quizzes",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 7
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 5,
+      "linhas_exatas": true,
+      "nome": "rate_limit_config",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 4,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "rate_limit_logs",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 1
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 29,
+      "linhas_exatas": true,
+      "nome": "role_permissions",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": false,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "saved_filters",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "seasonal_events",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 6
+      }
+    },
+    {
+      "bytes": 81920,
+      "citada_no_banco": true,
+      "indices": 4,
+      "linhas": 3,
+      "linhas_exatas": true,
+      "nome": "security_alerts",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 2,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": true,
+      "indices": 1,
+      "linhas": 8,
+      "linhas_exatas": true,
+      "nome": "skill_assessments",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 10,
+      "linhas_exatas": true,
+      "nome": "store_items",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 6
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": false,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "study_schedule",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": false,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "training_video_views",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 106496,
+      "citada_no_banco": false,
+      "indices": 5,
+      "linhas": 10,
+      "linhas_exatas": true,
+      "nome": "training_videos",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 6
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 3,
+      "linhas_exatas": true,
+      "nome": "user_achievements",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 3,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 9
+      }
+    },
+    {
+      "bytes": 98304,
+      "citada_no_banco": true,
+      "indices": 5,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_assessment_results",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 90112,
+      "citada_no_banco": true,
+      "indices": 5,
+      "linhas": 5,
+      "linhas_exatas": true,
+      "nome": "user_course_progress",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 3,
+        "src": 16
+      }
+    },
+    {
+      "bytes": 73728,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_daily_challenge_progress",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": false,
+      "indices": 4,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_favorites",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 24576,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_flashcard_progress",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_goals",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 24576,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_leagues",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 16384,
+      "citada_no_banco": false,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_learning_path_progress",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 57344,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 5,
+      "linhas_exatas": true,
+      "nome": "user_lesson_progress",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 3,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 14
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_mfa_settings",
+      "policies": 5,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": false,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_notes",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 24576,
+      "citada_no_banco": false,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_onboarding_progress",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_powerups",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_purchases",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 0
+      }
+    },
+    {
+      "bytes": 49152,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_quiz_attempts",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 7
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "user_roles",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 6,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": true,
+      "indices": 4,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "user_sessions",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 3
+      }
+    },
+    {
+      "bytes": 57344,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 1,
+      "linhas_exatas": true,
+      "nome": "user_streaks",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 73728,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 2,
+      "linhas_exatas": true,
+      "nome": "user_xp",
+      "policies": 3,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 8
+      }
+    },
+    {
+      "bytes": 98304,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 9,
+      "linhas_exatas": true,
+      "nome": "user_xp_history",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 2,
+      "uso_no_codigo": {
+        "edges": 1,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 40960,
+      "citada_no_banco": false,
+      "indices": 4,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "webauthn_credentials",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 4
+      }
+    },
+    {
+      "bytes": 65536,
+      "citada_no_banco": true,
+      "indices": 3,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "webhook_deliveries",
+      "policies": 2,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 6,
+        "src": 2
+      }
+    },
+    {
+      "bytes": 32768,
+      "citada_no_banco": true,
+      "indices": 1,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "webhook_endpoints",
+      "policies": 4,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 1,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 5
+      }
+    },
+    {
+      "bytes": 24576,
+      "citada_no_banco": true,
+      "indices": 2,
+      "linhas": 0,
+      "linhas_exatas": true,
+      "nome": "whitelisted_ips",
+      "policies": 1,
+      "rls": true,
+      "rls_forcado": false,
+      "triggers": 0,
+      "uso_no_codigo": {
+        "edges": 0,
+        "src": 6
+      }
+    }
+  ],
+  "tabelas_orfas": {
+    "criterio": "0 linhas + nao citada em funcao/view do banco + nenhum .from() em src/ ou supabase/functions/",
+    "lista": []
+  }
+}

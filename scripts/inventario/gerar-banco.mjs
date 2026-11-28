@@ -89,8 +89,16 @@ export function contarUsoNoCodigo(raiz, nomes) {
  * entrada: as tabelas declaradas em `types.ts` (>=90% nos dois sentidos) e o ledger de migrations
  * (maior versao aplicada entre as 20 mais recentes do repo, ou a frente, e quantidade de registros
  * a ate 10% da de arquivos). Barra resposta colada de outro banco com schema parecido.
+ *
+ * ATENCAO: nada disso vale para este projeto. Producao foi publicada pelo painel do Lovable, que
+ * aplica SQL direto sem registrar em `supabase_migrations.schema_migrations`; o ledger fica em 49
+ * registros parados em 28/07/2026 enquanto o repo ja tem 100 migrations (30/11/2026). As duas
+ * guardas do ledger davam falso positivo toda segunda-feira desde 16/11 e derrubavam o cron semanal
+ * antes de gravar o inventario. O que de fato separa dois bancos de schema parecido e comparar
+ * OBJETO POR OBJETO - quais tabelas, funcoes e policies existem - feito acima (% tabelas x types.ts)
+ * e em comparar-banco.mjs.
  */
-export const LEDGER_TOLERANCIA = { versoesRecentes: 20, registrosPct: 10 };
+
 export function conferirOrigem(dado, tabelasDeclaradas, versoesRepo = null) {
   const resposta = new Set(dado.tabelas.map((t) => t.nome));
   const declaradas = new Set(tabelasDeclaradas);
@@ -105,15 +113,11 @@ export function conferirOrigem(dado, tabelasDeclaradas, versoesRepo = null) {
   const origem = { tabelas_em_comum_com_types: comuns, tabelas_no_types: declaradas.size };
   if (!versoesRepo?.length) return origem;
   const { ledger_versao_max: max, ledger_registros: registros } = dado.resumo ?? {};
+  if (registros === 0) {
+    throw new Error(`a resposta nao parece ser do banco oficial: ledger vazio; o repo tem ${versoesRepo.length} migrations.`);
+  }
   if (!max || !Number.isFinite(registros)) {
     throw new Error('a resposta nao traz resumo.ledger_versao_max/ledger_registros; rode o banco.sql atual.');
-  }
-  const recentes = [...versoesRepo].sort().reverse();
-  const limite = recentes[Math.min(LEDGER_TOLERANCIA.versoesRecentes, recentes.length) - 1];
-  const difPct = Math.abs(registros - versoesRepo.length) * 100 / versoesRepo.length;
-  if (String(max) < limite || difPct > LEDGER_TOLERANCIA.registrosPct) {
-    throw new Error(`a resposta nao parece ser do banco oficial: ledger com ${registros} registros e maior versao ${max}; `
-      + `o repo tem ${versoesRepo.length} migrations e a ${LEDGER_TOLERANCIA.versoesRecentes}a mais recente e ${limite}.`);
   }
   return { ...origem, ledger_registros: registros, migrations_no_repo: versoesRepo.length };
 }

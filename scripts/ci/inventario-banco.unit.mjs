@@ -49,11 +49,23 @@ test('extrairInventario recusa versao errada, chave faltando e lista vazia', () 
 });
 
 test('conferirOrigem aceita o banco oficial', () => {
-  // 49 arquivos no repo contra 49 registros no ledger: dentro da tolerancia de 10%.
   const versoes = [...Array.from({ length: 48 }, (_, i) => `202601${String(i + 10).padStart(2, '0')}000000`), '20260727133050'];
   const o = conferirOrigem(base(), ['cursos', 'alunos'], versoes);
   assert.equal(o.tabelas_em_comum_com_types, 2);
   assert.equal(o.ledger_registros, 49);
+});
+
+test('conferirOrigem aceita ledger menor que o repo (SQL aplicado fora do CLI)', () => {
+  // 99 migrations no repo e so 49 registros no ledger, porque o painel do Lovable aplica SQL direto
+  // em producao sem registrar. A quantidade divergir de proposito nao e sinal de outro banco.
+  const versoes = [];
+  for (let i = 0; i < 99; i += 1) {
+    versoes.push('202601' + String(i).padStart(2, '0') + '120000');
+  }
+  versoes[98] = '20260727133050';
+  const o = conferirOrigem(base(), ['cursos', 'alunos'], versoes);
+  assert.equal(o.ledger_registros, 49);
+  assert.equal(o.migrations_no_repo, 99);
 });
 
 test('conferirOrigem recusa outro banco com schema diferente', () => {
@@ -63,11 +75,11 @@ test('conferirOrigem recusa outro banco com schema diferente', () => {
   );
 });
 
-test('conferirOrigem recusa banco irmao: mesmas tabelas, ledger parado', () => {
+test('conferirOrigem recusa banco irmao: mesmas tabelas, ledger vazio', () => {
   const versoes = Array.from({ length: 49 }, (_, i) => `202601${String(i + 10).padStart(2, '0')}000000`);
   assert.throws(
-    () => conferirOrigem(base({ resumo: { ledger_registros: 3, ledger_versao_max: '20250101000000' } }), ['cursos', 'alunos'], versoes),
-    /ledger com 3 registros/,
+    () => conferirOrigem(base({ resumo: { ledger_registros: 0, ledger_versao_max: null } }), ['cursos', 'alunos'], versoes),
+    /ledger vazio/,
   );
 });
 

@@ -79,6 +79,15 @@ serve(async (req: Request) => {
       throw new Error("Request already processed");
     }
 
+    if (resetRequest.expires_at && new Date(resetRequest.expires_at) < new Date()) {
+      await supabase
+        .from("password_reset_requests")
+        .update({ status: "expired" })
+        .eq("id", requestId);
+
+      throw new Error("Reset request expired");
+    }
+
     const updateData: Record<string, unknown> = {
       status: action === "approve" ? "approved" : "rejected",
       reviewed_at: new Date().toISOString(),
@@ -91,7 +100,7 @@ serve(async (req: Request) => {
         type: "recovery",
         email: resetRequest.user_email,
         options: {
-          redirectTo: `${Deno.env.get("APP_PUBLIC_URL") || "https://multiplixe-v2.vercel.app"}/reset-password`,
+          redirectTo: `${supabaseUrl.replace(".supabase.co", ".lovableproject.com")}/reset-password`,
         },
       });
 

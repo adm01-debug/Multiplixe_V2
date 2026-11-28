@@ -1992,10 +1992,11 @@ O video nao tinha picture-in-picture: nenhum lugar do codigo chamava a API.
 
 ---
 
-#### INT-003: SSO com Google/Microsoft
+#### INT-003: SSO com Google/Microsoft ✅ CONCLUÍDO (falta só o app OAuth do dono)
 **Prioridade:** 🟡 Média  
 **Esforço:** 4h  
-**Descrição:** Apenas email/senha.
+**Descrição:** Apenas email/senha.  
+**Código:** pronto. `src/lib/socialLogin.ts` resolve Google e Microsoft (`azure` no Supabase) por ambiente e `Auth.tsx` mostra um botão por provedor **só quando ele está habilitado no projeto** — hoje nenhum está, então o login segue só email/senha até o dono criar os apps OAuth (INT-002).
 
 **Implementação:**
 ```
@@ -2235,7 +2236,7 @@ CREATE TABLE public.webhook_endpoints (
 |----|----------|---------|
 | GAME-003 | Sistema de Ligas | ✅ 6h |
 | FUNC-022 | Compartilhar Conquistas | ✅ 4h |
-| INT-003 | SSO Google/Microsoft | 4h |
+| INT-003 | SSO Google/Microsoft | ✅ 4h |
 | ADMIN-003 | Gestão de Conquistas | ✅ 4h |
 | FUNC-005 | Melhorar Certificado PDF | ✅ 3h |
 | UI-008 | Grid/Lista Toggle | ✅ 4h |

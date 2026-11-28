@@ -2,9 +2,9 @@
   "format_version": 1,
   "fonte": "scripts/inventario/gerar-repo.mjs (le supabase/functions/, src/, supabase/migrations/ e supabase/config.toml)",
   "resumo": {
-    "edges": 12,
+    "edges": 13,
     "sem_chamador_no_repo": 3,
-    "segredos_distintos": 6
+    "segredos_distintos": 7
   },
   "sem_chamador_no_repo": [
     "cleanup-security-logs",
@@ -14,6 +14,7 @@
   "segredos_lidos_pelas_edges": [
     "APP_PUBLIC_URL",
     "LOVABLE_API_KEY",
+    "PUSH_VAPID_SUBJECT",
     "RESEND_API_KEY",
     "SUPABASE_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY",
@@ -80,9 +81,8 @@
       "sem_chamador": false
     },
     "approve-password-reset": {
-      "linhas": 178,
+      "linhas": 187,
       "segredos_lidos": [
-        "APP_PUBLIC_URL",
         "RESEND_API_KEY",
         "SUPABASE_SERVICE_ROLE_KEY",
         "SUPABASE_URL"
@@ -219,6 +219,32 @@
       "declarada_no_config": true,
       "sem_chamador": true
     },
+    "send-push": {
+      "linhas": 72,
+      "segredos_lidos": [
+        "PUSH_VAPID_SUBJECT",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_URL"
+      ],
+      "tabelas": [
+        "notifications",
+        "push_subscriptions"
+      ],
+      "rpcs": [
+        "push_chave_privada",
+        "push_vapid_public_key",
+        "registrar_falha_push"
+      ],
+      "chamada_em": {
+        "src": [],
+        "migrations": [
+          "supabase/migrations/20261129171000_enviar_push_cron.sql"
+        ],
+        "outras_edges": []
+      },
+      "declarada_no_config": true,
+      "sem_chamador": false
+    },
     "send-security-alert": {
       "linhas": 166,
       "segredos_lidos": [
@@ -262,7 +288,7 @@
       "sem_chamador": false
     },
     "weekly-admin-digest": {
-      "linhas": 284,
+      "linhas": 285,
       "segredos_lidos": [
         "RESEND_API_KEY",
         "SUPABASE_SERVICE_ROLE_KEY",

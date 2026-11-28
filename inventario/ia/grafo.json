@@ -1,44 +1,44 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "nos": 523,
- "arestas": 1470,
+ "nos": 559,
+ "arestas": 1583,
  "hubs": [
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 140
+   "importado_por": 146
   },
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 110
+   "importado_por": 116
   },
   {
    "arquivo": "src/hooks/useAuth.tsx",
-   "importado_por": 74
+   "importado_por": 77
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 70
+   "importado_por": 73
   },
   {
    "arquivo": "src/lib/utils.ts",
-   "importado_por": 68
+   "importado_por": 70
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 64
+   "importado_por": 66
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 40
+   "importado_por": 43
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 38
+   "importado_por": 39
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 28
+   "importado_por": 29
   },
   {
    "arquivo": "src/components/ui/progress.tsx",
@@ -46,6 +46,10 @@
   },
   {
    "arquivo": "src/components/ui/textarea.tsx",
+   "importado_por": 25
+  },
+  {
+   "arquivo": "src/lib/i18n.ts",
    "importado_por": 24
   },
   {
@@ -53,24 +57,20 @@
    "importado_por": 23
   },
   {
-   "arquivo": "src/lib/i18n.ts",
+   "arquivo": "src/components/ui/select.tsx",
    "importado_por": 22
   },
   {
-   "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 20
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 21
   },
   {
-   "arquivo": "src/components/ui/switch.tsx",
-   "importado_por": 20
+   "arquivo": "src/components/SimpleEmptyState.tsx",
+   "importado_por": 17
   },
   {
    "arquivo": "src/components/ui/icon-tooltip.tsx",
    "importado_por": 17
-  },
-  {
-   "arquivo": "src/components/SimpleEmptyState.tsx",
-   "importado_por": 15
   },
   {
    "arquivo": "src/components/ui/table.tsx",
@@ -86,7 +86,7 @@
   },
   {
    "arquivo": "src/components/seo/DynamicSEO.tsx",
-   "importado_por": 11
+   "importado_por": 12
   },
   {
    "arquivo": "src/components/ui/alert-dialog.tsx",
@@ -99,6 +99,14 @@
   {
    "arquivo": "src/hooks/useFuzzySearch.ts",
    "importado_por": 10
+  },
+  {
+   "arquivo": "src/components/layout/AppLayout.tsx",
+   "importado_por": 9
+  },
+  {
+   "arquivo": "src/components/layout/PageHeader.tsx",
+   "importado_por": 9
   },
   {
    "arquivo": "src/components/PrefetchLink.tsx",
@@ -115,14 +123,6 @@
   {
    "arquivo": "src/hooks/use-toast.ts",
    "importado_por": 8
-  },
-  {
-   "arquivo": "src/hooks/useAdminRole.ts",
-   "importado_por": 8
-  },
-  {
-   "arquivo": "src/components/EmptyState.tsx",
-   "importado_por": 7
   }
  ],
  "ciclos": {
@@ -137,26 +137,23 @@
   "scripts/ci/a11y-input-labels.unit.mjs",
   "scripts/ci/ai-context.unit.mjs",
   "scripts/ci/check-claude-md-integrity.mjs",
+  "scripts/ci/comparar-banco.unit.mjs",
+  "scripts/ci/edge-funcoes-proibidas.unit.mjs",
   "scripts/ci/inventario-banco.unit.mjs",
   "scripts/ci/inventario-mudou.unit.mjs",
   "scripts/ci/inventario-rotas.unit.mjs",
   "scripts/ci/inventario-schema.unit.mjs",
   "scripts/ci/supabase-usage-guard.unit.mjs",
-  "src/components/admin/AdminTopPlaybooksWidget.tsx",
-  "src/components/admin/AdminVideoEngagementWidget.tsx",
   "src/components/command/SearchResultGroup.tsx",
   "src/components/course/CourseProgress3D.tsx",
   "src/components/dialogs/ConfirmExitDialog.tsx",
-  "src/components/feedback/FeedbackWidget.tsx",
   "src/components/gamification/AchievementBadge.tsx",
   "src/components/gamification/DepartmentRanking.tsx",
   "src/components/gamification/WeeklyGoalTracker.tsx",
   "src/components/gamification/XPAnimations.tsx",
   "src/components/landing/GlobalSearchHint.tsx",
   "src/components/navigation/Breadcrumb.tsx",
-  "src/components/notifications/PushNotificationManager.tsx",
   "src/components/notifications/SmartReminders.tsx",
-  "src/components/social/StudyBuddies.tsx",
   "src/components/stats/LearningStats.tsx",
   "src/components/ui/ActionFeedback.tsx",
   "src/components/ui/Banner.tsx",
@@ -194,9 +191,10 @@
   "supabase/functions/export-user-data/index.ts",
   "supabase/functions/generate-certificate/index.ts",
   "supabase/functions/generate-sitemap/index.ts",
-  "supabase/functions/migrate-helper/index.ts",
+  "supabase/functions/send-push/index.ts",
   "supabase/functions/send-security-alert/index.ts",
-  "supabase/functions/verify-mfa/index.ts",
+  "supabase/functions/webhook-dispatch/assinatura_test.ts",
+  "supabase/functions/webhook-dispatch/index.ts",
   "supabase/functions/weekly-admin-digest/index.ts",
   "supabase/functions/weekly-admin-digest/index_test.ts",
   "tailwind.config.ts",
@@ -210,6 +208,8 @@
   "scripts/ci/a11y-input-labels.unit.mjs": [],
   "scripts/ci/ai-context.unit.mjs": [],
   "scripts/ci/check-claude-md-integrity.mjs": [],
+  "scripts/ci/comparar-banco.unit.mjs": [],
+  "scripts/ci/edge-funcoes-proibidas.unit.mjs": [],
   "scripts/ci/inventario-banco.unit.mjs": [],
   "scripts/ci/inventario-mudou.unit.mjs": [],
   "scripts/ci/inventario-rotas.unit.mjs": [],
@@ -236,6 +236,7 @@
    "src/components/navigation/ScrollRestoration.tsx",
    "src/components/navigation/ScrollToTop.tsx",
    "src/components/pomodoro/FloatingPomodoroButton.tsx",
+   "src/components/security/MFAChallengeGate.tsx",
    "src/components/ui/sonner.tsx",
    "src/components/ui/toaster.tsx",
    "src/components/ui/tooltip.tsx",
@@ -443,6 +444,14 @@
    "src/lib/datetimeInput.ts",
    "src/lib/i18n.ts"
   ],
+  "src/components/admin/AdminFeedbackInbox.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/select.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
   "src/components/admin/AdminFlashcardsTab.tsx": [
    "src/components/SimpleEmptyState.tsx",
    "src/components/ui/badge.tsx",
@@ -548,6 +557,20 @@
    "src/components/ui/textarea.tsx",
    "src/hooks/useTrainingVideos.ts",
    "src/lib/salesEnablementSchemas.ts"
+  ],
+  "src/components/admin/AdminWebhooksTab.tsx": [
+   "src/components/SimpleEmptyState.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/checkbox.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useAdminWebhooks.ts"
   ],
   "src/components/admin/AdminWorkflowsTab.tsx": [
    "src/components/SimpleEmptyState.tsx",
@@ -660,7 +683,8 @@
    "src/integrations/supabase/client.ts",
    "src/integrations/supabase/types.ts",
    "src/lib/chapters.ts",
-   "src/lib/i18n.ts"
+   "src/lib/i18n.ts",
+   "src/types/index.ts"
   ],
   "src/components/admin/LessonsManager.tsx": [
    "src/components/admin/LessonForm.tsx",
@@ -671,7 +695,8 @@
    "src/components/ui/dialog.tsx",
    "src/components/ui/icon-tooltip.tsx",
    "src/components/ui/table.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/types/index.ts"
   ],
   "src/components/admin/PasswordResetApproval.tsx": [
    "src/components/admin/password-reset/RequestStatusBadge.tsx",
@@ -859,7 +884,8 @@
   ],
   "src/components/catalog/CatalogHero.tsx": [],
   "src/components/catalog/CategoryFilter.tsx": [
-   "src/components/ui/button.tsx"
+   "src/components/ui/button.tsx",
+   "src/types/index.ts"
   ],
   "src/components/catalog/CourseCard.tsx": [
    "src/components/LazyImage.tsx",
@@ -877,6 +903,13 @@
   ],
   "src/components/catalog/LevelFilter.tsx": [
    "src/components/ui/button.tsx"
+  ],
+  "src/components/catalog/SavedFilters.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/input.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useSavedFilters.ts"
   ],
   "src/components/catalog/SearchInput.tsx": [
    "src/components/ui/input.tsx"
@@ -976,7 +1009,8 @@
   "src/components/feedback/FeedbackWidget.tsx": [
    "src/components/ui/button.tsx",
    "src/components/ui/textarea.tsx",
-   "src/hooks/useAuth.tsx"
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
   ],
   "src/components/flashcards/FlashcardPlayer.tsx": [
    "src/components/ui/badge.tsx",
@@ -1095,6 +1129,14 @@
   ],
   "src/components/landing/hero/HeroFloatingElements.tsx": [],
   "src/components/landing/hero/HeroStats.tsx": [],
+  "src/components/layout/AppLayout.tsx": [
+   "src/components/seo/DynamicSEO.tsx",
+   "src/lib/utils.ts"
+  ],
+  "src/components/layout/PageHeader.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/utils.ts"
+  ],
   "src/components/leaderboard/CategoryLeaderboard.tsx": [
    "src/components/RankBadge.tsx",
    "src/components/ui/avatar.tsx",
@@ -1217,7 +1259,8 @@
   "src/components/player/LessonPlayerSidebar.tsx": [
    "src/components/player/LessonList.tsx",
    "src/components/pomodoro/PomodoroTimer.tsx",
-   "src/components/ui/button.tsx"
+   "src/components/ui/button.tsx",
+   "src/types/index.ts"
   ],
   "src/components/player/TranscriptPanel.tsx": [
    "src/components/ui/input.tsx",
@@ -1231,6 +1274,11 @@
    "src/components/ui/tooltip.tsx",
    "src/lib/chapters.ts",
    "src/lib/i18n.ts"
+  ],
+  "src/components/player/VideoOfflineControls.tsx": [
+   "src/components/ui/button.tsx",
+   "src/lib/i18n.ts",
+   "src/lib/videoOffline.ts"
   ],
   "src/components/player/VideoOverlays.tsx": [],
   "src/components/player/VideoPlayer.tsx": [
@@ -1362,6 +1410,17 @@
    "src/components/ui/label.tsx",
    "src/components/ui/table.tsx"
   ],
+  "src/components/security/MFAChallengeGate.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input-otp.tsx",
+   "src/components/ui/input.tsx",
+   "src/hooks/useAuth.tsx",
+   "src/hooks/useMFA.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/backupCodes.ts",
+   "src/lib/mfaGate.ts"
+  ],
   "src/components/security/MFAEnrollmentDialog.tsx": [
    "src/components/ui/alert.tsx",
    "src/components/ui/button.tsx",
@@ -1398,7 +1457,9 @@
    "src/components/ui/badge.tsx",
    "src/components/ui/card.tsx"
   ],
-  "src/components/seo/DynamicSEO.tsx": [],
+  "src/components/seo/DynamicSEO.tsx": [
+   "src/lib/constants.ts"
+  ],
   "src/components/share/ShareAchievement.tsx": [
    "src/components/ui/button.tsx",
    "src/components/ui/dialog.tsx",
@@ -1414,7 +1475,6 @@
   ],
   "src/components/social/StudyBuddies.tsx": [
    "src/components/ui/avatar.tsx",
-   "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
    "src/hooks/useAuth.tsx",
@@ -1637,6 +1697,9 @@
    "src/integrations/supabase/client.ts",
    "src/lib/i18n.ts"
   ],
+  "src/hooks/useAdminWebhooks.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
   "src/hooks/useAuditLog.ts": [
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts",
@@ -1719,7 +1782,8 @@
   "src/hooks/useMFA.ts": [
    "src/hooks/use-toast.ts",
    "src/hooks/useAuth.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/backupCodes.ts"
   ],
   "src/hooks/useMentorship.ts": [
    "src/hooks/useAuth.tsx",
@@ -1782,7 +1846,8 @@
   ],
   "src/hooks/usePushNotifications.ts": [
    "src/hooks/useAuth.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/pushSubscription.ts"
   ],
   "src/hooks/useQuizzes.ts": [
    "src/hooks/useAuth.tsx",
@@ -1798,6 +1863,10 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/hooks/useReputacao.ts": [
+   "src/hooks/useAuth.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useSavedFilters.ts": [
    "src/hooks/useAuth.tsx",
    "src/integrations/supabase/client.ts"
   ],
@@ -1856,6 +1925,10 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/hooks/useVideoKeyboard.ts": [],
+  "src/hooks/useVideoOffline.ts": [
+   "src/lib/i18n.ts",
+   "src/lib/videoOffline.ts"
+  ],
   "src/hooks/useVideoShortcuts.ts": [],
   "src/hooks/useWallet.ts": [
    "src/hooks/useAuth.tsx",
@@ -1882,8 +1955,10 @@
    "src/lib/datetimeInput.ts"
   ],
   "src/lib/achievementSeason.ts": [],
+  "src/lib/backupCodes.ts": [],
   "src/lib/certificatePdf.ts": [],
   "src/lib/chapters.ts": [],
+  "src/lib/constants.ts": [],
   "src/lib/continueLearning.ts": [],
   "src/lib/courseCsv.ts": [],
   "src/lib/datetimeInput.ts": [],
@@ -1893,11 +1968,15 @@
   "src/lib/leagues.ts": [],
   "src/lib/levelSystem.ts": [],
   "src/lib/mentorship.ts": [],
+  "src/lib/mfaGate.ts": [],
   "src/lib/performanceComparison.ts": [],
   "src/lib/platformSettings.ts": [
    "src/integrations/supabase/types.ts"
   ],
   "src/lib/powerups.ts": [],
+  "src/lib/pushSubscription.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
   "src/lib/queryClient.ts": [
    "src/lib/telemetry.ts"
   ],
@@ -1911,6 +1990,7 @@
   "src/lib/salesEnablementSchemas.ts": [],
   "src/lib/schemas.ts": [],
   "src/lib/shareImage.ts": [],
+  "src/lib/socialLogin.ts": [],
   "src/lib/store.ts": [],
   "src/lib/telemetry.ts": [
    "src/integrations/supabase/client.ts"
@@ -1921,17 +2001,21 @@
   "src/lib/toastHelpers.ts": [],
   "src/lib/transcricao.ts": [],
   "src/lib/utils.ts": [],
+  "src/lib/videoOffline.ts": [],
   "src/lib/xpFormat.ts": [],
   "src/main.tsx": [
    "src/App.tsx",
    "src/components/accessibility/LiveAnnouncer.tsx",
    "src/components/accessibility/ReducedMotionProvider.tsx",
    "src/index.css",
+   "src/lib/pushSubscription.ts",
    "src/lib/themePresets.ts"
   ],
   "src/pages/Admin.tsx": [
    "src/components/admin/AdminCoursesTab.tsx",
    "src/components/admin/admin-users/types.ts",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/tabs.tsx",
    "src/hooks/useAdminRole.ts",
@@ -1959,7 +2043,8 @@
    "src/hooks/usePlatformSettings.ts",
    "src/integrations/lovable/index.ts",
    "src/integrations/supabase/client.ts",
-   "src/lib/platformSettings.ts"
+   "src/lib/platformSettings.ts",
+   "src/lib/socialLogin.ts"
   ],
   "src/pages/Catalog.tsx": [
    "src/components/EmptyState.tsx",
@@ -1970,6 +2055,7 @@
    "src/components/catalog/CourseCard.tsx",
    "src/components/catalog/CourseListItem.tsx",
    "src/components/catalog/LevelFilter.tsx",
+   "src/components/catalog/SavedFilters.tsx",
    "src/components/catalog/SearchInput.tsx",
    "src/components/catalog/ViewToggle.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
@@ -1982,7 +2068,8 @@
    "src/hooks/useFuzzySearch.ts",
    "src/hooks/useGestosMobile.ts",
    "src/hooks/useInfiniteScroll.ts",
-   "src/lib/i18n.ts"
+   "src/lib/i18n.ts",
+   "src/types/index.ts"
   ],
   "src/pages/CourseDetail.tsx": [
    "src/components/course/CourseDetailHero.tsx",
@@ -2035,6 +2122,8 @@
   "src/pages/Flashcards.tsx": [
    "src/components/SimpleEmptyState.tsx",
    "src/components/flashcards/FlashcardPlayer.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
@@ -2042,6 +2131,7 @@
    "src/components/ui/select.tsx",
    "src/components/ui/skeleton.tsx",
    "src/hooks/useFlashcards.ts",
+   "src/lib/constants.ts",
    "src/lib/flashcardSrs.ts"
   ],
   "src/pages/ForgotPassword.tsx": [
@@ -2070,10 +2160,13 @@
    "src/components/EmptyState.tsx",
    "src/components/RankBadge.tsx",
    "src/components/gamification/DepartmentChallenges.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/leaderboard/CategoryLeaderboard.tsx",
    "src/components/leaderboard/DepartmentLeaderboard.tsx",
    "src/components/leaderboard/LeaguePanel.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
+   "src/components/social/StudyBuddies.tsx",
    "src/components/ui/avatar.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/tabs.tsx",
@@ -2112,6 +2205,7 @@
    "src/components/player/LessonPlayerHeader.tsx",
    "src/components/player/LessonPlayerSidebar.tsx",
    "src/components/player/TranscriptPanel.tsx",
+   "src/components/player/VideoOfflineControls.tsx",
    "src/components/player/VideoPlayer.tsx",
    "src/components/quiz/CourseQuizModal.tsx",
    "src/components/quiz/QuizCard.tsx",
@@ -2127,13 +2221,18 @@
    "src/hooks/useStreaks.ts",
    "src/hooks/useUserPreferences.ts",
    "src/hooks/useUserXP.ts",
+   "src/hooks/useVideoOffline.ts",
    "src/integrations/supabase/client.ts",
    "src/lib/chapters.ts",
    "src/lib/i18n.ts",
-   "src/lib/platformSettings.ts"
+   "src/lib/platformSettings.ts",
+   "src/lib/videoOffline.ts",
+   "src/types/index.ts"
   ],
   "src/pages/Mentorship.tsx": [
    "src/components/SimpleEmptyState.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/ui/avatar.tsx",
    "src/components/ui/badge.tsx",
@@ -2147,6 +2246,7 @@
    "src/components/ui/tabs.tsx",
    "src/components/ui/textarea.tsx",
    "src/hooks/useMentorship.ts",
+   "src/lib/constants.ts",
    "src/lib/mentorship.ts"
   ],
   "src/pages/NotFound.tsx": [
@@ -2165,6 +2265,8 @@
    "src/hooks/useOnboardingWorkflow.ts"
   ],
   "src/pages/PlaybookDetail.tsx": [
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/playbooks/PlaybookComments.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/skeletons/PlaybookDetailSkeleton.tsx",
@@ -2172,10 +2274,13 @@
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
    "src/hooks/usePlaybooks.ts",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/lib/constants.ts"
   ],
   "src/pages/Playbooks.tsx": [
    "src/components/SimpleEmptyState.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
    "src/components/ui/badge.tsx",
@@ -2183,7 +2288,8 @@
    "src/components/ui/card.tsx",
    "src/components/ui/input.tsx",
    "src/hooks/useFuzzySearch.ts",
-   "src/hooks/usePlaybooks.ts"
+   "src/hooks/usePlaybooks.ts",
+   "src/lib/constants.ts"
   ],
   "src/pages/Profile.tsx": [
    "src/components/CertificateCard.tsx",
@@ -2239,19 +2345,23 @@
   ],
   "src/pages/SalesOnboarding.tsx": [
    "src/components/SimpleEmptyState.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
    "src/components/ui/progress.tsx",
    "src/components/ui/skeleton.tsx",
-   "src/hooks/useOnboardingWorkflow.ts"
+   "src/hooks/useOnboardingWorkflow.ts",
+   "src/lib/constants.ts"
   ],
   "src/pages/SecurityDashboard.tsx": [
    "src/components/admin/BlockedLoginAttempts.tsx",
    "src/components/admin/GeoBlockingManager.tsx",
    "src/components/admin/IPWhitelistManager.tsx",
    "src/components/admin/PasswordResetApproval.tsx",
+   "src/components/notifications/PushNotificationManager.tsx",
    "src/components/security/NotificationPermissionBanner.tsx",
    "src/components/security/PasskeyManager.tsx",
    "src/components/security/SecurityOverviewTab.tsx",
@@ -2269,12 +2379,15 @@
   ],
   "src/pages/SkillAssessments.tsx": [
    "src/components/SimpleEmptyState.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
    "src/components/ui/skeleton.tsx",
-   "src/hooks/useSkillAssessments.ts"
+   "src/hooks/useSkillAssessments.ts",
+   "src/lib/constants.ts"
   ],
   "src/pages/Store.tsx": [
    "src/components/SimpleEmptyState.tsx",
@@ -2298,6 +2411,8 @@
   ],
   "src/pages/VideoLibrary.tsx": [
    "src/components/SimpleEmptyState.tsx",
+   "src/components/layout/AppLayout.tsx",
+   "src/components/layout/PageHeader.tsx",
    "src/components/seo/DynamicSEO.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
    "src/components/ui/badge.tsx",
@@ -2306,7 +2421,8 @@
    "src/components/ui/dialog.tsx",
    "src/components/ui/input.tsx",
    "src/hooks/useFuzzySearch.ts",
-   "src/hooks/useTrainingVideos.ts"
+   "src/hooks/useTrainingVideos.ts",
+   "src/lib/constants.ts"
   ],
   "src/test/accessibility.test.tsx": [],
   "src/test/achievementShare.test.tsx": [
@@ -2322,8 +2438,22 @@
   "src/test/adminBulkActions.test.tsx": [
    "src/components/admin/AdminCoursesTab.tsx"
   ],
+  "src/test/adminTabs.test.tsx": [
+   "src/pages/Admin.tsx"
+  ],
+  "src/test/adminWebhooks.test.tsx": [
+   "src/components/admin/AdminWebhooksTab.tsx",
+   "src/hooks/useAdminWebhooks.ts"
+  ],
   "src/test/aiQuizGenerator.test.ts": [],
   "src/test/auth.test.tsx": [],
+  "src/test/backupCodes.test.ts": [
+   "src/lib/backupCodes.ts"
+  ],
+  "src/test/buscaVisivel.test.tsx": [
+   "src/components/CommandPalette.tsx",
+   "src/components/dashboard/DashboardHeader.tsx"
+  ],
   "src/test/cacheIndicator.test.tsx": [
    "src/components/ui/CacheIndicator.tsx",
    "src/components/ui/tooltip.tsx"
@@ -2385,6 +2515,9 @@
    "src/components/favorites/FavoriteButton.tsx",
    "src/components/favorites/FavoritesSection.tsx",
    "src/components/ui/tooltip.tsx"
+  ],
+  "src/test/feedback.test.tsx": [
+   "src/components/feedback/FeedbackWidget.tsx"
   ],
   "src/test/flashcardSrs.test.ts": [
    "src/lib/flashcardSrs.ts"
@@ -2453,6 +2586,9 @@
    "src/pages/Mentorship.tsx"
   ],
   "src/test/mentoriaHook.test.ts": [],
+  "src/test/mfaGate.test.ts": [
+   "src/lib/mfaGate.ts"
+  ],
   "src/test/navigation.test.tsx": [],
   "src/test/notFound.test.tsx": [
    "src/pages/NotFound.tsx"
@@ -2460,6 +2596,9 @@
   "src/test/notesPanel.test.tsx": [
    "src/components/notes/NotesPanel.tsx",
    "src/hooks/useNotes.ts"
+  ],
+  "src/test/notificationTypes.test.tsx": [
+   "src/components/NotificationBell.tsx"
   ],
   "src/test/optimisticFavorites.test.ts": [],
   "src/test/performanceComparison.test.tsx": [
@@ -2488,6 +2627,9 @@
   "src/test/quizAdaptive.test.ts": [
    "src/lib/quizAdaptive.ts"
   ],
+  "src/test/quizOptionsRpc.test.tsx": [
+   "src/hooks/useQuizzes.ts"
+  ],
   "src/test/quizReview.test.ts": [
    "src/lib/quizReview.ts"
   ],
@@ -2509,6 +2651,10 @@
   "src/test/salesEnablementSchemas.test.ts": [
    "src/lib/salesEnablementSchemas.ts"
   ],
+  "src/test/savedFilters.test.tsx": [
+   "src/components/catalog/SavedFilters.tsx",
+   "src/hooks/useSavedFilters.ts"
+  ],
   "src/test/seasonalEvent.test.tsx": [
    "src/components/gamification/SeasonalEventBanner.tsx",
    "src/hooks/useAdminSeasonalEvents.ts",
@@ -2525,6 +2671,9 @@
   "src/test/skipLinks.test.tsx": [
    "src/components/accessibility/SkipLinks.tsx"
   ],
+  "src/test/socialLogin.test.ts": [
+   "src/lib/socialLogin.ts"
+  ],
   "src/test/sprintCoroacao.test.ts": [
    "src/hooks/useGlobalShortcuts.ts"
   ],
@@ -2534,6 +2683,9 @@
   ],
   "src/test/store.test.ts": [
    "src/lib/store.ts"
+  ],
+  "src/test/studyBuddies.test.tsx": [
+   "src/components/social/StudyBuddies.tsx"
   ],
   "src/test/studySchedule.test.tsx": [
    "src/components/calendar/StudyCalendar.tsx",
@@ -2569,6 +2721,14 @@
   "src/test/utils.test.ts": [
    "src/lib/utils.ts"
   ],
+  "src/test/verifyCertificate.test.tsx": [
+   "src/hooks/useCertificates.ts",
+   "src/pages/VerifyCertificate.tsx"
+  ],
+  "src/test/videoOffline.test.tsx": [
+   "src/components/player/VideoOfflineControls.tsx",
+   "src/lib/videoOffline.ts"
+  ],
   "src/test/videoPiP.test.tsx": [
    "src/components/player/VideoPlayer.tsx",
    "src/components/ui/tooltip.tsx"
@@ -2579,6 +2739,11 @@
   "src/test/xpMultiplier.test.tsx": [
    "src/hooks/useXpMultiplier.ts"
   ],
+  "src/types/index.ts": [
+   "src/integrations/supabase/types.ts"
+  ],
+  "supabase/functions/_shared/cronAuth.ts": [],
+  "supabase/functions/_shared/webPush.ts": [],
   "supabase/functions/admin-user-actions/index.ts": [],
   "supabase/functions/ai-playbook-summarize/index.ts": [],
   "supabase/functions/ai-quiz-generator/index.ts": [],
@@ -2588,10 +2753,22 @@
   "supabase/functions/export-user-data/index.ts": [],
   "supabase/functions/generate-certificate/index.ts": [],
   "supabase/functions/generate-sitemap/index.ts": [],
-  "supabase/functions/migrate-helper/index.ts": [],
+  "supabase/functions/send-push/index.ts": [
+   "supabase/functions/_shared/cronAuth.ts",
+   "supabase/functions/_shared/webPush.ts"
+  ],
   "supabase/functions/send-security-alert/index.ts": [],
-  "supabase/functions/verify-mfa/index.ts": [],
-  "supabase/functions/weekly-admin-digest/index.ts": [],
+  "supabase/functions/webhook-dispatch/assinatura.ts": [],
+  "supabase/functions/webhook-dispatch/assinatura_test.ts": [
+   "supabase/functions/webhook-dispatch/assinatura.ts"
+  ],
+  "supabase/functions/webhook-dispatch/index.ts": [
+   "supabase/functions/_shared/cronAuth.ts",
+   "supabase/functions/webhook-dispatch/assinatura.ts"
+  ],
+  "supabase/functions/weekly-admin-digest/index.ts": [
+   "supabase/functions/_shared/cronAuth.ts"
+  ],
   "supabase/functions/weekly-admin-digest/index_test.ts": [],
   "tailwind.config.ts": [],
   "vite.config.ts": [],
@@ -2601,6 +2778,7 @@
   "src/App.tsx": [
    "src/components/CommandPalette.tsx",
    "src/components/KeyboardShortcutsModal.tsx",
+   "src/components/feedback/FeedbackWidget.tsx",
    "src/components/pwa/PWAInstallPrompt.tsx",
    "src/components/security/NotificationPermissionBanner.tsx",
    "src/pages/Admin.tsx",
@@ -2659,14 +2837,18 @@
    "src/components/admin/AdminCohortRetention.tsx",
    "src/components/admin/AdminEngagementHeatmap.tsx",
    "src/components/admin/AdminEventsTab.tsx",
+   "src/components/admin/AdminFeedbackInbox.tsx",
    "src/components/admin/AdminFlashcardsTab.tsx",
    "src/components/admin/AdminMissionsTab.tsx",
    "src/components/admin/AdminPlaybooksTab.tsx",
    "src/components/admin/AdminStatsTab.tsx",
    "src/components/admin/AdminStoreTab.tsx",
    "src/components/admin/AdminTelemetryWidget.tsx",
+   "src/components/admin/AdminTopPlaybooksWidget.tsx",
    "src/components/admin/AdminUsersTab.tsx",
+   "src/components/admin/AdminVideoEngagementWidget.tsx",
    "src/components/admin/AdminVideosTab.tsx",
+   "src/components/admin/AdminWebhooksTab.tsx",
    "src/components/admin/AdminWorkflowsTab.tsx",
    "src/components/admin/LearningPathsManager.tsx",
    "src/components/admin/PermissionsManager.tsx",

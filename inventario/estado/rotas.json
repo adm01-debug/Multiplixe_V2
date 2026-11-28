@@ -6,7 +6,7 @@
     "protegidas": 21,
     "so_admin": 2,
     "entradas_na_ui": 122,
-    "hooks_distintos": 121,
+    "hooks_distintos": 122,
     "problemas": 0
   },
   "rotas": [
@@ -41,7 +41,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 81,
+      "arquivos_lidos": 84,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -204,21 +204,25 @@
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
+        "consumir_codigo_backup",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_my_wallet",
         "get_platform_stats",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
         "purchase_store_item",
+        "push_vapid_public_key",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
         "update_user_streak",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -237,7 +241,7 @@
         "platform_settings",
         "pomodoro_sessions",
         "profiles",
-        "quiz_options_public",
+        "push_subscriptions",
         "quiz_questions",
         "quizzes",
         "rate_limit_config",
@@ -272,7 +276,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 75,
+      "arquivos_lidos": 78,
       "hooks": [
         {
           "nome": "useAdminFlashcards",
@@ -479,6 +483,7 @@
         "certificates",
         "courses",
         "department_challenges",
+        "feedback",
         "flashcards",
         "learning_path_courses",
         "learning_paths",
@@ -581,7 +586,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 10,
+      "arquivos_lidos": 11,
       "hooks": [
         {
           "nome": "useAuth",
@@ -742,7 +747,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 76,
+      "arquivos_lidos": 81,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -845,6 +850,10 @@
           "arquivo": "src/hooks/useRateLimitLogs.ts"
         },
         {
+          "nome": "useSavedFilters",
+          "arquivo": "src/hooks/useSavedFilters.ts"
+        },
+        {
           "nome": "useSecurityAlerts",
           "arquivo": "src/hooks/useSecurityAlerts.ts"
         },
@@ -909,20 +918,24 @@
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
+        "consumir_codigo_backup",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_my_wallet",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
         "purchase_store_item",
+        "push_vapid_public_key",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
         "update_user_streak",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -940,11 +953,12 @@
         "platform_settings",
         "pomodoro_sessions",
         "profiles",
-        "quiz_options_public",
+        "push_subscriptions",
         "quiz_questions",
         "quizzes",
         "rate_limit_config",
         "rate_limit_logs",
+        "saved_filters",
         "security_alerts",
         "store_items",
         "user_achievements",
@@ -1007,6 +1021,7 @@
         "add_user_xp",
         "create_audit_log",
         "get_adaptive_quiz_plan",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "submit_quiz_attempt"
       ],
@@ -1018,7 +1033,6 @@
         "discussion_votes",
         "lessons",
         "profiles",
-        "quiz_options_public",
         "quiz_questions",
         "quizzes",
         "user_course_progress",
@@ -1122,10 +1136,12 @@
         "complete_pomodoro_session",
         "create_audit_log",
         "get_adaptive_quiz_plan",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "submit_quiz_attempt",
         "update_user_streak",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -1135,7 +1151,6 @@
         "platform_settings",
         "pomodoro_sessions",
         "profiles",
-        "quiz_options_public",
         "quiz_questions",
         "quizzes",
         "user_achievements",
@@ -1164,7 +1179,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 109,
+      "arquivos_lidos": 112,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -1372,6 +1387,7 @@
         "check_login_allowed",
         "claim_daily_challenge_reward",
         "complete_pomodoro_session",
+        "consumir_codigo_backup",
         "create_audit_log",
         "get_active_seasonal_event",
         "get_adaptive_quiz_plan",
@@ -1380,18 +1396,21 @@
         "get_my_challenges",
         "get_my_wallet",
         "get_my_xp_multiplier",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "get_smart_recommendations",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
         "purchase_store_item",
+        "push_vapid_public_key",
         "recalculate_user_goals",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
         "update_user_streak",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -1410,7 +1429,7 @@
         "platform_settings",
         "pomodoro_sessions",
         "profiles",
-        "quiz_options_public",
+        "push_subscriptions",
         "quiz_questions",
         "quizzes",
         "rate_limit_config",
@@ -1799,7 +1818,8 @@
         "get_performance_comparison",
         "get_xp_history",
         "purchase_store_item",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -1928,7 +1948,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 24,
+      "arquivos_lidos": 25,
       "hooks": [
         {
           "nome": "useAdminRole",
@@ -2021,7 +2041,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 23,
+      "arquivos_lidos": 26,
       "hooks": [
         {
           "nome": "useAdminRole",
@@ -2066,8 +2086,10 @@
         "detect-new-device"
       ],
       "rpcs": [
+        "consumir_codigo_backup",
         "create_audit_log",
         "has_role",
+        "push_vapid_public_key",
         "reset_login_attempts"
       ],
       "tabelas": [
@@ -2075,6 +2097,7 @@
         "geo_countries",
         "login_attempts",
         "password_reset_requests",
+        "push_subscriptions",
         "security_alerts",
         "user_mfa_settings",
         "user_sessions",
@@ -2093,7 +2116,7 @@
       "com_parametro": true,
       "redireciona": null,
       "entradas_na_ui": [],
-      "arquivos_lidos": 64,
+      "arquivos_lidos": 67,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2260,20 +2283,24 @@
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
+        "consumir_codigo_backup",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_my_wallet",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
         "purchase_store_item",
+        "push_vapid_public_key",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
         "update_user_streak",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -2291,7 +2318,7 @@
         "platform_settings",
         "pomodoro_sessions",
         "profiles",
-        "quiz_options_public",
+        "push_subscriptions",
         "quiz_questions",
         "quizzes",
         "rate_limit_config",
@@ -2328,7 +2355,7 @@
         "navegacao-no-codigo",
         "prefetch"
       ],
-      "arquivos_lidos": 68,
+      "arquivos_lidos": 71,
       "hooks": [
         {
           "nome": "useAchievements",
@@ -2495,20 +2522,24 @@
         "check_and_award_achievements",
         "check_login_allowed",
         "complete_pomodoro_session",
+        "consumir_codigo_backup",
         "create_audit_log",
         "get_adaptive_quiz_plan",
         "get_leaderboard",
         "get_my_wallet",
+        "get_quiz_options_publicas",
         "get_quiz_review",
         "get_user_rank",
         "has_role",
         "issue_learning_path_certificate",
         "purchase_store_item",
+        "push_vapid_public_key",
         "record_failed_login",
         "reset_login_attempts",
         "submit_quiz_attempt",
         "update_user_streak",
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "achievements",
@@ -2526,7 +2557,7 @@
         "platform_settings",
         "pomodoro_sessions",
         "profiles",
-        "quiz_options_public",
+        "push_subscriptions",
         "quiz_questions",
         "quizzes",
         "rate_limit_config",
@@ -2601,7 +2632,8 @@
         "generate-certificate"
       ],
       "rpcs": [
-        "verify_certificate_by_code"
+        "verify_certificate_by_code",
+        "verify_path_certificate_by_code"
       ],
       "tabelas": [
         "certificates"
@@ -3903,6 +3935,12 @@
       "arquivo": "src/hooks/useOnboardingWorkflow.ts",
       "rotas": [
         "/admin"
+      ]
+    },
+    "useSavedFilters": {
+      "arquivo": "src/hooks/useSavedFilters.ts",
+      "rotas": [
+        "/catalogo"
       ]
     },
     "useSeasonalEvent": {

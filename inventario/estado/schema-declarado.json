@@ -11,10 +11,10 @@
     "funcoes": 116,
     "funcoes_expostas_no_types": 67,
     "enums": 1,
-    "policies": 203,
+    "policies": 215,
     "cron_jobs": 9,
     "buckets": 1,
-    "migrations": 98,
+    "migrations": 100,
     "alertas": 4,
     "problemas": 3
   },
@@ -81,7 +81,7 @@
       "nas_migrations": true,
       "colunas": 7,
       "rls": true,
-      "policies": 1,
+      "policies": 4,
       "triggers": [],
       "indices": 0,
       "criada_em": "20251224123713_99b45a5f-e82a-4823-bd67-36e0065b3537.sql",
@@ -141,7 +141,7 @@
       "nas_migrations": true,
       "colunas": 16,
       "rls": true,
-      "policies": 2,
+      "policies": 6,
       "triggers": [
         "audit_courses_changes",
         "trigger_notify_new_course",
@@ -358,7 +358,7 @@
       "nas_migrations": true,
       "colunas": 12,
       "rls": true,
-      "policies": 1,
+      "policies": 4,
       "triggers": [
         "audit_lessons_changes",
         "update_lessons_updated_at"
@@ -454,11 +454,11 @@
       "rls": true,
       "policies": 3,
       "triggers": [],
-      "indices": 2,
+      "indices": 3,
       "criada_em": "20251231131344_ff80cabe-0c9b-4568-8af0-1be2b0ce283a.sql",
       "uso_no_codigo": {
         "src": 3,
-        "edges": 2
+        "edges": 3
       }
     },
     "permissions": {
@@ -574,7 +574,7 @@
       "nas_migrations": true,
       "colunas": 15,
       "rls": true,
-      "policies": 3,
+      "policies": 5,
       "triggers": [
         "protect_profile_admin_columns",
         "trigger_recalcular_reputacao",
@@ -2880,12 +2880,12 @@
     {
       "tipo": "ddl_dinamico",
       "id": "20261125183000_revogar_execucao_arbitraria_mcp_exec.sql",
-      "detalhe": "EXECUTE format(...) nao e rastreado pelo replay: do $$ declare f record; begin for f in select p.oid::regprocedure as sig from pg_proc p join pg_n"
+      "detalhe": "EXECUTE format(...) nao e rastreado pelo replay: do $$ declare f record; begin for f in select p.oid::regprocedure as sig from pg_proc p join pg_namespac"
     },
     {
       "tipo": "ddl_dinamico",
       "id": "20261125184800_hardening_grants_view_quiz_options_e_funcoes.sql",
-      "detalhe": "EXECUTE format(...) nao e rastreado pelo replay: do $$ declare f record; begin for f in select p.oid::regprocedure as sig from pg_proc p join pg_n"
+      "detalhe": "EXECUTE format(...) nao e rastreado pelo replay: do $$ declare f record; begin for f in select p.oid::regprocedure as sig from pg_proc p join pg_namespac"
     }
   ]
 }

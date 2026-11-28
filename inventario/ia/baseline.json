@@ -2,57 +2,61 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
  "git": {
-  "commit": "c040ae5e88e011d97ea387fd54ead071621a0e7f",
-  "branch": "claude/feat-game-009-conquistas-sazonais-261126-1145",
-  "data_commit": "2026-11-26T11:37:40-03:00",
+  "commit": "4bad210177b6cb6c70c206d8c8506065c7f7e5f9",
+  "branch": "main",
+  "data_commit": "2026-11-28T13:08:17-03:00",
   "ultimos_commits": [
-   "c040ae5 feat: eventos sazonais com bonus de XP (GAME-009) (#91)",
-   "95bd7ca chore: marca GAME-008 (missoes por departamento) como concluido no plano (#90)",
-   "7bb2f41 feat: missoes coletivas por departamento (GAME-008) (#89)",
-   "24fca83 chore: marca GAME-012 (reputacao social) como concluido no plano",
-   "cbdcd34 feat: reputacao social no perfil (GAME-012) (#87)",
-   "3d945ba chore: marca MOB-002 (gestos mobile) como concluido no plano (#86)",
-   "6faa1fd feat: gestos de navegacao no mobile (swipe entre aulas e puxar para atualizar) (#85)",
-   "27a4c58 chore: marca FUNC-007 (mentoria) e FUNC-017 (transcricao) como implementadas (#84)",
-   "221562e feat: transcrição de vídeo com busca e salto por trecho (FUNC-017) (#81)",
-   "dc9419a feat: sistema de mentoria entre colegas (FUNC-007) (#83)"
+   "4bad210 fix: inventario semanal para de falhar por comparar quantidade do ledger (#133)",
+   "f5d1156 fix: reset de senha expirado e privilegios demais na tabela de pedidos (#132)",
+   "8e399e9 feat: guard que aponta objeto em producao sem migration (#131)",
+   "0b539f0 chore: registra no repo as 12 policies de admin que so existiam em producao (#130)",
+   "87d3270 chore: digest semanal diz por que nao enviou (#129)",
+   "f92587c feat: aluno recebe notificacao com o app fechado (Web Push real) (#128)",
+   "62928f4 fix: opcoes do quiz deixam de vazar pela view sem security_invoker (#127)",
+   "5fa0645 feat: botao de busca no cabecalho (#126)",
+   "f6a386d feat: avisa o admin quando chega feedback novo (#125)",
+   "0bf34a4 feat: grava o feedback do aluno e da triagem ao admin (#124)"
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "PLANO_IMPLEMENTACAO_PENDENTES.md",
-    "mudancas": 54
-   },
-   {
-    "arquivo": "src/integrations/supabase/types.ts",
-    "mudancas": 23
+    "mudancas": 60
    },
    {
     "arquivo": "inventario/estado/schema-declarado.json",
-    "mudancas": 22
+    "mudancas": 33
    },
    {
-    "arquivo": "inventario/ia/baseline.json",
-    "mudancas": 21
+    "arquivo": "src/integrations/supabase/types.ts",
+    "mudancas": 29
    },
    {
-    "arquivo": "inventario/ia/INDEX.md",
-    "mudancas": 21
-   },
-   {
-    "arquivo": "inventario/ia/manifest.json",
-    "mudancas": 21
-   },
-   {
-    "arquivo": "inventario/ia/componentes.json",
-    "mudancas": 18
-   },
-   {
-    "arquivo": "inventario/ia/grafo.json",
-    "mudancas": 17
+    "arquivo": "docs/agentes/regras-dominio.md",
+    "mudancas": 20
    },
    {
     "arquivo": "inventario/estado/rotas.json",
-    "mudancas": 16
+    "mudancas": 20
+   },
+   {
+    "arquivo": "inventario/ia/baseline.json",
+    "mudancas": 19
+   },
+   {
+    "arquivo": "inventario/ia/componentes.json",
+    "mudancas": 19
+   },
+   {
+    "arquivo": "inventario/ia/INDEX.md",
+    "mudancas": 19
+   },
+   {
+    "arquivo": "inventario/ia/manifest.json",
+    "mudancas": 19
+   },
+   {
+    "arquivo": "inventario/ia/grafo.json",
+    "mudancas": 18
    },
    {
     "arquivo": "inventario/ia/hooks.json",
@@ -60,58 +64,54 @@
    },
    {
     "arquivo": "src/lib/i18n.ts",
-    "mudancas": 11
-   },
-   {
-    "arquivo": "src/pages/Profile.tsx",
-    "mudancas": 10
+    "mudancas": 14
    },
    {
     "arquivo": "src/pages/Admin.tsx",
-    "mudancas": 8
+    "mudancas": 14
    },
    {
-    "arquivo": "src/index.css",
-    "mudancas": 6
+    "arquivo": "src/pages/Profile.tsx",
+    "mudancas": 11
    },
    {
     "arquivo": "src/pages/Catalog.tsx",
-    "mudancas": 6
-   },
-   {
-    "arquivo": "docs/agentes/lovable-vercel.md",
-    "mudancas": 5
+    "mudancas": 9
    },
    {
     "arquivo": "src/App.tsx",
-    "mudancas": 5
-   },
-   {
-    "arquivo": "src/components/admin/AdminCoursesTab.tsx",
-    "mudancas": 5
+    "mudancas": 8
    },
    {
     "arquivo": "src/pages/LessonPlayer.tsx",
-    "mudancas": 5
+    "mudancas": 8
    },
    {
-    "arquivo": "docs/agentes/banco.md",
-    "mudancas": 4
+    "arquivo": "supabase/config.toml",
+    "mudancas": 8
+   },
+   {
+    "arquivo": "src/pages/Leaderboard.tsx",
+    "mudancas": 7
+   },
+   {
+    "arquivo": "inventario/estado/edges.json",
+    "mudancas": 6
    }
   ]
  },
  "contagens": {
-  "arquivos": 636,
-  "arquivos_de_codigo": 523,
-  "linhas_de_codigo": 74486,
-  "componentes": 242,
-  "hooks": 142,
+  "arquivos": 688,
+  "arquivos_de_codigo": 559,
+  "linhas_de_codigo": 79238,
+  "componentes": 249,
+  "hooks": 150,
   "paginas": 28,
-  "testes": 91,
+  "testes": 104,
   "edge_functions": 13,
   "rotas": 28,
-  "tabelas": 74,
-  "migrations": 82
+  "tabelas": 77,
+  "migrations": 100
  },
  "por_pasta": {
   ".github/workflows": 2,
@@ -132,27 +132,26 @@
   "postcss.config.js": 1,
   "progress.txt": 1,
   "scripts/ai-context": 1,
-  "scripts/ci": 11,
+  "scripts/ci": 13,
   "scripts/lib": 2,
   "src/App.tsx": 1,
-  "src/components": 266,
-  "src/hooks": 70,
+  "src/components": 273,
+  "src/hooks": 73,
   "src/index.css": 1,
   "src/integrations": 3,
-  "src/lib": 32,
+  "src/lib": 38,
   "src/main.tsx": 1,
   "src/pages": 28,
-  "src/test": 91,
+  "src/test": 104,
+  "src/types": 1,
   "src/vite-env.d.ts": 1,
   "supabase/config.toml": 1,
-  "supabase/functions": 14,
-  "supabase/migrations": 82,
+  "supabase/functions": 18,
+  "supabase/migrations": 100,
   "tailwind.config.ts": 1,
   "tsconfig.app.json": 1,
-  "tsconfig.app.tsbuildinfo": 1,
   "tsconfig.json": 1,
   "tsconfig.node.json": 1,
-  "tsconfig.node.tsbuildinfo": 1,
   "vercel.json": 1,
   "vite.config.ts": 1,
   "vitest.config.ts": 1
@@ -160,11 +159,11 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 3554
+   "linhas": 3666
   },
   {
    "arquivo": "src/lib/i18n.ts",
-   "linhas": 719
+   "linhas": 773
   },
   {
    "arquivo": "src/components/skeletons/PageSkeletons.tsx",
@@ -175,12 +174,16 @@
    "linhas": 638
   },
   {
-   "arquivo": "src/pages/Mentorship.tsx",
-   "linhas": 549
-  },
-  {
    "arquivo": "src/components/admin/AdminAchievementsTab.tsx",
    "linhas": 546
+  },
+  {
+   "arquivo": "src/pages/Mentorship.tsx",
+   "linhas": 543
+  },
+  {
+   "arquivo": "src/components/admin/AdminWebhooksTab.tsx",
+   "linhas": 516
   },
   {
    "arquivo": "src/components/gamification/DailyChallenges.tsx",
@@ -243,8 +246,8 @@
    "linhas": 355
   },
   {
-   "arquivo": "src/components/admin/LessonForm.tsx",
-   "linhas": 344
+   "arquivo": "src/pages/Admin.tsx",
+   "linhas": 354
   },
   {
    "arquivo": "src/components/onboarding/OnboardingTutorial.tsx",
@@ -253,10 +256,6 @@
   {
    "arquivo": "src/components/landing/FeaturesSection.tsx",
    "linhas": 343
-  },
-  {
-   "arquivo": "src/components/EmptyState.tsx",
-   "linhas": 339
   }
  ],
  "qualidade": {
@@ -267,6 +266,7 @@
   "todos": 5,
   "arquivos_acima_500_linhas": [
    "src/components/admin/AdminAchievementsTab.tsx",
+   "src/components/admin/AdminWebhooksTab.tsx",
    "src/components/skeletons/PageSkeletons.tsx",
    "src/components/ui/sidebar.tsx",
    "src/integrations/supabase/types.ts",
@@ -309,18 +309,21 @@
   ],
   "usadas_no_codigo": [
    "APP_PUBLIC_URL",
+   "CRON_SECRET",
    "LOVABLE_API_KEY",
+   "PUSH_VAPID_SUBJECT",
    "RESEND_API_KEY",
    "SUPABASE_ANON_KEY",
-   "SUPABASE_DB_URL",
    "SUPABASE_SERVICE_ROLE_KEY",
    "SUPABASE_URL",
    "VITE_ALGO",
+   "VITE_SITE_URL",
    "VITE_SUPABASE_PUBLISHABLE_KEY",
    "VITE_SUPABASE_URL"
   ],
   "usadas_mas_nao_declaradas": [
-   "VITE_ALGO"
+   "VITE_ALGO",
+   "VITE_SITE_URL"
   ]
  },
  "scripts_npm": {
@@ -336,13 +339,13 @@
   "preview": "vite preview"
  },
  "alertas": {
-  "componentes_orfaos": 30,
+  "componentes_orfaos": 25,
   "componentes_com_nome_duplicado": 3,
   "hooks_sem_uso": 23,
   "ciclos_de_import": 0,
   "problemas_de_rota": 0,
-  "edges_sem_chamador": 5,
-  "alertas_de_schema": 3
+  "edges_sem_chamador": 3,
+  "alertas_de_schema": 4
  },
  "erros_do_gerador": []
 }

@@ -1,30 +1,30 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — nao editar a mao; sera sobrescrito.",
  "format_version": 1,
- "gerado_em": "2026-11-26T14:57:08.373Z",
- "commit": "c040ae5e88e011d97ea387fd54ead071621a0e7f",
- "branch": "claude/feat-game-009-conquistas-sazonais-261126-1145",
+ "gerado_em": "2026-11-28T16:08:57.058Z",
+ "commit": "4bad210177b6cb6c70c206d8c8506065c7f7e5f9",
+ "branch": "main",
  "gerador": "scripts/ai-context/gerar.mjs",
- "node": "v22.23.2",
+ "node": "v24.22.3",
  "arquivos": {
-  "INDEX.md": "45fb204a705e4aa8",
-  "baseline.json": "0af59691815b0840",
-  "componentes.json": "37cd028ae4a96b27",
-  "grafo.json": "7718f3e751fa1936",
-  "hooks.json": "9dd45e21b1f13c96"
+  "INDEX.md": "d4e9b8a5ab1cca11",
+  "baseline.json": "18c944e63f69462d",
+  "componentes.json": "02f8a2c3aeb12f02",
+  "grafo.json": "a08ef6f0e5f34456",
+  "hooks.json": "2a248691654c642b"
  },
  "contagens": {
-  "arquivos": 636,
-  "arquivos_de_codigo": 523,
-  "linhas_de_codigo": 74486,
-  "componentes": 242,
-  "hooks": 142,
+  "arquivos": 688,
+  "arquivos_de_codigo": 559,
+  "linhas_de_codigo": 79238,
+  "componentes": 249,
+  "hooks": 150,
   "paginas": 28,
-  "testes": 91,
+  "testes": 104,
   "edge_functions": 13,
   "rotas": 28,
-  "tabelas": 74,
-  "migrations": 82
+  "tabelas": 77,
+  "migrations": 100
  },
  "erros": []
 }

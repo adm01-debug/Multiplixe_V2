@@ -33,6 +33,9 @@ serve(async (req: Request) => {
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+// Dominio do app no e-mail de reset. Antes era derivado trocando ".supabase.co" por ".lovableproject.com",
+// dominio do Lovable que nao serve mais o app: quem clicava caia em pagina inexistente.
+const appUrl = (Deno.env.get("APP_URL") ?? "https://multiplixe-v2.vercel.app").replace(/\/+$/, "");
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     
@@ -100,7 +103,7 @@ serve(async (req: Request) => {
         type: "recovery",
         email: resetRequest.user_email,
         options: {
-          redirectTo: `${supabaseUrl.replace(".supabase.co", ".lovableproject.com")}/reset-password`,
+          redirectTo: `${appUrl}/reset-password`,
         },
       });
 
